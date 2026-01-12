@@ -19,7 +19,7 @@ function useTabs() {
 }
 
 interface TabsProps {
-  defaultValue: string;
+  defaultValue?: string;
   value?: string;
   onValueChange?: (value: string) => void;
   children: ReactNode;
@@ -27,7 +27,7 @@ interface TabsProps {
 }
 
 function Tabs({ defaultValue, value, onValueChange, children, className }: TabsProps) {
-  const [internalValue, setInternalValue] = useState(defaultValue);
+  const [internalValue, setInternalValue] = useState(defaultValue || value || '');
 
   const activeTab = value ?? internalValue;
   const setActiveTab = (tab: string) => {

@@ -150,8 +150,8 @@ export function DCLCanvas({
         ref={canvasRef}
         className={cn(
           'dcl-canvas relative select-none overflow-hidden',
-          draggedItem && 'cursor-grabbing',
-          !readonly && 'cursor-crosshair'
+          draggedItem ? 'cursor-grabbing' : undefined,
+          !readonly ? 'cursor-crosshair' : undefined
         )}
         style={{ width, height }}
         onMouseMove={handleMouseMove}
