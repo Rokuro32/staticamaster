@@ -1,7 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useAppStore } from '@/store/useAppStore';
 import { getCourseById, COURSE_COLORS, type CourseId } from '@/types/course';
 import { Button } from '@/components/ui/Button';
@@ -38,11 +38,14 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo + Course Name */}
           <div className="flex items-center gap-4">
-            <Link href="/" className="flex items-center gap-2">
+            <button
+              onClick={handleChangeCourse}
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            >
               <span className="text-xl font-bold text-gray-900">
                 PhysicsMaster
               </span>
-            </Link>
+            </button>
 
             {course && (
               <>

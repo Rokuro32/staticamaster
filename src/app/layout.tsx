@@ -34,7 +34,7 @@ export default function RootLayout({
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <p className="text-sm text-gray-500">
-                  PhysicsMaster - Programme de Technologie du génie mécanique
+                  PhysicsMaster - Apprentissage interactif de la physique
                 </p>
                 <p className="text-sm text-gray-400">
                   Version 2.0.0

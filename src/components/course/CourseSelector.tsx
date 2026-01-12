@@ -98,7 +98,7 @@ export function CourseSelector({ onSelect }: CourseSelectorProps) {
         {/* Footer info */}
         <div className="mt-16 text-center">
           <p className="text-gray-500 text-sm">
-            Développé pour les étudiants du programme de Technologie du génie mécanique
+            Plateforme d'apprentissage pour les cours de physique au CÉGEP
           </p>
         </div>
       </div>
