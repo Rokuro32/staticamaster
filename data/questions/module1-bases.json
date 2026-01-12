@@ -1,0 +1,244 @@
+[
+  {
+    "id": "m1-q1-decomposition",
+    "module": 1,
+    "tags": ["vectors", "decomposition", "trigonometry"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Décomposition d'un vecteur force",
+    "statement": "Une force F = {F} N est appliquée selon un angle de {angle}° par rapport à l'horizontale. Calculez la composante horizontale Fx de cette force.",
+    "givens": {
+      "F": 100,
+      "angle": 30
+    },
+    "unknowns": ["Fx"],
+    "answer": {
+      "variable": "Fx",
+      "value": 86.6,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La composante horizontale utilise le cosinus de l'angle",
+      "Fx = F × cos(θ)",
+      "N'oubliez pas de convertir l'angle en radians si votre calculatrice est en mode radian"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "50",
+        "patternType": "value",
+        "message": "Vous avez utilisé le sinus au lieu du cosinus",
+        "hint": "Pour la composante horizontale (x), utilisez cos(θ)",
+        "category": "formula"
+      },
+      {
+        "pattern": "0.866",
+        "patternType": "value",
+        "message": "Vous avez oublié de multiplier par la force F",
+        "hint": "Fx = F × cos(θ), pas juste cos(θ)",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "Pour décomposer un vecteur, on utilise Fx = F × cos(θ) pour la composante horizontale et Fy = F × sin(θ) pour la composante verticale. Ici, Fx = 100 × cos(30°) = 100 × 0.866 = 86.6 N.",
+    "parameters": {
+      "F": { "min": 50, "max": 200, "step": 10, "unit": "N" },
+      "angle": { "min": 15, "max": 75, "step": 15, "unit": "°" }
+    },
+    "answerFormula": "F * cos(rad(angle))"
+  },
+  {
+    "id": "m1-q2-resultante",
+    "module": 1,
+    "tags": ["vectors", "resultant"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Résultante de deux forces",
+    "statement": "Deux forces sont appliquées au même point: F1 = {F1} N horizontalement vers la droite et F2 = {F2} N verticalement vers le haut. Calculez la magnitude de la force résultante R.",
+    "givens": {
+      "F1": 40,
+      "F2": 30
+    },
+    "unknowns": ["R"],
+    "answer": {
+      "variable": "R",
+      "value": 50,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Les deux forces sont perpendiculaires",
+      "Utilisez le théorème de Pythagore",
+      "R² = F1² + F2²"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "70",
+        "patternType": "value",
+        "message": "Vous avez additionné les forces directement",
+        "hint": "Les forces sont perpendiculaires, utilisez Pythagore: R = √(F1² + F2²)",
+        "category": "concept"
+      },
+      {
+        "pattern": "2500",
+        "patternType": "value",
+        "message": "Vous avez oublié d'extraire la racine carrée",
+        "hint": "R = √(F1² + F2²), n'oubliez pas √",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "Quand deux forces sont perpendiculaires, la résultante se calcule par Pythagore: R = √(F1² + F2²) = √(40² + 30²) = √(1600 + 900) = √2500 = 50 N.",
+    "parameters": {
+      "F1": { "min": 20, "max": 80, "step": 10, "unit": "N" },
+      "F2": { "min": 20, "max": 80, "step": 10, "unit": "N" }
+    },
+    "answerFormula": "sqrt(F1*F1 + F2*F2)"
+  },
+  {
+    "id": "m1-q3-produit-vectoriel",
+    "module": 1,
+    "tags": ["cross-product", "moment"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Produit vectoriel (moment)",
+    "statement": "Une force F = {F} N est appliquée perpendiculairement à un bras de levier de longueur r = {r} m. Calculez le module du moment résultant M = |r × F|.",
+    "givens": {
+      "F": 50,
+      "r": 2
+    },
+    "unknowns": ["M"],
+    "answer": {
+      "variable": "M",
+      "value": 100,
+      "unit": "N·m",
+      "tolerance": 1,
+      "toleranceType": "absolute"
+    },
+    "hints": [
+      "Le produit vectoriel de vecteurs perpendiculaires donne |r × F| = r × F × sin(90°)",
+      "sin(90°) = 1",
+      "Le module est simplement r × F"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "25",
+        "patternType": "value",
+        "message": "Vous avez divisé au lieu de multiplier",
+        "hint": "M = r × F, pas r/F ou F/r",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Pour le produit vectoriel, |r × F| = r × F × sin(θ). Quand les vecteurs sont perpendiculaires (θ = 90°), sin(90°) = 1, donc M = r × F = 2 m × 50 N = 100 N·m.",
+    "parameters": {
+      "F": { "min": 20, "max": 100, "step": 10, "unit": "N" },
+      "r": { "min": 1, "max": 5, "step": 0.5, "unit": "m" }
+    },
+    "answerFormula": "r * F"
+  },
+  {
+    "id": "m1-q4-trigonometrie",
+    "module": 1,
+    "tags": ["trigonometry"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Relations trigonométriques",
+    "statement": "Dans un triangle rectangle, si l'angle θ = 45°, quelle est la relation entre les côtés opposé et adjacent?",
+    "givens": {
+      "theta": 45
+    },
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Le côté opposé est égal au côté adjacent",
+        "isCorrect": true,
+        "feedback": "Correct! tan(45°) = 1, donc opposé = adjacent"
+      },
+      {
+        "id": "b",
+        "text": "Le côté opposé est le double du côté adjacent",
+        "isCorrect": false,
+        "feedback": "Cela serait vrai pour tan(θ) = 2, soit θ ≈ 63.4°"
+      },
+      {
+        "id": "c",
+        "text": "Le côté opposé est la moitié du côté adjacent",
+        "isCorrect": false,
+        "feedback": "Cela serait vrai pour tan(θ) = 0.5, soit θ ≈ 26.6°"
+      },
+      {
+        "id": "d",
+        "text": "Le côté opposé est égal à l'hypoténuse",
+        "isCorrect": false,
+        "feedback": "Cela impliquerait que cos(θ) = 0, soit θ = 90°"
+      }
+    ],
+    "answer": {
+      "variable": "relation",
+      "value": 1,
+      "unit": "",
+      "tolerance": 0,
+      "toleranceType": "absolute"
+    },
+    "hints": [
+      "Rappelez-vous que tan(θ) = opposé/adjacent",
+      "Quelle est la valeur de tan(45°)?"
+    ],
+    "commonMistakes": [],
+    "explanation": "À 45°, tan(45°) = 1, ce qui signifie que opposé/adjacent = 1, donc les deux côtés sont égaux. C'est un triangle isocèle rectangle."
+  },
+  {
+    "id": "m1-q5-conversion",
+    "module": 1,
+    "tags": ["vectors"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Angle d'un vecteur",
+    "statement": "Un vecteur a des composantes Fx = {Fx} N et Fy = {Fy} N. Calculez l'angle θ (en degrés) que fait ce vecteur avec l'axe horizontal positif.",
+    "givens": {
+      "Fx": 30,
+      "Fy": 40
+    },
+    "unknowns": ["theta"],
+    "answer": {
+      "variable": "θ",
+      "value": 53.13,
+      "unit": "°",
+      "tolerance": 1,
+      "toleranceType": "absolute"
+    },
+    "hints": [
+      "Utilisez la fonction arctangente",
+      "θ = arctan(Fy/Fx)",
+      "Assurez-vous de convertir le résultat en degrés"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.927",
+        "patternType": "value",
+        "message": "Vous avez donné la réponse en radians",
+        "hint": "Convertissez en degrés: multipliez par 180/π",
+        "category": "unit"
+      },
+      {
+        "pattern": "36.87",
+        "patternType": "value",
+        "message": "Vous avez inversé Fx et Fy",
+        "hint": "θ = arctan(Fy/Fx), pas arctan(Fx/Fy)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "L'angle se calcule par θ = arctan(Fy/Fx) = arctan(40/30) = arctan(1.333) = 53.13°.",
+    "parameters": {
+      "Fx": { "min": 10, "max": 50, "step": 10, "unit": "N" },
+      "Fy": { "min": 10, "max": 50, "step": 10, "unit": "N" }
+    },
+    "answerFormula": "deg(atan(Fy/Fx))"
+  }
+]

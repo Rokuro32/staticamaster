@@ -1,0 +1,250 @@
+[
+  {
+    "id": "m5-q1-contrainte-normale",
+    "module": 5,
+    "tags": ["stress"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Contrainte normale de traction",
+    "statement": "Une tige d'acier de section circulaire a un diamètre d = {d} mm. Elle est soumise à une force de traction F = {F} kN. Calculez la contrainte normale σ en MPa.",
+    "givens": {
+      "d": 20,
+      "F": 50
+    },
+    "unknowns": ["sigma"],
+    "answer": {
+      "variable": "σ",
+      "value": 159.15,
+      "unit": "MPa",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Calculez d'abord l'aire de la section: A = π × (d/2)²",
+      "N'oubliez pas de convertir: d en m, F en N",
+      "σ = F/A, avec le résultat en Pa, puis convertir en MPa"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "39.79",
+        "patternType": "value",
+        "message": "Vous avez utilisé le diamètre au lieu du rayon pour l'aire",
+        "hint": "A = π × r² = π × (d/2)², pas π × d²",
+        "category": "formula"
+      },
+      {
+        "pattern": "159155",
+        "patternType": "value",
+        "message": "Vous n'avez pas converti en MPa",
+        "hint": "1 MPa = 1 N/mm² = 10⁶ Pa",
+        "category": "unit"
+      }
+    ],
+    "explanation": "A = π × (20/2)² = π × 100 = 314.16 mm². F = 50 kN = 50000 N. σ = F/A = 50000/314.16 = 159.15 N/mm² = 159.15 MPa.",
+    "parameters": {
+      "d": { "min": 10, "max": 30, "step": 5, "unit": "mm" },
+      "F": { "min": 20, "max": 80, "step": 10, "unit": "kN" }
+    },
+    "answerFormula": "(F * 1000) / (PI * pow(d/2, 2))"
+  },
+  {
+    "id": "m5-q2-deformation",
+    "module": 5,
+    "tags": ["strain"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Déformation unitaire",
+    "statement": "Une barre d'aluminium de longueur initiale L0 = {L0} mm s'allonge de ΔL = {deltaL} mm sous une charge de traction. Calculez la déformation unitaire ε (sans unité, en 10⁻³).",
+    "givens": {
+      "L0": 500,
+      "deltaL": 0.5
+    },
+    "unknowns": ["epsilon"],
+    "answer": {
+      "variable": "ε",
+      "value": 1,
+      "unit": "×10⁻³",
+      "tolerance": 5,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La déformation unitaire ε = ΔL / L0",
+      "Les unités s'annulent (mm/mm)",
+      "Exprimez le résultat en millièmes (×10⁻³)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.001",
+        "patternType": "value",
+        "message": "Valeur correcte mais format différent",
+        "hint": "Exprimez en ×10⁻³, donc 0.001 = 1 ×10⁻³",
+        "category": "unit"
+      },
+      {
+        "pattern": "1000",
+        "patternType": "value",
+        "message": "Vous avez inversé la formule",
+        "hint": "ε = ΔL/L0, pas L0/ΔL",
+        "category": "formula"
+      }
+    ],
+    "explanation": "ε = ΔL/L0 = 0.5/500 = 0.001 = 1 × 10⁻³. Les déformations élastiques sont généralement de l'ordre de 10⁻³ à 10⁻² pour les métaux.",
+    "parameters": {
+      "L0": { "min": 200, "max": 1000, "step": 100, "unit": "mm" },
+      "deltaL": { "min": 0.2, "max": 1.0, "step": 0.1, "unit": "mm" }
+    },
+    "answerFormula": "(deltaL / L0) * 1000"
+  },
+  {
+    "id": "m5-q3-module-young",
+    "module": 5,
+    "tags": ["youngs-modulus", "stress", "strain"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Module de Young",
+    "statement": "Un essai de traction sur un échantillon donne une contrainte σ = {sigma} MPa pour une déformation ε = {epsilon} × 10⁻³. Calculez le module de Young E en GPa.",
+    "givens": {
+      "sigma": 210,
+      "epsilon": 1
+    },
+    "unknowns": ["E"],
+    "answer": {
+      "variable": "E",
+      "value": 210,
+      "unit": "GPa",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La loi de Hooke: E = σ/ε",
+      "Attention aux unités: MPa / (10⁻³) = GPa",
+      "210 MPa / 0.001 = 210000 MPa = 210 GPa"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.21",
+        "patternType": "value",
+        "message": "Vous avez multiplié au lieu de diviser",
+        "hint": "E = σ/ε, pas σ × ε",
+        "category": "formula"
+      },
+      {
+        "pattern": "210000",
+        "patternType": "value",
+        "message": "Réponse en MPa, pas en GPa",
+        "hint": "Convertissez: 1 GPa = 1000 MPa",
+        "category": "unit"
+      }
+    ],
+    "explanation": "E = σ/ε = 210 MPa / (1 × 10⁻³) = 210 × 10³ MPa = 210 GPa. C'est approximativement le module de Young de l'acier.",
+    "parameters": {
+      "sigma": { "min": 100, "max": 300, "step": 20, "unit": "MPa" },
+      "epsilon": { "min": 0.5, "max": 2, "step": 0.25, "unit": "×10⁻³" }
+    },
+    "answerFormula": "sigma / epsilon"
+  },
+  {
+    "id": "m5-q4-coefficient-securite",
+    "module": 5,
+    "tags": ["safety-factor", "stress"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Coefficient de sécurité",
+    "statement": "Une pièce en acier a une limite élastique Re = {Re} MPa. Elle est soumise à une contrainte de service σ = {sigma} MPa. Calculez le coefficient de sécurité FS.",
+    "givens": {
+      "Re": 350,
+      "sigma": 140
+    },
+    "unknowns": ["FS"],
+    "answer": {
+      "variable": "FS",
+      "value": 2.5,
+      "unit": "",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le coefficient de sécurité compare la limite du matériau à la contrainte réelle",
+      "FS = Re / σ",
+      "Un FS > 1 signifie que la pièce est sécuritaire"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.4",
+        "patternType": "value",
+        "message": "Vous avez inversé la formule",
+        "hint": "FS = Re/σ (limite divisée par contrainte réelle)",
+        "category": "formula"
+      },
+      {
+        "pattern": "210",
+        "patternType": "value",
+        "message": "Vous avez soustrait au lieu de diviser",
+        "hint": "FS est un ratio, pas une différence",
+        "category": "formula"
+      }
+    ],
+    "explanation": "FS = Re/σ = 350/140 = 2.5. Un coefficient de sécurité de 2.5 est typique pour des applications industrielles. Cela signifie que la contrainte réelle est 2.5 fois plus petite que la limite élastique.",
+    "parameters": {
+      "Re": { "min": 200, "max": 500, "step": 50, "unit": "MPa" },
+      "sigma": { "min": 80, "max": 200, "step": 20, "unit": "MPa" }
+    },
+    "answerFormula": "Re / sigma"
+  },
+  {
+    "id": "m5-q5-diagramme-traction",
+    "module": 5,
+    "tags": ["stress-strain-diagram"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Interprétation du diagramme de traction",
+    "statement": "Sur un diagramme contrainte-déformation d'un acier ductile, quelle zone représente le comportement élastique réversible?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "La partie linéaire initiale (pente constante)",
+        "isCorrect": true,
+        "feedback": "Correct! La zone élastique est linéaire et suit la loi de Hooke (σ = E×ε)."
+      },
+      {
+        "id": "b",
+        "text": "La zone après la limite élastique jusqu'à la rupture",
+        "isCorrect": false,
+        "feedback": "Non, cette zone représente la déformation plastique (permanente)."
+      },
+      {
+        "id": "c",
+        "text": "Le plateau horizontal après la limite élastique",
+        "isCorrect": false,
+        "feedback": "Non, le plateau représente l'écoulement plastique (déformation permanente à contrainte constante)."
+      },
+      {
+        "id": "d",
+        "text": "La zone de striction avant la rupture",
+        "isCorrect": false,
+        "feedback": "Non, la striction est une déformation plastique locale intense avant rupture."
+      }
+    ],
+    "answer": {
+      "variable": "zone",
+      "value": 1,
+      "unit": "",
+      "tolerance": 0,
+      "toleranceType": "absolute"
+    },
+    "hints": [
+      "Le comportement élastique signifie que le matériau retrouve sa forme initiale après déchargement",
+      "La loi de Hooke (σ = E×ε) s'applique dans cette zone",
+      "Cette zone se termine à la limite élastique"
+    ],
+    "commonMistakes": [],
+    "explanation": "Le comportement élastique correspond à la partie linéaire initiale du diagramme, où la contrainte est proportionnelle à la déformation (loi de Hooke: σ = E×ε). Dans cette zone, si on enlève la charge, le matériau revient à sa longueur initiale. Au-delà de la limite élastique, les déformations deviennent permanentes (plastiques)."
+  }
+]

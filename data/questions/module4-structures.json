@@ -1,0 +1,243 @@
+[
+  {
+    "id": "m4-q1-treillis-noeuds-simple",
+    "module": 4,
+    "tags": ["truss-nodes", "equilibrium-2d"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Treillis - Méthode des nœuds (simple)",
+    "statement": "Un treillis triangulaire simple a une charge verticale P = {P} N appliquée au sommet. Les deux membrures inclinées font chacune un angle de 45° avec l'horizontale. Calculez la force dans une membrure inclinée (en valeur absolue).",
+    "givens": {
+      "P": 1000,
+      "angle": 45
+    },
+    "unknowns": ["FAB"],
+    "equations": {
+      "required": ["ΣFy=0"],
+      "forms": []
+    },
+    "answer": {
+      "variable": "FAB",
+      "value": 707.1,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Par symétrie, les deux membrures ont la même force",
+      "À l'équilibre vertical: 2 × F × sin(45°) = P",
+      "Donc F = P / (2 × sin(45°))"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "500",
+        "patternType": "value",
+        "message": "Vous avez divisé P par 2 sans tenir compte de l'angle",
+        "hint": "Seule la composante verticale de chaque force contribue à équilibrer P",
+        "category": "concept"
+      },
+      {
+        "pattern": "1414",
+        "patternType": "value",
+        "message": "Vous avez oublié de diviser par 2 (il y a deux membrures)",
+        "hint": "Les deux membrures contribuent ensemble à supporter P",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "À l'équilibre vertical du nœud supérieur: 2 × FAB × sin(45°) = P. Donc FAB = P / (2 × 0.707) = 1000 / 1.414 = 707.1 N. La membrure est en compression.",
+    "parameters": {
+      "P": { "min": 500, "max": 2000, "step": 250, "unit": "N" }
+    },
+    "answerFormula": "P / (2 * sin(rad(angle)))"
+  },
+  {
+    "id": "m4-q2-treillis-noeuds-complexe",
+    "module": 4,
+    "tags": ["truss-nodes", "internal-forces"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Treillis - Force dans une membrure horizontale",
+    "statement": "Dans un treillis en forme de 'A', la membrure horizontale inférieure relie les deux appuis distants de {L} m. Une charge P = {P} N est appliquée au sommet. Les membrures inclinées font 60° avec l'horizontale. Calculez la force de traction dans la membrure horizontale.",
+    "givens": {
+      "L": 4,
+      "P": 1200,
+      "angle": 60
+    },
+    "unknowns": ["FBC"],
+    "answer": {
+      "variable": "FBC",
+      "value": 346.4,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "D'abord, trouvez la force dans les membrures inclinées",
+      "La composante horizontale de cette force = force dans la membrure horizontale",
+      "F_horiz = F_incliné × cos(60°)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "600",
+        "patternType": "value",
+        "message": "Vous avez utilisé P/2 directement",
+        "hint": "La force horizontale vient de la composante horizontale des forces inclinées",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Force dans membrure inclinée: F = P/(2×sin(60°)) = 1200/(2×0.866) = 692.8 N. La composante horizontale = 692.8 × cos(60°) = 692.8 × 0.5 = 346.4 N (traction).",
+    "parameters": {
+      "P": { "min": 600, "max": 1800, "step": 200, "unit": "N" }
+    },
+    "answerFormula": "P / (2 * tan(rad(angle)))"
+  },
+  {
+    "id": "m4-q3-treillis-sections",
+    "module": 4,
+    "tags": ["truss-sections", "equilibrium-2d"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Treillis - Méthode des sections",
+    "statement": "Un treillis de pont a des panneaux de {a} m de large et {h} m de haut. Une charge P = {P} N est appliquée au nœud inférieur central. En utilisant la méthode des sections, calculez la force dans la diagonale centrale (valeur absolue).",
+    "givens": {
+      "a": 3,
+      "h": 4,
+      "P": 10000
+    },
+    "unknowns": ["FD"],
+    "equations": {
+      "required": ["ΣM=0"],
+      "forms": []
+    },
+    "answer": {
+      "variable": "FD",
+      "value": 6250,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La méthode des sections coupe le treillis en deux",
+      "Prenez les moments autour d'un point qui élimine les forces inconnues",
+      "La diagonale fait un angle θ = arctan(h/a) avec l'horizontale"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "5000",
+        "patternType": "value",
+        "message": "Vous avez peut-être oublié de considérer la géométrie de la diagonale",
+        "hint": "La force dans la diagonale dépend de son angle",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Longueur diagonale = √(3² + 4²) = 5 m. sin(θ) = 4/5 = 0.8. Par équilibre des moments, la force dans la diagonale FD = (P × a) / (h × 2) × (diagonale/composante verticale) = 6250 N.",
+    "parameters": {
+      "P": { "min": 5000, "max": 20000, "step": 2500, "unit": "N" }
+    }
+  },
+  {
+    "id": "m4-q4-dcl-treillis",
+    "module": 4,
+    "tags": ["dcl", "truss-nodes"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "DCL d'un nœud de treillis",
+    "statement": "Au nœud d'un treillis idéal, quelles sont les hypothèses correctes?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Les membrures sont articulées aux nœuds et les charges ne s'appliquent qu'aux nœuds",
+        "isCorrect": true,
+        "feedback": "Correct! Ce sont les hypothèses fondamentales d'un treillis idéal."
+      },
+      {
+        "id": "b",
+        "text": "Les membrures sont encastrées aux nœuds et transmettent des moments",
+        "isCorrect": false,
+        "feedback": "Non, dans un treillis idéal, les connexions sont des rotules (pas de moment transmis)."
+      },
+      {
+        "id": "c",
+        "text": "Les charges peuvent s'appliquer n'importe où sur les membrures",
+        "isCorrect": false,
+        "feedback": "Non, dans un treillis idéal, les charges externes ne s'appliquent qu'aux nœuds."
+      },
+      {
+        "id": "d",
+        "text": "Les membrures peuvent fléchir sous la charge",
+        "isCorrect": false,
+        "feedback": "Non, les membrures sont supposées parfaitement rigides et ne subissent que des forces axiales."
+      }
+    ],
+    "answer": {
+      "variable": "réponse",
+      "value": 1,
+      "unit": "",
+      "tolerance": 0,
+      "toleranceType": "absolute"
+    },
+    "hints": [
+      "Pensez aux simplifications qui permettent d'analyser un treillis",
+      "Ces hypothèses garantissent que les membrures ne subissent que des forces axiales"
+    ],
+    "commonMistakes": [],
+    "explanation": "Un treillis idéal repose sur deux hypothèses: (1) toutes les connexions sont des rotules parfaites (pas de transmission de moment), et (2) les charges externes ne s'appliquent qu'aux nœuds. Ces hypothèses impliquent que les membrures ne subissent que des forces axiales (traction ou compression)."
+  },
+  {
+    "id": "m4-q5-traction-compression",
+    "module": 4,
+    "tags": ["internal-forces", "truss-nodes"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Identification traction/compression",
+    "statement": "Dans un treillis, une membrure subit une force qui 'pousse' sur les nœuds à ses extrémités. Cette membrure est en:",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Compression",
+        "isCorrect": true,
+        "feedback": "Correct! Une membrure qui pousse sur ses nœuds est en compression."
+      },
+      {
+        "id": "b",
+        "text": "Traction",
+        "isCorrect": false,
+        "feedback": "Non, une membrure en traction tire sur ses nœuds."
+      },
+      {
+        "id": "c",
+        "text": "Flexion",
+        "isCorrect": false,
+        "feedback": "Non, dans un treillis idéal, les membrures ne fléchissent pas."
+      },
+      {
+        "id": "d",
+        "text": "Cisaillement",
+        "isCorrect": false,
+        "feedback": "Non, les membrures d'un treillis ne subissent que des efforts axiaux."
+      }
+    ],
+    "answer": {
+      "variable": "état",
+      "value": 1,
+      "unit": "",
+      "tolerance": 0,
+      "toleranceType": "absolute"
+    },
+    "hints": [
+      "Pensez à la direction de la force par rapport à la membrure",
+      "Une membrure 'courte' qui essaie de devenir plus courte est en..."
+    ],
+    "commonMistakes": [],
+    "explanation": "Une membrure en compression pousse sur les nœuds à ses extrémités (elle essaie de se raccourcir). Une membrure en traction tire sur les nœuds (elle essaie de s'allonger). Dans les calculs, on utilise conventionnellement: traction positive (+), compression négative (-)."
+  }
+]

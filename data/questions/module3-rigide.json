@@ -1,0 +1,242 @@
+[
+  {
+    "id": "m3-q1-moment-simple",
+    "module": 3,
+    "tags": ["moment", "lever-arm"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Moment d'une force - Calcul simple",
+    "statement": "Une force F = {F} N est appliquée perpendiculairement à l'extrémité d'une poutre de longueur L = {L} m. Calculez le moment de cette force par rapport au point d'encastrement O.",
+    "givens": {
+      "F": 50,
+      "L": 3
+    },
+    "unknowns": ["MO"],
+    "answer": {
+      "variable": "MO",
+      "value": 150,
+      "unit": "N·m",
+      "tolerance": 1,
+      "toleranceType": "absolute"
+    },
+    "hints": [
+      "Le moment est le produit de la force par le bras de levier",
+      "M = F × d, où d est la distance perpendiculaire",
+      "Ici, la force est déjà perpendiculaire"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "16.67",
+        "patternType": "value",
+        "message": "Vous avez divisé au lieu de multiplier",
+        "hint": "M = F × L, pas F/L",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Le moment M = F × d, où d est le bras de levier. Comme la force est perpendiculaire, d = L = 3 m. Donc M = 50 N × 3 m = 150 N·m.",
+    "parameters": {
+      "F": { "min": 20, "max": 100, "step": 10, "unit": "N" },
+      "L": { "min": 1, "max": 5, "step": 0.5, "unit": "m" }
+    },
+    "answerFormula": "F * L"
+  },
+  {
+    "id": "m3-q2-dcl-poutre",
+    "module": 3,
+    "tags": ["dcl", "supports", "equilibrium-2d"],
+    "difficulty": "intermediate",
+    "type": "dcl",
+    "active": true,
+    "title": "DCL - Poutre simplement supportée",
+    "statement": "Une poutre de longueur {L} m est supportée par une rotule en A et un appui à rouleau en B. Une charge concentrée P = {P} N est appliquée au milieu. Construisez le DCL de la poutre.",
+    "givens": {
+      "L": 4,
+      "P": 1000
+    },
+    "unknowns": ["RAy", "RBy"],
+    "schema": {
+      "type": "beam",
+      "width": 500,
+      "height": 300,
+      "elements": [
+        { "id": "beam", "type": "beam", "start": { "x": 100, "y": 150 }, "end": { "x": 400, "y": 150 }, "label": "AB" },
+        { "id": "pointA", "type": "joint", "position": { "x": 100, "y": 150 }, "label": "A" },
+        { "id": "pointB", "type": "joint", "position": { "x": 400, "y": 150 }, "label": "B" },
+        { "id": "midpoint", "type": "point", "position": { "x": 250, "y": 150 }, "label": "C" }
+      ],
+      "correctForces": [
+        { "id": "P", "name": "P", "angle": 270, "applicationPoint": { "x": 250, "y": 150 }, "color": "#dc2626" },
+        { "id": "RAx", "name": "RAx", "angle": 0, "applicationPoint": { "x": 100, "y": 150 }, "color": "#2563eb", "isUnknown": true },
+        { "id": "RAy", "name": "RAy", "angle": 90, "applicationPoint": { "x": 100, "y": 150 }, "color": "#2563eb", "isUnknown": true },
+        { "id": "RBy", "name": "RBy", "angle": 90, "applicationPoint": { "x": 400, "y": 150 }, "color": "#2563eb", "isUnknown": true }
+      ],
+      "correctSupports": [
+        { "id": "supA", "type": "pin", "position": { "x": 100, "y": 150 }, "reactions": ["RAx", "RAy"] },
+        { "id": "supB", "type": "roller", "position": { "x": 400, "y": 150 }, "reactions": ["RBy"] }
+      ]
+    },
+    "answer": {
+      "variable": "RAy",
+      "value": 500,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La rotule en A bloque deux translations: RAx et RAy",
+      "Le rouleau en B ne bloque qu'une translation verticale: RBy",
+      "La charge P agit vers le bas au centre"
+    ],
+    "commonMistakes": [],
+    "explanation": "Le DCL montre: la charge P vers le bas au centre, les réactions RAx (horizontal) et RAy (vertical) à la rotule A, et la réaction RBy (vertical) au rouleau B."
+  },
+  {
+    "id": "m3-q3-equilibre-complet",
+    "module": 3,
+    "tags": ["sum-forces", "sum-moments", "equilibrium-2d"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Équilibre d'une poutre - Réactions d'appui",
+    "statement": "Une poutre AB de {L} m est supportée par une rotule en A et un rouleau en B. Une charge P = {P} N est appliquée à {d} m du point A. Calculez la réaction verticale RAy en A.",
+    "givens": {
+      "L": 6,
+      "P": 900,
+      "d": 2
+    },
+    "unknowns": ["RAy", "RBy"],
+    "equations": {
+      "required": ["ΣFy=0", "ΣMB=0"],
+      "forms": []
+    },
+    "answer": {
+      "variable": "RAy",
+      "value": 600,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Utilisez ΣMB = 0 pour éliminer RBy de l'équation",
+      "Le moment de P autour de B est P × (L - d)",
+      "Le moment de RAy autour de B est RAy × L"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "300",
+        "patternType": "value",
+        "message": "Vous avez inversé les distances",
+        "hint": "Vérifiez: d est la distance de A à la charge, (L-d) est la distance de la charge à B",
+        "category": "calculation"
+      },
+      {
+        "pattern": "450",
+        "patternType": "value",
+        "message": "Vous avez divisé P par 2",
+        "hint": "La charge n'est pas au centre, utilisez les moments",
+        "category": "concept"
+      }
+    ],
+    "explanation": "ΣMB = 0: RAy × 6 - P × (6-2) = 0. RAy × 6 = 900 × 4 = 3600. RAy = 600 N. Vérification: ΣFy = 0: 600 + RBy - 900 = 0, donc RBy = 300 N.",
+    "parameters": {
+      "L": { "min": 4, "max": 8, "step": 1, "unit": "m" },
+      "P": { "min": 500, "max": 1500, "step": 100, "unit": "N" },
+      "d": { "min": 1, "max": 3, "step": 1, "unit": "m" }
+    },
+    "answerFormula": "P * (L - d) / L"
+  },
+  {
+    "id": "m3-q4-couple-forces",
+    "module": 3,
+    "tags": ["couple", "moment"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Couple de forces",
+    "statement": "Deux forces parallèles de magnitude F = {F} N, de sens opposés, sont séparées d'une distance d = {d} m. Calculez le moment du couple résultant.",
+    "givens": {
+      "F": 40,
+      "d": 0.5
+    },
+    "unknowns": ["C"],
+    "answer": {
+      "variable": "C",
+      "value": 20,
+      "unit": "N·m",
+      "tolerance": 1,
+      "toleranceType": "absolute"
+    },
+    "hints": [
+      "Un couple est formé de deux forces égales et opposées",
+      "Le moment d'un couple C = F × d",
+      "Le couple est indépendant du point de référence"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "80",
+        "patternType": "value",
+        "message": "Vous avez additionné les forces au lieu de multiplier par la distance",
+        "hint": "C = F × d, pas 2F",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Le moment d'un couple est C = F × d = 40 N × 0.5 m = 20 N·m. Propriété importante: ce moment est le même quel que soit le point de référence choisi.",
+    "parameters": {
+      "F": { "min": 20, "max": 80, "step": 10, "unit": "N" },
+      "d": { "min": 0.25, "max": 1, "step": 0.25, "unit": "m" }
+    },
+    "answerFormula": "F * d"
+  },
+  {
+    "id": "m3-q5-bras-levier",
+    "module": 3,
+    "tags": ["lever-arm", "moment"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Bras de levier effectif",
+    "statement": "Une force F = {F} N est appliquée à l'extrémité d'un bras de longueur L = {L} m, mais la force fait un angle de {angle}° avec le bras. Calculez le moment de cette force par rapport au pivot.",
+    "givens": {
+      "F": 100,
+      "L": 2,
+      "angle": 60
+    },
+    "unknowns": ["M"],
+    "answer": {
+      "variable": "M",
+      "value": 173.2,
+      "unit": "N·m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le bras de levier effectif est d = L × sin(angle)",
+      "Ou utilisez M = F × L × sin(angle)",
+      "L'angle est mesuré entre la force et le bras"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "200",
+        "patternType": "value",
+        "message": "Vous n'avez pas tenu compte de l'angle",
+        "hint": "La force n'est pas perpendiculaire, utilisez sin(angle)",
+        "category": "concept"
+      },
+      {
+        "pattern": "100",
+        "patternType": "value",
+        "message": "Vous avez utilisé cos au lieu de sin",
+        "hint": "Le bras de levier effectif utilise sin, pas cos",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Le moment M = F × L × sin(θ) = 100 × 2 × sin(60°) = 100 × 2 × 0.866 = 173.2 N·m. On peut aussi visualiser cela comme M = F × d, où d = L × sin(60°) est le bras de levier perpendiculaire.",
+    "parameters": {
+      "F": { "min": 50, "max": 150, "step": 25, "unit": "N" },
+      "L": { "min": 1, "max": 3, "step": 0.5, "unit": "m" },
+      "angle": { "min": 30, "max": 90, "step": 15, "unit": "°" }
+    },
+    "answerFormula": "F * L * sin(rad(angle))"
+  }
+]
