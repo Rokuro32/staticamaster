@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import type { InstantiatedQuestion, ModuleId } from '@/types/question';
+import type { CourseId } from '@/types/course';
 import type { UserAnswer, ValidationResult } from '@/types/validation';
 import { QuestionCard } from './QuestionCard';
 import { QuizResults } from './QuizResults';
@@ -15,9 +16,10 @@ interface QuizContainerProps {
   questions: InstantiatedQuestion[];
   moduleId: ModuleId;
   moduleName: string;
+  courseId?: CourseId;
 }
 
-export function QuizContainer({ questions, moduleId, moduleName }: QuizContainerProps) {
+export function QuizContainer({ questions, moduleId, moduleName, courseId = 'statics' }: QuizContainerProps) {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Map<string, UserAnswer>>(new Map());
@@ -68,7 +70,7 @@ export function QuizContainer({ questions, moduleId, moduleName }: QuizContainer
         moduleName={moduleName}
         totalTime={Math.floor((Date.now() - startTime) / 1000)}
         onRestart={handleRestart}
-        onBackToModules={() => router.push('/modules')}
+        onBackToModules={() => router.push(`/course/${courseId}/modules`)}
       />
     );
   }
@@ -84,7 +86,7 @@ export function QuizContainer({ questions, moduleId, moduleName }: QuizContainer
           </div>
           <Button
             variant="ghost"
-            onClick={() => router.push('/modules')}
+            onClick={() => router.push(`/course/${courseId}/modules`)}
           >
             Quitter
           </Button>

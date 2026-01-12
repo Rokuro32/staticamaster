@@ -1,6 +1,8 @@
 // Types pour les questions et le contenu pédagogique
 
-export type ModuleId = 1 | 2 | 3 | 4 | 5;
+import type { CourseId } from './course';
+
+export type ModuleId = number; // Flexible pour supporter différents cours
 
 export type Difficulty = 'beginner' | 'intermediate' | 'advanced';
 
@@ -186,8 +188,9 @@ export interface ParameterDef {
 // Question principale
 export interface Question {
   id: string;
+  courseId?: CourseId; // Optionnel pour rétrocompatibilité, défaut: 'statics'
   module: ModuleId;
-  tags: CompetencyTag[];
+  tags: (CompetencyTag | string)[];  // Flexible pour nouveaux cours
   difficulty: Difficulty;
   type: QuestionType;
   active: boolean;
@@ -230,6 +233,7 @@ export interface Question {
 
 // Question avec paramètres instanciés
 export interface InstantiatedQuestion extends Omit<Question, 'parameters' | 'answerFormula'> {
+  courseId: CourseId; // Toujours présent dans les questions instanciées
   seed: number;
   instantiatedGivens: Record<string, number | string>;
   instantiatedAnswer: Answer | Answer[];

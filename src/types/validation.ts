@@ -63,7 +63,7 @@ export interface ValidationResult {
   numericValidation?: NumericValidation;
 
   // Pour le suivi
-  competenciesAssessed: CompetencyTag[];
+  competenciesAssessed: (CompetencyTag | string)[];
   timeSpent?: number;
 }
 

@@ -4,6 +4,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { User, Session } from '@/types/progress';
 import type { InstantiatedQuestion, ModuleId } from '@/types/question';
+import type { CourseId } from '@/types/course';
 import type { UserAnswer, ValidationResult } from '@/types/validation';
 
 interface QuizState {
@@ -52,8 +53,13 @@ interface AppState {
   ) => void;
 
   // Navigation
+  selectedCourse: CourseId | null;
+  setSelectedCourse: (courseId: CourseId | null) => void;
   selectedModule: ModuleId | null;
   setSelectedModule: (moduleId: ModuleId | null) => void;
+
+  // Reset course context
+  resetCourseContext: () => void;
 }
 
 export const useAppStore = create<AppState>()(
@@ -176,14 +182,26 @@ export const useAppStore = create<AppState>()(
         })),
 
       // Navigation
+      selectedCourse: null,
+      setSelectedCourse: (courseId) => set({ selectedCourse: courseId, selectedModule: null }),
       selectedModule: null,
       setSelectedModule: (moduleId) => set({ selectedModule: moduleId }),
+
+      // Reset course context (pour changer de cours)
+      resetCourseContext: () => set({
+        selectedCourse: null,
+        selectedModule: null,
+        quiz: null,
+        currentProblem: null,
+        currentSession: null,
+      }),
     }),
     {
-      name: 'staticamaster-storage',
+      name: 'physicsmaster-storage',
       partialize: (state) => ({
         user: state.user,
         preferences: state.preferences,
+        selectedCourse: state.selectedCourse,
       }),
     }
   )
@@ -205,3 +223,8 @@ export const useQuizProgress = () =>
       answered: state.quiz.answers.size,
     };
   });
+
+// Sélecteur pour le cours
+export const useCourse = () => useAppStore((state) => state.selectedCourse);
+export const useSetCourse = () => useAppStore((state) => state.setSelectedCourse);
+export const useResetCourseContext = () => useAppStore((state) => state.resetCourseContext);

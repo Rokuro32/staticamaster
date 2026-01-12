@@ -1,6 +1,7 @@
 // Générateur de variantes de questions
 
 import type { Question, InstantiatedQuestion, Answer, ModuleId } from '@/types/question';
+import type { CourseId } from '@/types/course';
 import { seededRandom, randomInRange, roundTo, createSeed } from './utils';
 import { getQuestionsByModule } from './questions';
 
@@ -18,6 +19,7 @@ export function generateVariant(
   if (!question.parameters || Object.keys(question.parameters).length === 0) {
     return {
       ...question,
+      courseId: question.courseId || 'statics' as CourseId,
       seed: actualSeed,
       instantiatedGivens: { ...question.givens },
       instantiatedAnswer: question.answer,
@@ -62,6 +64,7 @@ export function generateVariant(
 
   return {
     ...question,
+    courseId: question.courseId || 'statics' as CourseId,
     statement: updatedStatement,
     seed: actualSeed,
     instantiatedGivens,

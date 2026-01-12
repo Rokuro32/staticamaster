@@ -1,4 +1,4 @@
-// Chargement et gestion des questions
+// Chargement et gestion des questions avec support multi-cours
 
 import fs from 'fs';
 import path from 'path';
@@ -6,83 +6,141 @@ import type {
   Question,
   InstantiatedQuestion,
   ModuleId,
-  CompetencyTag,
   Difficulty,
   Answer,
 } from '@/types/question';
+import type { CourseId } from '@/types/course';
 import { seededRandom, randomInRange, roundTo, createSeed } from './utils';
 
-// Cache des questions
-let questionsCache: Question[] | null = null;
+// Cache des questions par cours
+const questionsCache: Map<CourseId | 'all', Question[]> = new Map();
 
 /**
- * Charge toutes les questions depuis les fichiers JSON
+ * Charge toutes les questions d'un cours depuis les fichiers JSON
  */
-export function loadAllQuestions(): Question[] {
-  if (questionsCache) {
-    return questionsCache;
+export function loadQuestionsByCourse(courseId: CourseId): Question[] {
+  if (questionsCache.has(courseId)) {
+    return questionsCache.get(courseId)!;
   }
 
-  const questionsDir = path.join(process.cwd(), 'data', 'questions');
+  const courseDir = path.join(process.cwd(), 'data', 'questions', courseId);
   const questions: Question[] = [];
 
-  if (!fs.existsSync(questionsDir)) {
-    console.warn('Le répertoire des questions n\'existe pas:', questionsDir);
+  if (!fs.existsSync(courseDir)) {
+    console.warn(`Le répertoire des questions pour ${courseId} n'existe pas:`, courseDir);
     return [];
   }
 
-  const files = fs.readdirSync(questionsDir).filter(f => f.endsWith('.json'));
+  const files = fs.readdirSync(courseDir).filter(f => f.endsWith('.json'));
 
   for (const file of files) {
     try {
-      const filePath = path.join(questionsDir, file);
+      const filePath = path.join(courseDir, file);
       const content = fs.readFileSync(filePath, 'utf-8');
       const data = JSON.parse(content);
 
       if (Array.isArray(data)) {
-        questions.push(...data);
+        // Ajouter courseId à chaque question
+        const questionsWithCourse = data.map(q => ({
+          ...q,
+          courseId: q.courseId || courseId,
+        }));
+        questions.push(...questionsWithCourse);
       } else if (data.questions && Array.isArray(data.questions)) {
-        questions.push(...data.questions);
+        const questionsWithCourse = data.questions.map((q: Question) => ({
+          ...q,
+          courseId: q.courseId || courseId,
+        }));
+        questions.push(...questionsWithCourse);
       }
     } catch (error) {
       console.error(`Erreur lors du chargement de ${file}:`, error);
     }
   }
 
-  questionsCache = questions;
+  questionsCache.set(courseId, questions);
   return questions;
+}
+
+/**
+ * Charge toutes les questions de tous les cours
+ */
+export function loadAllQuestions(): Question[] {
+  if (questionsCache.has('all')) {
+    return questionsCache.get('all')!;
+  }
+
+  const questionsDir = path.join(process.cwd(), 'data', 'questions');
+  const allQuestions: Question[] = [];
+
+  if (!fs.existsSync(questionsDir)) {
+    console.warn('Le répertoire des questions n\'existe pas:', questionsDir);
+    return [];
+  }
+
+  // Parcourir les sous-dossiers de cours
+  const courseDirs = fs.readdirSync(questionsDir, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name as CourseId);
+
+  for (const courseId of courseDirs) {
+    const courseQuestions = loadQuestionsByCourse(courseId);
+    allQuestions.push(...courseQuestions);
+  }
+
+  questionsCache.set('all', allQuestions);
+  return allQuestions;
 }
 
 /**
  * Recharge les questions (vide le cache)
  */
 export function reloadQuestions(): Question[] {
-  questionsCache = null;
+  questionsCache.clear();
   return loadAllQuestions();
 }
 
 /**
- * Récupère les questions par module
+ * Récupère les questions par module et cours
  */
-export function getQuestionsByModule(moduleId: ModuleId): Question[] {
-  const questions = loadAllQuestions();
-  return questions.filter(q => q.module === moduleId && q.active !== false);
+export function getQuestionsByModule(moduleId: ModuleId, courseId?: CourseId): Question[] {
+  const questions = courseId
+    ? loadQuestionsByCourse(courseId)
+    : loadAllQuestions();
+
+  return questions.filter(q =>
+    q.module === moduleId &&
+    q.active !== false &&
+    (courseId ? q.courseId === courseId : true)
+  );
 }
 
 /**
  * Récupère les questions par tag de compétence
  */
-export function getQuestionsByCompetency(tag: CompetencyTag): Question[] {
-  const questions = loadAllQuestions();
-  return questions.filter(q => q.tags.includes(tag) && q.active !== false);
+export function getQuestionsByCompetency(tag: string, courseId?: CourseId): Question[] {
+  const questions = courseId
+    ? loadQuestionsByCourse(courseId)
+    : loadAllQuestions();
+
+  return questions.filter(q =>
+    q.tags.includes(tag as any) &&
+    q.active !== false
+  );
 }
 
 /**
  * Récupère les questions par difficulté
  */
-export function getQuestionsByDifficulty(difficulty: Difficulty): Question[] {
-  const questions = loadAllQuestions();
-  return questions.filter(q => q.difficulty === difficulty && q.active !== false);
+export function getQuestionsByDifficulty(difficulty: Difficulty, courseId?: CourseId): Question[] {
+  const questions = courseId
+    ? loadQuestionsByCourse(courseId)
+    : loadAllQuestions();
+
+  return questions.filter(q =>
+    q.difficulty === difficulty &&
+    q.active !== false
+  );
 }
 
 /**
@@ -107,6 +165,7 @@ export function instantiateQuestion(
   if (!question.parameters || Object.keys(question.parameters).length === 0) {
     return {
       ...question,
+      courseId: question.courseId || 'statics',
       seed: actualSeed,
       instantiatedGivens: question.givens,
       instantiatedAnswer: question.answer,
@@ -134,6 +193,7 @@ export function instantiateQuestion(
 
   return {
     ...question,
+    courseId: question.courseId || 'statics',
     seed: actualSeed,
     instantiatedGivens,
     instantiatedAnswer,
@@ -230,14 +290,15 @@ function evaluateFormula(
 }
 
 /**
- * Génère un quiz avec un nombre défini de questions
+ * Génère un quiz avec un nombre défini de questions pour un cours et module
  */
 export function generateQuiz(
   moduleId: ModuleId,
   count: number = 5,
-  seed?: number
+  seed?: number,
+  courseId?: CourseId
 ): InstantiatedQuestion[] {
-  const questions = getQuestionsByModule(moduleId);
+  const questions = getQuestionsByModule(moduleId, courseId);
 
   if (questions.length === 0) {
     return [];
@@ -262,9 +323,10 @@ export function generateQuiz(
 export function generateBalancedQuiz(
   moduleId: ModuleId,
   counts: { beginner: number; intermediate: number; advanced: number },
-  seed?: number
+  seed?: number,
+  courseId?: CourseId
 ): InstantiatedQuestion[] {
-  const questions = getQuestionsByModule(moduleId);
+  const questions = getQuestionsByModule(moduleId, courseId);
   const actualSeed = seed ?? Date.now();
   const random = seededRandom(actualSeed);
 
@@ -293,10 +355,11 @@ export function generateBalancedQuiz(
 /**
  * Sauvegarde une question dans un fichier JSON
  */
-export function saveQuestion(question: Question, moduleId?: ModuleId): void {
-  const targetModule = moduleId ?? question.module;
+export function saveQuestion(question: Question, courseId?: CourseId): void {
+  const targetCourse = courseId ?? question.courseId ?? 'statics';
+  const targetModule = question.module;
   const fileName = `module${targetModule}-questions.json`;
-  const filePath = path.join(process.cwd(), 'data', 'questions', fileName);
+  const filePath = path.join(process.cwd(), 'data', 'questions', targetCourse, fileName);
 
   let questions: Question[] = [];
 
@@ -318,7 +381,7 @@ export function saveQuestion(question: Question, moduleId?: ModuleId): void {
   fs.writeFileSync(filePath, JSON.stringify(questions, null, 2), 'utf-8');
 
   // Invalider le cache
-  questionsCache = null;
+  questionsCache.clear();
 }
 
 /**
@@ -326,21 +389,30 @@ export function saveQuestion(question: Question, moduleId?: ModuleId): void {
  */
 export function deleteQuestion(questionId: string): boolean {
   const questionsDir = path.join(process.cwd(), 'data', 'questions');
-  const files = fs.readdirSync(questionsDir).filter(f => f.endsWith('.json'));
 
-  for (const file of files) {
-    const filePath = path.join(questionsDir, file);
-    const content = fs.readFileSync(filePath, 'utf-8');
-    const data = JSON.parse(content);
-    let questions: Question[] = Array.isArray(data) ? data : data.questions || [];
+  // Parcourir tous les cours
+  const courseDirs = fs.readdirSync(questionsDir, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name);
 
-    const initialLength = questions.length;
-    questions = questions.filter(q => q.id !== questionId);
+  for (const courseDir of courseDirs) {
+    const courseFullPath = path.join(questionsDir, courseDir);
+    const files = fs.readdirSync(courseFullPath).filter(f => f.endsWith('.json'));
 
-    if (questions.length < initialLength) {
-      fs.writeFileSync(filePath, JSON.stringify(questions, null, 2), 'utf-8');
-      questionsCache = null;
-      return true;
+    for (const file of files) {
+      const filePath = path.join(courseFullPath, file);
+      const content = fs.readFileSync(filePath, 'utf-8');
+      const data = JSON.parse(content);
+      let questions: Question[] = Array.isArray(data) ? data : data.questions || [];
+
+      const initialLength = questions.length;
+      questions = questions.filter(q => q.id !== questionId);
+
+      if (questions.length < initialLength) {
+        fs.writeFileSync(filePath, JSON.stringify(questions, null, 2), 'utf-8');
+        questionsCache.clear();
+        return true;
+      }
     }
   }
 
@@ -357,4 +429,38 @@ export function toggleQuestionActive(questionId: string): boolean {
   question.active = !question.active;
   saveQuestion(question);
   return true;
+}
+
+/**
+ * Obtient les statistiques des questions par cours
+ */
+export function getQuestionStats(courseId?: CourseId): {
+  total: number;
+  byModule: Record<number, number>;
+  byDifficulty: Record<string, number>;
+  byType: Record<string, number>;
+} {
+  const questions = courseId
+    ? loadQuestionsByCourse(courseId)
+    : loadAllQuestions();
+
+  const stats = {
+    total: questions.length,
+    byModule: {} as Record<number, number>,
+    byDifficulty: {} as Record<string, number>,
+    byType: {} as Record<string, number>,
+  };
+
+  for (const q of questions) {
+    // Par module
+    stats.byModule[q.module] = (stats.byModule[q.module] || 0) + 1;
+
+    // Par difficulté
+    stats.byDifficulty[q.difficulty] = (stats.byDifficulty[q.difficulty] || 0) + 1;
+
+    // Par type
+    stats.byType[q.type] = (stats.byType[q.type] || 0) + 1;
+  }
+
+  return stats;
 }
