@@ -1,0 +1,262 @@
+[
+  {
+    "id": "wm-m2-q1-frequence-longueur",
+    "module": 2,
+    "tags": ["em-spectrum"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Frequence d'une onde EM",
+    "statement": "Une onde electromagnetique a une longueur d'onde de {lambda} nm. Calculez sa frequence en Hz. (c = 3×10⁸ m/s)",
+    "givens": {
+      "lambda": 600,
+      "c": 300000000
+    },
+    "unknowns": ["f"],
+    "answer": {
+      "variable": "f",
+      "value": 5e14,
+      "unit": "Hz",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Utilisez la relation c = fλ",
+      "f = c/λ",
+      "Attention: convertissez nm en m (1 nm = 10⁻⁹ m)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "5e5",
+        "patternType": "value",
+        "message": "Vous n'avez pas converti nm en m",
+        "hint": "λ = 600 nm = 600 × 10⁻⁹ m",
+        "category": "unit"
+      }
+    ],
+    "explanation": "f = c/λ = (3×10⁸)/(600×10⁻⁹) = 5×10¹⁴ Hz.",
+    "parameters": {
+      "lambda": { "min": 400, "max": 700, "step": 50, "unit": "nm" }
+    },
+    "answerFormula": "c / (lambda * 1e-9)"
+  },
+  {
+    "id": "wm-m2-q2-loi-malus",
+    "module": 2,
+    "tags": ["polarization", "malus"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Loi de Malus",
+    "statement": "Un faisceau de lumiere polarisee d'intensite {I0} W/m² traverse un polariseur dont l'axe fait un angle de {theta}° avec la direction de polarisation. Calculez l'intensite transmise.",
+    "givens": {
+      "I0": 100,
+      "theta": 60
+    },
+    "unknowns": ["I"],
+    "answer": {
+      "variable": "I",
+      "value": 25,
+      "unit": "W/m²",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La loi de Malus est I = I0 × cos²(θ)",
+      "cos(60°) = 0.5",
+      "I = I0 × cos²(θ)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "50",
+        "patternType": "value",
+        "message": "Vous avez oublie de mettre le cosinus au carre",
+        "hint": "I = I0 × cos²(θ), pas I0 × cos(θ)",
+        "category": "formula"
+      },
+      {
+        "pattern": "86.6",
+        "patternType": "value",
+        "message": "Vous avez utilise sin au lieu de cos",
+        "hint": "La loi de Malus utilise cos, pas sin",
+        "category": "formula"
+      }
+    ],
+    "explanation": "I = I0 × cos²(60°) = 100 × (0.5)² = 100 × 0.25 = 25 W/m².",
+    "parameters": {
+      "I0": { "min": 50, "max": 200, "step": 25, "unit": "W/m²" },
+      "theta": { "min": 30, "max": 60, "step": 15, "unit": "°" }
+    },
+    "answerFormula": "I0 * cos(rad(theta)) * cos(rad(theta))"
+  },
+  {
+    "id": "wm-m2-q3-refraction-snell",
+    "module": 2,
+    "tags": ["refraction"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Loi de Snell-Descartes",
+    "statement": "Un rayon lumineux passe de l'air (n₁ = 1) dans le verre (n₂ = {n2}). Si l'angle d'incidence est de {theta1}°, calculez l'angle de refraction.",
+    "givens": {
+      "n1": 1,
+      "n2": 1.5,
+      "theta1": 45
+    },
+    "unknowns": ["theta2"],
+    "answer": {
+      "variable": "θ2",
+      "value": 28.13,
+      "unit": "°",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Loi de Snell: n1×sin(θ1) = n2×sin(θ2)",
+      "sin(θ2) = n1×sin(θ1)/n2",
+      "θ2 = arcsin(n1×sin(θ1)/n2)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "67.5",
+        "patternType": "value",
+        "message": "Vous avez inverse le rapport",
+        "hint": "sin(θ2) = n1×sin(θ1)/n2, pas n2×sin(θ1)/n1",
+        "category": "formula"
+      }
+    ],
+    "explanation": "sin(θ2) = (1 × sin(45°))/1.5 = 0.707/1.5 = 0.471. Donc θ2 = arcsin(0.471) = 28.13°.",
+    "parameters": {
+      "n2": { "min": 1.3, "max": 1.7, "step": 0.1, "unit": "" },
+      "theta1": { "min": 30, "max": 60, "step": 15, "unit": "°" }
+    },
+    "answerFormula": "deg(asin(n1 * sin(rad(theta1)) / n2))"
+  },
+  {
+    "id": "wm-m2-q4-angle-critique",
+    "module": 2,
+    "tags": ["refraction"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Angle critique",
+    "statement": "Un rayon lumineux passe du verre (n = {n1}) vers l'air (n = 1). Calculez l'angle critique au-dela duquel il y a reflexion totale interne.",
+    "givens": {
+      "n1": 1.5,
+      "n2": 1
+    },
+    "unknowns": ["thetac"],
+    "answer": {
+      "variable": "θc",
+      "value": 41.81,
+      "unit": "°",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'angle critique est atteint quand θ2 = 90°",
+      "sin(θc) = n2/n1",
+      "θc = arcsin(n2/n1)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "56.44",
+        "patternType": "value",
+        "message": "Vous avez inverse le rapport",
+        "hint": "sin(θc) = n2/n1 = 1/1.5, pas n1/n2",
+        "category": "formula"
+      }
+    ],
+    "explanation": "sin(θc) = n2/n1 = 1/1.5 = 0.667. Donc θc = arcsin(0.667) = 41.81°.",
+    "parameters": {
+      "n1": { "min": 1.3, "max": 2.0, "step": 0.1, "unit": "" }
+    },
+    "answerFormula": "deg(asin(n2 / n1))"
+  },
+  {
+    "id": "wm-m2-q5-young-interference",
+    "module": 2,
+    "tags": ["young"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Fentes de Young",
+    "statement": "Dans une experience de fentes de Young, la distance entre les fentes est d = {d} mm, la distance a l'ecran est D = {D} m, et la longueur d'onde est λ = {lambda} nm. Calculez la distance entre deux franges brillantes consecutives.",
+    "givens": {
+      "d": 0.5,
+      "D": 2,
+      "lambda": 500
+    },
+    "unknowns": ["delta_y"],
+    "answer": {
+      "variable": "Δy",
+      "value": 2,
+      "unit": "mm",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'interfrange est Δy = λD/d",
+      "Attention aux unites: tout doit etre coherent",
+      "Convertissez d en m et λ en m"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "2000",
+        "patternType": "value",
+        "message": "Vous n'avez pas converti les unites correctement",
+        "hint": "Verifiez les conversions: d en m, λ en m, resultat en mm",
+        "category": "unit"
+      }
+    ],
+    "explanation": "Δy = λD/d = (500×10⁻⁹ × 2)/(0.5×10⁻³) = 10⁻⁶/5×10⁻⁴ = 2×10⁻³ m = 2 mm.",
+    "parameters": {
+      "d": { "min": 0.2, "max": 1.0, "step": 0.1, "unit": "mm" },
+      "D": { "min": 1, "max": 4, "step": 0.5, "unit": "m" },
+      "lambda": { "min": 400, "max": 700, "step": 50, "unit": "nm" }
+    },
+    "answerFormula": "(lambda * 1e-9 * D) / (d * 1e-3) * 1000"
+  },
+  {
+    "id": "wm-m2-q6-reseau-diffraction",
+    "module": 2,
+    "tags": ["gratings", "diffraction"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Reseau de diffraction",
+    "statement": "Un reseau de diffraction a {N} traits/mm. Un faisceau de lumiere de longueur d'onde λ = {lambda} nm l'eclaire perpendiculairement. Calculez l'angle du maximum de premier ordre.",
+    "givens": {
+      "N": 500,
+      "lambda": 600
+    },
+    "unknowns": ["theta"],
+    "answer": {
+      "variable": "θ",
+      "value": 17.46,
+      "unit": "°",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La condition de maximum est d×sin(θ) = mλ",
+      "Le pas du reseau est d = 1/N",
+      "sin(θ) = mλ/d = mλN"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.3",
+        "patternType": "value",
+        "message": "Vous avez donne sin(θ) au lieu de θ",
+        "hint": "N'oubliez pas de prendre l'arcsin",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "d = 1/500 mm = 2×10⁻⁶ m. sin(θ) = λ/d = (600×10⁻⁹)/(2×10⁻⁶) = 0.3. θ = arcsin(0.3) = 17.46°.",
+    "parameters": {
+      "N": { "min": 300, "max": 800, "step": 100, "unit": "traits/mm" },
+      "lambda": { "min": 400, "max": 700, "step": 50, "unit": "nm" }
+    },
+    "answerFormula": "deg(asin(lambda * 1e-9 * N * 1e3))"
+  }
+]

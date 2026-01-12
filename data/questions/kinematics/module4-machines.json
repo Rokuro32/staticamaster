@@ -1,0 +1,258 @@
+[
+  {
+    "id": "kin-m4-q1-vitesse-coupe",
+    "module": 4,
+    "tags": ["cutting-speed"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Vitesse de coupe",
+    "statement": "Une piece cylindrique de diametre {d} mm tourne a {n} tr/min sur un tour. Calculez la vitesse de coupe en m/min.",
+    "givens": {
+      "d": 80,
+      "n": 500
+    },
+    "unknowns": ["Vc"],
+    "answer": {
+      "variable": "Vc",
+      "value": 125.66,
+      "unit": "m/min",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La vitesse de coupe est la vitesse tangentielle: Vc = πdn",
+      "Attention aux unites: convertissez le diametre en metres",
+      "Vc = π × d(m) × n"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "125663",
+        "patternType": "value",
+        "message": "Vous n'avez pas converti le diametre en metres",
+        "hint": "d doit etre en metres: 80 mm = 0.08 m",
+        "category": "unit"
+      }
+    ],
+    "explanation": "Vc = πdn = π × 0.08 × 500 = 125.66 m/min.",
+    "parameters": {
+      "d": { "min": 40, "max": 150, "step": 10, "unit": "mm" },
+      "n": { "min": 300, "max": 800, "step": 100, "unit": "tr/min" }
+    },
+    "answerFormula": "3.14159 * d / 1000 * n"
+  },
+  {
+    "id": "kin-m4-q2-vitesse-rotation",
+    "module": 4,
+    "tags": ["cutting-speed"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Calcul de la vitesse de rotation",
+    "statement": "Pour usiner une piece de diametre {d} mm avec une vitesse de coupe recommandee de {Vc} m/min, quelle vitesse de rotation doit-on regler sur le tour?",
+    "givens": {
+      "d": 50,
+      "Vc": 100
+    },
+    "unknowns": ["n"],
+    "answer": {
+      "variable": "n",
+      "value": 636.62,
+      "unit": "tr/min",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Isolez n de la formule Vc = πdn",
+      "n = Vc / (πd)",
+      "N'oubliez pas de convertir d en metres"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.64",
+        "patternType": "value",
+        "message": "Vous n'avez pas converti le diametre en metres",
+        "hint": "d doit etre en metres: 50 mm = 0.05 m",
+        "category": "unit"
+      }
+    ],
+    "explanation": "n = Vc/(πd) = 100/(π × 0.05) = 100/0.157 = 636.62 tr/min.",
+    "parameters": {
+      "d": { "min": 30, "max": 100, "step": 10, "unit": "mm" },
+      "Vc": { "min": 60, "max": 150, "step": 10, "unit": "m/min" }
+    },
+    "answerFormula": "Vc / (3.14159 * d / 1000)"
+  },
+  {
+    "id": "kin-m4-q3-avance-par-tour",
+    "module": 4,
+    "tags": ["feed-rate"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Avance par tour",
+    "statement": "Lors d'un usinage, l'outil avance de {L} mm en {n} tours de la piece. Calculez l'avance par tour.",
+    "givens": {
+      "L": 12,
+      "n": 8
+    },
+    "unknowns": ["f"],
+    "answer": {
+      "variable": "f",
+      "value": 1.5,
+      "unit": "mm/tr",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'avance par tour est le deplacement axial pour un tour complet",
+      "f = L / n",
+      "L'unite est mm/tr"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "96",
+        "patternType": "value",
+        "message": "Vous avez multiplie au lieu de diviser",
+        "hint": "f = L/n, pas L × n",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "L'avance par tour est f = L/n = 12/8 = 1.5 mm/tr.",
+    "parameters": {
+      "L": { "min": 6, "max": 20, "step": 2, "unit": "mm" },
+      "n": { "min": 4, "max": 16, "step": 2, "unit": "tours" }
+    },
+    "answerFormula": "L / n"
+  },
+  {
+    "id": "kin-m4-q4-vitesse-avance",
+    "module": 4,
+    "tags": ["feed-rate"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Vitesse d'avance",
+    "statement": "Un tour tourne a {n} tr/min avec une avance de {f} mm/tr. Calculez la vitesse d'avance en mm/min.",
+    "givens": {
+      "n": 400,
+      "f": 0.2
+    },
+    "unknowns": ["Vf"],
+    "answer": {
+      "variable": "Vf",
+      "value": 80,
+      "unit": "mm/min",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La vitesse d'avance est Vf = f × n",
+      "C'est le produit de l'avance par tour et de la vitesse de rotation",
+      "Vf = f × n"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "2000",
+        "patternType": "value",
+        "message": "Vous avez inverse le calcul",
+        "hint": "Vf = f × n = 0.2 × 400, pas n/f",
+        "category": "formula"
+      }
+    ],
+    "explanation": "La vitesse d'avance est Vf = f × n = 0.2 × 400 = 80 mm/min.",
+    "parameters": {
+      "n": { "min": 200, "max": 800, "step": 100, "unit": "tr/min" },
+      "f": { "min": 0.1, "max": 0.5, "step": 0.05, "unit": "mm/tr" }
+    },
+    "answerFormula": "f * n"
+  },
+  {
+    "id": "kin-m4-q5-train-planetaire",
+    "module": 4,
+    "tags": ["planetary-gear"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Train planetaire - Rapport de transmission",
+    "statement": "Un train planetaire a une couronne de {Zc} dents et un soleil de {Zs} dents. Si le soleil tourne a {ns} tr/min et la couronne est fixe, calculez la vitesse du porte-satellites.",
+    "givens": {
+      "Zc": 80,
+      "Zs": 20,
+      "ns": 1000
+    },
+    "unknowns": ["nps"],
+    "answer": {
+      "variable": "nps",
+      "value": 200,
+      "unit": "tr/min",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Pour un train planetaire avec couronne fixe: nps/ns = Zs/(Zs + Zc)",
+      "Le rapport depend du nombre de dents",
+      "nps = ns × Zs/(Zs + Zc)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "250",
+        "patternType": "value",
+        "message": "Vous avez utilise seulement Zs/Zc",
+        "hint": "Le rapport correct est Zs/(Zs + Zc)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "nps = ns × Zs/(Zs + Zc) = 1000 × 20/(20 + 80) = 1000 × 20/100 = 200 tr/min.",
+    "parameters": {
+      "Zc": { "min": 60, "max": 100, "step": 10, "unit": "dents" },
+      "Zs": { "min": 15, "max": 30, "step": 5, "unit": "dents" },
+      "ns": { "min": 800, "max": 1500, "step": 100, "unit": "tr/min" }
+    },
+    "answerFormula": "ns * Zs / (Zs + Zc)"
+  },
+  {
+    "id": "kin-m4-q6-indexage",
+    "module": 4,
+    "tags": ["indexing"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Indexage - Division simple",
+    "statement": "Un diviseur a un rapport de {R}:1 et un plateau a {T} trous. Pour usiner une piece a {n} divisions, combien de tours complets et de trous doit-on avancer?",
+    "givens": {
+      "R": 40,
+      "T": 18,
+      "n": 6
+    },
+    "unknowns": ["tours"],
+    "answer": {
+      "variable": "tours",
+      "value": 6.67,
+      "unit": "tours de manivelle",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Nombre de tours de manivelle = R / n",
+      "R est le rapport du diviseur",
+      "n est le nombre de divisions souhaite"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.15",
+        "patternType": "value",
+        "message": "Vous avez inverse le rapport",
+        "hint": "Tours = R/n, pas n/R",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Nombre de tours de manivelle = R/n = 40/6 = 6.67 tours (soit 6 tours + 12 trous sur le plateau de 18 trous).",
+    "parameters": {
+      "R": { "min": 40, "max": 60, "step": 10, "unit": "" },
+      "T": { "min": 15, "max": 24, "step": 3, "unit": "trous" },
+      "n": { "min": 4, "max": 12, "step": 2, "unit": "divisions" }
+    },
+    "answerFormula": "R / n"
+  }
+]

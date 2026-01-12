@@ -1,0 +1,301 @@
+[
+  {
+    "id": "wm-m3-q1-energie-photon",
+    "module": 3,
+    "tags": ["photon"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Energie d'un photon",
+    "statement": "Calculez l'energie d'un photon de lumiere de longueur d'onde {lambda} nm. (h = 6.63×10⁻³⁴ J·s, c = 3×10⁸ m/s)",
+    "givens": {
+      "lambda": 500,
+      "h": 6.63e-34,
+      "c": 3e8
+    },
+    "unknowns": ["E"],
+    "answer": {
+      "variable": "E",
+      "value": 3.98e-19,
+      "unit": "J",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'energie d'un photon est E = hf = hc/λ",
+      "Convertissez λ en metres",
+      "E = hc/λ"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "3.98e-28",
+        "patternType": "value",
+        "message": "Vous n'avez pas converti nm en m",
+        "hint": "λ = 500 nm = 500×10⁻⁹ m",
+        "category": "unit"
+      }
+    ],
+    "explanation": "E = hc/λ = (6.63×10⁻³⁴ × 3×10⁸)/(500×10⁻⁹) = 3.98×10⁻¹⁹ J.",
+    "parameters": {
+      "lambda": { "min": 400, "max": 700, "step": 50, "unit": "nm" }
+    },
+    "answerFormula": "h * c / (lambda * 1e-9)"
+  },
+  {
+    "id": "wm-m3-q2-photoelectrique",
+    "module": 3,
+    "tags": ["photoelectric"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Effet photoelectrique",
+    "statement": "Le travail d'extraction d'un metal est W = {W} eV. Quelle est la longueur d'onde seuil pour arracher des electrons? (h = 4.14×10⁻¹⁵ eV·s, c = 3×10⁸ m/s)",
+    "givens": {
+      "W": 2.3,
+      "h": 4.14e-15,
+      "c": 3e8
+    },
+    "unknowns": ["lambda_seuil"],
+    "answer": {
+      "variable": "λ_seuil",
+      "value": 540,
+      "unit": "nm",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Au seuil, toute l'energie du photon sert a l'extraction: hf_seuil = W",
+      "λ_seuil = hc/W",
+      "Utilisez h en eV·s pour simplifier"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "5.4e-7",
+        "patternType": "value",
+        "message": "Vous avez donne la reponse en metres",
+        "hint": "Convertissez en nm: 1 m = 10⁹ nm",
+        "category": "unit"
+      }
+    ],
+    "explanation": "λ_seuil = hc/W = (4.14×10⁻¹⁵ × 3×10⁸)/2.3 = 5.4×10⁻⁷ m = 540 nm.",
+    "parameters": {
+      "W": { "min": 1.5, "max": 4.0, "step": 0.5, "unit": "eV" }
+    },
+    "answerFormula": "h * c / W * 1e9"
+  },
+  {
+    "id": "wm-m3-q3-de-broglie",
+    "module": 3,
+    "tags": ["de-broglie", "wave-particle"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Longueur d'onde de de Broglie",
+    "statement": "Un electron (m = 9.11×10⁻³¹ kg) se deplace a une vitesse de {v} m/s. Calculez sa longueur d'onde de de Broglie. (h = 6.63×10⁻³⁴ J·s)",
+    "givens": {
+      "v": 1e6,
+      "m": 9.11e-31,
+      "h": 6.63e-34
+    },
+    "unknowns": ["lambda"],
+    "answer": {
+      "variable": "λ",
+      "value": 7.28e-10,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La longueur d'onde de de Broglie est λ = h/p = h/(mv)",
+      "p est la quantite de mouvement",
+      "λ = h/(mv)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "7.28e-4",
+        "patternType": "value",
+        "message": "Vous avez multiplie au lieu de diviser",
+        "hint": "λ = h/(mv), pas h×m×v",
+        "category": "formula"
+      }
+    ],
+    "explanation": "λ = h/(mv) = 6.63×10⁻³⁴/(9.11×10⁻³¹ × 10⁶) = 7.28×10⁻¹⁰ m.",
+    "parameters": {
+      "v": { "min": 5e5, "max": 2e6, "step": 5e5, "unit": "m/s" }
+    },
+    "answerFormula": "h / (m * v)"
+  },
+  {
+    "id": "wm-m3-q4-dilatation-temps",
+    "module": 3,
+    "tags": ["relativity"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Dilatation du temps",
+    "statement": "Un vaisseau spatial voyage a une vitesse de {v}c (ou c est la vitesse de la lumiere). Si 1 heure s'ecoule dans le vaisseau, combien de temps s'est ecoule sur Terre?",
+    "givens": {
+      "v": 0.8,
+      "t0": 1
+    },
+    "unknowns": ["t"],
+    "answer": {
+      "variable": "t",
+      "value": 1.67,
+      "unit": "h",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le facteur de Lorentz est γ = 1/√(1 - v²/c²)",
+      "Le temps dilate est t = γt₀",
+      "t = t₀/√(1 - v²/c²)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.6",
+        "patternType": "value",
+        "message": "Vous avez inverse le calcul",
+        "hint": "t = t₀/√(1 - v²), pas t₀ × √(1 - v²)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "γ = 1/√(1 - 0.8²) = 1/√(1 - 0.64) = 1/√0.36 = 1/0.6 = 1.67. t = γt₀ = 1.67 × 1 = 1.67 h.",
+    "parameters": {
+      "v": { "min": 0.5, "max": 0.9, "step": 0.1, "unit": "c" }
+    },
+    "answerFormula": "t0 / sqrt(1 - v * v)"
+  },
+  {
+    "id": "wm-m3-q5-energie-masse",
+    "module": 3,
+    "tags": ["relativity"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Equivalence masse-energie",
+    "statement": "Quelle energie (en Joules) est equivalente a une masse de {m} kg? (c = 3×10⁸ m/s)",
+    "givens": {
+      "m": 0.001,
+      "c": 3e8
+    },
+    "unknowns": ["E"],
+    "answer": {
+      "variable": "E",
+      "value": 9e13,
+      "unit": "J",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La celebre equation d'Einstein: E = mc²",
+      "c² = 9×10¹⁶ m²/s²",
+      "E = mc²"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "3e5",
+        "patternType": "value",
+        "message": "Vous avez oublie de mettre c au carre",
+        "hint": "E = mc², pas mc",
+        "category": "formula"
+      }
+    ],
+    "explanation": "E = mc² = 0.001 × (3×10⁸)² = 0.001 × 9×10¹⁶ = 9×10¹³ J.",
+    "parameters": {
+      "m": { "min": 0.001, "max": 0.01, "step": 0.001, "unit": "kg" }
+    },
+    "answerFormula": "m * c * c"
+  },
+  {
+    "id": "wm-m3-q6-heisenberg",
+    "module": 3,
+    "tags": ["heisenberg"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Principe d'incertitude",
+    "statement": "La position d'un electron est connue a {dx} nm pres. Quelle est l'incertitude minimale sur sa vitesse? (h = 6.63×10⁻³⁴ J·s, m_e = 9.11×10⁻³¹ kg)",
+    "givens": {
+      "dx": 0.1,
+      "h": 6.63e-34,
+      "m": 9.11e-31
+    },
+    "unknowns": ["dv"],
+    "answer": {
+      "variable": "Δv",
+      "value": 5.79e5,
+      "unit": "m/s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le principe d'Heisenberg: Δx × Δp ≥ h/(4π)",
+      "Δp = mΔv",
+      "Δv ≥ h/(4πmΔx)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "7.28e6",
+        "patternType": "value",
+        "message": "Vous avez oublie le facteur 4π",
+        "hint": "Δv = h/(4πmΔx), le facteur 4π est important",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Δv = h/(4πmΔx) = 6.63×10⁻³⁴/(4π × 9.11×10⁻³¹ × 0.1×10⁻⁹) = 5.79×10⁵ m/s.",
+    "parameters": {
+      "dx": { "min": 0.05, "max": 0.2, "step": 0.05, "unit": "nm" }
+    },
+    "answerFormula": "h / (4 * 3.14159 * m * dx * 1e-9)"
+  },
+  {
+    "id": "wm-m3-q7-radioactivite",
+    "module": 3,
+    "tags": ["radioactivity", "nuclear"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Desintegration radioactive",
+    "statement": "Un echantillon radioactif a une demi-vie de {T} ans. Quel pourcentage de l'echantillon reste apres {t} ans?",
+    "givens": {
+      "T": 10,
+      "t": 30
+    },
+    "unknowns": ["percent"],
+    "answer": {
+      "variable": "N/N0",
+      "value": 12.5,
+      "unit": "%",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "N/N₀ = (1/2)^(t/T)",
+      "Calculez d'abord le nombre de demi-vies: t/T",
+      "Puis calculez (1/2) eleve a cette puissance"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "33.3",
+        "patternType": "value",
+        "message": "Vous avez calcule 100×T/t au lieu de (1/2)^(t/T)",
+        "hint": "N/N₀ = (1/2)^(t/T), pas T/t",
+        "category": "formula"
+      },
+      {
+        "pattern": "3",
+        "patternType": "value",
+        "message": "Vous avez calcule le nombre de demi-vies, pas le pourcentage restant",
+        "hint": "Le pourcentage restant est (1/2)^n × 100%",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Nombre de demi-vies = 30/10 = 3. N/N₀ = (1/2)³ = 1/8 = 0.125 = 12.5%.",
+    "parameters": {
+      "T": { "min": 5, "max": 20, "step": 5, "unit": "ans" },
+      "t": { "min": 10, "max": 60, "step": 10, "unit": "ans" }
+    },
+    "answerFormula": "pow(0.5, t/T) * 100"
+  }
+]

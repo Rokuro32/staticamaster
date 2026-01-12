@@ -1,0 +1,269 @@
+[
+  {
+    "id": "kin-m3-q1-vitesse-angulaire",
+    "module": 3,
+    "tags": ["angular-parameters"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Vitesse angulaire",
+    "statement": "Un disque effectue {n} tours en {t} secondes. Calculez sa vitesse angulaire en rad/s.",
+    "givens": {
+      "n": 15,
+      "t": 5
+    },
+    "unknowns": ["omega"],
+    "answer": {
+      "variable": "ω",
+      "value": 18.85,
+      "unit": "rad/s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Un tour complet = 2π radians",
+      "ω = (nombre de tours × 2π) / temps",
+      "ω = 2πn/t"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "3",
+        "patternType": "value",
+        "message": "Vous avez oublie de convertir en radians",
+        "hint": "ω = 2πn/t, pas n/t",
+        "category": "unit"
+      }
+    ],
+    "explanation": "ω = 2πn/t = 2π × 15 / 5 = 6π rad/s ≈ 18.85 rad/s.",
+    "parameters": {
+      "n": { "min": 5, "max": 30, "step": 5, "unit": "tours" },
+      "t": { "min": 2, "max": 10, "step": 1, "unit": "s" }
+    },
+    "answerFormula": "2 * 3.14159 * n / t"
+  },
+  {
+    "id": "kin-m3-q2-acceleration-angulaire",
+    "module": 3,
+    "tags": ["angular-acceleration"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Acceleration angulaire",
+    "statement": "Une roue initialement au repos atteint une vitesse de {omega} rad/s en {t} secondes avec une acceleration constante. Calculez l'acceleration angulaire.",
+    "givens": {
+      "omega0": 0,
+      "omega": 30,
+      "t": 6
+    },
+    "unknowns": ["alpha"],
+    "answer": {
+      "variable": "α",
+      "value": 5,
+      "unit": "rad/s²",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "α = (ωf - ω0) / t",
+      "La roue part du repos donc ω0 = 0",
+      "α = ωf / t"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "180",
+        "patternType": "value",
+        "message": "Vous avez multiplie au lieu de diviser",
+        "hint": "α = ω/t, pas ω × t",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "α = (ωf - ω0)/t = (30 - 0)/6 = 5 rad/s².",
+    "parameters": {
+      "omega": { "min": 20, "max": 60, "step": 10, "unit": "rad/s" },
+      "t": { "min": 4, "max": 12, "step": 2, "unit": "s" }
+    },
+    "answerFormula": "omega / t"
+  },
+  {
+    "id": "kin-m3-q3-transmission-poulies",
+    "module": 3,
+    "tags": ["speed-transmission"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Transmission par courroie",
+    "statement": "Une poulie motrice de diametre {d1} mm tourne a {n1} tr/min et entraine par courroie une poulie receptrice de diametre {d2} mm. Calculez la vitesse de rotation de la poulie receptrice en tr/min.",
+    "givens": {
+      "d1": 100,
+      "n1": 1800,
+      "d2": 300
+    },
+    "unknowns": ["n2"],
+    "answer": {
+      "variable": "n2",
+      "value": 600,
+      "unit": "tr/min",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Les vitesses tangentielles sont egales: v1 = v2",
+      "Donc ω1×r1 = ω2×r2, ce qui donne n1×d1 = n2×d2",
+      "n2 = n1 × d1/d2"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "5400",
+        "patternType": "value",
+        "message": "Vous avez inverse le rapport",
+        "hint": "n2 = n1 × d1/d2, pas n1 × d2/d1",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Par conservation de la vitesse tangentielle: n1×d1 = n2×d2, donc n2 = n1×d1/d2 = 1800 × 100/300 = 600 tr/min.",
+    "parameters": {
+      "d1": { "min": 50, "max": 150, "step": 25, "unit": "mm" },
+      "n1": { "min": 1200, "max": 2400, "step": 300, "unit": "tr/min" },
+      "d2": { "min": 150, "max": 400, "step": 50, "unit": "mm" }
+    },
+    "answerFormula": "n1 * d1 / d2"
+  },
+  {
+    "id": "kin-m3-q4-force-centripete",
+    "module": 3,
+    "tags": ["centripetal"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Force centripete",
+    "statement": "Un objet de masse {m} kg tourne en cercle de rayon {r} m avec une vitesse angulaire de {omega} rad/s. Calculez la force centripete necessaire.",
+    "givens": {
+      "m": 2,
+      "r": 0.5,
+      "omega": 4
+    },
+    "unknowns": ["Fc"],
+    "answer": {
+      "variable": "Fc",
+      "value": 16,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'acceleration centripete est ac = ω²r",
+      "La force centripete est Fc = mac = mω²r",
+      "Fc = mω²r"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "4",
+        "patternType": "value",
+        "message": "Vous avez oublie de mettre ω au carre",
+        "hint": "Fc = mω²r, pas mωr",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Fc = mω²r = 2 × 4² × 0.5 = 2 × 16 × 0.5 = 16 N.",
+    "parameters": {
+      "m": { "min": 1, "max": 5, "step": 0.5, "unit": "kg" },
+      "r": { "min": 0.3, "max": 1.0, "step": 0.1, "unit": "m" },
+      "omega": { "min": 2, "max": 8, "step": 1, "unit": "rad/s" }
+    },
+    "answerFormula": "m * omega * omega * r"
+  },
+  {
+    "id": "kin-m3-q5-engrenages",
+    "module": 3,
+    "tags": ["speed-transmission"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Train d'engrenages",
+    "statement": "Un engrenage moteur de {z1} dents entraine un engrenage recepteur de {z2} dents. Si le moteur tourne a {n1} tr/min, quelle est la vitesse de l'engrenage recepteur?",
+    "givens": {
+      "z1": 20,
+      "z2": 80,
+      "n1": 1600
+    },
+    "unknowns": ["n2"],
+    "answer": {
+      "variable": "n2",
+      "value": 400,
+      "unit": "tr/min",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Pour les engrenages: n1 × z1 = n2 × z2",
+      "Le rapport de transmission est z1/z2",
+      "n2 = n1 × z1/z2"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "6400",
+        "patternType": "value",
+        "message": "Vous avez inverse le rapport",
+        "hint": "n2 = n1 × z1/z2, pas n1 × z2/z1",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Pour les engrenages: n2 = n1 × z1/z2 = 1600 × 20/80 = 1600 × 0.25 = 400 tr/min.",
+    "parameters": {
+      "z1": { "min": 15, "max": 30, "step": 5, "unit": "dents" },
+      "z2": { "min": 60, "max": 120, "step": 20, "unit": "dents" },
+      "n1": { "min": 1200, "max": 2400, "step": 400, "unit": "tr/min" }
+    },
+    "answerFormula": "n1 * z1 / z2"
+  },
+  {
+    "id": "kin-m3-q6-deplacement-angulaire",
+    "module": 3,
+    "tags": ["angular-parameters", "angular-acceleration"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Deplacement angulaire avec acceleration",
+    "statement": "Une roue initialement au repos accelere a {alpha} rad/s² pendant {t} secondes. Combien de tours complets a-t-elle effectue?",
+    "givens": {
+      "alpha": 2,
+      "t": 5,
+      "omega0": 0
+    },
+    "unknowns": ["n"],
+    "answer": {
+      "variable": "n",
+      "value": 3.98,
+      "unit": "tours",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "θ = ω0t + ½αt²",
+      "Comme ω0 = 0: θ = ½αt²",
+      "Convertissez en tours: n = θ/(2π)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "25",
+        "patternType": "value",
+        "message": "Vous avez donne la reponse en radians",
+        "hint": "Convertissez en tours: n = θ/(2π)",
+        "category": "unit"
+      },
+      {
+        "pattern": "50",
+        "patternType": "value",
+        "message": "Vous avez oublie le facteur ½",
+        "hint": "θ = ½αt², pas αt²",
+        "category": "formula"
+      }
+    ],
+    "explanation": "θ = ½αt² = ½ × 2 × 5² = 25 rad. Nombre de tours: n = 25/(2π) = 25/6.28 ≈ 3.98 tours.",
+    "parameters": {
+      "alpha": { "min": 1, "max": 4, "step": 0.5, "unit": "rad/s²" },
+      "t": { "min": 3, "max": 8, "step": 1, "unit": "s" }
+    },
+    "answerFormula": "0.5 * alpha * t * t / (2 * 3.14159)"
+  }
+]

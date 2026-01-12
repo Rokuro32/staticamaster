@@ -1,0 +1,292 @@
+[
+  {
+    "id": "kin-m2-q1-projectile-portee",
+    "module": 2,
+    "tags": ["projectile", "planar-motion"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Projectile - Portee horizontale",
+    "statement": "Un projectile est lance avec une vitesse initiale de {v0} m/s selon un angle de {theta} degres par rapport a l'horizontale. Calculez la portee horizontale. (g = 10 m/s²)",
+    "givens": {
+      "v0": 40,
+      "theta": 30,
+      "g": 10
+    },
+    "unknowns": ["R"],
+    "answer": {
+      "variable": "R",
+      "value": 138.56,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La portee est donnee par R = (v0² × sin(2θ)) / g",
+      "sin(2×30°) = sin(60°) ≈ 0.866",
+      "Calculez R = v0² × sin(2θ) / g"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "80",
+        "patternType": "value",
+        "message": "Vous avez utilise sin(θ) au lieu de sin(2θ)",
+        "hint": "La formule de la portee utilise sin(2θ), pas sin(θ)",
+        "category": "formula"
+      },
+      {
+        "pattern": "160",
+        "patternType": "value",
+        "message": "Vous avez oublie de diviser par g",
+        "hint": "R = v0² × sin(2θ) / g",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "La portee horizontale est R = (v0² × sin(2θ)) / g = (40² × sin(60°)) / 10 = (1600 × 0.866) / 10 = 138.56 m.",
+    "parameters": {
+      "v0": { "min": 20, "max": 60, "step": 10, "unit": "m/s" },
+      "theta": { "min": 15, "max": 75, "step": 15, "unit": "°" }
+    },
+    "answerFormula": "(v0 * v0 * sin(rad(2 * theta))) / g"
+  },
+  {
+    "id": "kin-m2-q2-projectile-hauteur",
+    "module": 2,
+    "tags": ["projectile", "planar-motion"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Projectile - Hauteur maximale",
+    "statement": "Un ballon est lance avec une vitesse de {v0} m/s selon un angle de {theta} degres. Quelle est la hauteur maximale atteinte? (g = 10 m/s²)",
+    "givens": {
+      "v0": 30,
+      "theta": 60,
+      "g": 10
+    },
+    "unknowns": ["hmax"],
+    "answer": {
+      "variable": "hmax",
+      "value": 33.75,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La composante verticale initiale est v0y = v0 × sin(θ)",
+      "La hauteur max est atteinte quand vy = 0",
+      "hmax = v0y² / (2g) = (v0 × sin(θ))² / (2g)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "45",
+        "patternType": "value",
+        "message": "Vous avez oublie le facteur 2 au denominateur",
+        "hint": "hmax = v0y² / (2g), pas v0y² / g",
+        "category": "formula"
+      },
+      {
+        "pattern": "11.25",
+        "patternType": "value",
+        "message": "Vous avez utilise cos au lieu de sin",
+        "hint": "La composante verticale utilise sin(θ), pas cos(θ)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "v0y = 30 × sin(60°) = 30 × 0.866 = 26 m/s. hmax = v0y²/(2g) = 26²/(2×10) = 676/20 = 33.75 m.",
+    "parameters": {
+      "v0": { "min": 20, "max": 50, "step": 5, "unit": "m/s" },
+      "theta": { "min": 30, "max": 75, "step": 15, "unit": "°" }
+    },
+    "answerFormula": "(v0 * sin(rad(theta))) * (v0 * sin(rad(theta))) / (2 * g)"
+  },
+  {
+    "id": "kin-m2-q3-projectile-temps",
+    "module": 2,
+    "tags": ["projectile", "planar-motion"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Projectile - Temps de vol",
+    "statement": "Un objet est lance verticalement vers le haut avec une vitesse de {v0} m/s. Combien de temps reste-t-il en l'air avant de retomber au sol? (g = 10 m/s²)",
+    "givens": {
+      "v0": 25,
+      "g": 10
+    },
+    "unknowns": ["ttotal"],
+    "answer": {
+      "variable": "ttotal",
+      "value": 5,
+      "unit": "s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le temps pour monter est t_montee = v0/g",
+      "Le temps total est le double du temps de montee",
+      "ttotal = 2v0/g"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "2.5",
+        "patternType": "value",
+        "message": "Vous avez calcule seulement le temps de montee",
+        "hint": "Le temps total inclut la montee ET la descente: ttotal = 2 × t_montee",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Le temps de montee est t = v0/g = 25/10 = 2.5 s. Le temps total de vol est ttotal = 2t = 5 s.",
+    "parameters": {
+      "v0": { "min": 15, "max": 40, "step": 5, "unit": "m/s" }
+    },
+    "answerFormula": "2 * v0 / g"
+  },
+  {
+    "id": "kin-m2-q4-circular-velocity",
+    "module": 2,
+    "tags": ["circular-motion"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Mouvement circulaire - Vitesse tangentielle",
+    "statement": "Une roue de rayon {r} m tourne a {n} tours par minute. Calculez la vitesse tangentielle d'un point sur la peripherie en m/s.",
+    "givens": {
+      "r": 0.5,
+      "n": 120
+    },
+    "unknowns": ["v"],
+    "answer": {
+      "variable": "v",
+      "value": 6.28,
+      "unit": "m/s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Convertissez d'abord les tours/min en rad/s: ω = 2πn/60",
+      "La vitesse tangentielle est v = ωr",
+      "v = (2πn/60) × r"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "60",
+        "patternType": "value",
+        "message": "Vous avez multiplie n × r directement",
+        "hint": "N'oubliez pas de convertir en rad/s: ω = 2πn/60",
+        "category": "unit"
+      },
+      {
+        "pattern": "376.99",
+        "patternType": "value",
+        "message": "Vous avez oublie de convertir les minutes en secondes",
+        "hint": "Divisez par 60 pour convertir tours/min en tours/s",
+        "category": "unit"
+      }
+    ],
+    "explanation": "ω = 2πn/60 = 2π×120/60 = 4π rad/s ≈ 12.57 rad/s. v = ωr = 12.57 × 0.5 = 6.28 m/s.",
+    "parameters": {
+      "r": { "min": 0.2, "max": 1.0, "step": 0.1, "unit": "m" },
+      "n": { "min": 60, "max": 300, "step": 30, "unit": "tr/min" }
+    },
+    "answerFormula": "2 * 3.14159 * n / 60 * r"
+  },
+  {
+    "id": "kin-m2-q5-circular-acceleration",
+    "module": 2,
+    "tags": ["circular-motion"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Mouvement circulaire - Acceleration centripete",
+    "statement": "Un objet se deplace en cercle de rayon {r} m a une vitesse constante de {v} m/s. Calculez l'acceleration centripete.",
+    "givens": {
+      "r": 4,
+      "v": 8
+    },
+    "unknowns": ["ac"],
+    "answer": {
+      "variable": "ac",
+      "value": 16,
+      "unit": "m/s²",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'acceleration centripete est ac = v²/r",
+      "Elle est toujours dirigee vers le centre du cercle",
+      "ac = v²/r"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "2",
+        "patternType": "value",
+        "message": "Vous avez calcule v/r au lieu de v²/r",
+        "hint": "L'acceleration centripete est ac = v²/r, pas v/r",
+        "category": "formula"
+      },
+      {
+        "pattern": "32",
+        "patternType": "value",
+        "message": "Vous avez multiplie au lieu de diviser",
+        "hint": "ac = v²/r, pas v² × r",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "L'acceleration centripete est ac = v²/r = 8²/4 = 64/4 = 16 m/s².",
+    "parameters": {
+      "r": { "min": 2, "max": 10, "step": 1, "unit": "m" },
+      "v": { "min": 4, "max": 12, "step": 2, "unit": "m/s" }
+    },
+    "answerFormula": "v * v / r"
+  },
+  {
+    "id": "kin-m2-q6-relative-motion",
+    "module": 2,
+    "tags": ["relative-motion", "planar-motion"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Mouvement relatif - Traversee d'une riviere",
+    "statement": "Un bateau traverse une riviere de {L} m de large. Le bateau avance a {vb} m/s perpendiculairement au courant, tandis que le courant a une vitesse de {vc} m/s. Quelle est la vitesse resultante du bateau par rapport a la rive?",
+    "givens": {
+      "L": 100,
+      "vb": 4,
+      "vc": 3
+    },
+    "unknowns": ["vr"],
+    "answer": {
+      "variable": "vr",
+      "value": 5,
+      "unit": "m/s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Les vitesses sont perpendiculaires",
+      "Utilisez le theoreme de Pythagore",
+      "vr = √(vb² + vc²)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "7",
+        "patternType": "value",
+        "message": "Vous avez additionne les vitesses directement",
+        "hint": "Les vitesses sont perpendiculaires, utilisez Pythagore: vr = √(vb² + vc²)",
+        "category": "concept"
+      },
+      {
+        "pattern": "1",
+        "patternType": "value",
+        "message": "Vous avez soustrait les vitesses",
+        "hint": "Le courant ne s'oppose pas au bateau, ils sont perpendiculaires",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Comme les vitesses sont perpendiculaires, vr = √(vb² + vc²) = √(4² + 3²) = √(16 + 9) = √25 = 5 m/s.",
+    "parameters": {
+      "L": { "min": 50, "max": 200, "step": 25, "unit": "m" },
+      "vb": { "min": 3, "max": 8, "step": 1, "unit": "m/s" },
+      "vc": { "min": 2, "max": 6, "step": 1, "unit": "m/s" }
+    },
+    "answerFormula": "sqrt(vb*vb + vc*vc)"
+  }
+]

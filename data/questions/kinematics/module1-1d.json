@@ -1,0 +1,281 @@
+[
+  {
+    "id": "kin-m1-q1-vitesse-moyenne",
+    "module": 1,
+    "tags": ["velocity", "displacement", "mru"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Vitesse moyenne",
+    "statement": "Un cycliste parcourt une distance de {d} km en {t} heures. Calculez sa vitesse moyenne en km/h.",
+    "givens": {
+      "d": 45,
+      "t": 1.5
+    },
+    "unknowns": ["v"],
+    "answer": {
+      "variable": "v",
+      "value": 30,
+      "unit": "km/h",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La vitesse moyenne est le rapport de la distance sur le temps",
+      "v = d / t",
+      "Assurez-vous d'utiliser les bonnes unités"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "67.5",
+        "patternType": "value",
+        "message": "Vous avez multiplié au lieu de diviser",
+        "hint": "v = d / t, pas d × t",
+        "category": "formula"
+      }
+    ],
+    "explanation": "La vitesse moyenne se calcule par v = d/t = 45 km / 1.5 h = 30 km/h.",
+    "parameters": {
+      "d": { "min": 20, "max": 100, "step": 5, "unit": "km" },
+      "t": { "min": 0.5, "max": 3, "step": 0.5, "unit": "h" }
+    },
+    "answerFormula": "d / t"
+  },
+  {
+    "id": "kin-m1-q2-mrua-vitesse",
+    "module": 1,
+    "tags": ["acceleration", "velocity", "mrua"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "MRUA - Vitesse finale",
+    "statement": "Une voiture part du repos et accélère uniformément à {a} m/s² pendant {t} secondes. Calculez sa vitesse finale.",
+    "givens": {
+      "v0": 0,
+      "a": 3,
+      "t": 8
+    },
+    "unknowns": ["vf"],
+    "answer": {
+      "variable": "vf",
+      "value": 24,
+      "unit": "m/s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Utilisez l'équation cinématique: vf = v0 + at",
+      "La voiture part du repos, donc v0 = 0",
+      "vf = at"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "96",
+        "patternType": "value",
+        "message": "Vous avez utilisé la mauvaise équation",
+        "hint": "Pour trouver la vitesse: vf = v0 + at, pas d = ½at²",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Avec v0 = 0, on a vf = v0 + at = 0 + 3 × 8 = 24 m/s.",
+    "parameters": {
+      "a": { "min": 2, "max": 6, "step": 0.5, "unit": "m/s²" },
+      "t": { "min": 4, "max": 12, "step": 2, "unit": "s" }
+    },
+    "answerFormula": "a * t"
+  },
+  {
+    "id": "kin-m1-q3-mrua-distance",
+    "module": 1,
+    "tags": ["displacement", "acceleration", "mrua"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "MRUA - Distance parcourue",
+    "statement": "Un objet initialement au repos accélère à {a} m/s² pendant {t} secondes. Quelle distance a-t-il parcourue?",
+    "givens": {
+      "v0": 0,
+      "a": 4,
+      "t": 5
+    },
+    "unknowns": ["d"],
+    "answer": {
+      "variable": "d",
+      "value": 50,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Utilisez l'équation: d = v0t + ½at²",
+      "Comme v0 = 0, cela se simplifie à d = ½at²",
+      "N'oubliez pas le facteur ½"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "100",
+        "patternType": "value",
+        "message": "Vous avez oublié le facteur ½",
+        "hint": "d = ½at², pas at²",
+        "category": "formula"
+      },
+      {
+        "pattern": "20",
+        "patternType": "value",
+        "message": "Vous avez calculé v = at au lieu de la distance",
+        "hint": "Pour la distance: d = ½at²",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Avec v0 = 0: d = ½at² = ½ × 4 × 5² = ½ × 4 × 25 = 50 m.",
+    "parameters": {
+      "a": { "min": 2, "max": 8, "step": 1, "unit": "m/s²" },
+      "t": { "min": 3, "max": 8, "step": 1, "unit": "s" }
+    },
+    "answerFormula": "0.5 * a * t * t"
+  },
+  {
+    "id": "kin-m1-q4-chute-libre",
+    "module": 1,
+    "tags": ["free-fall", "acceleration", "mrua"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Chute libre - Temps de chute",
+    "statement": "Un objet est lâché du haut d'une falaise de {h} mètres. En combien de temps atteint-il le sol? (g = 10 m/s²)",
+    "givens": {
+      "h": 80,
+      "g": 10,
+      "v0": 0
+    },
+    "unknowns": ["t"],
+    "answer": {
+      "variable": "t",
+      "value": 4,
+      "unit": "s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "En chute libre, h = ½gt²",
+      "Isolez t: t = √(2h/g)",
+      "L'objet est lâché, donc v0 = 0"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "8",
+        "patternType": "value",
+        "message": "Vous avez oublié de prendre la racine carrée",
+        "hint": "t = √(2h/g), pas 2h/g",
+        "category": "calculation"
+      },
+      {
+        "pattern": "2.83",
+        "patternType": "value",
+        "message": "Vous avez oublié le facteur 2",
+        "hint": "t = √(2h/g), pas √(h/g)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "En chute libre avec v0 = 0: h = ½gt², donc t = √(2h/g) = √(2×80/10) = √16 = 4 s.",
+    "parameters": {
+      "h": { "min": 20, "max": 200, "step": 20, "unit": "m" }
+    },
+    "answerFormula": "sqrt(2 * h / g)"
+  },
+  {
+    "id": "kin-m1-q5-mrua-equation",
+    "module": 1,
+    "tags": ["velocity", "acceleration", "mrua"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "MRUA - Vitesse après une distance",
+    "statement": "Une voiture roulant à {v0} m/s freine avec une décélération de {a} m/s². Quelle est sa vitesse après avoir parcouru {d} mètres?",
+    "givens": {
+      "v0": 20,
+      "a": 2,
+      "d": 75
+    },
+    "unknowns": ["vf"],
+    "answer": {
+      "variable": "vf",
+      "value": 10,
+      "unit": "m/s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Utilisez l'équation: vf² = v0² - 2ad (le signe - car c'est une décélération)",
+      "Isolez vf: vf = √(v0² - 2ad)",
+      "N'oubliez pas que l'accélération est négative lors d'un freinage"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "22.36",
+        "patternType": "value",
+        "message": "Vous avez additionné au lieu de soustraire",
+        "hint": "C'est une décélération, donc vf² = v0² - 2ad",
+        "category": "sign"
+      },
+      {
+        "pattern": "100",
+        "patternType": "value",
+        "message": "Vous avez oublié de prendre la racine carrée",
+        "hint": "vf = √(v0² - 2ad), pas v0² - 2ad",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "En utilisant vf² = v0² - 2ad: vf² = 20² - 2×2×75 = 400 - 300 = 100, donc vf = √100 = 10 m/s.",
+    "parameters": {
+      "v0": { "min": 15, "max": 30, "step": 5, "unit": "m/s" },
+      "a": { "min": 1, "max": 4, "step": 0.5, "unit": "m/s²" },
+      "d": { "min": 30, "max": 100, "step": 10, "unit": "m" }
+    },
+    "answerFormula": "sqrt(v0*v0 - 2*a*d)"
+  },
+  {
+    "id": "kin-m1-q6-mru-rencontre",
+    "module": 1,
+    "tags": ["mru", "velocity", "displacement"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "MRU - Point de rencontre",
+    "statement": "Deux voitures partent de deux villes distantes de {D} km. La première roule à {v1} km/h et la seconde à {v2} km/h, se dirigeant l'une vers l'autre. Après combien d'heures se rencontreront-elles?",
+    "givens": {
+      "D": 300,
+      "v1": 80,
+      "v2": 70
+    },
+    "unknowns": ["t"],
+    "answer": {
+      "variable": "t",
+      "value": 2,
+      "unit": "h",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Les deux voitures se rapprochent l'une de l'autre",
+      "La vitesse relative est v1 + v2",
+      "t = D / (v1 + v2)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "30",
+        "patternType": "value",
+        "message": "Vous avez utilisé la différence des vitesses",
+        "hint": "Les voitures se rapprochent, donc utilisez la somme: v1 + v2",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Comme les voitures se rapprochent, la vitesse relative est v1 + v2 = 150 km/h. Le temps de rencontre est t = 300/150 = 2 h.",
+    "parameters": {
+      "D": { "min": 150, "max": 500, "step": 50, "unit": "km" },
+      "v1": { "min": 60, "max": 100, "step": 10, "unit": "km/h" },
+      "v2": { "min": 50, "max": 90, "step": 10, "unit": "km/h" }
+    },
+    "answerFormula": "D / (v1 + v2)"
+  }
+]

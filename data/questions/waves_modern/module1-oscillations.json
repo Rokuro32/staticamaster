@@ -1,0 +1,314 @@
+[
+  {
+    "id": "wm-m1-q1-periode-mhs",
+    "module": 1,
+    "tags": ["shm"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Periode d'un MHS",
+    "statement": "Un systeme masse-ressort oscille avec une frequence de {f} Hz. Calculez la periode d'oscillation.",
+    "givens": {
+      "f": 4
+    },
+    "unknowns": ["T"],
+    "answer": {
+      "variable": "T",
+      "value": 0.25,
+      "unit": "s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La periode et la frequence sont liees par T = 1/f",
+      "T est l'inverse de f",
+      "T = 1/f"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "4",
+        "patternType": "value",
+        "message": "Vous avez donne la frequence, pas la periode",
+        "hint": "T = 1/f, pas f",
+        "category": "concept"
+      }
+    ],
+    "explanation": "La periode est l'inverse de la frequence: T = 1/f = 1/4 = 0.25 s.",
+    "parameters": {
+      "f": { "min": 2, "max": 10, "step": 1, "unit": "Hz" }
+    },
+    "answerFormula": "1 / f"
+  },
+  {
+    "id": "wm-m1-q2-pendule-simple",
+    "module": 1,
+    "tags": ["shm"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Pendule simple - Periode",
+    "statement": "Un pendule simple de longueur {L} m oscille avec de petites amplitudes. Calculez sa periode. (g = 10 m/s²)",
+    "givens": {
+      "L": 1.6,
+      "g": 10
+    },
+    "unknowns": ["T"],
+    "answer": {
+      "variable": "T",
+      "value": 2.51,
+      "unit": "s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La periode d'un pendule simple est T = 2π√(L/g)",
+      "Elle ne depend pas de la masse",
+      "T = 2π√(L/g)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.4",
+        "patternType": "value",
+        "message": "Vous avez oublie le facteur 2π ou la racine carree",
+        "hint": "T = 2π√(L/g), pas L/g",
+        "category": "formula"
+      },
+      {
+        "pattern": "7.9",
+        "patternType": "value",
+        "message": "Vous avez utilise √(g/L) au lieu de √(L/g)",
+        "hint": "T = 2π√(L/g), pas 2π√(g/L)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "T = 2π√(L/g) = 2π√(1.6/10) = 2π√0.16 = 2π × 0.4 = 2.51 s.",
+    "parameters": {
+      "L": { "min": 0.4, "max": 2.5, "step": 0.2, "unit": "m" }
+    },
+    "answerFormula": "2 * 3.14159 * sqrt(L / g)"
+  },
+  {
+    "id": "wm-m1-q3-ressort-constante",
+    "module": 1,
+    "tags": ["shm"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Systeme masse-ressort",
+    "statement": "Une masse de {m} kg attachee a un ressort oscille avec une periode de {T} s. Calculez la constante du ressort.",
+    "givens": {
+      "m": 0.5,
+      "T": 1
+    },
+    "unknowns": ["k"],
+    "answer": {
+      "variable": "k",
+      "value": 19.74,
+      "unit": "N/m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "T = 2π√(m/k), donc k = 4π²m/T²",
+      "Isolez k de la formule de la periode",
+      "k = (2π/T)² × m"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.5",
+        "patternType": "value",
+        "message": "Vous avez donne m/T² sans le facteur 4π²",
+        "hint": "k = 4π²m/T², n'oubliez pas 4π²",
+        "category": "formula"
+      }
+    ],
+    "explanation": "De T = 2π√(m/k), on tire k = 4π²m/T² = 4 × 9.87 × 0.5 / 1² = 19.74 N/m.",
+    "parameters": {
+      "m": { "min": 0.2, "max": 1.0, "step": 0.1, "unit": "kg" },
+      "T": { "min": 0.5, "max": 2.0, "step": 0.25, "unit": "s" }
+    },
+    "answerFormula": "4 * 3.14159 * 3.14159 * m / (T * T)"
+  },
+  {
+    "id": "wm-m1-q4-energie-mhs",
+    "module": 1,
+    "tags": ["shm", "wave-energy"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Energie d'un MHS",
+    "statement": "Un ressort de constante {k} N/m est etire de {A} cm depuis sa position d'equilibre. Calculez l'energie mecanique totale du systeme.",
+    "givens": {
+      "k": 200,
+      "A": 5
+    },
+    "unknowns": ["E"],
+    "answer": {
+      "variable": "E",
+      "value": 0.25,
+      "unit": "J",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'energie totale est l'energie potentielle maximale",
+      "E = ½kA²",
+      "Attention: convertissez l'amplitude en metres"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "2500",
+        "patternType": "value",
+        "message": "Vous n'avez pas converti cm en m",
+        "hint": "A = 5 cm = 0.05 m",
+        "category": "unit"
+      },
+      {
+        "pattern": "0.5",
+        "patternType": "value",
+        "message": "Vous avez oublie le facteur ½",
+        "hint": "E = ½kA², pas kA²",
+        "category": "formula"
+      }
+    ],
+    "explanation": "E = ½kA² = ½ × 200 × (0.05)² = ½ × 200 × 0.0025 = 0.25 J.",
+    "parameters": {
+      "k": { "min": 100, "max": 400, "step": 50, "unit": "N/m" },
+      "A": { "min": 3, "max": 10, "step": 1, "unit": "cm" }
+    },
+    "answerFormula": "0.5 * k * (A/100) * (A/100)"
+  },
+  {
+    "id": "wm-m1-q5-onde-vitesse",
+    "module": 1,
+    "tags": ["standing-waves"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Vitesse d'une onde",
+    "statement": "Une onde se propage avec une frequence de {f} Hz et une longueur d'onde de {lambda} m. Calculez sa vitesse de propagation.",
+    "givens": {
+      "f": 50,
+      "lambda": 4
+    },
+    "unknowns": ["v"],
+    "answer": {
+      "variable": "v",
+      "value": 200,
+      "unit": "m/s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La relation fondamentale des ondes est v = fλ",
+      "v est le produit de f et λ",
+      "v = f × λ"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "12.5",
+        "patternType": "value",
+        "message": "Vous avez divise au lieu de multiplier",
+        "hint": "v = f × λ, pas f/λ",
+        "category": "formula"
+      }
+    ],
+    "explanation": "v = fλ = 50 × 4 = 200 m/s.",
+    "parameters": {
+      "f": { "min": 20, "max": 100, "step": 10, "unit": "Hz" },
+      "lambda": { "min": 2, "max": 8, "step": 1, "unit": "m" }
+    },
+    "answerFormula": "f * lambda"
+  },
+  {
+    "id": "wm-m1-q6-doppler",
+    "module": 1,
+    "tags": ["doppler", "sound"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Effet Doppler",
+    "statement": "Une ambulance emet un son de frequence {f0} Hz. Elle s'approche d'un observateur immobile a une vitesse de {vs} m/s. Quelle frequence l'observateur percoit-il? (vitesse du son = 340 m/s)",
+    "givens": {
+      "f0": 800,
+      "vs": 34,
+      "c": 340
+    },
+    "unknowns": ["f"],
+    "answer": {
+      "variable": "f",
+      "value": 888.89,
+      "unit": "Hz",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Pour une source qui s'approche: f = f0 × c/(c - vs)",
+      "La frequence percue est plus elevee quand la source s'approche",
+      "f = f0 × c/(c - vs)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "720",
+        "patternType": "value",
+        "message": "Vous avez utilise (c + vs) au lieu de (c - vs)",
+        "hint": "Pour une source qui s'approche: f = f0 × c/(c - vs)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "f = f0 × c/(c - vs) = 800 × 340/(340 - 34) = 800 × 340/306 = 888.89 Hz.",
+    "parameters": {
+      "f0": { "min": 500, "max": 1000, "step": 100, "unit": "Hz" },
+      "vs": { "min": 20, "max": 50, "step": 5, "unit": "m/s" }
+    },
+    "answerFormula": "f0 * c / (c - vs)"
+  },
+  {
+    "id": "wm-m1-q7-ondes-stationnaires",
+    "module": 1,
+    "tags": ["standing-waves", "resonance"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Ondes stationnaires sur une corde",
+    "statement": "Une corde de longueur {L} m est fixee aux deux extremites. Calculez la longueur d'onde du 3e harmonique.",
+    "givens": {
+      "L": 1.5,
+      "n": 3
+    },
+    "unknowns": ["lambda"],
+    "answer": {
+      "variable": "λ",
+      "value": 1,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Pour une corde fixee aux deux bouts: λn = 2L/n",
+      "n est le numero de l'harmonique",
+      "λ3 = 2L/3"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "4.5",
+        "patternType": "value",
+        "message": "Vous avez multiplie au lieu de diviser",
+        "hint": "λn = 2L/n, pas 2L × n",
+        "category": "formula"
+      },
+      {
+        "pattern": "0.5",
+        "patternType": "value",
+        "message": "Vous avez oublie le facteur 2",
+        "hint": "λn = 2L/n, pas L/n",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Pour le 3e harmonique: λ3 = 2L/3 = 2 × 1.5 / 3 = 1 m.",
+    "parameters": {
+      "L": { "min": 0.6, "max": 2.4, "step": 0.3, "unit": "m" }
+    },
+    "answerFormula": "2 * L / n"
+  }
+]
