@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Application pédagogique interactive pour l'évaluation en statique - CÉGEP",
   "private": true,
+  "engines": {
+    "node": ">=18.17.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
