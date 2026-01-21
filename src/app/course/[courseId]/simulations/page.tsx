@@ -6,9 +6,9 @@ import Link from 'next/link';
 import { useAppStore } from '@/store/useAppStore';
 import { getCourseById, COURSE_COLORS, type CourseId } from '@/types/course';
 import { Button } from '@/components/ui/Button';
-import { WaveSimulator } from '@/components/simulations/WaveSimulator';
-import { StandingWaveSimulator } from '@/components/simulations/StandingWaveSimulator';
+import { OscillationsWaveSimulator } from '@/components/simulations/OscillationsWaveSimulator';
 import { SoundWaveSimulator } from '@/components/simulations/SoundWaveSimulator';
+import { RelativitySimulator } from '@/components/simulations/RelativitySimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -94,26 +94,15 @@ export default function SimulationsPage() {
 
       {/* Simulations Grid */}
       <div className="space-y-8">
-        {/* Wave Simulator Section */}
+        {/* Oscillations and Waves Simulator Section */}
         <section>
           <div className="flex items-center gap-3 mb-4">
             <span className="text-2xl">〰️</span>
             <h2 className="text-xl font-bold text-gray-900">
-              Oscillations et Mouvement Harmonique Simple
+              Oscillations et Ondes Mécaniques
             </h2>
           </div>
-          <WaveSimulator showMassSpring={true} />
-        </section>
-
-        {/* Standing Wave Simulator Section */}
-        <section>
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-2xl">🎸</span>
-            <h2 className="text-xl font-bold text-gray-900">
-              Ondes stationnaires sur une corde
-            </h2>
-          </div>
-          <StandingWaveSimulator />
+          <OscillationsWaveSimulator />
         </section>
 
         {/* Sound Wave Simulator Section */}
@@ -125,6 +114,17 @@ export default function SimulationsPage() {
             </h2>
           </div>
           <SoundWaveSimulator />
+        </section>
+
+        {/* Relativity Simulator Section */}
+        <section>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-2xl">🚀</span>
+            <h2 className="text-xl font-bold text-gray-900">
+              Relativité Restreinte
+            </h2>
+          </div>
+          <RelativitySimulator />
         </section>
 
         {/* More simulations can be added here */}
