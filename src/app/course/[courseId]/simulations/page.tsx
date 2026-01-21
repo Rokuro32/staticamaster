@@ -7,6 +7,7 @@ import { useAppStore } from '@/store/useAppStore';
 import { getCourseById, COURSE_COLORS, type CourseId } from '@/types/course';
 import { Button } from '@/components/ui/Button';
 import { WaveSimulator } from '@/components/simulations/WaveSimulator';
+import { StandingWaveSimulator } from '@/components/simulations/StandingWaveSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -101,6 +102,17 @@ export default function SimulationsPage() {
             </h2>
           </div>
           <WaveSimulator showMassSpring={true} />
+        </section>
+
+        {/* Standing Wave Simulator Section */}
+        <section>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-2xl">🎸</span>
+            <h2 className="text-xl font-bold text-gray-900">
+              Ondes stationnaires sur une corde
+            </h2>
+          </div>
+          <StandingWaveSimulator />
         </section>
 
         {/* More simulations can be added here */}
