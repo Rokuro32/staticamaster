@@ -52,12 +52,19 @@ export default function CourseHomePage() {
         <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
           {course.description}
         </p>
-        <div className="flex justify-center gap-4">
+        <div className="flex justify-center gap-4 flex-wrap">
           <Link href={`/course/${courseId}/modules`}>
             <Button size="lg" className={`${colors?.bg} text-white hover:opacity-90`}>
               Voir les modules
             </Button>
           </Link>
+          {courseId === 'waves_modern' && (
+            <Link href={`/course/${courseId}/simulations`}>
+              <Button size="lg" className="bg-violet-600 text-white hover:bg-violet-700">
+                🔬 Simulations
+              </Button>
+            </Link>
+          )}
           <Link href={`/course/${courseId}/progress`}>
             <Button variant="outline" size="lg">
               Ma progression
