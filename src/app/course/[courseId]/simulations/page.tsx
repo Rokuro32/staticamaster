@@ -8,6 +8,7 @@ import { getCourseById, COURSE_COLORS, type CourseId } from '@/types/course';
 import { Button } from '@/components/ui/Button';
 import { WaveSimulator } from '@/components/simulations/WaveSimulator';
 import { StandingWaveSimulator } from '@/components/simulations/StandingWaveSimulator';
+import { SoundWaveSimulator } from '@/components/simulations/SoundWaveSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -115,6 +116,17 @@ export default function SimulationsPage() {
           <StandingWaveSimulator />
         </section>
 
+        {/* Sound Wave Simulator Section */}
+        <section>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-2xl">🔊</span>
+            <h2 className="text-xl font-bold text-gray-900">
+              Ondes sonores
+            </h2>
+          </div>
+          <SoundWaveSimulator />
+        </section>
+
         {/* More simulations can be added here */}
         <section className="bg-gray-50 rounded-xl p-8 text-center">
           <h3 className="text-lg font-semibold text-gray-700 mb-2">
@@ -126,9 +138,6 @@ export default function SimulationsPage() {
           <div className="flex flex-wrap justify-center gap-3">
             <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
               💡 Interférence de Young
-            </span>
-            <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
-              🔊 Effet Doppler
             </span>
             <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
               🌈 Diffraction
