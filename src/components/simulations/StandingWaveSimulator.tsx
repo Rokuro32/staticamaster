@@ -239,45 +239,90 @@ export function StandingWaveSimulator() {
       }
 
     } else if (mode === 'beats') {
-      // Beat pattern
+      const beatFreq = Math.abs(frequency2 - frequency1);
+      const avgFreq = (frequency1 + frequency2) / 2;
+      const deltaFreq = Math.abs(frequency2 - frequency1) / 2;
+
+      // Draw filled envelope area first (behind the wave)
+      ctx.fillStyle = 'rgba(34, 197, 94, 0.15)';
+      ctx.beginPath();
+      ctx.moveTo(50, centerY);
+
+      // Upper envelope path
+      for (let px = 50; px < wallX; px++) {
+        const t = (px - 50) / (wallX - 50) * 4; // Time spread across canvas
+        const envelope = 2 * amplitude * Math.abs(Math.cos(2 * Math.PI * deltaFreq * (time + t)));
+        const canvasY = centerY - envelope * scale * 0.5;
+        ctx.lineTo(px, canvasY);
+      }
+
+      // Lower envelope path (reverse)
+      for (let px = wallX - 1; px >= 50; px--) {
+        const t = (px - 50) / (wallX - 50) * 4;
+        const envelope = 2 * amplitude * Math.abs(Math.cos(2 * Math.PI * deltaFreq * (time + t)));
+        const canvasY = centerY + envelope * scale * 0.5;
+        ctx.lineTo(px, canvasY);
+      }
+      ctx.closePath();
+      ctx.fill();
+
+      // Beat pattern wave
       ctx.strokeStyle = '#8b5cf6';
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 2;
       ctx.beginPath();
       for (let px = 50; px < wallX; px++) {
-        const x = (px - 50) / xScale;
-        const y = getBeatWave(x, time);
+        const t = (px - 50) / (wallX - 50) * 4;
+        const carrier = Math.sin(2 * Math.PI * avgFreq * (time + t));
+        const modulation = Math.cos(2 * Math.PI * deltaFreq * (time + t));
+        const y = 2 * amplitude * modulation * carrier;
         const canvasY = centerY - y * scale * 0.5;
         if (px === 50) ctx.moveTo(px, canvasY);
         else ctx.lineTo(px, canvasY);
       }
       ctx.stroke();
 
-      // Envelope
-      const beatFreq = Math.abs(frequency2 - frequency1);
-      ctx.strokeStyle = '#22c55e';
-      ctx.lineWidth = 1;
-      ctx.setLineDash([3, 3]);
-
-      // Upper envelope
+      // Upper envelope line
+      ctx.strokeStyle = '#16a34a';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([]);
       ctx.beginPath();
       for (let px = 50; px < wallX; px++) {
-        const envelope = 2 * amplitude * Math.abs(Math.cos(Math.PI * beatFreq * time));
+        const t = (px - 50) / (wallX - 50) * 4;
+        const envelope = 2 * amplitude * Math.abs(Math.cos(2 * Math.PI * deltaFreq * (time + t)));
         const canvasY = centerY - envelope * scale * 0.5;
         if (px === 50) ctx.moveTo(px, canvasY);
         else ctx.lineTo(px, canvasY);
       }
       ctx.stroke();
 
-      // Lower envelope
+      // Lower envelope line
       ctx.beginPath();
       for (let px = 50; px < wallX; px++) {
-        const envelope = 2 * amplitude * Math.abs(Math.cos(Math.PI * beatFreq * time));
+        const t = (px - 50) / (wallX - 50) * 4;
+        const envelope = 2 * amplitude * Math.abs(Math.cos(2 * Math.PI * deltaFreq * (time + t)));
         const canvasY = centerY + envelope * scale * 0.5;
         if (px === 50) ctx.moveTo(px, canvasY);
         else ctx.lineTo(px, canvasY);
       }
       ctx.stroke();
-      ctx.setLineDash([]);
+
+      // Mark beat nodes (where envelope = 0)
+      const beatPeriod = 1 / beatFreq;
+      for (let i = 0; i < 10; i++) {
+        const nodeTime = (i + 0.5) * beatPeriod / 2;
+        const adjustedTime = (time % (beatPeriod)) ;
+        const px = 50 + ((nodeTime - adjustedTime + beatPeriod) % beatPeriod) / 4 * (wallX - 50);
+        if (px > 50 && px < wallX) {
+          ctx.fillStyle = '#dc2626';
+          ctx.beginPath();
+          ctx.arc(px, centerY, 6, 0, 2 * Math.PI);
+          ctx.fill();
+          ctx.fillStyle = 'white';
+          ctx.font = 'bold 10px Inter';
+          ctx.textAlign = 'center';
+          ctx.fillText('0', px, centerY + 3);
+        }
+      }
 
     } else if (mode === 'modes') {
       // Harmonic mode
