@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/Button';
 import { WaveSimulator } from '@/components/simulations/WaveSimulator';
 import { StandingWaveSimulator } from '@/components/simulations/StandingWaveSimulator';
 import { SoundWaveSimulator } from '@/components/simulations/SoundWaveSimulator';
-import { SpeakerInterferenceSimulator } from '@/components/simulations/SpeakerInterferenceSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -126,17 +125,6 @@ export default function SimulationsPage() {
             </h2>
           </div>
           <SoundWaveSimulator />
-        </section>
-
-        {/* Speaker Interference Simulator Section */}
-        <section>
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-2xl">🔉</span>
-            <h2 className="text-xl font-bold text-gray-900">
-              Interférence de deux haut-parleurs
-            </h2>
-          </div>
-          <SpeakerInterferenceSimulator />
         </section>
 
         {/* More simulations can be added here */}

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { InlineMath, BlockMath } from 'react-katex';
 
-type SimulationMode = 'doppler' | 'mach' | 'intensity' | 'speed';
+type SimulationMode = 'doppler' | 'mach' | 'intensity' | 'speed' | 'interference';
 
 export function SoundWaveSimulator() {
   const [mode, setMode] = useState<SimulationMode>('doppler');
@@ -27,10 +27,22 @@ export function SoundWaveSimulator() {
   const [temperature, setTemperature] = useState(20);
   const [medium, setMedium] = useState<'air' | 'water' | 'steel'>('air');
 
+  // Interference parameters
+  const [speakerDistance, setSpeakerDistance] = useState(2);
+  const [interferenceFreq, setInterferenceFreq] = useState(200);
+  const [observerX, setObserverX] = useState(3);
+  const [observerY, setObserverY] = useState(0);
+  const [phaseDiff, setPhaseDiff] = useState(0);
+  const [showWaveFronts, setShowWaveFronts] = useState(true);
+  const [showInterferencePattern, setShowInterferencePattern] = useState(true);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
   const lastTimeRef = useRef<number>(0);
   const waveFrontsRef = useRef<{x: number, y: number, radius: number, time: number}[]>([]);
+
+  // Interference wavelength
+  const interferenceWavelength = soundSpeed / interferenceFreq;
 
   // Animation loop
   useEffect(() => {
@@ -101,6 +113,30 @@ export function SoundWaveSimulator() {
       return 5960; // Steel (approximately constant)
     }
   }, [medium, temperature]);
+
+  // Calculate interference at a point
+  const getInterference = useCallback((x: number, y: number) => {
+    const speaker1Y = speakerDistance / 2;
+    const speaker2Y = -speakerDistance / 2;
+
+    const r1 = Math.sqrt(x * x + (y - speaker1Y) * (y - speaker1Y));
+    const r2 = Math.sqrt(x * x + (y - speaker2Y) * (y - speaker2Y));
+
+    const pathDiff = r2 - r1;
+    const phaseDiffTotal = (2 * Math.PI * pathDiff / interferenceWavelength) + phaseDiff;
+
+    const resultantAmplitude = 2 * Math.abs(Math.cos(phaseDiffTotal / 2));
+
+    return {
+      r1,
+      r2,
+      pathDiff,
+      phaseDiffTotal,
+      resultantAmplitude,
+      isConstructive: Math.abs(Math.cos(phaseDiffTotal / 2)) > 0.7,
+      isDestructive: Math.abs(Math.cos(phaseDiffTotal / 2)) < 0.3
+    };
+  }, [speakerDistance, interferenceWavelength, phaseDiff]);
 
   // Draw canvas
   useEffect(() => {
@@ -507,11 +543,188 @@ export function SoundWaveSimulator() {
       ctx.fillText('Eau (1480)', 80 + (width - 160) * (1480 / maxSpeed), barY + 32);
       ctx.textAlign = 'right';
       ctx.fillText('Acier (5960)', width - 80, barY + 32);
+
+    } else if (mode === 'interference') {
+      const scale = 60;
+      const srcX = 100;
+
+      // Speaker positions
+      const speaker1Y = centerY - (speakerDistance / 2) * scale;
+      const speaker2Y = centerY + (speakerDistance / 2) * scale;
+
+      // Draw interference pattern (background)
+      if (showInterferencePattern) {
+        const imageData = ctx.createImageData(width, height);
+        const data = imageData.data;
+
+        for (let px = 0; px < width; px++) {
+          for (let py = 0; py < height; py++) {
+            const x = (px - srcX) / scale;
+            const y = (centerY - py) / scale;
+
+            if (x > 0) {
+              const interference = getInterference(x, y);
+              const intensityVal = interference.resultantAmplitude / 2;
+
+              const idx = (py * width + px) * 4;
+
+              if (interference.isConstructive) {
+                data[idx] = 34;
+                data[idx + 1] = Math.floor(197 * intensityVal);
+                data[idx + 2] = 94;
+                data[idx + 3] = Math.floor(100 * intensityVal);
+              } else if (interference.isDestructive) {
+                data[idx] = Math.floor(239 * (1 - intensityVal));
+                data[idx + 1] = 68;
+                data[idx + 2] = 68;
+                data[idx + 3] = Math.floor(100 * (1 - intensityVal));
+              } else {
+                data[idx] = 59;
+                data[idx + 1] = 130;
+                data[idx + 2] = 246;
+                data[idx + 3] = Math.floor(60 * intensityVal);
+              }
+            }
+          }
+        }
+        ctx.putImageData(imageData, 0, 0);
+      }
+
+      // Draw wave fronts
+      if (showWaveFronts) {
+        const numWaves = 12;
+
+        for (let i = 0; i < numWaves; i++) {
+          const baseRadius = (i * interferenceWavelength + (time * soundSpeed) % interferenceWavelength) * scale;
+
+          if (baseRadius > 0 && baseRadius < 600) {
+            const alpha = Math.max(0, 0.4 - baseRadius / 1500);
+
+            // Speaker 1 waves
+            ctx.strokeStyle = `rgba(147, 197, 253, ${alpha})`;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(srcX, speaker1Y, baseRadius, -Math.PI / 2, Math.PI / 2);
+            ctx.stroke();
+
+            // Speaker 2 waves
+            const phaseOffset = (phaseDiff / (2 * Math.PI)) * interferenceWavelength * scale;
+            const radius2 = baseRadius - phaseOffset;
+            if (radius2 > 0) {
+              ctx.strokeStyle = `rgba(251, 191, 36, ${alpha})`;
+              ctx.beginPath();
+              ctx.arc(srcX, speaker2Y, radius2, -Math.PI / 2, Math.PI / 2);
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      // Draw speakers
+      ctx.fillStyle = '#3b82f6';
+      ctx.fillRect(srcX - 25, speaker1Y - 20, 30, 40);
+      ctx.fillStyle = '#f59e0b';
+      ctx.fillRect(srcX - 25, speaker2Y - 20, 30, 40);
+
+      // Speaker cones
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath();
+      ctx.arc(srcX - 10, speaker1Y, 12, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(srcX - 10, speaker2Y, 12, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Speaker labels
+      ctx.fillStyle = 'white';
+      ctx.font = 'bold 14px Inter';
+      ctx.textAlign = 'center';
+      ctx.fillText('S₁', srcX - 10, speaker1Y - 30);
+      ctx.fillText('S₂', srcX - 10, speaker2Y + 40);
+
+      // Distance annotation
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath();
+      ctx.moveTo(srcX - 40, speaker1Y);
+      ctx.lineTo(srcX - 40, speaker2Y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '12px Inter';
+      ctx.textAlign = 'right';
+      ctx.fillText(`d = ${speakerDistance.toFixed(1)} m`, srcX - 45, centerY);
+
+      // Draw observer
+      const obsX = srcX + observerX * scale;
+      const obsY = centerY - observerY * scale;
+
+      // Path lines to observer
+      ctx.strokeStyle = 'rgba(147, 197, 253, 0.5)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(srcX, speaker1Y);
+      ctx.lineTo(obsX, obsY);
+      ctx.stroke();
+
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.5)';
+      ctx.beginPath();
+      ctx.moveTo(srcX, speaker2Y);
+      ctx.lineTo(obsX, obsY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Observer point
+      const interference = getInterference(observerX, observerY);
+      const obsColor = interference.isConstructive ? '#22c55e' :
+                       interference.isDestructive ? '#ef4444' : '#8b5cf6';
+
+      ctx.fillStyle = obsColor;
+      ctx.beginPath();
+      ctx.arc(obsX, obsY, 12, 0, 2 * Math.PI);
+      ctx.fill();
+
+      ctx.fillStyle = 'white';
+      ctx.font = 'bold 12px Inter';
+      ctx.textAlign = 'center';
+      ctx.fillText('P', obsX, obsY + 4);
+
+      // Path lengths display
+      ctx.fillStyle = '#93c5fd';
+      ctx.font = '11px Inter';
+      ctx.textAlign = 'left';
+      ctx.fillText(`r₁ = ${interference.r1.toFixed(2)} m`, obsX + 20, obsY - 15);
+      ctx.fillStyle = '#fcd34d';
+      ctx.fillText(`r₂ = ${interference.r2.toFixed(2)} m`, obsX + 20, obsY);
+      ctx.fillStyle = 'white';
+      ctx.fillText(`Δr = ${interference.pathDiff.toFixed(3)} m`, obsX + 20, obsY + 15);
+
+      // Legend
+      ctx.fillStyle = '#22c55e';
+      ctx.fillRect(width - 150, 20, 15, 15);
+      ctx.fillStyle = 'white';
+      ctx.font = '11px Inter';
+      ctx.textAlign = 'left';
+      ctx.fillText('Constructive', width - 130, 32);
+
+      ctx.fillStyle = '#ef4444';
+      ctx.fillRect(width - 150, 40, 15, 15);
+      ctx.fillStyle = 'white';
+      ctx.fillText('Destructive', width - 130, 52);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '12px Inter';
+      ctx.fillText(`λ = ${interferenceWavelength.toFixed(2)} m`, width - 150, 75);
     }
 
   }, [time, mode, sourceFrequency, sourceSpeed, soundSpeed, sourcePosition,
       machSpeed, machNumber, machAngle, power, distance, intensity, intensityDB,
-      temperature, medium, getDopplerFrequency, getSpeedOfSound]);
+      temperature, medium, getDopplerFrequency, getSpeedOfSound,
+      speakerDistance, interferenceFreq, interferenceWavelength, observerX, observerY,
+      phaseDiff, showWaveFronts, showInterferencePattern, getInterference]);
 
   const handleReset = () => {
     setTime(0);
@@ -577,6 +790,16 @@ export function SoundWaveSimulator() {
         >
           Vitesse du son
         </button>
+        <button
+          onClick={() => setMode('interference')}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            mode === 'interference'
+              ? 'bg-violet-600 text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+        >
+          Interférence
+        </button>
       </div>
 
       {/* Mathematical Equation */}
@@ -635,6 +858,37 @@ export function SoundWaveSimulator() {
             </div>
           </>
         )}
+        {mode === 'interference' && (() => {
+          const intfData = getInterference(observerX, observerY);
+          const pathDiffInWavelengths = intfData.pathDiff / interferenceWavelength;
+          const interferenceType = intfData.isConstructive ? 'Constructive' :
+                                  intfData.isDestructive ? 'Destructive' : 'Partielle';
+          return (
+            <>
+              <p className="text-sm text-violet-600 mb-2 font-medium">Interférence de deux sources</p>
+              <div className="grid md:grid-cols-2 gap-4 text-sm">
+                <div className="bg-green-100 rounded p-3">
+                  <p className="text-green-700 font-medium mb-1">Constructive (max)</p>
+                  <BlockMath math={`\\Delta r = n\\lambda`} />
+                </div>
+                <div className="bg-red-100 rounded p-3">
+                  <p className="text-red-700 font-medium mb-1">Destructive (min)</p>
+                  <BlockMath math={`\\Delta r = \\left(n + \\frac{1}{2}\\right)\\lambda`} />
+                </div>
+              </div>
+              <div className="mt-3 p-3 bg-white rounded">
+                <p className="text-gray-600 mb-1">Au point P:</p>
+                <BlockMath math={`\\Delta r = ${intfData.pathDiff.toFixed(3)} \\text{ m} = ${pathDiffInWavelengths.toFixed(2)}\\lambda`} />
+                <p className={`font-bold mt-2 ${
+                  intfData.isConstructive ? 'text-green-600' :
+                  intfData.isDestructive ? 'text-red-600' : 'text-violet-600'
+                }`}>
+                  Interférence {interferenceType}
+                </p>
+              </div>
+            </>
+          );
+        })()}
       </div>
 
       {/* Controls */}
@@ -862,6 +1116,115 @@ export function SoundWaveSimulator() {
             </div>
           </>
         )}
+
+        {mode === 'interference' && (
+          <>
+            <div className="space-y-2">
+              <label className="flex items-center justify-between">
+                <span className="font-medium text-gray-700">Fréquence</span>
+                <span className="text-violet-600 font-mono">{interferenceFreq} Hz</span>
+              </label>
+              <input
+                type="range"
+                min="50"
+                max="500"
+                step="10"
+                value={interferenceFreq}
+                onChange={(e) => setInterferenceFreq(parseInt(e.target.value))}
+                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+              />
+              <p className="text-xs text-gray-500">λ = {interferenceWavelength.toFixed(2)} m</p>
+            </div>
+
+            <div className="space-y-2">
+              <label className="flex items-center justify-between">
+                <span className="font-medium text-gray-700">Distance entre sources</span>
+                <span className="text-violet-600 font-mono">{speakerDistance.toFixed(1)} m</span>
+              </label>
+              <input
+                type="range"
+                min="0.5"
+                max="5"
+                step="0.1"
+                value={speakerDistance}
+                onChange={(e) => setSpeakerDistance(parseFloat(e.target.value))}
+                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="flex items-center justify-between">
+                <span className="font-medium text-gray-700">Déphasage initial</span>
+                <span className="text-violet-600 font-mono">{(phaseDiff / Math.PI).toFixed(2)}π</span>
+              </label>
+              <input
+                type="range"
+                min="0"
+                max={2 * Math.PI}
+                step="0.1"
+                value={phaseDiff}
+                onChange={(e) => setPhaseDiff(parseFloat(e.target.value))}
+                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="flex items-center justify-between">
+                <span className="font-medium text-gray-700">Position X observateur</span>
+                <span className="text-violet-600 font-mono">{observerX.toFixed(1)} m</span>
+              </label>
+              <input
+                type="range"
+                min="1"
+                max="8"
+                step="0.1"
+                value={observerX}
+                onChange={(e) => setObserverX(parseFloat(e.target.value))}
+                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="flex items-center justify-between">
+                <span className="font-medium text-gray-700">Position Y observateur</span>
+                <span className="text-violet-600 font-mono">{observerY.toFixed(1)} m</span>
+              </label>
+              <input
+                type="range"
+                min="-4"
+                max="4"
+                step="0.1"
+                value={observerY}
+                onChange={(e) => setObserverY(parseFloat(e.target.value))}
+                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="font-medium text-gray-700">Affichage</label>
+              <div className="space-y-1">
+                <label className="flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    checked={showWaveFronts}
+                    onChange={(e) => setShowWaveFronts(e.target.checked)}
+                    className="rounded text-violet-600"
+                  />
+                  <span>Fronts d'onde</span>
+                </label>
+                <label className="flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    checked={showInterferencePattern}
+                    onChange={(e) => setShowInterferencePattern(e.target.checked)}
+                    className="rounded text-violet-600"
+                  />
+                  <span>Patron d'interférence</span>
+                </label>
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Canvas */}
@@ -897,7 +1260,7 @@ export function SoundWaveSimulator() {
       {/* Educational Notes */}
       <div className="border-t border-gray-200 pt-6">
         <h3 className="font-semibold text-gray-800 mb-3">Concepts clés</h3>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 text-sm">
           <div className="bg-blue-50 rounded-lg p-4">
             <h4 className="font-medium text-blue-800 mb-2">Effet Doppler</h4>
             <p className="text-blue-700">
@@ -924,6 +1287,13 @@ export function SoundWaveSimulator() {
             <p className="text-orange-700">
               Dépend du milieu et de la température.
               Plus rapide dans les solides que dans les gaz.
+            </p>
+          </div>
+          <div className="bg-violet-50 rounded-lg p-4">
+            <h4 className="font-medium text-violet-800 mb-2">Interférence</h4>
+            <p className="text-violet-700">
+              Deux sources cohérentes créent des zones de renforcement (Δr = nλ)
+              et d'annulation (Δr = (n+½)λ).
             </p>
           </div>
         </div>
