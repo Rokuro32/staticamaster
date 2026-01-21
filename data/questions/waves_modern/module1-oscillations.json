@@ -310,5 +310,266 @@
       "L": { "min": 0.6, "max": 2.4, "step": 0.3, "unit": "m" }
     },
     "answerFormula": "2 * L / n"
+  },
+  {
+    "id": "wm-m1-q8-dessiner-onde",
+    "module": 1,
+    "tags": ["shm", "wave-function"],
+    "difficulty": "intermediate",
+    "type": "wave-sketch",
+    "active": true,
+    "title": "Dessiner une onde sinusoidale",
+    "statement": "Dessinez l'onde decrite par l'equation: y(x) = 2 sin(πx). L'amplitude est de 2 m et la longueur d'onde est de 2 m.",
+    "givens": {
+      "A": 2,
+      "lambda": 2
+    },
+    "unknowns": ["y(x)"],
+    "waveSketch": {
+      "amplitude": 2,
+      "wavelength": 2,
+      "phase": 0,
+      "phaseUnit": "rad",
+      "waveType": "sine",
+      "xAxisLabel": "x (m)",
+      "yAxisLabel": "y (m)",
+      "xRange": [0, 4],
+      "yRange": [-3, 3],
+      "gridSpacing": 1,
+      "tolerance": 15
+    },
+    "answer": {
+      "variable": "wave",
+      "value": 1,
+      "unit": "",
+      "tolerance": 20,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'amplitude A = 2 m signifie que l'onde varie entre -2 et +2",
+      "La longueur d'onde λ = 2 m signifie qu'un cycle complet se repete tous les 2 m",
+      "Une fonction sinus commence a zero et monte d'abord"
+    ],
+    "commonMistakes": [],
+    "explanation": "L'equation y(x) = 2 sin(πx) decrit une onde sinusoidale avec A = 2 m et k = π rad/m, donc λ = 2π/k = 2 m. L'onde commence a y = 0 en x = 0 et atteint son maximum y = 2 en x = 0.5 m."
+  },
+  {
+    "id": "wm-m1-q9-identifier-equation",
+    "module": 1,
+    "tags": ["shm", "wave-function"],
+    "difficulty": "beginner",
+    "type": "wave-match",
+    "active": true,
+    "title": "Identifier l'equation d'une onde",
+    "statement": "Observez le graphique et selectionnez l'equation qui correspond a cette onde.",
+    "givens": {},
+    "unknowns": ["equation"],
+    "waveMatch": {
+      "waveConfig": {
+        "amplitude": 3,
+        "wavelength": 4,
+        "phase": 0,
+        "phaseUnit": "rad",
+        "waveType": "sine",
+        "xAxisLabel": "x (m)",
+        "yAxisLabel": "y (m)",
+        "xRange": [0, 8],
+        "yRange": [-4, 4],
+        "gridSpacing": 1,
+        "tolerance": 10
+      },
+      "options": [
+        {
+          "id": "opt1",
+          "equation": "y = 3 sin(πx/2)",
+          "isCorrect": true,
+          "feedback": "Correct! A = 3 m et k = π/2 rad/m donne λ = 4 m."
+        },
+        {
+          "id": "opt2",
+          "equation": "y = 3 cos(πx/2)",
+          "isCorrect": false,
+          "feedback": "Incorrect. Une fonction cosinus commence a son maximum, pas a zero."
+        },
+        {
+          "id": "opt3",
+          "equation": "y = 4 sin(πx/3)",
+          "isCorrect": false,
+          "feedback": "Incorrect. L'amplitude est 3 m, pas 4 m."
+        },
+        {
+          "id": "opt4",
+          "equation": "y = 3 sin(2πx)",
+          "isCorrect": false,
+          "feedback": "Incorrect. Cela donnerait λ = 1 m, mais l'onde a une longueur d'onde de 4 m."
+        }
+      ]
+    },
+    "answer": {
+      "variable": "equation",
+      "value": 1,
+      "unit": "",
+      "tolerance": 0,
+      "toleranceType": "absolute"
+    },
+    "hints": [
+      "Regardez l'amplitude: quelle est la valeur maximale de y?",
+      "Comptez combien de metres pour un cycle complet (λ)",
+      "La fonction commence-t-elle a zero (sinus) ou au maximum (cosinus)?"
+    ],
+    "commonMistakes": [],
+    "explanation": "L'onde a une amplitude de 3 m (valeur max) et une longueur d'onde de 4 m (un cycle complet). Comme elle commence a zero et monte, c'est un sinus. Donc y = 3 sin(kx) avec k = 2π/λ = π/2."
+  },
+  {
+    "id": "wm-m1-q10-lire-parametres",
+    "module": 1,
+    "tags": ["shm", "wave-function"],
+    "difficulty": "intermediate",
+    "type": "parameter-identify",
+    "active": true,
+    "title": "Lire les parametres d'une onde",
+    "statement": "A partir du graphique, identifiez l'amplitude et la longueur d'onde de cette onde sinusoidale.",
+    "givens": {},
+    "unknowns": ["A", "lambda"],
+    "parameterIdentify": {
+      "waveConfig": {
+        "amplitude": 2.5,
+        "wavelength": 3,
+        "phase": 0,
+        "phaseUnit": "rad",
+        "waveType": "sine",
+        "xAxisLabel": "x (m)",
+        "yAxisLabel": "y (m)",
+        "xRange": [0, 9],
+        "yRange": [-4, 4],
+        "gridSpacing": 1,
+        "tolerance": 10
+      },
+      "parametersToFind": ["amplitude", "wavelength"]
+    },
+    "answer": {
+      "variable": "params",
+      "value": 1,
+      "unit": "",
+      "tolerance": 10,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'amplitude est la distance entre l'equilibre (y=0) et le maximum",
+      "La longueur d'onde est la distance entre deux cretes consecutives",
+      "Utilisez la grille pour mesurer precisement"
+    ],
+    "commonMistakes": [],
+    "explanation": "L'amplitude A = 2.5 m (lecture du maximum). La longueur d'onde λ = 3 m (distance entre deux maximums consecutifs ou entre deux points equivalents du cycle)."
+  },
+  {
+    "id": "wm-m1-q11-dessiner-cosinus",
+    "module": 1,
+    "tags": ["shm", "wave-function"],
+    "difficulty": "advanced",
+    "type": "wave-sketch",
+    "active": true,
+    "title": "Dessiner une onde cosinus avec dephasage",
+    "statement": "Dessinez l'onde decrite par l'equation: y(x) = 1.5 cos(2πx/3 - π/2). Notez que le dephasage de -π/2 decale l'onde vers la droite.",
+    "givens": {
+      "A": 1.5,
+      "lambda": 3,
+      "phi": -90
+    },
+    "unknowns": ["y(x)"],
+    "waveSketch": {
+      "amplitude": 1.5,
+      "wavelength": 3,
+      "phase": -1.5708,
+      "phaseUnit": "rad",
+      "waveType": "cosine",
+      "xAxisLabel": "x (m)",
+      "yAxisLabel": "y (m)",
+      "xRange": [0, 6],
+      "yRange": [-2, 2],
+      "gridSpacing": 0.5,
+      "tolerance": 15
+    },
+    "answer": {
+      "variable": "wave",
+      "value": 1,
+      "unit": "",
+      "tolerance": 20,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "A = 1.5 m, donc l'onde oscille entre -1.5 et +1.5",
+      "λ = 3 m (car k = 2π/3)",
+      "Le dephasage -π/2 decale le cosinus pour qu'il ressemble a un sinus"
+    ],
+    "commonMistakes": [],
+    "explanation": "L'onde y = 1.5 cos(2πx/3 - π/2) est equivalente a y = 1.5 sin(2πx/3) grace a l'identite cos(θ - π/2) = sin(θ). Elle commence a zero en x = 0."
+  },
+  {
+    "id": "wm-m1-q12-match-dephasage",
+    "module": 1,
+    "tags": ["shm", "wave-function", "phase"],
+    "difficulty": "advanced",
+    "type": "wave-match",
+    "active": true,
+    "title": "Identifier une onde avec dephasage",
+    "statement": "Cette onde ne commence pas a zero. Identifiez l'equation correcte en observant la phase initiale.",
+    "givens": {},
+    "unknowns": ["equation"],
+    "waveMatch": {
+      "waveConfig": {
+        "amplitude": 2,
+        "wavelength": 4,
+        "phase": 1.5708,
+        "phaseUnit": "rad",
+        "waveType": "sine",
+        "xAxisLabel": "x (m)",
+        "yAxisLabel": "y (m)",
+        "xRange": [0, 8],
+        "yRange": [-3, 3],
+        "gridSpacing": 1,
+        "tolerance": 10
+      },
+      "options": [
+        {
+          "id": "opt1",
+          "equation": "y = 2 sin(πx/2 + π/2)",
+          "isCorrect": true,
+          "feedback": "Correct! Le dephasage +π/2 fait que l'onde commence a son maximum."
+        },
+        {
+          "id": "opt2",
+          "equation": "y = 2 sin(πx/2)",
+          "isCorrect": false,
+          "feedback": "Incorrect. Cette onde commencerait a zero, pas au maximum."
+        },
+        {
+          "id": "opt3",
+          "equation": "y = 2 cos(πx/2 + π/2)",
+          "isCorrect": false,
+          "feedback": "Incorrect. cos(θ + π/2) = -sin(θ), l'onde commencerait a zero et descendrait."
+        },
+        {
+          "id": "opt4",
+          "equation": "y = 2 sin(πx/2 - π/2)",
+          "isCorrect": false,
+          "feedback": "Incorrect. Le dephasage -π/2 ferait commencer l'onde a son minimum, pas maximum."
+        }
+      ]
+    },
+    "answer": {
+      "variable": "equation",
+      "value": 1,
+      "unit": "",
+      "tolerance": 0,
+      "toleranceType": "absolute"
+    },
+    "hints": [
+      "Observez la valeur de y en x = 0",
+      "sin(π/2) = 1, donc sin(θ + π/2) commence a 1 (maximum)",
+      "cos(0) = 1 aussi, mais verifiez la suite de la courbe"
+    ],
+    "commonMistakes": [],
+    "explanation": "L'onde commence a y = 2 (maximum) en x = 0. Cela correspond a sin(π/2) = 1, donc y = 2 sin(πx/2 + π/2). Note: c'est equivalent a y = 2 cos(πx/2)."
   }
 ]

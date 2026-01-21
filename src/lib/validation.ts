@@ -15,6 +15,7 @@ import type {
   DCLValidation,
   EquationValidation,
   NumericValidation,
+  WaveSketchValidation,
   ValidationConfig,
 } from '@/types/validation';
 import { DEFAULT_VALIDATION_CONFIG } from '@/types/validation';
@@ -60,6 +61,15 @@ export function validateAnswer(
 
     case 'multi-step':
       return validateMultiStep(question, userAnswer, config, feedback);
+
+    case 'wave-sketch':
+      return validateWaveSketch(question, userAnswer, feedback);
+
+    case 'wave-match':
+      return validateWaveMatch(question, userAnswer, feedback);
+
+    case 'parameter-identify':
+      return validateParameterIdentify(question, userAnswer, feedback);
 
     default:
       feedback.push({
@@ -610,6 +620,339 @@ function validateMultiStep(
   // Normaliser le score
   const score = stepCount > 0 ? Math.round(totalScore / stepCount) : 0;
   const isCorrect = score >= 90;
+
+  return {
+    isCorrect,
+    score,
+    partialCredit: score,
+    feedback,
+    competenciesAssessed: question.tags,
+  };
+}
+
+/**
+ * Valide un dessin d'onde (wave-sketch)
+ */
+function validateWaveSketch(
+  question: Question | InstantiatedQuestion,
+  userAnswer: UserAnswer,
+  feedback: FeedbackItem[]
+): ValidationResult {
+  if (!question.waveSketch || !userAnswer.drawnPoints || userAnswer.drawnPoints.length < 10) {
+    feedback.push({
+      id: generateId(),
+      type: 'error',
+      target: 'wave-shape',
+      message: 'Dessin insuffisant - tracez plus de points',
+    });
+    return {
+      isCorrect: false,
+      score: 0,
+      partialCredit: 0,
+      feedback,
+      competenciesAssessed: question.tags,
+    };
+  }
+
+  const config = question.waveSketch;
+  const points = userAnswer.drawnPoints;
+
+  // Sort points by x
+  const sortedPoints = [...points].sort((a, b) => a.x - b.x);
+
+  // Calculate expected wave function
+  const expectedY = (x: number): number => {
+    let phaseRad = config.phase;
+    if (config.phaseUnit === 'deg') {
+      phaseRad = (config.phase * Math.PI) / 180;
+    }
+
+    let k = 0;
+    if (config.wavelength) {
+      k = (2 * Math.PI) / config.wavelength;
+    } else if (config.frequency) {
+      k = 2 * Math.PI * config.frequency;
+    }
+
+    if (config.waveType === 'cosine') {
+      return config.amplitude * Math.cos(k * x + phaseRad);
+    } else {
+      return config.amplitude * Math.sin(k * x + phaseRad);
+    }
+  };
+
+  // Analyze the drawn wave
+  // Find amplitude from drawn points
+  const yValues = sortedPoints.map(p => p.y);
+  const drawnMax = Math.max(...yValues);
+  const drawnMin = Math.min(...yValues);
+  const drawnAmplitude = (drawnMax - drawnMin) / 2;
+
+  // Calculate amplitude error
+  const amplitudeError = Math.abs(drawnAmplitude - config.amplitude) / config.amplitude * 100;
+  const amplitudeCorrect = amplitudeError < 20;
+
+  // Sample points and compare to expected
+  let totalError = 0;
+  let sampleCount = 0;
+
+  for (const point of sortedPoints) {
+    const expected = expectedY(point.x);
+    const error = Math.abs(point.y - expected) / config.amplitude;
+    totalError += error;
+    sampleCount++;
+  }
+
+  const averageError = sampleCount > 0 ? totalError / sampleCount : 1;
+  const shapeAccuracy = Math.max(0, 100 - averageError * 50);
+  const shapeCorrect = shapeAccuracy > 60;
+
+  // Estimate wavelength from zero crossings
+  let wavelengthError = 0;
+  let wavelengthCorrect = true;
+
+  if (config.wavelength) {
+    // Find zero crossings (approximate)
+    const crossings: number[] = [];
+    for (let i = 1; i < sortedPoints.length; i++) {
+      if (sortedPoints[i - 1].y * sortedPoints[i].y < 0) {
+        // Linear interpolation to find crossing
+        const x1 = sortedPoints[i - 1].x;
+        const y1 = sortedPoints[i - 1].y;
+        const x2 = sortedPoints[i].x;
+        const y2 = sortedPoints[i].y;
+        const crossX = x1 - y1 * (x2 - x1) / (y2 - y1);
+        crossings.push(crossX);
+      }
+    }
+
+    if (crossings.length >= 2) {
+      // Half wavelength is distance between consecutive crossings
+      const halfWavelengths: number[] = [];
+      for (let i = 1; i < crossings.length; i++) {
+        halfWavelengths.push(crossings[i] - crossings[i - 1]);
+      }
+      const avgHalfWavelength = halfWavelengths.reduce((a, b) => a + b, 0) / halfWavelengths.length;
+      const estimatedWavelength = avgHalfWavelength * 2;
+      wavelengthError = Math.abs(estimatedWavelength - config.wavelength) / config.wavelength * 100;
+      wavelengthCorrect = wavelengthError < 25;
+    }
+  }
+
+  // Phase is harder to validate precisely, be lenient
+  const phaseCorrect = shapeAccuracy > 50;
+  const phaseError = shapeCorrect ? 10 : 45;
+
+  const waveSketchValidation: WaveSketchValidation = {
+    amplitudeCorrect,
+    wavelengthCorrect,
+    phaseCorrect,
+    shapeCorrect,
+    amplitudeError,
+    wavelengthError,
+    phaseError,
+    overallAccuracy: shapeAccuracy,
+  };
+
+  // Calculate overall score
+  let score = 0;
+  if (amplitudeCorrect) score += 30;
+  if (wavelengthCorrect) score += 30;
+  if (shapeCorrect) score += 40;
+
+  const isCorrect = score >= 80;
+
+  // Generate feedback
+  if (isCorrect) {
+    feedback.push({
+      id: generateId(),
+      type: 'success',
+      target: 'wave-shape',
+      message: 'Excellent! Votre onde correspond bien a l\'equation.',
+    });
+  } else {
+    if (!amplitudeCorrect) {
+      feedback.push({
+        id: generateId(),
+        type: 'error',
+        target: 'wave-amplitude',
+        message: `Amplitude incorrecte (erreur: ${amplitudeError.toFixed(0)}%)`,
+        suggestion: `L'amplitude attendue est ${config.amplitude}`,
+      });
+    }
+
+    if (!wavelengthCorrect && config.wavelength) {
+      feedback.push({
+        id: generateId(),
+        type: 'error',
+        target: 'wave-wavelength',
+        message: `Longueur d'onde incorrecte (erreur: ${wavelengthError.toFixed(0)}%)`,
+        suggestion: `La longueur d'onde attendue est ${config.wavelength}`,
+      });
+    }
+
+    if (!shapeCorrect) {
+      feedback.push({
+        id: generateId(),
+        type: 'warning',
+        target: 'wave-shape',
+        message: 'La forme generale de l\'onde n\'est pas tout a fait correcte',
+        suggestion: 'Verifiez la phase initiale et la forme sinusoidale',
+      });
+    }
+  }
+
+  return {
+    isCorrect,
+    score,
+    partialCredit: score,
+    feedback,
+    waveSketchValidation,
+    competenciesAssessed: question.tags,
+  };
+}
+
+/**
+ * Valide une question wave-match (associer equation au graphique)
+ */
+function validateWaveMatch(
+  question: Question | InstantiatedQuestion,
+  userAnswer: UserAnswer,
+  feedback: FeedbackItem[]
+): ValidationResult {
+  if (!question.waveMatch || !userAnswer.selectedWaveOption) {
+    feedback.push({
+      id: generateId(),
+      type: 'error',
+      target: 'final-answer',
+      message: 'Aucune reponse selectionnee',
+    });
+    return {
+      isCorrect: false,
+      score: 0,
+      partialCredit: 0,
+      feedback,
+      competenciesAssessed: question.tags,
+    };
+  }
+
+  const selectedOption = question.waveMatch.options.find(
+    o => o.id === userAnswer.selectedWaveOption
+  );
+  const correctOption = question.waveMatch.options.find(o => o.isCorrect);
+
+  if (selectedOption?.isCorrect) {
+    feedback.push({
+      id: generateId(),
+      type: 'success',
+      target: 'final-answer',
+      message: 'Bonne reponse! Vous avez correctement identifie l\'equation.',
+    });
+    return {
+      isCorrect: true,
+      score: 100,
+      partialCredit: 100,
+      feedback,
+      competenciesAssessed: question.tags,
+    };
+  } else {
+    feedback.push({
+      id: generateId(),
+      type: 'error',
+      target: 'final-answer',
+      message: selectedOption?.feedback || 'Equation incorrecte',
+      suggestion: correctOption ? `La bonne reponse etait: ${correctOption.equation}` : undefined,
+    });
+    return {
+      isCorrect: false,
+      score: 0,
+      partialCredit: 0,
+      feedback,
+      competenciesAssessed: question.tags,
+    };
+  }
+}
+
+/**
+ * Valide une question parameter-identify (identifier les parametres d'un graphique)
+ */
+function validateParameterIdentify(
+  question: Question | InstantiatedQuestion,
+  userAnswer: UserAnswer,
+  feedback: FeedbackItem[]
+): ValidationResult {
+  if (!question.parameterIdentify || !userAnswer.identifiedParameters) {
+    feedback.push({
+      id: generateId(),
+      type: 'error',
+      target: 'final-answer',
+      message: 'Aucun parametre identifie',
+    });
+    return {
+      isCorrect: false,
+      score: 0,
+      partialCredit: 0,
+      feedback,
+      competenciesAssessed: question.tags,
+    };
+  }
+
+  const config = question.parameterIdentify.waveConfig;
+  const params = userAnswer.identifiedParameters;
+  const toFind = question.parameterIdentify.parametersToFind;
+
+  let correctCount = 0;
+  const results: Record<string, boolean> = {};
+
+  for (const param of toFind) {
+    let expected: number | undefined;
+    let tolerance = 0.1; // 10% tolerance
+
+    switch (param) {
+      case 'amplitude':
+        expected = config.amplitude;
+        break;
+      case 'wavelength':
+        expected = config.wavelength;
+        break;
+      case 'frequency':
+        expected = config.frequency;
+        break;
+      case 'period':
+        expected = config.frequency ? 1 / config.frequency : undefined;
+        break;
+      case 'phase':
+        expected = config.phase;
+        tolerance = 0.2; // More tolerance for phase
+        break;
+    }
+
+    if (expected !== undefined && params[param] !== undefined) {
+      const error = Math.abs(params[param] - expected) / expected;
+      const isCorrect = error < tolerance;
+      results[param] = isCorrect;
+
+      if (isCorrect) {
+        correctCount++;
+        feedback.push({
+          id: generateId(),
+          type: 'success',
+          target: 'final-answer',
+          message: `${param}: Correct!`,
+        });
+      } else {
+        feedback.push({
+          id: generateId(),
+          type: 'error',
+          target: 'final-answer',
+          message: `${param}: Incorrect (votre valeur: ${params[param]}, attendu: ${expected})`,
+        });
+      }
+    }
+  }
+
+  const score = Math.round((correctCount / toFind.length) * 100);
+  const isCorrect = correctCount === toFind.length;
 
   return {
     isCorrect,

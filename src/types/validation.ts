@@ -13,7 +13,11 @@ export type ValidationTarget =
   | 'equation-signs'
   | 'calculation'
   | 'units'
-  | 'final-answer';
+  | 'final-answer'
+  | 'wave-amplitude'
+  | 'wave-wavelength'
+  | 'wave-phase'
+  | 'wave-shape';
 
 export interface FeedbackItem {
   id: string;
@@ -51,6 +55,17 @@ export interface NumericValidation {
   signCorrect: boolean;
 }
 
+export interface WaveSketchValidation {
+  amplitudeCorrect: boolean;
+  wavelengthCorrect: boolean;
+  phaseCorrect: boolean;
+  shapeCorrect: boolean;
+  amplitudeError: number;   // percentage
+  wavelengthError: number;  // percentage
+  phaseError: number;       // in degrees
+  overallAccuracy: number;  // 0-100
+}
+
 export interface ValidationResult {
   isCorrect: boolean;
   score: number; // 0-100
@@ -61,6 +76,7 @@ export interface ValidationResult {
   dclValidation?: DCLValidation;
   equationValidation?: EquationValidation;
   numericValidation?: NumericValidation;
+  waveSketchValidation?: WaveSketchValidation;
 
   // Pour le suivi
   competenciesAssessed: (CompetencyTag | string)[];
@@ -94,6 +110,21 @@ export interface UserAnswer {
   // Équations
   selectedEquations?: string[];
   equationTerms?: Record<string, string[]>;
+
+  // Wave sketch - points drawn by user
+  drawnPoints?: Array<{ x: number; y: number }>;
+
+  // Wave match - selected equation option
+  selectedWaveOption?: string;
+
+  // Parameter identify - identified values
+  identifiedParameters?: {
+    amplitude?: number;
+    wavelength?: number;
+    frequency?: number;
+    period?: number;
+    phase?: number;
+  };
 
   // Calculs intermédiaires
   intermediateValues?: Record<string, number>;

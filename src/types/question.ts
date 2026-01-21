@@ -6,7 +6,7 @@ export type ModuleId = number; // Flexible pour supporter différents cours
 
 export type Difficulty = 'beginner' | 'intermediate' | 'advanced';
 
-export type QuestionType = 'mcq' | 'numeric' | 'dcl' | 'equation' | 'multi-step';
+export type QuestionType = 'mcq' | 'numeric' | 'dcl' | 'equation' | 'multi-step' | 'wave-sketch' | 'wave-match' | 'parameter-identify';
 
 // Tags de compétences
 export type CompetencyTag =
@@ -147,6 +147,50 @@ export interface EquationSet {
   forms: EquationForm[];
 }
 
+// Wave sketch types
+export interface WaveSketchConfig {
+  // Wave parameters to draw
+  amplitude: number;      // A
+  wavelength?: number;    // λ (for spatial waves)
+  frequency?: number;     // f (for temporal waves)
+  phase: number;          // φ (in radians or degrees)
+  phaseUnit?: 'rad' | 'deg';
+  waveType: 'sine' | 'cosine';
+
+  // Display config
+  xAxisLabel: string;     // 'x (m)' or 't (s)'
+  yAxisLabel: string;     // 'y (m)' or 'y (cm)'
+  xRange: [number, number];
+  yRange: [number, number];
+  gridSpacing: number;
+
+  // Tolerance for validation
+  tolerance: number;      // How close drawn points need to be (in pixels)
+}
+
+// Wave match types (match equations to graphs)
+export interface WaveMatchOption {
+  id: string;
+  equation: string;       // LaTeX equation
+  isCorrect: boolean;
+  feedback?: string;
+}
+
+export interface WaveMatchConfig {
+  // The wave to display
+  waveConfig: WaveSketchConfig;
+  // Options to choose from
+  options: WaveMatchOption[];
+}
+
+// Parameter identify types (identify parameters from graph)
+export interface ParameterIdentifyConfig {
+  // The wave to display
+  waveConfig: WaveSketchConfig;
+  // Which parameters to identify
+  parametersToFind: ('amplitude' | 'wavelength' | 'frequency' | 'period' | 'phase')[];
+}
+
 // Réponses
 export interface Answer {
   variable: string;
@@ -212,6 +256,15 @@ export interface Question {
 
   // Pour QCM
   options?: MCQOption[];
+
+  // Pour wave-sketch questions
+  waveSketch?: WaveSketchConfig;
+
+  // Pour wave-match questions
+  waveMatch?: WaveMatchConfig;
+
+  // Pour parameter-identify questions
+  parameterIdentify?: ParameterIdentifyConfig;
 
   // Réponses
   answer: Answer | Answer[];

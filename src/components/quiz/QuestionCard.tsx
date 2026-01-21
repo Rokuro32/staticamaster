@@ -8,6 +8,9 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { NumericInput } from '@/components/ui/Input';
 import { cn } from '@/lib/utils';
+import { WaveSketchQuestion } from './WaveSketchQuestion';
+import { WaveMatchQuestion } from './WaveMatchQuestion';
+import { ParameterIdentifyQuestion } from './ParameterIdentifyQuestion';
 
 interface QuestionCardProps {
   question: InstantiatedQuestion;
@@ -30,6 +33,8 @@ export function QuestionCard({
   const [numericValue, setNumericValue] = useState<number | ''>('');
   const [unit, setUnit] = useState('');
   const [startTime] = useState(Date.now());
+  const [drawnPoints, setDrawnPoints] = useState<Array<{ x: number; y: number }>>([]);
+  const [identifiedParams, setIdentifiedParams] = useState<Record<string, number>>({});
 
   const isAnswered = !!result;
 
@@ -45,8 +50,36 @@ export function QuestionCard({
     } else if (question.type === 'numeric') {
       answer.numericValue = numericValue === '' ? undefined : numericValue;
       answer.unit = unit;
+    } else if (question.type === 'wave-sketch') {
+      answer.drawnPoints = drawnPoints;
+    } else if (question.type === 'wave-match') {
+      answer.selectedWaveOption = selectedOption || undefined;
+    } else if (question.type === 'parameter-identify') {
+      answer.identifiedParameters = identifiedParams;
     }
 
+    onSubmit(answer);
+  };
+
+  const handleWaveSketchComplete = (points: Array<{ x: number; y: number }>) => {
+    setDrawnPoints(points);
+    const answer: UserAnswer = {
+      questionId: question.id,
+      timestamp: Date.now(),
+      timeSpent: Math.floor((Date.now() - startTime) / 1000),
+      drawnPoints: points,
+    };
+    onSubmit(answer);
+  };
+
+  const handleParameterIdentify = (params: Record<string, number>) => {
+    setIdentifiedParams(params);
+    const answer: UserAnswer = {
+      questionId: question.id,
+      timestamp: Date.now(),
+      timeSpent: Math.floor((Date.now() - startTime) / 1000),
+      identifiedParameters: params,
+    };
     onSubmit(answer);
   };
 
@@ -128,6 +161,40 @@ export function QuestionCard({
           />
         )}
 
+        {question.type === 'wave-sketch' && question.waveSketch && (
+          <WaveSketchQuestion
+            config={question.waveSketch}
+            onDrawingComplete={handleWaveSketchComplete}
+            isAnswered={isAnswered}
+            showCorrect={isAnswered}
+          />
+        )}
+
+        {question.type === 'wave-match' && question.waveMatch && (
+          <WaveMatchQuestion
+            config={question.waveMatch}
+            selectedOption={selectedOption}
+            onSelect={setSelectedOption}
+            isAnswered={isAnswered}
+          />
+        )}
+
+        {question.type === 'parameter-identify' && question.parameterIdentify && (
+          <ParameterIdentifyQuestion
+            config={question.parameterIdentify}
+            onSubmit={handleParameterIdentify}
+            isAnswered={isAnswered}
+            correctValues={isAnswered ? Object.fromEntries(
+              Object.entries({
+                amplitude: question.parameterIdentify.waveConfig.amplitude,
+                wavelength: question.parameterIdentify.waveConfig.wavelength,
+                frequency: question.parameterIdentify.waveConfig.frequency,
+                phase: question.parameterIdentify.waveConfig.phase,
+              }).filter(([_, v]) => v !== undefined)
+            ) as Record<string, number> : undefined}
+          />
+        )}
+
         {/* Feedback */}
         {result && (
           <FeedbackPanel feedback={result.feedback} score={result.score} />
@@ -144,15 +211,19 @@ export function QuestionCard({
         {/* Actions */}
         <div className="mt-8 flex justify-end gap-3">
           {!isAnswered ? (
-            <Button
-              onClick={handleSubmit}
-              disabled={
-                (question.type === 'mcq' && !selectedOption) ||
-                (question.type === 'numeric' && numericValue === '')
-              }
-            >
-              Valider ma réponse
-            </Button>
+            // wave-sketch, parameter-identify have their own submit buttons
+            (question.type !== 'wave-sketch' && question.type !== 'parameter-identify') && (
+              <Button
+                onClick={handleSubmit}
+                disabled={
+                  (question.type === 'mcq' && !selectedOption) ||
+                  (question.type === 'numeric' && numericValue === '') ||
+                  (question.type === 'wave-match' && !selectedOption)
+                }
+              >
+                Valider ma réponse
+              </Button>
+            )
           ) : (
             <Button onClick={onNext}>
               {questionNumber < totalQuestions ? 'Question suivante' : 'Voir les résultats'}
