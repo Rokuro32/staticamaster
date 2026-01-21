@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { InlineMath, BlockMath } from 'react-katex';
 
-type SimulationMode = 'shm' | 'standing' | 'modes' | 'beats';
+type SimulationMode = 'shm' | 'energy' | 'standing' | 'modes' | 'beats';
 type ReflectionType = 'fixed' | 'free';
 
 export function OscillationsWaveSimulator() {
@@ -30,8 +30,17 @@ export function OscillationsWaveSimulator() {
   // Beats parameters
   const [frequency2, setFrequency2] = useState(1.5);
 
+  // Energy parameters
+  const [mass, setMass] = useState(1);
+  const [springConstant, setSpringConstant] = useState(40);
+  const [damping, setDamping] = useState(0);
+  const [showEnergyBars, setShowEnergyBars] = useState(true);
+
   // Sound speed for standing waves
   const soundSpeed = 343;
+
+  // Energy canvas ref
+  const energyCanvasRef = useRef<HTMLCanvasElement>(null);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const springCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -67,6 +76,53 @@ export function OscillationsWaveSimulator() {
   const getDisplacement = useCallback((t: number) => {
     return amplitude * Math.sin(2 * Math.PI * frequency * t + phase);
   }, [amplitude, frequency, phase]);
+
+  // Damped oscillation (for energy mode)
+  const getDampedDisplacement = useCallback((t: number) => {
+    const omega0 = Math.sqrt(springConstant / mass);
+    const gamma = damping / (2 * mass);
+
+    if (gamma >= omega0) {
+      // Overdamped or critically damped
+      return amplitude * Math.exp(-gamma * t);
+    }
+
+    const omegaD = Math.sqrt(omega0 * omega0 - gamma * gamma);
+    return amplitude * Math.exp(-gamma * t) * Math.cos(omegaD * t);
+  }, [amplitude, mass, springConstant, damping]);
+
+  const getDampedVelocity = useCallback((t: number) => {
+    const omega0 = Math.sqrt(springConstant / mass);
+    const gamma = damping / (2 * mass);
+
+    if (gamma >= omega0) {
+      return -gamma * amplitude * Math.exp(-gamma * t);
+    }
+
+    const omegaD = Math.sqrt(omega0 * omega0 - gamma * gamma);
+    const expTerm = Math.exp(-gamma * t);
+    return amplitude * expTerm * (-gamma * Math.cos(omegaD * t) - omegaD * Math.sin(omegaD * t));
+  }, [amplitude, mass, springConstant, damping]);
+
+  // Energy calculations
+  const getEnergies = useCallback((t: number) => {
+    const x = getDampedDisplacement(t);
+    const v = getDampedVelocity(t);
+
+    const kineticEnergy = 0.5 * mass * v * v;
+    const potentialEnergy = 0.5 * springConstant * x * x;
+    const totalEnergy = kineticEnergy + potentialEnergy;
+    const initialEnergy = 0.5 * springConstant * amplitude * amplitude;
+    const lostEnergy = initialEnergy - totalEnergy;
+
+    return {
+      kinetic: kineticEnergy,
+      potential: potentialEnergy,
+      total: totalEnergy,
+      lost: Math.max(0, lostEnergy),
+      initial: initialEnergy,
+    };
+  }, [getDampedDisplacement, getDampedVelocity, mass, springConstant, amplitude]);
 
   // Wave functions for standing waves
   const getIncidentWave = useCallback((x: number, t: number) => {
@@ -391,9 +447,203 @@ export function OscillationsWaveSimulator() {
       harmonicMode, stringLength, showIncident, showReflected, showResultant,
       getDisplacement, getIncidentWave, getReflectedWave, getModeWave]);
 
-  // Draw mass-spring for SHM mode
+  // Draw energy visualization
   useEffect(() => {
-    if (mode !== 'shm') return;
+    if (mode !== 'energy') return;
+
+    const canvas = energyCanvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Clear canvas
+    ctx.fillStyle = '#fafafa';
+    ctx.fillRect(0, 0, width, height);
+
+    const energies = getEnergies(time);
+    const maxEnergy = energies.initial * 1.1;
+
+    if (showEnergyBars) {
+      // Bar chart mode
+      const barWidth = 80;
+      const barSpacing = 30;
+      const startX = (width - 4 * barWidth - 3 * barSpacing) / 2;
+      const maxBarHeight = height - 80;
+
+      // Draw bars
+      const bars = [
+        { label: 'Cinétique', value: energies.kinetic, color: '#3b82f6', labelColor: '#1d4ed8' },
+        { label: 'Potentielle', value: energies.potential, color: '#22c55e', labelColor: '#15803d' },
+        { label: 'Totale', value: energies.total, color: '#8b5cf6', labelColor: '#6d28d9' },
+        { label: 'Perdue', value: energies.lost, color: '#ef4444', labelColor: '#b91c1c' },
+      ];
+
+      bars.forEach((bar, i) => {
+        const x = startX + i * (barWidth + barSpacing);
+        const barHeight = (bar.value / maxEnergy) * maxBarHeight;
+        const y = height - 40 - barHeight;
+
+        // Bar background
+        ctx.fillStyle = '#e5e7eb';
+        ctx.fillRect(x, height - 40 - maxBarHeight, barWidth, maxBarHeight);
+
+        // Bar fill
+        ctx.fillStyle = bar.color;
+        ctx.fillRect(x, y, barWidth, barHeight);
+
+        // Bar border
+        ctx.strokeStyle = bar.labelColor;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x, y, barWidth, barHeight);
+
+        // Label
+        ctx.fillStyle = bar.labelColor;
+        ctx.font = 'bold 12px Inter';
+        ctx.textAlign = 'center';
+        ctx.fillText(bar.label, x + barWidth / 2, height - 20);
+
+        // Value
+        ctx.fillStyle = '#374151';
+        ctx.font = '11px Inter';
+        ctx.fillText(`${bar.value.toFixed(2)} J`, x + barWidth / 2, y - 8);
+      });
+
+      // Title
+      ctx.fillStyle = '#1f2937';
+      ctx.font = 'bold 14px Inter';
+      ctx.textAlign = 'center';
+      ctx.fillText('Distribution de l\'énergie', width / 2, 25);
+
+      // Initial energy reference line
+      const initialY = height - 40 - (energies.initial / maxEnergy) * maxBarHeight;
+      ctx.strokeStyle = '#9ca3af';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath();
+      ctx.moveTo(startX - 20, initialY);
+      ctx.lineTo(startX + 4 * barWidth + 3 * barSpacing + 20, initialY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '11px Inter';
+      ctx.textAlign = 'left';
+      ctx.fillText(`E₀ = ${energies.initial.toFixed(2)} J`, startX - 15, initialY - 5);
+
+    } else {
+      // Time graph mode
+      const padding = 50;
+      const graphWidth = width - 2 * padding;
+      const graphHeight = height - 2 * padding;
+      const duration = 6;
+
+      // Draw grid
+      ctx.strokeStyle = '#e5e7eb';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 5; i++) {
+        const y = padding + (graphHeight / 5) * i;
+        ctx.beginPath();
+        ctx.moveTo(padding, y);
+        ctx.lineTo(width - padding, y);
+        ctx.stroke();
+      }
+
+      // Draw axes
+      ctx.strokeStyle = '#9ca3af';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(padding, padding);
+      ctx.lineTo(padding, height - padding);
+      ctx.lineTo(width - padding, height - padding);
+      ctx.stroke();
+
+      // Axis labels
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '12px Inter';
+      ctx.textAlign = 'center';
+      ctx.fillText('t (s)', width / 2, height - 10);
+      ctx.save();
+      ctx.translate(15, height / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.fillText('E (J)', 0, 0);
+      ctx.restore();
+
+      // Draw energy curves
+      const curves = [
+        { fn: (t: number) => getEnergies(t).kinetic, color: '#3b82f6', label: 'Ec' },
+        { fn: (t: number) => getEnergies(t).potential, color: '#22c55e', label: 'Ep' },
+        { fn: (t: number) => getEnergies(t).total, color: '#8b5cf6', label: 'Et' },
+      ];
+
+      curves.forEach(curve => {
+        ctx.strokeStyle = curve.color;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let px = 0; px <= graphWidth; px++) {
+          const t = (px / graphWidth) * duration;
+          const e = curve.fn(t);
+          const x = padding + px;
+          const y = height - padding - (e / maxEnergy) * graphHeight;
+          if (px === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      });
+
+      // Lost energy area (filled)
+      if (damping > 0) {
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.2)';
+        ctx.beginPath();
+        ctx.moveTo(padding, height - padding - (energies.initial / maxEnergy) * graphHeight);
+        for (let px = 0; px <= graphWidth; px++) {
+          const t = (px / graphWidth) * duration;
+          const e = getEnergies(t).total;
+          const x = padding + px;
+          const y = height - padding - (e / maxEnergy) * graphHeight;
+          ctx.lineTo(x, y);
+        }
+        ctx.lineTo(width - padding, height - padding - (energies.initial / maxEnergy) * graphHeight);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // Current time marker
+      const markerX = padding + (time % duration) / duration * graphWidth;
+      ctx.strokeStyle = '#374151';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(markerX, padding);
+      ctx.lineTo(markerX, height - padding);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Legend
+      ctx.font = '11px Inter';
+      ctx.textAlign = 'left';
+      let legendY = padding + 15;
+      curves.forEach(curve => {
+        ctx.fillStyle = curve.color;
+        ctx.fillRect(width - padding - 70, legendY - 8, 12, 3);
+        ctx.fillText(curve.label, width - padding - 55, legendY);
+        legendY += 15;
+      });
+      if (damping > 0) {
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.5)';
+        ctx.fillRect(width - padding - 70, legendY - 8, 12, 8);
+        ctx.fillStyle = '#ef4444';
+        ctx.fillText('Pertes', width - padding - 55, legendY);
+      }
+    }
+  }, [time, mode, getEnergies, showEnergyBars, damping]);
+
+  // Draw mass-spring for SHM and energy mode
+  useEffect(() => {
+    if (mode !== 'shm' && mode !== 'energy') return;
 
     const canvas = springCanvasRef.current;
     if (!canvas) return;
@@ -410,7 +660,8 @@ export function OscillationsWaveSimulator() {
     ctx.fillStyle = '#fafafa';
     ctx.fillRect(0, 0, width, height);
 
-    const displacement = getDisplacement(time);
+    // Use damped displacement for energy mode
+    const displacement = mode === 'energy' ? getDampedDisplacement(time) : getDisplacement(time);
     const massY = equilibriumY + displacement * scale;
 
     // Ceiling
@@ -485,7 +736,7 @@ export function OscillationsWaveSimulator() {
     ctx.stroke();
     ctx.setLineDash([]);
 
-  }, [time, mode, amplitude, getDisplacement]);
+  }, [time, mode, amplitude, getDisplacement, getDampedDisplacement]);
 
   const handleReset = () => {
     setTime(0);
@@ -520,6 +771,14 @@ export function OscillationsWaveSimulator() {
           MHS
         </button>
         <button
+          onClick={() => setMode('energy')}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            mode === 'energy' ? 'bg-violet-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+        >
+          Énergie
+        </button>
+        <button
           onClick={() => setMode('standing')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             mode === 'standing' ? 'bg-violet-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -551,6 +810,17 @@ export function OscillationsWaveSimulator() {
           <>
             <p className="text-sm text-violet-600 mb-2 font-medium">Mouvement Harmonique Simple</p>
             <BlockMath math={`y(t) = A \\sin(2\\pi f t + \\phi) = ${amplitude.toFixed(1)} \\sin(${angularFrequency} t + ${phase.toFixed(2)})`} />
+          </>
+        )}
+        {mode === 'energy' && (
+          <>
+            <p className="text-sm text-violet-600 mb-2 font-medium">Conservation de l'énergie (avec amortissement)</p>
+            <BlockMath math={`E_c = \\frac{1}{2}mv^2 \\quad E_p = \\frac{1}{2}kx^2 \\quad E_{tot} = E_c + E_p`} />
+            {damping > 0 && (
+              <div className="mt-2 text-sm">
+                <BlockMath math={`x(t) = A e^{-\\gamma t} \\cos(\\omega_d t) \\quad \\gamma = \\frac{b}{2m} = ${(damping / (2 * mass)).toFixed(2)}`} />
+              </div>
+            )}
           </>
         )}
         {mode === 'standing' && (
@@ -624,6 +894,48 @@ export function OscillationsWaveSimulator() {
               className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
             />
           </div>
+        )}
+
+        {mode === 'energy' && (
+          <>
+            <div className="space-y-2">
+              <label className="flex items-center justify-between">
+                <span className="font-medium text-gray-700">Masse <InlineMath math="m" /></span>
+                <span className="text-violet-600 font-mono">{mass.toFixed(1)} kg</span>
+              </label>
+              <input
+                type="range" min="0.5" max="5" step="0.5" value={mass}
+                onChange={(e) => setMass(parseFloat(e.target.value))}
+                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="flex items-center justify-between">
+                <span className="font-medium text-gray-700">Constante <InlineMath math="k" /></span>
+                <span className="text-violet-600 font-mono">{springConstant} N/m</span>
+              </label>
+              <input
+                type="range" min="10" max="100" step="5" value={springConstant}
+                onChange={(e) => setSpringConstant(parseFloat(e.target.value))}
+                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+              />
+              <p className="text-xs text-gray-500">ω₀ = {Math.sqrt(springConstant / mass).toFixed(2)} rad/s</p>
+            </div>
+            <div className="space-y-2">
+              <label className="flex items-center justify-between">
+                <span className="font-medium text-gray-700">Amortissement <InlineMath math="b" /></span>
+                <span className="text-violet-600 font-mono">{damping.toFixed(1)} kg/s</span>
+              </label>
+              <input
+                type="range" min="0" max="10" step="0.5" value={damping}
+                onChange={(e) => setDamping(parseFloat(e.target.value))}
+                className="w-full h-2 bg-orange-200 rounded-lg appearance-none cursor-pointer accent-orange-600"
+              />
+              <p className="text-xs text-gray-500">
+                {damping === 0 ? 'Sans friction' : damping < 2 * Math.sqrt(springConstant * mass) ? 'Sous-amorti' : 'Sur-amorti'}
+              </p>
+            </div>
+          </>
         )}
 
         {mode === 'standing' && (
@@ -731,18 +1043,63 @@ export function OscillationsWaveSimulator() {
       </div>
 
       {/* Visualization */}
-      <div className={`grid ${mode === 'shm' ? 'lg:grid-cols-2' : ''} gap-6`}>
-        <div className="space-y-2">
-          <h3 className="font-semibold text-gray-800">
-            {mode === 'shm' ? 'Graphique y(t)' : mode === 'beats' ? 'Battements' : 'Onde sur la corde'}
-          </h3>
-          <canvas ref={canvasRef} width={600} height={250} className="w-full border border-gray-200 rounded-lg" />
-        </div>
+      <div className={`grid ${(mode === 'shm' || mode === 'energy') ? 'lg:grid-cols-2' : ''} gap-6`}>
+        {mode !== 'energy' && (
+          <div className="space-y-2">
+            <h3 className="font-semibold text-gray-800">
+              {mode === 'shm' ? 'Graphique y(t)' : mode === 'beats' ? 'Battements' : 'Onde sur la corde'}
+            </h3>
+            <canvas ref={canvasRef} width={600} height={250} className="w-full border border-gray-200 rounded-lg" />
+          </div>
+        )}
 
-        {mode === 'shm' && (
+        {mode === 'energy' && (
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold text-gray-800">Énergie du système</h3>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowEnergyBars(true)}
+                  className={`px-3 py-1 text-sm rounded-lg ${showEnergyBars ? 'bg-violet-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+                >
+                  Barres
+                </button>
+                <button
+                  onClick={() => setShowEnergyBars(false)}
+                  className={`px-3 py-1 text-sm rounded-lg ${!showEnergyBars ? 'bg-violet-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+                >
+                  Graphique
+                </button>
+              </div>
+            </div>
+            <canvas ref={energyCanvasRef} width={500} height={280} className="w-full border border-gray-200 rounded-lg" />
+          </div>
+        )}
+
+        {(mode === 'shm' || mode === 'energy') && (
           <div className="space-y-2">
             <h3 className="font-semibold text-gray-800">Système masse-ressort</h3>
-            <canvas ref={springCanvasRef} width={300} height={250} className="w-full border border-gray-200 rounded-lg" />
+            <canvas ref={springCanvasRef} width={300} height={280} className="w-full border border-gray-200 rounded-lg" />
+            {mode === 'energy' && (
+              <div className="grid grid-cols-2 gap-2 text-sm">
+                <div className="bg-blue-50 rounded-lg p-2 text-center">
+                  <p className="text-blue-600 font-medium">E<sub>c</sub></p>
+                  <p className="text-blue-800 font-mono">{getEnergies(time).kinetic.toFixed(3)} J</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-2 text-center">
+                  <p className="text-green-600 font-medium">E<sub>p</sub></p>
+                  <p className="text-green-800 font-mono">{getEnergies(time).potential.toFixed(3)} J</p>
+                </div>
+                <div className="bg-violet-50 rounded-lg p-2 text-center">
+                  <p className="text-violet-600 font-medium">E<sub>tot</sub></p>
+                  <p className="text-violet-800 font-mono">{getEnergies(time).total.toFixed(3)} J</p>
+                </div>
+                <div className="bg-red-50 rounded-lg p-2 text-center">
+                  <p className="text-red-600 font-medium">Perdue</p>
+                  <p className="text-red-800 font-mono">{getEnergies(time).lost.toFixed(3)} J</p>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -765,14 +1122,18 @@ export function OscillationsWaveSimulator() {
       {/* Educational Notes */}
       <div className="border-t border-gray-200 pt-6">
         <h3 className="font-semibold text-gray-800 mb-3">Concepts clés</h3>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4 text-sm">
           <div className="bg-violet-50 rounded-lg p-4">
             <h4 className="font-medium text-violet-800 mb-2">MHS</h4>
             <p className="text-violet-700">Oscillation sinusoïdale caractérisée par A, f et φ. Base de tous les phénomènes ondulatoires.</p>
           </div>
+          <div className="bg-orange-50 rounded-lg p-4">
+            <h4 className="font-medium text-orange-800 mb-2">Énergie</h4>
+            <p className="text-orange-700">E<sub>tot</sub> = E<sub>c</sub> + E<sub>p</sub> = ½kA². Sans friction, l'énergie totale est conservée.</p>
+          </div>
           <div className="bg-red-50 rounded-lg p-4">
-            <h4 className="font-medium text-red-800 mb-2">Réflexion fixe</h4>
-            <p className="text-red-700">Inversion de phase (déphasage π). Noeud à l'extrémité fixe.</p>
+            <h4 className="font-medium text-red-800 mb-2">Amortissement</h4>
+            <p className="text-red-700">L'amplitude décroît exponentiellement. L'énergie est dissipée par friction.</p>
           </div>
           <div className="bg-green-50 rounded-lg p-4">
             <h4 className="font-medium text-green-800 mb-2">Modes propres</h4>
@@ -780,7 +1141,7 @@ export function OscillationsWaveSimulator() {
           </div>
           <div className="bg-blue-50 rounded-lg p-4">
             <h4 className="font-medium text-blue-800 mb-2">Battements</h4>
-            <p className="text-blue-700">f_bat = |f₂-f₁|. Modulation d'amplitude due à deux fréquences proches.</p>
+            <p className="text-blue-700">f<sub>bat</sub> = |f₂-f₁|. Modulation d'amplitude due à deux fréquences proches.</p>
           </div>
         </div>
       </div>
