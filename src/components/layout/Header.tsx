@@ -44,7 +44,7 @@ export function Header() {
               className="flex items-center gap-2 hover:opacity-80 transition-opacity"
             >
               <span className="text-xl font-bold text-gray-900">
-                PhysicsMaster
+                Phet-ford
               </span>
             </button>
 

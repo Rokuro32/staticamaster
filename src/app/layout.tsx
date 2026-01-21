@@ -6,7 +6,7 @@ import { Header } from '@/components/layout/Header';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'PhysicsMaster - Évaluation interactive en physique',
+  title: 'Phet-ford - Évaluation interactive en physique',
   description: 'Application pédagogique pour l\'évaluation des compétences en physique - Statique, Cinématique, Ondes',
   keywords: ['physique', 'statique', 'cinématique', 'ondes', 'CÉGEP', 'éducation', 'mécanique'],
 };
@@ -34,7 +34,7 @@ export default function RootLayout({
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <p className="text-sm text-gray-500">
-                  PhysicsMaster - Apprentissage interactif de la physique
+                  Phet-ford - Apprentissage interactif de la physique
                 </p>
                 <p className="text-sm text-gray-400">
                   Version 2.0.0

@@ -29,7 +29,7 @@ export function CourseSelector({ onSelect }: CourseSelectorProps) {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-            PhysicsMaster
+            Phet-ford
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Plateforme d'apprentissage interactive pour la physique au CÉGEP.
