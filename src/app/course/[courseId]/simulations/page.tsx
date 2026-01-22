@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { OscillationsWaveSimulator } from '@/components/simulations/OscillationsWaveSimulator';
 import { SoundWaveSimulator } from '@/components/simulations/SoundWaveSimulator';
 import { RelativitySimulator } from '@/components/simulations/RelativitySimulator';
+import { VectorSimulator } from '@/components/simulations/VectorSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -28,15 +29,16 @@ export default function SimulationsPage() {
     }
   }, [courseId, selectedCourse, setSelectedCourse]);
 
-  // Cette page n'est disponible que pour le cours d'ondes
-  if (courseId !== 'waves_modern') {
+  // Cette page n'est disponible que pour certains cours
+  const coursesWithSimulations = ['waves_modern', 'statics', 'kinematics'];
+  if (!coursesWithSimulations.includes(courseId)) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-16 text-center">
         <h1 className="text-2xl font-bold text-gray-900 mb-4">
           Simulations non disponibles
         </h1>
         <p className="text-gray-600 mb-8">
-          Les simulations interactives ne sont actuellement disponibles que pour le cours d'Ondes et physique moderne.
+          Les simulations interactives ne sont pas encore disponibles pour ce cours.
         </p>
         <Link href={`/course/${courseId}`}>
           <Button>Retour au cours</Button>
@@ -81,72 +83,165 @@ export default function SimulationsPage() {
       </div>
 
       {/* Introduction */}
-      <div className="bg-violet-50 border border-violet-200 rounded-xl p-6 mb-8">
-        <h2 className="text-lg font-semibold text-violet-900 mb-2">
+      <div className={`${
+        courseId === 'waves_modern' ? 'bg-violet-50 border-violet-200' :
+        courseId === 'kinematics' ? 'bg-green-50 border-green-200' :
+        'bg-blue-50 border-blue-200'
+      } border rounded-xl p-6 mb-8`}>
+        <h2 className={`text-lg font-semibold ${
+          courseId === 'waves_modern' ? 'text-violet-900' :
+          courseId === 'kinematics' ? 'text-green-900' :
+          'text-blue-900'
+        } mb-2`}>
           Apprenez par l'expérimentation
         </h2>
-        <p className="text-violet-700">
-          Les simulations interactives vous permettent de visualiser les concepts physiques
-          et de comprendre intuitivement les relations entre les différents paramètres.
-          Manipulez les curseurs et observez en temps réel les effets sur le comportement des ondes.
+        <p className={
+          courseId === 'waves_modern' ? 'text-violet-700' :
+          courseId === 'kinematics' ? 'text-green-700' :
+          'text-blue-700'
+        }>
+          {courseId === 'waves_modern'
+            ? 'Les simulations interactives vous permettent de visualiser les concepts physiques et de comprendre intuitivement les relations entre les différents paramètres. Manipulez les curseurs et observez en temps réel les effets sur le comportement des ondes.'
+            : courseId === 'kinematics'
+            ? 'Les simulations interactives vous permettent de visualiser les opérations vectorielles essentielles à la cinématique. Manipulez les vecteurs position, vitesse et accélération pour comprendre intuitivement les mouvements.'
+            : 'Les simulations interactives vous permettent de visualiser les opérations vectorielles et de comprendre intuitivement les concepts fondamentaux de l\'analyse des structures. Manipulez les vecteurs et observez les résultats en temps réel.'}
         </p>
       </div>
 
       {/* Simulations Grid */}
       <div className="space-y-8">
-        {/* Oscillations and Waves Simulator Section */}
-        <section>
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-2xl">〰️</span>
-            <h2 className="text-xl font-bold text-gray-900">
-              Oscillations et Ondes Mécaniques
-            </h2>
-          </div>
-          <OscillationsWaveSimulator />
-        </section>
+        {/* Wave simulations for waves_modern course */}
+        {courseId === 'waves_modern' && (
+          <>
+            {/* Oscillations and Waves Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">〰️</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Oscillations et Ondes Mécaniques
+                </h2>
+              </div>
+              <OscillationsWaveSimulator />
+            </section>
 
-        {/* Sound Wave Simulator Section */}
-        <section>
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-2xl">🔊</span>
-            <h2 className="text-xl font-bold text-gray-900">
-              Ondes sonores
-            </h2>
-          </div>
-          <SoundWaveSimulator />
-        </section>
+            {/* Sound Wave Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">🔊</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Ondes sonores
+                </h2>
+              </div>
+              <SoundWaveSimulator />
+            </section>
 
-        {/* Relativity Simulator Section */}
-        <section>
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-2xl">🚀</span>
-            <h2 className="text-xl font-bold text-gray-900">
-              Relativité Restreinte
-            </h2>
-          </div>
-          <RelativitySimulator />
-        </section>
+            {/* Relativity Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">🚀</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Relativité Restreinte
+                </h2>
+              </div>
+              <RelativitySimulator />
+            </section>
 
-        {/* More simulations can be added here */}
-        <section className="bg-gray-50 rounded-xl p-8 text-center">
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">
-            Plus de simulations à venir
-          </h3>
-          <p className="text-gray-500 mb-4">
-            D'autres simulations interactives seront ajoutées prochainement :
-          </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
-              💡 Interférence de Young (lumière)
-            </span>
-            <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
-              🌈 Diffraction
-            </span>
-            <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
-              ⚛️ Effet photoélectrique
-            </span>
-          </div>
-        </section>
+            {/* More simulations can be added here */}
+            <section className="bg-gray-50 rounded-xl p-8 text-center">
+              <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                Plus de simulations à venir
+              </h3>
+              <p className="text-gray-500 mb-4">
+                D'autres simulations interactives seront ajoutées prochainement :
+              </p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
+                  💡 Interférence de Young (lumière)
+                </span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
+                  🌈 Diffraction
+                </span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
+                  ⚛️ Effet photoélectrique
+                </span>
+              </div>
+            </section>
+          </>
+        )}
+
+        {/* Vector simulations for statics course */}
+        {courseId === 'statics' && (
+          <>
+            {/* Vector Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">📐</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Opérations Vectorielles
+                </h2>
+              </div>
+              <VectorSimulator />
+            </section>
+
+            {/* More simulations can be added here */}
+            <section className="bg-gray-50 rounded-xl p-8 text-center">
+              <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                Plus de simulations à venir
+              </h3>
+              <p className="text-gray-500 mb-4">
+                D'autres simulations interactives seront ajoutées prochainement :
+              </p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
+                  ⚖️ Équilibre statique
+                </span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
+                  🔧 Moments et couples
+                </span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
+                  🏗️ Réactions d'appui
+                </span>
+              </div>
+            </section>
+          </>
+        )}
+
+        {/* Vector simulations for kinematics course */}
+        {courseId === 'kinematics' && (
+          <>
+            {/* Vector Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">📐</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Opérations Vectorielles
+                </h2>
+              </div>
+              <VectorSimulator />
+            </section>
+
+            {/* More simulations can be added here */}
+            <section className="bg-gray-50 rounded-xl p-8 text-center">
+              <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                Plus de simulations à venir
+              </h3>
+              <p className="text-gray-500 mb-4">
+                D'autres simulations interactives seront ajoutées prochainement :
+              </p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
+                  🚗 Mouvement rectiligne
+                </span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
+                  🎯 Mouvement projectile
+                </span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
+                  🔄 Mouvement circulaire
+                </span>
+              </div>
+            </section>
+          </>
+        )}
       </div>
 
       {/* Related Resources */}
@@ -155,25 +250,71 @@ export default function SimulationsPage() {
           Ressources associées
         </h3>
         <div className="grid md:grid-cols-3 gap-4">
-          <Link
-            href={`/course/${courseId}/quiz/1`}
-            className="p-4 bg-white rounded-lg border border-gray-200 hover:border-violet-300 hover:shadow-md transition-all"
-          >
-            <div className="text-2xl mb-2">〰️</div>
-            <h4 className="font-medium text-gray-900">Module 1: Oscillations</h4>
-            <p className="text-sm text-gray-500">Quiz et problèmes sur le MHS</p>
-          </Link>
-          <Link
-            href={`/course/${courseId}/quiz/2`}
-            className="p-4 bg-white rounded-lg border border-gray-200 hover:border-violet-300 hover:shadow-md transition-all"
-          >
-            <div className="text-2xl mb-2">💡</div>
-            <h4 className="font-medium text-gray-900">Module 2: Ondes EM</h4>
-            <p className="text-sm text-gray-500">Quiz sur les ondes électromagnétiques</p>
-          </Link>
+          {courseId === 'waves_modern' && (
+            <>
+              <Link
+                href={`/course/${courseId}/quiz/1`}
+                className="p-4 bg-white rounded-lg border border-gray-200 hover:border-violet-300 hover:shadow-md transition-all"
+              >
+                <div className="text-2xl mb-2">〰️</div>
+                <h4 className="font-medium text-gray-900">Module 1: Oscillations</h4>
+                <p className="text-sm text-gray-500">Quiz et problèmes sur le MHS</p>
+              </Link>
+              <Link
+                href={`/course/${courseId}/quiz/2`}
+                className="p-4 bg-white rounded-lg border border-gray-200 hover:border-violet-300 hover:shadow-md transition-all"
+              >
+                <div className="text-2xl mb-2">💡</div>
+                <h4 className="font-medium text-gray-900">Module 2: Ondes EM</h4>
+                <p className="text-sm text-gray-500">Quiz sur les ondes électromagnétiques</p>
+              </Link>
+            </>
+          )}
+          {courseId === 'statics' && (
+            <>
+              <Link
+                href={`/course/${courseId}/quiz/1`}
+                className="p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all"
+              >
+                <div className="text-2xl mb-2">📐</div>
+                <h4 className="font-medium text-gray-900">Module 1: Fondements mathématiques</h4>
+                <p className="text-sm text-gray-500">Quiz sur les vecteurs et la trigonométrie</p>
+              </Link>
+              <Link
+                href={`/course/${courseId}/quiz/2`}
+                className="p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all"
+              >
+                <div className="text-2xl mb-2">⚖️</div>
+                <h4 className="font-medium text-gray-900">Module 2: Équilibre des particules</h4>
+                <p className="text-sm text-gray-500">Quiz sur l'équilibre statique</p>
+              </Link>
+            </>
+          )}
+          {courseId === 'kinematics' && (
+            <>
+              <Link
+                href={`/course/${courseId}/quiz/1`}
+                className="p-4 bg-white rounded-lg border border-gray-200 hover:border-green-300 hover:shadow-md transition-all"
+              >
+                <div className="text-2xl mb-2">📐</div>
+                <h4 className="font-medium text-gray-900">Module 1: Vecteurs et repères</h4>
+                <p className="text-sm text-gray-500">Quiz sur les vecteurs position et vitesse</p>
+              </Link>
+              <Link
+                href={`/course/${courseId}/quiz/2`}
+                className="p-4 bg-white rounded-lg border border-gray-200 hover:border-green-300 hover:shadow-md transition-all"
+              >
+                <div className="text-2xl mb-2">🚗</div>
+                <h4 className="font-medium text-gray-900">Module 2: Mouvement rectiligne</h4>
+                <p className="text-sm text-gray-500">Quiz sur le MRU et MRUA</p>
+              </Link>
+            </>
+          )}
           <Link
             href={`/course/${courseId}/modules`}
-            className="p-4 bg-white rounded-lg border border-gray-200 hover:border-violet-300 hover:shadow-md transition-all"
+            className={`p-4 bg-white rounded-lg border border-gray-200 hover:border-${
+              courseId === 'waves_modern' ? 'violet' : courseId === 'kinematics' ? 'green' : 'blue'
+            }-300 hover:shadow-md transition-all`}
           >
             <div className="text-2xl mb-2">📚</div>
             <h4 className="font-medium text-gray-900">Tous les modules</h4>
