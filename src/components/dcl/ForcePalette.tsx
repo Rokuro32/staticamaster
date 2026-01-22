@@ -10,6 +10,9 @@ import { cn } from '@/lib/utils';
 interface ForcePaletteProps {
   onAddForce: (force: Omit<Force, 'id' | 'applicationPoint'>) => void;
   onAddSupport: (support: Omit<Support, 'id' | 'position'>) => void;
+  selectedForce?: Omit<Force, 'id' | 'applicationPoint'> | null;
+  selectedSupport?: Omit<Support, 'id' | 'position'> | null;
+  onCancelSelection?: () => void;
   availableForces?: string[];
   availableSupports?: SupportType[];
 }
@@ -26,12 +29,17 @@ const DEFAULT_FORCES = [
 export function ForcePalette({
   onAddForce,
   onAddSupport,
+  selectedForce,
+  selectedSupport,
+  onCancelSelection,
   availableForces,
   availableSupports,
 }: ForcePaletteProps) {
   const [activeTab, setActiveTab] = useState<'forces' | 'supports'>('forces');
   const [customForceName, setCustomForceName] = useState('');
   const [customForceAngle, setCustomForceAngle] = useState(0);
+
+  const hasPendingSelection = selectedForce || selectedSupport;
 
   const forces = availableForces
     ? DEFAULT_FORCES.filter(f => availableForces.includes(f.name))
@@ -55,6 +63,31 @@ export function ForcePalette({
 
   return (
     <Card variant="bordered" padding="sm" className="w-64">
+      {/* Selection indicator */}
+      {hasPendingSelection && (
+        <div className="mb-3 p-3 bg-primary-50 border border-primary-200 rounded-lg">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-primary-700">
+                {selectedForce ? `Force: ${selectedForce.name}` : `Appui: ${selectedSupport?.type}`}
+              </p>
+              <p className="text-xs text-primary-600">
+                Cliquez sur le canvas pour placer
+              </p>
+            </div>
+            <button
+              onClick={onCancelSelection}
+              className="p-1 text-primary-600 hover:text-primary-800 hover:bg-primary-100 rounded"
+              title="Annuler"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Tabs */}
       <div className="flex mb-4 border-b">
         <button
@@ -90,22 +123,30 @@ export function ForcePalette({
               Forces courantes
             </p>
             <div className="grid grid-cols-2 gap-2">
-              {forces.map(force => (
-                <button
-                  key={force.name}
-                  onClick={() => onAddForce(force)}
-                  className="flex items-center gap-2 p-2 rounded-lg border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors text-left"
-                >
-                  <div
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: force.color }}
-                  />
-                  <div>
-                    <p className="text-sm font-medium">{force.name}</p>
-                    <p className="text-xs text-gray-500">{force.label}</p>
-                  </div>
-                </button>
-              ))}
+              {forces.map(force => {
+                const isSelected = selectedForce?.name === force.name;
+                return (
+                  <button
+                    key={force.name}
+                    onClick={() => onAddForce(force)}
+                    className={cn(
+                      "flex items-center gap-2 p-2 rounded-lg border transition-colors text-left",
+                      isSelected
+                        ? "border-primary-500 bg-primary-100 ring-2 ring-primary-300"
+                        : "border-gray-200 hover:border-primary-300 hover:bg-primary-50"
+                    )}
+                  >
+                    <div
+                      className="w-3 h-3 rounded-full"
+                      style={{ backgroundColor: force.color }}
+                    />
+                    <div>
+                      <p className="text-sm font-medium">{force.name}</p>
+                      <p className="text-xs text-gray-500">{force.label}</p>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -151,33 +192,42 @@ export function ForcePalette({
           <p className="text-xs font-medium text-gray-500 uppercase mb-2">
             Types d'appui
           </p>
-          {supports.map(support => (
-            <button
-              key={support.type}
-              onClick={() => onAddSupport({
-                type: support.type,
-                reactions: support.reactions,
-              })}
-              className="w-full flex items-start gap-3 p-3 rounded-lg border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors text-left"
-            >
-              <SupportPreview type={support.type} />
-              <div>
-                <p className="text-sm font-medium">{support.name}</p>
-                <p className="text-xs text-gray-500">{support.description}</p>
-                <p className="text-xs text-primary-600 mt-1">
-                  Réactions: {support.reactions.join(', ')}
-                </p>
-              </div>
-            </button>
-          ))}
+          {supports.map(support => {
+            const isSelected = selectedSupport?.type === support.type;
+            return (
+              <button
+                key={support.type}
+                onClick={() => onAddSupport({
+                  type: support.type,
+                  reactions: support.reactions,
+                })}
+                className={cn(
+                  "w-full flex items-start gap-3 p-3 rounded-lg border transition-colors text-left",
+                  isSelected
+                    ? "border-primary-500 bg-primary-100 ring-2 ring-primary-300"
+                    : "border-gray-200 hover:border-primary-300 hover:bg-primary-50"
+                )}
+              >
+                <SupportPreview type={support.type} />
+                <div>
+                  <p className="text-sm font-medium">{support.name}</p>
+                  <p className="text-xs text-gray-500">{support.description}</p>
+                  <p className="text-xs text-primary-600 mt-1">
+                    Réactions: {support.reactions.join(', ')}
+                  </p>
+                </div>
+              </button>
+            );
+          })}
         </div>
       )}
 
       {/* Instructions */}
       <div className="mt-4 pt-4 border-t">
         <p className="text-xs text-gray-500">
-          Cliquez sur un élément puis cliquez sur le canvas pour le placer.
-          Utilisez les poignées pour ajuster la position et l'orientation.
+          <strong>1.</strong> Sélectionnez un élément ci-dessus<br />
+          <strong>2.</strong> Cliquez sur le canvas pour le placer<br />
+          <strong>3.</strong> Glissez pour repositionner, utilisez les boutons pour pivoter
         </p>
       </div>
     </Card>

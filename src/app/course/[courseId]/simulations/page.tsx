@@ -10,6 +10,7 @@ import { OscillationsWaveSimulator } from '@/components/simulations/Oscillations
 import { SoundWaveSimulator } from '@/components/simulations/SoundWaveSimulator';
 import { RelativitySimulator } from '@/components/simulations/RelativitySimulator';
 import { VectorSimulator } from '@/components/simulations/VectorSimulator';
+import { ForceAdditionSimulator } from '@/components/simulations/ForceAdditionSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -183,6 +184,17 @@ export default function SimulationsPage() {
               <VectorSimulator />
             </section>
 
+            {/* Force Addition Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">⚖️</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Addition de Forces
+                </h2>
+              </div>
+              <ForceAdditionSimulator />
+            </section>
+
             {/* More simulations can be added here */}
             <section className="bg-gray-50 rounded-xl p-8 text-center">
               <h3 className="text-lg font-semibold text-gray-700 mb-2">
@@ -192,9 +204,6 @@ export default function SimulationsPage() {
                 D'autres simulations interactives seront ajoutées prochainement :
               </p>
               <div className="flex flex-wrap justify-center gap-3">
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
-                  ⚖️ Équilibre statique
-                </span>
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
                   🔧 Moments et couples
                 </span>

@@ -7,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { DCLCanvas } from '@/components/dcl/DCLCanvas';
 import { ForcePalette } from '@/components/dcl/ForcePalette';
-import { generateId } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 interface SchemaViewProps {
   question: InstantiatedQuestion;
@@ -43,23 +43,19 @@ export function SchemaView({
     correctSupports: [],
   };
 
-  const handleAddForce = (force: Omit<Force, 'id' | 'applicationPoint'>) => {
-    // Ajouter la force au centre du canvas
-    const newForce: Force = {
-      ...force,
-      id: generateId(),
-      applicationPoint: { x: schema.width / 2, y: schema.height / 2 },
-    };
-    onForcesChange([...placedForces, newForce]);
+  const handleSelectForce = (force: Omit<Force, 'id' | 'applicationPoint'>) => {
+    setPendingForce(force);
+    setPendingSupport(null);
   };
 
-  const handleAddSupport = (support: Omit<Support, 'id' | 'position'>) => {
-    const newSupport: Support = {
-      ...support,
-      id: generateId(),
-      position: { x: 100, y: 50 }, // Position par défaut en bas
-    };
-    onSupportsChange([...placedSupports, newSupport]);
+  const handleSelectSupport = (support: Omit<Support, 'id' | 'position'>) => {
+    setPendingSupport(support);
+    setPendingForce(null);
+  };
+
+  const handlePendingPlaced = () => {
+    setPendingForce(null);
+    setPendingSupport(null);
   };
 
   const handleClearAll = () => {
@@ -87,17 +83,29 @@ export function SchemaView({
             placedSupports={placedSupports}
             onForcesChange={onForcesChange}
             onSupportsChange={onSupportsChange}
+            pendingForce={pendingForce}
+            pendingSupport={pendingSupport}
+            onPendingPlaced={handlePendingPlaced}
             readonly={readonly}
             showGrid
             showAxes
           />
 
           {/* Instructions */}
-          <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+          <div className={cn(
+            "mt-4 p-3 rounded-lg",
+            (pendingForce || pendingSupport) ? "bg-primary-50 border border-primary-200" : "bg-gray-50"
+          )}>
             <p className="text-sm text-gray-600">
-              <strong>Instructions:</strong> Placez les forces et les appuis sur le schéma.
-              Utilisez la palette à droite pour ajouter des éléments.
-              Glissez-déposez pour positionner, utilisez les contrôles pour ajuster l'orientation.
+              {(pendingForce || pendingSupport) ? (
+                <>
+                  <strong className="text-primary-700">Cliquez sur le schéma</strong> pour placer {pendingForce ? `la force ${pendingForce.name}` : `l'appui ${pendingSupport?.type}`}.
+                </>
+              ) : (
+                <>
+                  <strong>Instructions:</strong> Sélectionnez une force ou un appui dans la palette à droite, puis cliquez sur le schéma pour le placer. Vous pouvez ensuite le déplacer et ajuster son orientation.
+                </>
+              )}
             </p>
           </div>
 
@@ -186,8 +194,11 @@ export function SchemaView({
       {/* Palette d'outils */}
       {!readonly && (
         <ForcePalette
-          onAddForce={handleAddForce}
-          onAddSupport={handleAddSupport}
+          onAddForce={handleSelectForce}
+          onAddSupport={handleSelectSupport}
+          selectedForce={pendingForce}
+          selectedSupport={pendingSupport}
+          onCancelSelection={handlePendingPlaced}
         />
       )}
     </div>

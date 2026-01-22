@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import type { Force, Support, Point2D, Schema } from '@/types/question';
 import { ForceArrow } from './ForceArrow';
 import { SupportIcon } from './SupportIcon';
 import { cn } from '@/lib/utils';
+import { generateId } from '@/lib/utils';
 
 interface DCLCanvasProps {
   schema: Schema;
@@ -12,6 +13,9 @@ interface DCLCanvasProps {
   placedSupports: Support[];
   onForcesChange: (forces: Force[]) => void;
   onSupportsChange: (supports: Support[]) => void;
+  pendingForce?: Omit<Force, 'id' | 'applicationPoint'> | null;
+  pendingSupport?: Omit<Support, 'id' | 'position'> | null;
+  onPendingPlaced?: () => void;
   readonly?: boolean;
   showGrid?: boolean;
   showAxes?: boolean;
@@ -23,6 +27,9 @@ export function DCLCanvas({
   placedSupports,
   onForcesChange,
   onSupportsChange,
+  pendingForce,
+  pendingSupport,
+  onPendingPlaced,
   readonly = false,
   showGrid = true,
   showAxes = true,
@@ -31,6 +38,7 @@ export function DCLCanvas({
   const [selectedForce, setSelectedForce] = useState<string | null>(null);
   const [draggedItem, setDraggedItem] = useState<{ type: 'force' | 'support'; id: string } | null>(null);
   const [dragOffset, setDragOffset] = useState<Point2D>({ x: 0, y: 0 });
+  const [mousePos, setMousePos] = useState<Point2D | null>(null);
 
   const width = schema.width || 600;
   const height = schema.height || 400;
@@ -83,15 +91,24 @@ export function DCLCanvas({
   }, [readonly, placedForces, placedSupports, height]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!draggedItem || readonly) return;
-
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return;
 
-    const canvasX = e.clientX - rect.left - dragOffset.x;
-    const canvasY = e.clientY - rect.top - dragOffset.y;
+    const canvasX = e.clientX - rect.left;
+    const canvasY = e.clientY - rect.top;
 
-    const snapped = snapToGrid({ x: canvasX, y: canvasY });
+    // Track mouse position for pending item preview
+    if (pendingForce || pendingSupport) {
+      const snapped = snapToGrid({ x: canvasX, y: canvasY });
+      setMousePos(snapped);
+    }
+
+    if (!draggedItem || readonly) return;
+
+    const dragCanvasX = canvasX - dragOffset.x;
+    const dragCanvasY = canvasY - dragOffset.y;
+
+    const snapped = snapToGrid({ x: dragCanvasX, y: dragCanvasY });
     const problemCoords = fromCanvasCoords(snapped);
 
     // Limiter aux bornes du canvas
@@ -113,11 +130,48 @@ export function DCLCanvas({
       );
       onSupportsChange(newSupports);
     }
-  }, [draggedItem, dragOffset, readonly, placedForces, placedSupports, onForcesChange, onSupportsChange, width, height]);
+  }, [draggedItem, dragOffset, readonly, placedForces, placedSupports, onForcesChange, onSupportsChange, width, height, pendingForce, pendingSupport]);
 
   const handleMouseUp = useCallback(() => {
     setDraggedItem(null);
   }, []);
+
+  // Handle click to place pending force or support
+  const handleCanvasClick = useCallback((e: React.MouseEvent) => {
+    if (readonly || draggedItem) return;
+
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const canvasX = e.clientX - rect.left;
+    const canvasY = e.clientY - rect.top;
+    const snapped = snapToGrid({ x: canvasX, y: canvasY });
+    const problemCoords = fromCanvasCoords(snapped);
+
+    // Limiter aux bornes du canvas
+    const clampedX = Math.max(0, Math.min(width, problemCoords.x));
+    const clampedY = Math.max(0, Math.min(height, problemCoords.y));
+
+    if (pendingForce) {
+      const newForce: Force = {
+        ...pendingForce,
+        id: generateId(),
+        applicationPoint: { x: clampedX, y: clampedY },
+      };
+      onForcesChange([...placedForces, newForce]);
+      onPendingPlaced?.();
+      setMousePos(null);
+    } else if (pendingSupport) {
+      const newSupport: Support = {
+        ...pendingSupport,
+        id: generateId(),
+        position: { x: clampedX, y: clampedY },
+      };
+      onSupportsChange([...placedSupports, newSupport]);
+      onPendingPlaced?.();
+      setMousePos(null);
+    }
+  }, [readonly, draggedItem, pendingForce, pendingSupport, placedForces, placedSupports, onForcesChange, onSupportsChange, onPendingPlaced, width, height]);
 
   // Rotation d'une force
   const handleRotateForce = (forceId: string, deltaAngle: number) => {
@@ -151,12 +205,13 @@ export function DCLCanvas({
         className={cn(
           'dcl-canvas relative select-none overflow-hidden',
           draggedItem ? 'cursor-grabbing' : undefined,
-          !readonly ? 'cursor-crosshair' : undefined
+          (pendingForce || pendingSupport) ? 'cursor-copy' : (!readonly ? 'cursor-crosshair' : undefined)
         )}
         style={{ width, height }}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
+        onMouseLeave={() => { handleMouseUp(); setMousePos(null); }}
+        onClick={handleCanvasClick}
       >
         {/* Grille */}
         {showGrid && (
@@ -329,6 +384,36 @@ export function DCLCanvas({
               />
             );
           })}
+
+          {/* Preview of pending force */}
+          {pendingForce && mousePos && (
+            <g opacity={0.6}>
+              <ForceArrow
+                force={{
+                  ...pendingForce,
+                  id: 'pending',
+                  applicationPoint: fromCanvasCoords(mousePos),
+                }}
+                position={mousePos}
+                readonly
+              />
+            </g>
+          )}
+
+          {/* Preview of pending support */}
+          {pendingSupport && mousePos && (
+            <g opacity={0.6}>
+              <SupportIcon
+                support={{
+                  ...pendingSupport,
+                  id: 'pending',
+                  position: fromCanvasCoords(mousePos),
+                }}
+                position={mousePos}
+                readonly
+              />
+            </g>
+          )}
         </svg>
       </div>
 
