@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { InlineMath, BlockMath } from 'react-katex';
 
-type SimulationMode = 'shm' | 'energy' | 'standing' | 'modes' | 'beats';
+type SimulationMode = 'shm' | 'energy' | 'forced' | 'standing' | 'modes' | 'beats';
 type ReflectionType = 'fixed' | 'free';
 
 export function OscillationsWaveSimulator() {
@@ -36,11 +36,19 @@ export function OscillationsWaveSimulator() {
   const [damping, setDamping] = useState(0);
   const [showEnergyBars, setShowEnergyBars] = useState(true);
 
+  // Forced oscillation parameters
+  const [drivingFrequency, setDrivingFrequency] = useState(1);
+  const [forceAmplitude, setForceAmplitude] = useState(10);
+  const [forcedDamping, setForcedDamping] = useState(2);
+
   // Sound speed for standing waves
   const soundSpeed = 343;
 
   // Energy canvas ref
   const energyCanvasRef = useRef<HTMLCanvasElement>(null);
+
+  // Resonance canvas ref
+  const resonanceCanvasRef = useRef<HTMLCanvasElement>(null);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const springCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -123,6 +131,42 @@ export function OscillationsWaveSimulator() {
       initial: initialEnergy,
     };
   }, [getDampedDisplacement, getDampedVelocity, mass, springConstant, amplitude]);
+
+  // Forced oscillation calculations
+  const naturalFrequency = Math.sqrt(springConstant / mass); // ω₀ in rad/s
+  const naturalFrequencyHz = naturalFrequency / (2 * Math.PI);
+
+  const getForcedAmplitude = useCallback((omegaD: number) => {
+    // A = F₀ / √[(k - mω²)² + (bω)²]
+    const omega0Sq = springConstant / mass;
+    const omegaDSq = omegaD * omegaD;
+    const denominator = Math.sqrt(
+      Math.pow(springConstant - mass * omegaDSq, 2) + Math.pow(forcedDamping * omegaD, 2)
+    );
+    return forceAmplitude / denominator;
+  }, [springConstant, mass, forcedDamping, forceAmplitude]);
+
+  const getForcedPhase = useCallback((omegaD: number) => {
+    // φ = arctan(bω / (k - mω²))
+    const numerator = forcedDamping * omegaD;
+    const denominator = springConstant - mass * omegaD * omegaD;
+    return Math.atan2(numerator, denominator);
+  }, [springConstant, mass, forcedDamping]);
+
+  const getForcedDisplacement = useCallback((t: number) => {
+    const omegaD = 2 * Math.PI * drivingFrequency;
+    const A = getForcedAmplitude(omegaD);
+    const phi = getForcedPhase(omegaD);
+    return A * Math.sin(omegaD * t - phi);
+  }, [drivingFrequency, getForcedAmplitude, getForcedPhase]);
+
+  const getDrivingForce = useCallback((t: number) => {
+    const omegaD = 2 * Math.PI * drivingFrequency;
+    return forceAmplitude * Math.sin(omegaD * t);
+  }, [drivingFrequency, forceAmplitude]);
+
+  // Q factor (quality factor)
+  const qFactor = forcedDamping > 0 ? Math.sqrt(springConstant * mass) / forcedDamping : Infinity;
 
   // Wave functions for standing waves
   const getIncidentWave = useCallback((x: number, t: number) => {
@@ -641,6 +685,324 @@ export function OscillationsWaveSimulator() {
     }
   }, [time, mode, getEnergies, showEnergyBars, damping]);
 
+  // Draw resonance curve for forced mode
+  useEffect(() => {
+    if (mode !== 'forced') return;
+
+    const canvas = resonanceCanvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Clear canvas
+    ctx.fillStyle = '#fffbeb';
+    ctx.fillRect(0, 0, width, height);
+
+    const padding = { left: 60, right: 30, top: 30, bottom: 50 };
+    const graphWidth = width - padding.left - padding.right;
+    const graphHeight = height - padding.top - padding.bottom;
+
+    // Frequency range (0 to 3x natural frequency)
+    const maxFreqHz = naturalFrequencyHz * 3;
+    const minFreqHz = 0.1;
+
+    // Find max amplitude for scaling
+    let maxAmp = 0;
+    for (let f = minFreqHz; f <= maxFreqHz; f += 0.01) {
+      const omega = 2 * Math.PI * f;
+      const amp = getForcedAmplitude(omega);
+      if (amp > maxAmp && amp < 100) maxAmp = amp; // Cap at 100 for display
+    }
+    maxAmp *= 1.1;
+
+    // Draw grid
+    ctx.strokeStyle = '#fef3c7';
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= 5; i++) {
+      const y = padding.top + (graphHeight / 5) * i;
+      ctx.beginPath();
+      ctx.moveTo(padding.left, y);
+      ctx.lineTo(width - padding.right, y);
+      ctx.stroke();
+    }
+    for (let i = 0; i <= 6; i++) {
+      const x = padding.left + (graphWidth / 6) * i;
+      ctx.beginPath();
+      ctx.moveTo(x, padding.top);
+      ctx.lineTo(x, height - padding.bottom);
+      ctx.stroke();
+    }
+
+    // Draw axes
+    ctx.strokeStyle = '#92400e';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(padding.left, padding.top);
+    ctx.lineTo(padding.left, height - padding.bottom);
+    ctx.lineTo(width - padding.right, height - padding.bottom);
+    ctx.stroke();
+
+    // Axis labels
+    ctx.fillStyle = '#78350f';
+    ctx.font = '12px Inter';
+    ctx.textAlign = 'center';
+    ctx.fillText('Fréquence d\'excitation f_d (Hz)', width / 2, height - 10);
+
+    ctx.save();
+    ctx.translate(15, height / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Amplitude A (m)', 0, 0);
+    ctx.restore();
+
+    // Tick labels on X axis
+    ctx.font = '10px Inter';
+    for (let f = 0; f <= maxFreqHz; f += maxFreqHz / 6) {
+      const x = padding.left + (f / maxFreqHz) * graphWidth;
+      ctx.fillText(f.toFixed(1), x, height - padding.bottom + 15);
+    }
+
+    // Natural frequency line
+    const f0X = padding.left + (naturalFrequencyHz / maxFreqHz) * graphWidth;
+    ctx.strokeStyle = '#dc2626';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath();
+    ctx.moveTo(f0X, padding.top);
+    ctx.lineTo(f0X, height - padding.bottom);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = '#dc2626';
+    ctx.font = 'bold 11px Inter';
+    ctx.textAlign = 'center';
+    ctx.fillText('f₀', f0X, padding.top - 8);
+
+    // Draw resonance curve
+    ctx.strokeStyle = '#f59e0b';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+
+    let first = true;
+    for (let px = 0; px <= graphWidth; px++) {
+      const f = minFreqHz + (px / graphWidth) * (maxFreqHz - minFreqHz);
+      const omega = 2 * Math.PI * f;
+      let amp = getForcedAmplitude(omega);
+      if (amp > maxAmp) amp = maxAmp; // Clamp
+
+      const x = padding.left + px;
+      const y = padding.top + graphHeight - (amp / maxAmp) * graphHeight;
+
+      if (first) {
+        ctx.moveTo(x, y);
+        first = false;
+      } else {
+        ctx.lineTo(x, y);
+      }
+    }
+    ctx.stroke();
+
+    // Current driving frequency marker
+    const currentX = padding.left + ((drivingFrequency - minFreqHz) / (maxFreqHz - minFreqHz)) * graphWidth;
+    const currentOmega = 2 * Math.PI * drivingFrequency;
+    let currentAmp = getForcedAmplitude(currentOmega);
+    if (currentAmp > maxAmp) currentAmp = maxAmp;
+    const currentY = padding.top + graphHeight - (currentAmp / maxAmp) * graphHeight;
+
+    // Vertical line to current point
+    ctx.strokeStyle = '#7c3aed';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath();
+    ctx.moveTo(currentX, height - padding.bottom);
+    ctx.lineTo(currentX, currentY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Current point marker
+    ctx.fillStyle = '#7c3aed';
+    ctx.beginPath();
+    ctx.arc(currentX, currentY, 8, 0, 2 * Math.PI);
+    ctx.fill();
+
+    // Amplitude value at current frequency
+    ctx.fillStyle = '#7c3aed';
+    ctx.font = 'bold 12px Inter';
+    ctx.textAlign = 'left';
+    ctx.fillText(`A = ${currentAmp.toFixed(3)} m`, currentX + 15, currentY);
+
+    // Title
+    ctx.fillStyle = '#78350f';
+    ctx.font = 'bold 13px Inter';
+    ctx.textAlign = 'center';
+    ctx.fillText('Courbe de résonance', width / 2, 18);
+
+    // Resonance indicator
+    const isNearResonance = Math.abs(drivingFrequency - naturalFrequencyHz) < 0.15;
+    if (isNearResonance) {
+      ctx.fillStyle = '#dc2626';
+      ctx.font = 'bold 14px Inter';
+      ctx.fillText('RÉSONANCE!', width / 2, height - padding.bottom - graphHeight - 5);
+    }
+
+  }, [mode, drivingFrequency, naturalFrequencyHz, getForcedAmplitude, forcedDamping]);
+
+  // Draw forced mass-spring system
+  useEffect(() => {
+    if (mode !== 'forced') return;
+
+    const canvas = springCanvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const width = canvas.width;
+    const height = canvas.height;
+    const centerX = width / 2;
+    const equilibriumY = height / 2;
+    const scale = 40;
+
+    ctx.fillStyle = '#fafafa';
+    ctx.fillRect(0, 0, width, height);
+
+    const displacement = getForcedDisplacement(time);
+    const drivingForce = getDrivingForce(time);
+    const massY = equilibriumY + displacement * scale;
+
+    // Ceiling
+    ctx.fillStyle = '#4b5563';
+    ctx.fillRect(centerX - 60, 0, 120, 15);
+    ctx.strokeStyle = '#374151';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 12; i++) {
+      ctx.beginPath();
+      ctx.moveTo(centerX - 55 + i * 10, 15);
+      ctx.lineTo(centerX - 65 + i * 10, 0);
+      ctx.stroke();
+    }
+
+    // Spring
+    const springTop = 15;
+    const springBottom = massY - 30;
+    const coils = 10;
+    const coilWidth = 20;
+
+    ctx.strokeStyle = '#6b7280';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(centerX, springTop);
+    const coilHeight = (springBottom - springTop) / coils;
+    for (let i = 0; i < coils; i++) {
+      const y1 = springTop + i * coilHeight + coilHeight * 0.25;
+      const y2 = springTop + i * coilHeight + coilHeight * 0.75;
+      ctx.lineTo(centerX + coilWidth, y1);
+      ctx.lineTo(centerX - coilWidth, y2);
+    }
+    ctx.lineTo(centerX, springBottom);
+    ctx.stroke();
+
+    // Mass
+    const massSize = 50;
+    ctx.fillStyle = '#8b5cf6';
+    ctx.fillRect(centerX - massSize/2, massY - massSize/2, massSize, massSize);
+    ctx.strokeStyle = '#6d28d9';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(centerX - massSize/2, massY - massSize/2, massSize, massSize);
+    ctx.fillStyle = 'white';
+    ctx.font = 'bold 16px Inter';
+    ctx.textAlign = 'center';
+    ctx.fillText('m', centerX, massY + 5);
+
+    // Driving force arrow
+    const forceScale = 2;
+    const forceLength = drivingForce * forceScale;
+    const forceStartY = massY + massSize/2 + 10;
+    const forceEndY = forceStartY + forceLength;
+
+    ctx.strokeStyle = '#3b82f6';
+    ctx.fillStyle = '#3b82f6';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(centerX, forceStartY);
+    ctx.lineTo(centerX, forceEndY);
+    ctx.stroke();
+
+    // Arrow head
+    const arrowSize = 8;
+    const arrowDir = forceLength > 0 ? 1 : -1;
+    ctx.beginPath();
+    ctx.moveTo(centerX, forceEndY);
+    ctx.lineTo(centerX - arrowSize, forceEndY - arrowSize * arrowDir);
+    ctx.lineTo(centerX + arrowSize, forceEndY - arrowSize * arrowDir);
+    ctx.closePath();
+    ctx.fill();
+
+    // Force label
+    ctx.fillStyle = '#1d4ed8';
+    ctx.font = 'bold 12px Inter';
+    ctx.textAlign = 'left';
+    ctx.fillText(`F = ${drivingForce.toFixed(1)} N`, centerX + 35, massY + massSize/2 + 25);
+
+    // Equilibrium line
+    ctx.strokeStyle = '#d1d5db';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath();
+    ctx.moveTo(0, equilibriumY);
+    ctx.lineTo(width, equilibriumY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = '#9ca3af';
+    ctx.font = '11px Inter';
+    ctx.textAlign = 'left';
+    ctx.fillText('Équilibre', 5, equilibriumY - 5);
+
+    // Displacement indicator
+    ctx.fillStyle = '#7c3aed';
+    ctx.font = '12px Inter';
+    ctx.textAlign = 'right';
+    ctx.fillText(`x = ${displacement.toFixed(3)} m`, width - 10, 30);
+
+    // Phase indicator - small diagram
+    const phaseY = height - 40;
+    const phaseRadius = 20;
+    ctx.strokeStyle = '#9ca3af';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(width - 50, phaseY, phaseRadius, 0, 2 * Math.PI);
+    ctx.stroke();
+
+    // Force vector (blue)
+    const forceAngle = 2 * Math.PI * drivingFrequency * time;
+    ctx.strokeStyle = '#3b82f6';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(width - 50, phaseY);
+    ctx.lineTo(width - 50 + phaseRadius * Math.cos(forceAngle - Math.PI/2), phaseY + phaseRadius * Math.sin(forceAngle - Math.PI/2));
+    ctx.stroke();
+
+    // Response vector (violet)
+    const responsePhase = getForcedPhase(2 * Math.PI * drivingFrequency);
+    const responseAngle = forceAngle - responsePhase;
+    ctx.strokeStyle = '#8b5cf6';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(width - 50, phaseY);
+    ctx.lineTo(width - 50 + phaseRadius * Math.cos(responseAngle - Math.PI/2), phaseY + phaseRadius * Math.sin(responseAngle - Math.PI/2));
+    ctx.stroke();
+
+    ctx.fillStyle = '#6b7280';
+    ctx.font = '9px Inter';
+    ctx.textAlign = 'center';
+    ctx.fillText('Phase', width - 50, phaseY + phaseRadius + 12);
+
+  }, [time, mode, getForcedDisplacement, getDrivingForce, getForcedPhase, drivingFrequency]);
+
   // Draw mass-spring for SHM and energy mode
   useEffect(() => {
     if (mode !== 'shm' && mode !== 'energy') return;
@@ -779,6 +1141,14 @@ export function OscillationsWaveSimulator() {
           Énergie
         </button>
         <button
+          onClick={() => setMode('forced')}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            mode === 'forced' ? 'bg-violet-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+        >
+          Résonance
+        </button>
+        <button
           onClick={() => setMode('standing')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             mode === 'standing' ? 'bg-violet-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -821,6 +1191,15 @@ export function OscillationsWaveSimulator() {
                 <BlockMath math={`x(t) = A e^{-\\gamma t} \\cos(\\omega_d t) \\quad \\gamma = \\frac{b}{2m} = ${(damping / (2 * mass)).toFixed(2)}`} />
               </div>
             )}
+          </>
+        )}
+        {mode === 'forced' && (
+          <>
+            <p className="text-sm text-violet-600 mb-2 font-medium">Oscillateur forcé et résonance</p>
+            <BlockMath math={`m\\ddot{x} + b\\dot{x} + kx = F_0\\sin(\\omega_d t)`} />
+            <div className="mt-2 text-sm">
+              <BlockMath math={`A(\\omega_d) = \\frac{F_0}{\\sqrt{(k-m\\omega_d^2)^2 + (b\\omega_d)^2}} \\quad \\omega_0 = \\sqrt{\\frac{k}{m}} = ${naturalFrequency.toFixed(2)} \\text{ rad/s}`} />
+            </div>
           </>
         )}
         {mode === 'standing' && (
@@ -938,6 +1317,83 @@ export function OscillationsWaveSimulator() {
           </>
         )}
 
+        {mode === 'forced' && (
+          <>
+            <div className="space-y-2">
+              <label className="flex items-center justify-between">
+                <span className="font-medium text-gray-700">Fréq. excitation <InlineMath math="f_d" /></span>
+                <span className="text-violet-600 font-mono">{drivingFrequency.toFixed(2)} Hz</span>
+              </label>
+              <input
+                type="range" min="0.1" max="3" step="0.05" value={drivingFrequency}
+                onChange={(e) => setDrivingFrequency(parseFloat(e.target.value))}
+                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+              />
+              <p className="text-xs text-gray-500">ω_d = {(2 * Math.PI * drivingFrequency).toFixed(2)} rad/s</p>
+            </div>
+            <div className="space-y-2">
+              <label className="flex items-center justify-between">
+                <span className="font-medium text-gray-700">Force <InlineMath math="F_0" /></span>
+                <span className="text-violet-600 font-mono">{forceAmplitude.toFixed(0)} N</span>
+              </label>
+              <input
+                type="range" min="1" max="50" step="1" value={forceAmplitude}
+                onChange={(e) => setForceAmplitude(parseFloat(e.target.value))}
+                className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="flex items-center justify-between">
+                <span className="font-medium text-gray-700">Amortissement <InlineMath math="b" /></span>
+                <span className="text-violet-600 font-mono">{forcedDamping.toFixed(1)} kg/s</span>
+              </label>
+              <input
+                type="range" min="0.5" max="15" step="0.5" value={forcedDamping}
+                onChange={(e) => setForcedDamping(parseFloat(e.target.value))}
+                className="w-full h-2 bg-orange-200 rounded-lg appearance-none cursor-pointer accent-orange-600"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="flex items-center justify-between">
+                <span className="font-medium text-gray-700">Masse <InlineMath math="m" /></span>
+                <span className="text-violet-600 font-mono">{mass.toFixed(1)} kg</span>
+              </label>
+              <input
+                type="range" min="0.5" max="5" step="0.5" value={mass}
+                onChange={(e) => setMass(parseFloat(e.target.value))}
+                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="flex items-center justify-between">
+                <span className="font-medium text-gray-700">Constante <InlineMath math="k" /></span>
+                <span className="text-violet-600 font-mono">{springConstant} N/m</span>
+              </label>
+              <input
+                type="range" min="10" max="100" step="5" value={springConstant}
+                onChange={(e) => setSpringConstant(parseFloat(e.target.value))}
+                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+              />
+            </div>
+            <div className="bg-amber-50 rounded-lg p-3 text-sm space-y-1">
+              <div className="flex justify-between">
+                <span>f₀ (naturelle):</span>
+                <span className="font-mono text-amber-700">{naturalFrequencyHz.toFixed(2)} Hz</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Ratio f_d/f₀:</span>
+                <span className={`font-mono ${Math.abs(drivingFrequency - naturalFrequencyHz) < 0.1 ? 'text-red-600 font-bold' : 'text-amber-700'}`}>
+                  {(drivingFrequency / naturalFrequencyHz).toFixed(2)}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span>Facteur Q:</span>
+                <span className="font-mono text-amber-700">{qFactor.toFixed(1)}</span>
+              </div>
+            </div>
+          </>
+        )}
+
         {mode === 'standing' && (
           <>
             <div className="space-y-2">
@@ -1043,13 +1499,34 @@ export function OscillationsWaveSimulator() {
       </div>
 
       {/* Visualization */}
-      <div className={`grid ${(mode === 'shm' || mode === 'energy') ? 'lg:grid-cols-2' : ''} gap-6`}>
-        {mode !== 'energy' && (
+      <div className={`grid ${(mode === 'shm' || mode === 'energy' || mode === 'forced') ? 'lg:grid-cols-2' : ''} gap-6`}>
+        {mode !== 'energy' && mode !== 'forced' && (
           <div className="space-y-2">
             <h3 className="font-semibold text-gray-800">
               {mode === 'shm' ? 'Graphique y(t)' : mode === 'beats' ? 'Battements' : 'Onde sur la corde'}
             </h3>
             <canvas ref={canvasRef} width={600} height={250} className="w-full border border-gray-200 rounded-lg" />
+          </div>
+        )}
+
+        {mode === 'forced' && (
+          <div className="space-y-2">
+            <h3 className="font-semibold text-gray-800">Courbe de résonance A(f)</h3>
+            <canvas ref={resonanceCanvasRef} width={500} height={300} className="w-full border border-amber-200 rounded-lg" />
+            <div className="flex gap-4 text-xs">
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-0.5 bg-amber-500"></div>
+                <span>Amplitude</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-0.5 bg-red-500" style={{borderStyle: 'dashed'}}></div>
+                <span>f₀ naturelle</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 bg-violet-500 rounded-full"></div>
+                <span>f_d actuelle</span>
+              </div>
+            </div>
           </div>
         )}
 
@@ -1102,6 +1579,33 @@ export function OscillationsWaveSimulator() {
             )}
           </div>
         )}
+
+        {mode === 'forced' && (
+          <div className="space-y-2">
+            <h3 className="font-semibold text-gray-800">Oscillateur forcé</h3>
+            <canvas ref={springCanvasRef} width={300} height={300} className="w-full border border-gray-200 rounded-lg" />
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div className="bg-violet-50 rounded-lg p-2 text-center">
+                <p className="text-violet-600 font-medium">Amplitude</p>
+                <p className="text-violet-800 font-mono">{getForcedAmplitude(2 * Math.PI * drivingFrequency).toFixed(3)} m</p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-2 text-center">
+                <p className="text-blue-600 font-medium">Force</p>
+                <p className="text-blue-800 font-mono">{getDrivingForce(time).toFixed(1)} N</p>
+              </div>
+              <div className="bg-amber-50 rounded-lg p-2 text-center">
+                <p className="text-amber-600 font-medium">Déphasage</p>
+                <p className="text-amber-800 font-mono">{(getForcedPhase(2 * Math.PI * drivingFrequency) * 180 / Math.PI).toFixed(1)}°</p>
+              </div>
+              <div className={`rounded-lg p-2 text-center ${Math.abs(drivingFrequency - naturalFrequencyHz) < 0.15 ? 'bg-red-100' : 'bg-gray-50'}`}>
+                <p className={`font-medium ${Math.abs(drivingFrequency - naturalFrequencyHz) < 0.15 ? 'text-red-600' : 'text-gray-600'}`}>État</p>
+                <p className={`font-mono text-sm ${Math.abs(drivingFrequency - naturalFrequencyHz) < 0.15 ? 'text-red-800 font-bold' : 'text-gray-800'}`}>
+                  {Math.abs(drivingFrequency - naturalFrequencyHz) < 0.15 ? 'RÉSONANCE' : drivingFrequency < naturalFrequencyHz ? 'Sous-résonance' : 'Sur-résonance'}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Playback Controls */}
@@ -1122,7 +1626,7 @@ export function OscillationsWaveSimulator() {
       {/* Educational Notes */}
       <div className="border-t border-gray-200 pt-6">
         <h3 className="font-semibold text-gray-800 mb-3">Concepts clés</h3>
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4 text-sm">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
           <div className="bg-violet-50 rounded-lg p-4">
             <h4 className="font-medium text-violet-800 mb-2">MHS</h4>
             <p className="text-violet-700">Oscillation sinusoïdale caractérisée par A, f et φ. Base de tous les phénomènes ondulatoires.</p>
@@ -1130,6 +1634,10 @@ export function OscillationsWaveSimulator() {
           <div className="bg-orange-50 rounded-lg p-4">
             <h4 className="font-medium text-orange-800 mb-2">Énergie</h4>
             <p className="text-orange-700">E<sub>tot</sub> = E<sub>c</sub> + E<sub>p</sub> = ½kA². Sans friction, l'énergie totale est conservée.</p>
+          </div>
+          <div className="bg-amber-50 rounded-lg p-4">
+            <h4 className="font-medium text-amber-800 mb-2">Résonance</h4>
+            <p className="text-amber-700">À f<sub>d</sub> = f₀, l'amplitude est maximale. Le facteur Q mesure la largeur du pic de résonance.</p>
           </div>
           <div className="bg-red-50 rounded-lg p-4">
             <h4 className="font-medium text-red-800 mb-2">Amortissement</h4>
