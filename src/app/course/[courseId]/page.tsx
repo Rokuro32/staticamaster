@@ -58,9 +58,13 @@ export default function CourseHomePage() {
               Voir les modules
             </Button>
           </Link>
-          {courseId === 'waves_modern' && (
+          {['waves_modern', 'statics', 'kinematics'].includes(courseId) && (
             <Link href={`/course/${courseId}/simulations`}>
-              <Button size="lg" className="bg-violet-600 text-white hover:bg-violet-700">
+              <Button size="lg" className={`${
+                courseId === 'waves_modern' ? 'bg-violet-600 hover:bg-violet-700' :
+                courseId === 'kinematics' ? 'bg-green-600 hover:bg-green-700' :
+                'bg-blue-600 hover:bg-blue-700'
+              } text-white`}>
                 🔬 Simulations
               </Button>
             </Link>
