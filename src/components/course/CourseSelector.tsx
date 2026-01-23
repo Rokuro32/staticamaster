@@ -96,10 +96,21 @@ export function CourseSelector({ onSelect }: CourseSelectorProps) {
         </div>
 
         {/* Footer info */}
-        <div className="mt-16 text-center">
+        <div className="mt-16 text-center space-y-3">
           <p className="text-gray-500 text-sm">
             Plateforme d'apprentissage pour les cours de physique au CÉGEP
           </p>
+          <div className="pt-4 border-t border-gray-200 max-w-md mx-auto">
+            <p className="text-gray-700 font-medium">
+              Conçu et développé par
+            </p>
+            <p className="text-lg font-semibold text-gray-900 mt-1">
+              Xavier Arata, B.Ing, CPI
+            </p>
+            <p className="text-xs text-gray-400 mt-2">
+              © {new Date().getFullYear()} Xavier Arata. Tous droits réservés.
+            </p>
+          </div>
         </div>
       </div>
     </div>
