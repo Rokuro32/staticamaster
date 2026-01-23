@@ -12,6 +12,7 @@ import { RelativitySimulator } from '@/components/simulations/RelativitySimulato
 import { VectorSimulator } from '@/components/simulations/VectorSimulator';
 import { ForceAdditionSimulator } from '@/components/simulations/ForceAdditionSimulator';
 import { RotationDynamicsSimulator } from '@/components/simulations/RotationDynamicsSimulator';
+import { TrussSimulator } from '@/components/simulations/TrussSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -207,6 +208,17 @@ export default function SimulationsPage() {
               <RotationDynamicsSimulator />
             </section>
 
+            {/* Truss Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">🏗️</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Analyse de Treillis
+                </h2>
+              </div>
+              <TrussSimulator />
+            </section>
+
             {/* More simulations can be added here */}
             <section className="bg-gray-50 rounded-xl p-8 text-center">
               <h3 className="text-lg font-semibold text-gray-700 mb-2">
@@ -217,10 +229,10 @@ export default function SimulationsPage() {
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
-                  🏗️ Analyse de treillis
+                  📊 Diagrammes de contraintes
                 </span>
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
-                  📊 Diagrammes de contraintes
+                  🔩 Résistance des matériaux
                 </span>
               </div>
             </section>
