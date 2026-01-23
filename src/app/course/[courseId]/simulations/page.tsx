@@ -11,6 +11,7 @@ import { SoundWaveSimulator } from '@/components/simulations/SoundWaveSimulator'
 import { RelativitySimulator } from '@/components/simulations/RelativitySimulator';
 import { VectorSimulator } from '@/components/simulations/VectorSimulator';
 import { ForceAdditionSimulator } from '@/components/simulations/ForceAdditionSimulator';
+import { RotationDynamicsSimulator } from '@/components/simulations/RotationDynamicsSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -195,6 +196,17 @@ export default function SimulationsPage() {
               <ForceAdditionSimulator />
             </section>
 
+            {/* Rotation Dynamics Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">🔄</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Dynamique de Rotation
+                </h2>
+              </div>
+              <RotationDynamicsSimulator />
+            </section>
+
             {/* More simulations can be added here */}
             <section className="bg-gray-50 rounded-xl p-8 text-center">
               <h3 className="text-lg font-semibold text-gray-700 mb-2">
@@ -205,10 +217,10 @@ export default function SimulationsPage() {
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
-                  🔧 Moments et couples
+                  🏗️ Analyse de treillis
                 </span>
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
-                  🏗️ Réactions d'appui
+                  📊 Diagrammes de contraintes
                 </span>
               </div>
             </section>
@@ -282,20 +294,20 @@ export default function SimulationsPage() {
           {courseId === 'statics' && (
             <>
               <Link
-                href={`/course/${courseId}/quiz/1`}
+                href={`/course/${courseId}/quiz/3`}
                 className="p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all"
               >
-                <div className="text-2xl mb-2">📐</div>
-                <h4 className="font-medium text-gray-900">Module 1: Fondements mathématiques</h4>
-                <p className="text-sm text-gray-500">Quiz sur les vecteurs et la trigonométrie</p>
+                <div className="text-2xl mb-2">🔄</div>
+                <h4 className="font-medium text-gray-900">Module 3: Corps rigide</h4>
+                <p className="text-sm text-gray-500">Quiz sur les moments et l'équilibre</p>
               </Link>
               <Link
-                href={`/course/${courseId}/quiz/2`}
+                href={`/course/${courseId}/quiz/4`}
                 className="p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all"
               >
-                <div className="text-2xl mb-2">⚖️</div>
-                <h4 className="font-medium text-gray-900">Module 2: Équilibre des particules</h4>
-                <p className="text-sm text-gray-500">Quiz sur l'équilibre statique</p>
+                <div className="text-2xl mb-2">🏗️</div>
+                <h4 className="font-medium text-gray-900">Module 4: Structures</h4>
+                <p className="text-sm text-gray-500">Quiz sur l'analyse des treillis</p>
               </Link>
             </>
           )}
