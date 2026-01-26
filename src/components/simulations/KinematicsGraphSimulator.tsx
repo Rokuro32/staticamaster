@@ -45,11 +45,11 @@ export function KinematicsGraphSimulator() {
   const accelerationCanvasRef = useRef<HTMLCanvasElement>(null);
   const animationCanvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Larger canvas sizes for better visibility
-  const canvasWidth = 550;
-  const canvasHeight = 220;
-  const animCanvasWidth = 550;
-  const animCanvasHeight = 80;
+  // Compact canvas sizes for all-in-view display
+  const canvasWidth = 480;
+  const canvasHeight = 140;
+  const animCanvasWidth = 480;
+  const animCanvasHeight = 60;
 
   // Calculate position, velocity, acceleration at time t
   const getKinematics = useCallback((t: number) => {
@@ -110,7 +110,7 @@ export function KinematicsGraphSimulator() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const padding = { left: 55, right: 30, top: 35, bottom: 40 };
+    const padding = { left: 45, right: 20, top: 25, bottom: 30 };
     const graphWidth = canvasWidth - padding.left - padding.right;
     const graphHeight = canvasHeight - padding.top - padding.bottom;
 
@@ -154,9 +154,9 @@ export function KinematicsGraphSimulator() {
       ctx.lineTo(canvasWidth - padding.right, canvasY);
       ctx.stroke();
       ctx.fillStyle = '#6b7280';
-      ctx.font = '11px system-ui';
+      ctx.font = '9px system-ui';
       ctx.textAlign = 'right';
-      ctx.fillText(y.toFixed(1), padding.left - 8, canvasY + 4);
+      ctx.fillText(y.toFixed(1), padding.left - 5, canvasY + 3);
     }
 
     const numXLines = 10;
@@ -168,9 +168,9 @@ export function KinematicsGraphSimulator() {
       ctx.lineTo(canvasX, canvasHeight - padding.bottom);
       ctx.stroke();
       ctx.fillStyle = '#6b7280';
-      ctx.font = '11px system-ui';
+      ctx.font = '9px system-ui';
       ctx.textAlign = 'center';
-      ctx.fillText(t.toFixed(1), canvasX, canvasHeight - padding.bottom + 15);
+      ctx.fillText(t.toFixed(1), canvasX, canvasHeight - padding.bottom + 12);
     }
 
     // Zero line
@@ -199,7 +199,7 @@ export function KinematicsGraphSimulator() {
 
     // Main curve
     ctx.strokeStyle = color;
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 2;
     ctx.beginPath();
     for (let i = 0; i <= numPoints; i++) {
       const t = (i / numPoints) * maxTime;
@@ -227,15 +227,15 @@ export function KinematicsGraphSimulator() {
 
     // Point with glow effect
     ctx.shadowColor = color;
-    ctx.shadowBlur = 10;
+    ctx.shadowBlur = 6;
     ctx.fillStyle = color;
     ctx.beginPath();
-    ctx.arc(markerX, markerY, 8, 0, Math.PI * 2);
+    ctx.arc(markerX, markerY, 5, 0, Math.PI * 2);
     ctx.fill();
     ctx.shadowBlur = 0;
 
     ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 2;
     ctx.stroke();
 
     // Tangent line (derivative visualization)
@@ -262,35 +262,35 @@ export function KinematicsGraphSimulator() {
     // Current value box
     ctx.fillStyle = 'rgba(255,255,255,0.95)';
     ctx.strokeStyle = color;
-    ctx.lineWidth = 2;
-    const boxWidth = 90;
-    const boxHeight = 28;
-    const boxX = Math.min(markerX + 15, canvasWidth - padding.right - boxWidth - 5);
-    const boxY = Math.max(markerY - 35, padding.top + 5);
+    ctx.lineWidth = 1.5;
+    const boxWidth = 70;
+    const boxHeight = 20;
+    const boxX = Math.min(markerX + 10, canvasWidth - padding.right - boxWidth - 5);
+    const boxY = Math.max(markerY - 25, padding.top + 3);
     ctx.beginPath();
-    ctx.roundRect(boxX, boxY, boxWidth, boxHeight, 6);
+    ctx.roundRect(boxX, boxY, boxWidth, boxHeight, 4);
     ctx.fill();
     ctx.stroke();
 
     ctx.fillStyle = color;
-    ctx.font = 'bold 14px system-ui';
+    ctx.font = 'bold 11px system-ui';
     ctx.textAlign = 'center';
-    ctx.fillText(`${currentVal.toFixed(2)} ${unit}`, boxX + boxWidth / 2, boxY + 19);
+    ctx.fillText(`${currentVal.toFixed(2)} ${unit}`, boxX + boxWidth / 2, boxY + 14);
 
     // Title with formula
     ctx.fillStyle = color;
-    ctx.font = 'bold 18px system-ui';
+    ctx.font = 'bold 14px system-ui';
     ctx.textAlign = 'left';
-    ctx.fillText(`${label}(t)`, 10, 24);
+    ctx.fillText(`${label}(t)`, 8, 18);
 
     // Axis label
     ctx.fillStyle = '#374151';
-    ctx.font = '12px system-ui';
+    ctx.font = '10px system-ui';
     ctx.textAlign = 'center';
-    ctx.fillText('t (s)', canvasWidth / 2, canvasHeight - 8);
+    ctx.fillText('t (s)', canvasWidth / 2, canvasHeight - 5);
 
     ctx.save();
-    ctx.translate(15, canvasHeight / 2);
+    ctx.translate(12, canvasHeight / 2);
     ctx.rotate(-Math.PI / 2);
     ctx.fillText(`${label} (${unit})`, 0, 0);
     ctx.restore();
@@ -298,15 +298,15 @@ export function KinematicsGraphSimulator() {
     // Derivative/Integral indicators
     if (derivativeLabel) {
       ctx.fillStyle = '#9333ea';
-      ctx.font = '11px system-ui';
+      ctx.font = '9px system-ui';
       ctx.textAlign = 'right';
-      ctx.fillText(`pente → ${derivativeLabel}`, canvasWidth - 10, 20);
+      ctx.fillText(`pente → ${derivativeLabel}`, canvasWidth - 8, 14);
     }
     if (integralLabel) {
       ctx.fillStyle = color;
-      ctx.font = '11px system-ui';
+      ctx.font = '9px system-ui';
       ctx.textAlign = 'right';
-      ctx.fillText(`aire → Δ${integralLabel}`, canvasWidth - 10, 34);
+      ctx.fillText(`aire → Δ${integralLabel}`, canvasWidth - 8, 24);
     }
   }, [maxTime, currentTime, canvasWidth, canvasHeight]);
 
@@ -405,15 +405,15 @@ export function KinematicsGraphSimulator() {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
       {/* Header */}
-      <div className="border-b border-gray-200 bg-gradient-to-r from-emerald-50 to-blue-50 p-4">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="flex flex-wrap gap-2">
+      <div className="border-b border-gray-200 bg-gradient-to-r from-emerald-50 to-blue-50 p-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap gap-1.5">
             {MOTION_TYPES.map((m) => (
               <button
                 key={m.id}
                 onClick={() => { setMotionType(m.id); handleReset(); }}
                 className={cn(
-                  "px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                  "px-3 py-1.5 rounded-lg text-xs font-medium transition-all",
                   motionType === m.id
                     ? "bg-emerald-600 text-white shadow-md"
                     : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
@@ -423,87 +423,75 @@ export function KinematicsGraphSimulator() {
               </button>
             ))}
           </div>
-          <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+          <label className="flex items-center gap-1.5 text-xs text-gray-600 cursor-pointer">
             <input
               type="checkbox"
               checked={showAnimation}
               onChange={(e) => setShowAnimation(e.target.checked)}
-              className="w-4 h-4 accent-emerald-600"
+              className="w-3.5 h-3.5 accent-emerald-600"
             />
-            Afficher animation
+            Animation
           </label>
         </div>
-        <p className="text-sm text-gray-600 mt-2">
+        <p className="text-xs text-gray-600 mt-1">
           {MOTION_TYPES.find(m => m.id === motionType)?.description}
         </p>
       </div>
 
-      <div className="p-6">
-        {/* Main graphs - stacked vertically for emphasis */}
-        <div className="space-y-4 mb-6">
+      <div className="p-4">
+        {/* Main graphs - compact stacked layout */}
+        <div className="space-y-2 mb-4">
           {/* Position graph */}
-          <div className="flex gap-4 items-start">
-            <div className="flex-1 border-2 border-green-300 rounded-xl overflow-hidden shadow-sm">
+          <div className="flex gap-2 items-center">
+            <div className="flex-1 border border-green-300 rounded-lg overflow-hidden">
               <canvas ref={positionCanvasRef} width={canvasWidth} height={canvasHeight} className="w-full" />
             </div>
-            <div className="w-48 p-3 bg-green-50 rounded-lg border border-green-200">
-              <div className="text-center mb-2">
-                <span className="text-2xl font-mono font-bold text-green-700">{currentKinematics.x.toFixed(2)}</span>
-                <span className="text-sm text-green-600 ml-1">m</span>
-              </div>
-              <div className="text-xs text-green-700 text-center">
-                <InlineMath math="v = \frac{dx}{dt}" />
-              </div>
+            <div className="w-28 p-2 bg-green-50 rounded-lg border border-green-200 text-center">
+              <span className="text-lg font-mono font-bold text-green-700">{currentKinematics.x.toFixed(2)}</span>
+              <span className="text-xs text-green-600 ml-1">m</span>
+              <div className="text-[10px] text-green-600 mt-1"><InlineMath math="v = \frac{dx}{dt}" /></div>
             </div>
           </div>
 
           {/* Velocity graph */}
-          <div className="flex gap-4 items-start">
-            <div className="flex-1 border-2 border-blue-300 rounded-xl overflow-hidden shadow-sm">
+          <div className="flex gap-2 items-center">
+            <div className="flex-1 border border-blue-300 rounded-lg overflow-hidden">
               <canvas ref={velocityCanvasRef} width={canvasWidth} height={canvasHeight} className="w-full" />
             </div>
-            <div className="w-48 p-3 bg-blue-50 rounded-lg border border-blue-200">
-              <div className="text-center mb-2">
-                <span className="text-2xl font-mono font-bold text-blue-700">{currentKinematics.v.toFixed(2)}</span>
-                <span className="text-sm text-blue-600 ml-1">m/s</span>
-              </div>
-              <div className="text-xs text-blue-700 text-center">
-                <InlineMath math="a = \frac{dv}{dt}" />
-              </div>
+            <div className="w-28 p-2 bg-blue-50 rounded-lg border border-blue-200 text-center">
+              <span className="text-lg font-mono font-bold text-blue-700">{currentKinematics.v.toFixed(2)}</span>
+              <span className="text-xs text-blue-600 ml-1">m/s</span>
+              <div className="text-[10px] text-blue-600 mt-1"><InlineMath math="a = \frac{dv}{dt}" /></div>
             </div>
           </div>
 
           {/* Acceleration graph */}
-          <div className="flex gap-4 items-start">
-            <div className="flex-1 border-2 border-red-300 rounded-xl overflow-hidden shadow-sm">
+          <div className="flex gap-2 items-center">
+            <div className="flex-1 border border-red-300 rounded-lg overflow-hidden">
               <canvas ref={accelerationCanvasRef} width={canvasWidth} height={canvasHeight} className="w-full" />
             </div>
-            <div className="w-48 p-3 bg-red-50 rounded-lg border border-red-200">
-              <div className="text-center mb-2">
-                <span className="text-2xl font-mono font-bold text-red-700">{currentKinematics.a.toFixed(2)}</span>
-                <span className="text-sm text-red-600 ml-1">m/s²</span>
-              </div>
-              <div className="text-xs text-red-700 text-center">
-                <InlineMath math="\int a\,dt = \Delta v" />
-              </div>
+            <div className="w-28 p-2 bg-red-50 rounded-lg border border-red-200 text-center">
+              <span className="text-lg font-mono font-bold text-red-700">{currentKinematics.a.toFixed(2)}</span>
+              <span className="text-xs text-red-600 ml-1">m/s²</span>
+              <div className="text-[10px] text-red-600 mt-1"><InlineMath math="\int a\,dt = \Delta v" /></div>
             </div>
           </div>
         </div>
 
         {/* Optional animation - smaller and collapsible */}
         {showAnimation && (
-          <div className="mb-4 border border-gray-200 rounded-lg overflow-hidden">
+          <div className="mb-3 border border-gray-200 rounded-lg overflow-hidden">
             <canvas ref={animationCanvasRef} width={animCanvasWidth} height={animCanvasHeight} className="w-full" />
           </div>
         )}
 
         {/* Controls bar */}
-        <div className="flex flex-wrap items-center gap-4 p-4 bg-gray-50 rounded-xl mb-6">
+        <div className="flex flex-wrap items-center gap-3 p-3 bg-gray-50 rounded-lg mb-4">
           <div className="flex gap-2">
             <button
               onClick={() => setIsPlaying(!isPlaying)}
               className={cn(
-                "px-5 py-2 rounded-lg font-semibold transition-colors",
+                "px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors",
                 isPlaying ? "bg-amber-500 text-white" : "bg-emerald-500 text-white"
               )}
             >
@@ -511,14 +499,14 @@ export function KinematicsGraphSimulator() {
             </button>
             <button
               onClick={handleReset}
-              className="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300"
+              className="px-3 py-1.5 rounded-lg text-sm font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300"
             >
               ↺ Reset
             </button>
           </div>
 
-          <div className="flex-1 flex items-center gap-3">
-            <span className="text-sm text-gray-600">t =</span>
+          <div className="flex-1 flex items-center gap-2">
+            <span className="text-xs text-gray-600">t =</span>
             <input
               type="range"
               min="0"
@@ -528,15 +516,15 @@ export function KinematicsGraphSimulator() {
               onChange={(e) => setCurrentTime(parseFloat(e.target.value))}
               className="flex-1 accent-emerald-600"
             />
-            <span className="text-sm font-mono font-bold text-gray-800 w-16">{currentTime.toFixed(2)} s</span>
+            <span className="text-xs font-mono font-bold text-gray-800 w-14">{currentTime.toFixed(2)} s</span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Durée:</span>
+          <div className="flex items-center gap-1">
+            <span className="text-xs text-gray-600">Durée:</span>
             <select
               value={maxTime}
               onChange={(e) => { setMaxTime(parseFloat(e.target.value)); handleReset(); }}
-              className="px-2 py-1 rounded border border-gray-300 text-sm"
+              className="px-1.5 py-1 rounded border border-gray-300 text-xs"
             >
               {[2, 3, 5, 8, 10].map(t => (
                 <option key={t} value={t}>{t}s</option>
@@ -546,118 +534,116 @@ export function KinematicsGraphSimulator() {
         </div>
 
         {/* Parameters - compact horizontal layout */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
           {(motionType !== 'sinusoidal') && (
             <>
-              <div className="p-3 bg-green-50 rounded-lg border border-green-200">
-                <label className="block text-xs font-medium text-green-700 mb-1">x₀ = {x0} m</label>
+              <div className="p-2 bg-green-50 rounded border border-green-200">
+                <label className="block text-[10px] font-medium text-green-700 mb-0.5">x₀ = {x0} m</label>
                 <input type="range" min="-5" max="5" step="0.5" value={x0}
                   onChange={(e) => { setX0(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-green-600" />
+                  className="w-full accent-green-600 h-4" />
               </div>
-              <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-                <label className="block text-xs font-medium text-blue-700 mb-1">v₀ = {v0} m/s</label>
+              <div className="p-2 bg-blue-50 rounded border border-blue-200">
+                <label className="block text-[10px] font-medium text-blue-700 mb-0.5">v₀ = {v0} m/s</label>
                 <input type="range" min="-5" max="5" step="0.5" value={v0}
                   onChange={(e) => { setV0(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-blue-600" />
+                  className="w-full accent-blue-600 h-4" />
               </div>
             </>
           )}
           {(motionType === 'uniformAccel' || motionType === 'custom') && (
-            <div className="p-3 bg-red-50 rounded-lg border border-red-200">
-              <label className="block text-xs font-medium text-red-700 mb-1">a = {a0} m/s²</label>
+            <div className="p-2 bg-red-50 rounded border border-red-200">
+              <label className="block text-[10px] font-medium text-red-700 mb-0.5">a = {a0} m/s²</label>
               <input type="range" min="-3" max="3" step="0.25" value={a0}
                 onChange={(e) => { setA0(parseFloat(e.target.value)); handleReset(); }}
-                className="w-full accent-red-600" />
+                className="w-full accent-red-600 h-4" />
             </div>
           )}
           {motionType === 'sinusoidal' && (
             <>
-              <div className="p-3 bg-purple-50 rounded-lg border border-purple-200">
-                <label className="block text-xs font-medium text-purple-700 mb-1">A = {amplitude} m</label>
+              <div className="p-2 bg-purple-50 rounded border border-purple-200">
+                <label className="block text-[10px] font-medium text-purple-700 mb-0.5">A = {amplitude} m</label>
                 <input type="range" min="1" max="5" step="0.5" value={amplitude}
                   onChange={(e) => { setAmplitude(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-purple-600" />
+                  className="w-full accent-purple-600 h-4" />
               </div>
-              <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
-                <label className="block text-xs font-medium text-orange-700 mb-1">ω = {omega} rad/s</label>
+              <div className="p-2 bg-orange-50 rounded border border-orange-200">
+                <label className="block text-[10px] font-medium text-orange-700 mb-0.5">ω = {omega} rad/s</label>
                 <input type="range" min="0.5" max="5" step="0.5" value={omega}
                   onChange={(e) => { setOmega(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-orange-600" />
+                  className="w-full accent-orange-600 h-4" />
               </div>
             </>
           )}
         </div>
 
-        {/* Mathematical relations - prominent display */}
-        <div className="bg-gradient-to-r from-slate-50 to-gray-50 rounded-xl p-5 border border-gray-200">
-          <h3 className="font-bold text-gray-800 mb-4 text-lg">Relations mathématiques</h3>
+        {/* Mathematical relations - compact display */}
+        <div className="bg-gradient-to-r from-slate-50 to-gray-50 rounded-lg p-4 border border-gray-200">
+          <h3 className="font-bold text-gray-800 mb-3 text-base">Relations mathématiques</h3>
 
           {/* Derivative/Integral chain */}
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-6 p-4 bg-white rounded-lg">
-            <div className="text-center p-3 bg-green-100 rounded-lg">
-              <p className="text-sm text-green-600 mb-1">Position</p>
-              <p className="text-xl font-bold text-green-700">x(t)</p>
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-4 p-3 bg-white rounded-lg">
+            <div className="text-center p-2 bg-green-100 rounded">
+              <p className="text-xs text-green-600">Position</p>
+              <p className="text-base font-bold text-green-700">x(t)</p>
             </div>
-            <div className="text-center">
-              <p className="text-xs text-purple-600">dérivée →</p>
-              <p className="text-xs text-amber-600">← intégrale</p>
+            <div className="text-center text-[10px]">
+              <p className="text-purple-600">d/dt →</p>
+              <p className="text-amber-600">← ∫dt</p>
             </div>
-            <div className="text-center p-3 bg-blue-100 rounded-lg">
-              <p className="text-sm text-blue-600 mb-1">Vitesse</p>
-              <p className="text-xl font-bold text-blue-700">v(t)</p>
+            <div className="text-center p-2 bg-blue-100 rounded">
+              <p className="text-xs text-blue-600">Vitesse</p>
+              <p className="text-base font-bold text-blue-700">v(t)</p>
             </div>
-            <div className="text-center">
-              <p className="text-xs text-purple-600">dérivée →</p>
-              <p className="text-xs text-amber-600">← intégrale</p>
+            <div className="text-center text-[10px]">
+              <p className="text-purple-600">d/dt →</p>
+              <p className="text-amber-600">← ∫dt</p>
             </div>
-            <div className="text-center p-3 bg-red-100 rounded-lg">
-              <p className="text-sm text-red-600 mb-1">Accélération</p>
-              <p className="text-xl font-bold text-red-700">a(t)</p>
+            <div className="text-center p-2 bg-red-100 rounded">
+              <p className="text-xs text-red-600">Accélération</p>
+              <p className="text-base font-bold text-red-700">a(t)</p>
             </div>
           </div>
 
           {/* Equations for current motion type */}
-          <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-200">
-            <h4 className="font-semibold text-emerald-800 mb-3">
+          <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-200 mb-3">
+            <h4 className="font-semibold text-emerald-800 mb-2 text-sm">
               Équations: {MOTION_TYPES.find(m => m.id === motionType)?.name}
             </h4>
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-2 text-sm">
               {motionType === 'uniform' && (
                 <>
-                  <div className="bg-white p-3 rounded-lg text-center"><BlockMath math="x(t) = x_0 + v_0 t" /></div>
-                  <div className="bg-white p-3 rounded-lg text-center"><BlockMath math="v(t) = v_0" /></div>
-                  <div className="bg-white p-3 rounded-lg text-center"><BlockMath math="a(t) = 0" /></div>
+                  <div className="bg-white p-2 rounded text-center"><BlockMath math="x(t) = x_0 + v_0 t" /></div>
+                  <div className="bg-white p-2 rounded text-center"><BlockMath math="v(t) = v_0" /></div>
+                  <div className="bg-white p-2 rounded text-center"><BlockMath math="a(t) = 0" /></div>
                 </>
               )}
               {(motionType === 'uniformAccel' || motionType === 'custom') && (
                 <>
-                  <div className="bg-white p-3 rounded-lg text-center"><BlockMath math="x(t) = x_0 + v_0 t + \frac{1}{2}at^2" /></div>
-                  <div className="bg-white p-3 rounded-lg text-center"><BlockMath math="v(t) = v_0 + at" /></div>
-                  <div className="bg-white p-3 rounded-lg text-center"><BlockMath math="a(t) = a" /></div>
+                  <div className="bg-white p-2 rounded text-center"><BlockMath math="x(t) = x_0 + v_0 t + \frac{1}{2}at^2" /></div>
+                  <div className="bg-white p-2 rounded text-center"><BlockMath math="v(t) = v_0 + at" /></div>
+                  <div className="bg-white p-2 rounded text-center"><BlockMath math="a(t) = a" /></div>
                 </>
               )}
               {motionType === 'sinusoidal' && (
                 <>
-                  <div className="bg-white p-3 rounded-lg text-center"><BlockMath math="x(t) = A\sin(\omega t)" /></div>
-                  <div className="bg-white p-3 rounded-lg text-center"><BlockMath math="v(t) = A\omega\cos(\omega t)" /></div>
-                  <div className="bg-white p-3 rounded-lg text-center"><BlockMath math="a(t) = -A\omega^2\sin(\omega t)" /></div>
+                  <div className="bg-white p-2 rounded text-center"><BlockMath math="x(t) = A\sin(\omega t)" /></div>
+                  <div className="bg-white p-2 rounded text-center"><BlockMath math="v(t) = A\omega\cos(\omega t)" /></div>
+                  <div className="bg-white p-2 rounded text-center"><BlockMath math="a(t) = -A\omega^2\sin(\omega t)" /></div>
                 </>
               )}
             </div>
           </div>
 
           {/* Graphical interpretation */}
-          <div className="grid md:grid-cols-2 gap-4 mt-4">
-            <div className="p-3 bg-purple-50 rounded-lg border border-purple-200">
-              <p className="font-medium text-purple-800 mb-1">↓ Dérivation (pente)</p>
-              <p className="text-sm text-purple-700">La <strong>pente</strong> d'un graphique donne la valeur de sa dérivée.</p>
-              <p className="text-xs text-purple-600 mt-1">Pente de x(t) = v(t) • Pente de v(t) = a(t)</p>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="p-2 bg-purple-50 rounded border border-purple-200">
+              <p className="font-medium text-purple-800 text-xs">↓ Dérivation (pente)</p>
+              <p className="text-[10px] text-purple-600">Pente de x(t) = v(t) • Pente de v(t) = a(t)</p>
             </div>
-            <div className="p-3 bg-amber-50 rounded-lg border border-amber-200">
-              <p className="font-medium text-amber-800 mb-1">↑ Intégration (aire)</p>
-              <p className="text-sm text-amber-700">L'<strong>aire</strong> sous la courbe donne le changement de la primitive.</p>
-              <p className="text-xs text-amber-600 mt-1">Aire sous a(t) = Δv • Aire sous v(t) = Δx</p>
+            <div className="p-2 bg-amber-50 rounded border border-amber-200">
+              <p className="font-medium text-amber-800 text-xs">↑ Intégration (aire)</p>
+              <p className="text-[10px] text-amber-600">Aire sous a(t) = Δv • Aire sous v(t) = Δx</p>
             </div>
           </div>
         </div>
