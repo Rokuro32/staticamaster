@@ -439,211 +439,187 @@ export function KinematicsGraphSimulator() {
       </div>
 
       <div className="p-4">
-        {/* Main graphs - compact stacked layout */}
-        <div className="space-y-2 mb-4">
-          {/* Position graph */}
-          <div className="flex gap-2 items-center">
-            <div className="flex-1 border border-green-300 rounded-lg overflow-hidden">
-              <canvas ref={positionCanvasRef} width={canvasWidth} height={canvasHeight} className="w-full" />
+        {/* 2x2 Grid Layout */}
+        <div className="grid grid-cols-2 gap-3 mb-4">
+          {/* Position graph - Top Left */}
+          <div className="border border-green-300 rounded-lg overflow-hidden bg-gradient-to-b from-green-50 to-white">
+            <div className="px-2 py-1 bg-green-100 border-b border-green-200 flex justify-between items-center">
+              <span className="text-xs font-bold text-green-800">Position x(t)</span>
+              <span className="text-sm font-mono font-bold text-green-700">{currentKinematics.x.toFixed(2)} m</span>
             </div>
-            <div className="w-28 p-2 bg-green-50 rounded-lg border border-green-200 text-center">
-              <span className="text-lg font-mono font-bold text-green-700">{currentKinematics.x.toFixed(2)}</span>
-              <span className="text-xs text-green-600 ml-1">m</span>
-              <div className="text-[10px] text-green-600 mt-1"><InlineMath math="v = \frac{dx}{dt}" /></div>
-            </div>
+            <canvas ref={positionCanvasRef} width={canvasWidth} height={canvasHeight} className="w-full" />
           </div>
 
-          {/* Velocity graph */}
-          <div className="flex gap-2 items-center">
-            <div className="flex-1 border border-blue-300 rounded-lg overflow-hidden">
-              <canvas ref={velocityCanvasRef} width={canvasWidth} height={canvasHeight} className="w-full" />
+          {/* Velocity graph - Top Right */}
+          <div className="border border-blue-300 rounded-lg overflow-hidden bg-gradient-to-b from-blue-50 to-white">
+            <div className="px-2 py-1 bg-blue-100 border-b border-blue-200 flex justify-between items-center">
+              <span className="text-xs font-bold text-blue-800">Vitesse v(t)</span>
+              <span className="text-sm font-mono font-bold text-blue-700">{currentKinematics.v.toFixed(2)} m/s</span>
             </div>
-            <div className="w-28 p-2 bg-blue-50 rounded-lg border border-blue-200 text-center">
-              <span className="text-lg font-mono font-bold text-blue-700">{currentKinematics.v.toFixed(2)}</span>
-              <span className="text-xs text-blue-600 ml-1">m/s</span>
-              <div className="text-[10px] text-blue-600 mt-1"><InlineMath math="a = \frac{dv}{dt}" /></div>
-            </div>
+            <canvas ref={velocityCanvasRef} width={canvasWidth} height={canvasHeight} className="w-full" />
           </div>
 
-          {/* Acceleration graph */}
-          <div className="flex gap-2 items-center">
-            <div className="flex-1 border border-red-300 rounded-lg overflow-hidden">
-              <canvas ref={accelerationCanvasRef} width={canvasWidth} height={canvasHeight} className="w-full" />
+          {/* Acceleration graph - Bottom Left */}
+          <div className="border border-red-300 rounded-lg overflow-hidden bg-gradient-to-b from-red-50 to-white">
+            <div className="px-2 py-1 bg-red-100 border-b border-red-200 flex justify-between items-center">
+              <span className="text-xs font-bold text-red-800">Accélération a(t)</span>
+              <span className="text-sm font-mono font-bold text-red-700">{currentKinematics.a.toFixed(2)} m/s²</span>
             </div>
-            <div className="w-28 p-2 bg-red-50 rounded-lg border border-red-200 text-center">
-              <span className="text-lg font-mono font-bold text-red-700">{currentKinematics.a.toFixed(2)}</span>
-              <span className="text-xs text-red-600 ml-1">m/s²</span>
-              <div className="text-[10px] text-red-600 mt-1"><InlineMath math="\int a\,dt = \Delta v" /></div>
+            <canvas ref={accelerationCanvasRef} width={canvasWidth} height={canvasHeight} className="w-full" />
+          </div>
+
+          {/* Parameters & Controls - Bottom Right */}
+          <div className="border border-gray-300 rounded-lg overflow-hidden bg-gradient-to-b from-gray-50 to-white">
+            <div className="px-2 py-1 bg-gray-100 border-b border-gray-200">
+              <span className="text-xs font-bold text-gray-800">Paramètres</span>
+            </div>
+            <div className="p-3 space-y-3">
+              {/* Time slider */}
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs text-gray-600">Temps</span>
+                  <span className="text-xs font-mono font-bold text-gray-800">{currentTime.toFixed(2)} s</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max={maxTime}
+                  step="0.01"
+                  value={currentTime}
+                  onChange={(e) => setCurrentTime(parseFloat(e.target.value))}
+                  className="w-full accent-emerald-600 h-5"
+                />
+              </div>
+
+              {/* Play controls */}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setIsPlaying(!isPlaying)}
+                  className={cn(
+                    "flex-1 px-3 py-1.5 rounded text-xs font-semibold transition-colors",
+                    isPlaying ? "bg-amber-500 text-white" : "bg-emerald-500 text-white"
+                  )}
+                >
+                  {isPlaying ? '⏸ Pause' : '▶ Lecture'}
+                </button>
+                <button
+                  onClick={handleReset}
+                  className="px-3 py-1.5 rounded text-xs font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300"
+                >
+                  ↺
+                </button>
+                <select
+                  value={maxTime}
+                  onChange={(e) => { setMaxTime(parseFloat(e.target.value)); handleReset(); }}
+                  className="px-2 py-1 rounded border border-gray-300 text-xs"
+                >
+                  {[2, 3, 5, 8, 10].map(t => (
+                    <option key={t} value={t}>{t}s</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Motion parameters */}
+              <div className="space-y-2 pt-2 border-t border-gray-200">
+                {(motionType !== 'sinusoidal') && (
+                  <>
+                    <div>
+                      <label className="block text-[10px] font-medium text-green-700 mb-0.5">x₀ = {x0} m</label>
+                      <input type="range" min="-5" max="5" step="0.5" value={x0}
+                        onChange={(e) => { setX0(parseFloat(e.target.value)); handleReset(); }}
+                        className="w-full accent-green-600 h-4" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-medium text-blue-700 mb-0.5">v₀ = {v0} m/s</label>
+                      <input type="range" min="-5" max="5" step="0.5" value={v0}
+                        onChange={(e) => { setV0(parseFloat(e.target.value)); handleReset(); }}
+                        className="w-full accent-blue-600 h-4" />
+                    </div>
+                  </>
+                )}
+                {(motionType === 'uniformAccel' || motionType === 'custom') && (
+                  <div>
+                    <label className="block text-[10px] font-medium text-red-700 mb-0.5">a = {a0} m/s²</label>
+                    <input type="range" min="-3" max="3" step="0.25" value={a0}
+                      onChange={(e) => { setA0(parseFloat(e.target.value)); handleReset(); }}
+                      className="w-full accent-red-600 h-4" />
+                  </div>
+                )}
+                {motionType === 'sinusoidal' && (
+                  <>
+                    <div>
+                      <label className="block text-[10px] font-medium text-purple-700 mb-0.5">A = {amplitude} m</label>
+                      <input type="range" min="1" max="5" step="0.5" value={amplitude}
+                        onChange={(e) => { setAmplitude(parseFloat(e.target.value)); handleReset(); }}
+                        className="w-full accent-purple-600 h-4" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-medium text-orange-700 mb-0.5">ω = {omega} rad/s</label>
+                      <input type="range" min="0.5" max="5" step="0.5" value={omega}
+                        onChange={(e) => { setOmega(parseFloat(e.target.value)); handleReset(); }}
+                        className="w-full accent-orange-600 h-4" />
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Optional animation - smaller and collapsible */}
+        {/* Optional animation */}
         {showAnimation && (
           <div className="mb-3 border border-gray-200 rounded-lg overflow-hidden">
             <canvas ref={animationCanvasRef} width={animCanvasWidth} height={animCanvasHeight} className="w-full" />
           </div>
         )}
 
-        {/* Controls bar */}
-        <div className="flex flex-wrap items-center gap-3 p-3 bg-gray-50 rounded-lg mb-4">
-          <div className="flex gap-2">
-            <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className={cn(
-                "px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors",
-                isPlaying ? "bg-amber-500 text-white" : "bg-emerald-500 text-white"
-              )}
-            >
-              {isPlaying ? '⏸ Pause' : '▶ Lecture'}
-            </button>
-            <button
-              onClick={handleReset}
-              className="px-3 py-1.5 rounded-lg text-sm font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300"
-            >
-              ↺ Reset
-            </button>
-          </div>
-
-          <div className="flex-1 flex items-center gap-2">
-            <span className="text-xs text-gray-600">t =</span>
-            <input
-              type="range"
-              min="0"
-              max={maxTime}
-              step="0.01"
-              value={currentTime}
-              onChange={(e) => setCurrentTime(parseFloat(e.target.value))}
-              className="flex-1 accent-emerald-600"
-            />
-            <span className="text-xs font-mono font-bold text-gray-800 w-14">{currentTime.toFixed(2)} s</span>
-          </div>
-
-          <div className="flex items-center gap-1">
-            <span className="text-xs text-gray-600">Durée:</span>
-            <select
-              value={maxTime}
-              onChange={(e) => { setMaxTime(parseFloat(e.target.value)); handleReset(); }}
-              className="px-1.5 py-1 rounded border border-gray-300 text-xs"
-            >
-              {[2, 3, 5, 8, 10].map(t => (
-                <option key={t} value={t}>{t}s</option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Parameters - compact horizontal layout */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
-          {(motionType !== 'sinusoidal') && (
-            <>
-              <div className="p-2 bg-green-50 rounded border border-green-200">
-                <label className="block text-[10px] font-medium text-green-700 mb-0.5">x₀ = {x0} m</label>
-                <input type="range" min="-5" max="5" step="0.5" value={x0}
-                  onChange={(e) => { setX0(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-green-600 h-4" />
-              </div>
-              <div className="p-2 bg-blue-50 rounded border border-blue-200">
-                <label className="block text-[10px] font-medium text-blue-700 mb-0.5">v₀ = {v0} m/s</label>
-                <input type="range" min="-5" max="5" step="0.5" value={v0}
-                  onChange={(e) => { setV0(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-blue-600 h-4" />
-              </div>
-            </>
-          )}
-          {(motionType === 'uniformAccel' || motionType === 'custom') && (
-            <div className="p-2 bg-red-50 rounded border border-red-200">
-              <label className="block text-[10px] font-medium text-red-700 mb-0.5">a = {a0} m/s²</label>
-              <input type="range" min="-3" max="3" step="0.25" value={a0}
-                onChange={(e) => { setA0(parseFloat(e.target.value)); handleReset(); }}
-                className="w-full accent-red-600 h-4" />
-            </div>
-          )}
-          {motionType === 'sinusoidal' && (
-            <>
-              <div className="p-2 bg-purple-50 rounded border border-purple-200">
-                <label className="block text-[10px] font-medium text-purple-700 mb-0.5">A = {amplitude} m</label>
-                <input type="range" min="1" max="5" step="0.5" value={amplitude}
-                  onChange={(e) => { setAmplitude(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-purple-600 h-4" />
-              </div>
-              <div className="p-2 bg-orange-50 rounded border border-orange-200">
-                <label className="block text-[10px] font-medium text-orange-700 mb-0.5">ω = {omega} rad/s</label>
-                <input type="range" min="0.5" max="5" step="0.5" value={omega}
-                  onChange={(e) => { setOmega(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-orange-600 h-4" />
-              </div>
-            </>
-          )}
-        </div>
-
         {/* Mathematical relations - compact display */}
-        <div className="bg-gradient-to-r from-slate-50 to-gray-50 rounded-lg p-4 border border-gray-200">
-          <h3 className="font-bold text-gray-800 mb-3 text-base">Relations mathématiques</h3>
+        <div className="bg-gradient-to-r from-slate-50 to-gray-50 rounded-lg p-3 border border-gray-200">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            {/* Derivative/Integral chain */}
+            <div className="flex items-center gap-2">
+              <div className="text-center px-2 py-1 bg-green-100 rounded">
+                <p className="text-[10px] text-green-600">Position</p>
+                <p className="text-sm font-bold text-green-700">x(t)</p>
+              </div>
+              <div className="text-center text-[9px]">
+                <p className="text-purple-600">d/dt →</p>
+                <p className="text-amber-600">← ∫dt</p>
+              </div>
+              <div className="text-center px-2 py-1 bg-blue-100 rounded">
+                <p className="text-[10px] text-blue-600">Vitesse</p>
+                <p className="text-sm font-bold text-blue-700">v(t)</p>
+              </div>
+              <div className="text-center text-[9px]">
+                <p className="text-purple-600">d/dt →</p>
+                <p className="text-amber-600">← ∫dt</p>
+              </div>
+              <div className="text-center px-2 py-1 bg-red-100 rounded">
+                <p className="text-[10px] text-red-600">Accélération</p>
+                <p className="text-sm font-bold text-red-700">a(t)</p>
+              </div>
+            </div>
 
-          {/* Derivative/Integral chain */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mb-4 p-3 bg-white rounded-lg">
-            <div className="text-center p-2 bg-green-100 rounded">
-              <p className="text-xs text-green-600">Position</p>
-              <p className="text-base font-bold text-green-700">x(t)</p>
-            </div>
-            <div className="text-center text-[10px]">
-              <p className="text-purple-600">d/dt →</p>
-              <p className="text-amber-600">← ∫dt</p>
-            </div>
-            <div className="text-center p-2 bg-blue-100 rounded">
-              <p className="text-xs text-blue-600">Vitesse</p>
-              <p className="text-base font-bold text-blue-700">v(t)</p>
-            </div>
-            <div className="text-center text-[10px]">
-              <p className="text-purple-600">d/dt →</p>
-              <p className="text-amber-600">← ∫dt</p>
-            </div>
-            <div className="text-center p-2 bg-red-100 rounded">
-              <p className="text-xs text-red-600">Accélération</p>
-              <p className="text-base font-bold text-red-700">a(t)</p>
-            </div>
-          </div>
-
-          {/* Equations for current motion type */}
-          <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-200 mb-3">
-            <h4 className="font-semibold text-emerald-800 mb-2 text-sm">
-              Équations: {MOTION_TYPES.find(m => m.id === motionType)?.name}
-            </h4>
-            <div className="grid grid-cols-3 gap-2 text-sm">
+            {/* Equations */}
+            <div className="flex gap-2 text-xs">
               {motionType === 'uniform' && (
                 <>
-                  <div className="bg-white p-2 rounded text-center"><BlockMath math="x(t) = x_0 + v_0 t" /></div>
-                  <div className="bg-white p-2 rounded text-center"><BlockMath math="v(t) = v_0" /></div>
-                  <div className="bg-white p-2 rounded text-center"><BlockMath math="a(t) = 0" /></div>
+                  <div className="bg-white px-2 py-1 rounded border"><InlineMath math="x = x_0 + v_0 t" /></div>
+                  <div className="bg-white px-2 py-1 rounded border"><InlineMath math="v = v_0" /></div>
                 </>
               )}
               {(motionType === 'uniformAccel' || motionType === 'custom') && (
                 <>
-                  <div className="bg-white p-2 rounded text-center"><BlockMath math="x(t) = x_0 + v_0 t + \frac{1}{2}at^2" /></div>
-                  <div className="bg-white p-2 rounded text-center"><BlockMath math="v(t) = v_0 + at" /></div>
-                  <div className="bg-white p-2 rounded text-center"><BlockMath math="a(t) = a" /></div>
+                  <div className="bg-white px-2 py-1 rounded border"><InlineMath math="x = x_0 + v_0 t + \frac{1}{2}at^2" /></div>
+                  <div className="bg-white px-2 py-1 rounded border"><InlineMath math="v = v_0 + at" /></div>
                 </>
               )}
               {motionType === 'sinusoidal' && (
                 <>
-                  <div className="bg-white p-2 rounded text-center"><BlockMath math="x(t) = A\sin(\omega t)" /></div>
-                  <div className="bg-white p-2 rounded text-center"><BlockMath math="v(t) = A\omega\cos(\omega t)" /></div>
-                  <div className="bg-white p-2 rounded text-center"><BlockMath math="a(t) = -A\omega^2\sin(\omega t)" /></div>
+                  <div className="bg-white px-2 py-1 rounded border"><InlineMath math="x = A\sin(\omega t)" /></div>
+                  <div className="bg-white px-2 py-1 rounded border"><InlineMath math="v = A\omega\cos(\omega t)" /></div>
                 </>
               )}
-            </div>
-          </div>
-
-          {/* Graphical interpretation */}
-          <div className="grid grid-cols-2 gap-2">
-            <div className="p-2 bg-purple-50 rounded border border-purple-200">
-              <p className="font-medium text-purple-800 text-xs">↓ Dérivation (pente)</p>
-              <p className="text-[10px] text-purple-600">Pente de x(t) = v(t) • Pente de v(t) = a(t)</p>
-            </div>
-            <div className="p-2 bg-amber-50 rounded border border-amber-200">
-              <p className="font-medium text-amber-800 text-xs">↑ Intégration (aire)</p>
-              <p className="text-[10px] text-amber-600">Aire sous a(t) = Δv • Aire sous v(t) = Δx</p>
             </div>
           </div>
         </div>
