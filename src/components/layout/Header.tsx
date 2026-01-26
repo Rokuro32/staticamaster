@@ -26,10 +26,12 @@ export function Header() {
     router.push('/');
   };
 
+  const coursesWithSimulations = ['waves_modern', 'statics', 'kinematics'];
+
   const navItems = selectedCourse ? [
     { href: `/course/${selectedCourse}`, label: 'Accueil', icon: '🏠' },
     { href: `/course/${selectedCourse}/modules`, label: 'Modules', icon: '📚' },
-    ...(selectedCourse === 'waves_modern' ? [{ href: `/course/${selectedCourse}/simulations`, label: 'Simulations', icon: '🔬' }] : []),
+    ...(coursesWithSimulations.includes(selectedCourse) ? [{ href: `/course/${selectedCourse}/simulations`, label: 'Simulations', icon: '🔬' }] : []),
     { href: `/course/${selectedCourse}/progress`, label: 'Progression', icon: '📊' },
   ] : [];
 

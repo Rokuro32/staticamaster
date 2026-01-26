@@ -13,6 +13,7 @@ import { VectorSimulator } from '@/components/simulations/VectorSimulator';
 import { ForceAdditionSimulator } from '@/components/simulations/ForceAdditionSimulator';
 import { RotationDynamicsSimulator } from '@/components/simulations/RotationDynamicsSimulator';
 import { TrussSimulator } from '@/components/simulations/TrussSimulator';
+import { KinematicsGraphSimulator } from '@/components/simulations/KinematicsGraphSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -242,6 +243,17 @@ export default function SimulationsPage() {
         {/* Vector simulations for kinematics course */}
         {courseId === 'kinematics' && (
           <>
+            {/* Kinematics Graph Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">📈</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Position, Vitesse, Accélération
+                </h2>
+              </div>
+              <KinematicsGraphSimulator />
+            </section>
+
             {/* Vector Simulator Section */}
             <section>
               <div className="flex items-center gap-3 mb-4">
@@ -262,9 +274,6 @@ export default function SimulationsPage() {
                 D'autres simulations interactives seront ajoutées prochainement :
               </p>
               <div className="flex flex-wrap justify-center gap-3">
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
-                  🚗 Mouvement rectiligne
-                </span>
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
                   🎯 Mouvement projectile
                 </span>
