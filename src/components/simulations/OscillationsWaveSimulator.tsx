@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { InlineMath, BlockMath } from 'react-katex';
 
-type SimulationMode = 'shm' | 'energy' | 'forced' | 'standing' | 'modes' | 'beats';
+type SimulationMode = 'shm' | 'energy' | 'forced' | 'standing' | 'modes' | 'beats' | 'progressive';
 type ReflectionType = 'fixed' | 'free';
 
 export function OscillationsWaveSimulator() {
@@ -29,6 +29,12 @@ export function OscillationsWaveSimulator() {
 
   // Beats parameters
   const [frequency2, setFrequency2] = useState(1.5);
+
+  // Progressive wave parameters
+  const [waveSpeed, setWaveSpeed] = useState(2); // célérité en m/s
+  const [showParticles, setShowParticles] = useState(true);
+  const [showWavefront, setShowWavefront] = useState(true);
+  const [numParticles, setNumParticles] = useState(12);
 
   // Energy parameters
   const [mass, setMass] = useState(1);
@@ -187,6 +193,22 @@ export function OscillationsWaveSimulator() {
     const omega = 2 * Math.PI * frequency * n;
     return amplitude * Math.sin(k * x) * Math.cos(omega * t);
   }, [amplitude, frequency]);
+
+  // Progressive wave function: y(x,t) = A * sin(kx - ωt)
+  const getProgressiveWave = useCallback((x: number, t: number) => {
+    const lambda = waveSpeed / frequency; // λ = v/f
+    const k = (2 * Math.PI) / lambda;
+    const omega = 2 * Math.PI * frequency;
+    return amplitude * Math.sin(k * x - omega * t);
+  }, [amplitude, frequency, waveSpeed]);
+
+  // Particle velocity in progressive wave (derivative of y with respect to t)
+  const getParticleVelocity = useCallback((x: number, t: number) => {
+    const lambda = waveSpeed / frequency;
+    const k = (2 * Math.PI) / lambda;
+    const omega = 2 * Math.PI * frequency;
+    return -amplitude * omega * Math.cos(k * x - omega * t);
+  }, [amplitude, frequency, waveSpeed]);
 
   // Draw main canvas
   useEffect(() => {
@@ -485,11 +507,159 @@ export function OscillationsWaveSimulator() {
       ctx.font = 'bold 14px Inter';
       ctx.textAlign = 'left';
       ctx.fillText(`f_bat = ${beatFreq.toFixed(2)} Hz`, 60, 30);
+
+    } else if (mode === 'progressive') {
+      // Progressive wave mode - shows wave propagation
+      const lambda = waveSpeed / frequency;
+      const L = 8; // Longueur totale visible
+      const xScale = (width - 60) / L;
+
+      // Labels
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '12px Inter, sans-serif';
+      ctx.fillText('x (m)', width - 30, centerY - 10);
+      ctx.fillText('y (m)', 45, 15);
+
+      // Draw wavelength markers
+      ctx.strokeStyle = '#d1d5db';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      for (let i = 1; i < L / lambda; i++) {
+        const markerX = 40 + i * lambda * xScale;
+        if (markerX < width - 20) {
+          ctx.beginPath();
+          ctx.moveTo(markerX, 20);
+          ctx.lineTo(markerX, height - 20);
+          ctx.stroke();
+        }
+      }
+      ctx.setLineDash([]);
+
+      // Draw the progressive wave
+      ctx.strokeStyle = '#8b5cf6';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      for (let px = 40; px < width - 20; px++) {
+        const x = (px - 40) / xScale;
+        const y = getProgressiveWave(x, time);
+        const canvasY = centerY - y * scale;
+        if (px === 40) ctx.moveTo(px, canvasY);
+        else ctx.lineTo(px, canvasY);
+      }
+      ctx.stroke();
+
+      // Draw particles showing transverse motion
+      if (showParticles) {
+        for (let i = 0; i < numParticles; i++) {
+          const x = (i + 0.5) * (L / numParticles);
+          const px = 40 + x * xScale;
+          const y = getProgressiveWave(x, time);
+          const v = getParticleVelocity(x, time);
+          const canvasY = centerY - y * scale;
+
+          // Equilibrium position dot (small, gray)
+          ctx.fillStyle = '#d1d5db';
+          ctx.beginPath();
+          ctx.arc(px, centerY, 3, 0, 2 * Math.PI);
+          ctx.fill();
+
+          // Vertical line from equilibrium to particle
+          ctx.strokeStyle = '#c4b5fd';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(px, centerY);
+          ctx.lineTo(px, canvasY);
+          ctx.stroke();
+
+          // Particle
+          ctx.fillStyle = '#7c3aed';
+          ctx.beginPath();
+          ctx.arc(px, canvasY, 8, 0, 2 * Math.PI);
+          ctx.fill();
+
+          // Velocity arrow (vertical)
+          if (Math.abs(v) > 0.1) {
+            const arrowLength = v * 15;
+            const arrowY = canvasY - arrowLength;
+            ctx.strokeStyle = '#3b82f6';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(px, canvasY);
+            ctx.lineTo(px, arrowY);
+            ctx.stroke();
+            // Arrow head
+            const arrowDir = v > 0 ? -1 : 1;
+            ctx.beginPath();
+            ctx.moveTo(px, arrowY);
+            ctx.lineTo(px - 4, arrowY + 6 * arrowDir);
+            ctx.lineTo(px + 4, arrowY + 6 * arrowDir);
+            ctx.closePath();
+            ctx.fillStyle = '#3b82f6';
+            ctx.fill();
+          }
+        }
+      }
+
+      // Draw wavefront indicator (moving vertical line showing phase position)
+      if (showWavefront) {
+        // Position of a specific phase (e.g., crest) that moves with v = λf
+        const phasePosition = (waveSpeed * time) % L;
+        const wavefrontX = 40 + phasePosition * xScale;
+
+        ctx.strokeStyle = '#ef4444';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(wavefrontX, 20);
+        ctx.lineTo(wavefrontX, height - 20);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Arrow showing direction of wave propagation
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.moveTo(wavefrontX + 15, 35);
+        ctx.lineTo(wavefrontX + 5, 30);
+        ctx.lineTo(wavefrontX + 5, 40);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.font = 'bold 11px Inter';
+        ctx.textAlign = 'left';
+        ctx.fillText('v', wavefrontX + 18, 38);
+      }
+
+      // Legend
+      ctx.font = '11px Inter';
+      ctx.textAlign = 'left';
+      let legendY = 25;
+      ctx.fillStyle = '#8b5cf6';
+      ctx.fillText('— Onde y(x,t)', 60, legendY);
+      legendY += 15;
+      if (showParticles) {
+        ctx.fillStyle = '#7c3aed';
+        ctx.fillText('● Particules', 60, legendY);
+        legendY += 15;
+        ctx.fillStyle = '#3b82f6';
+        ctx.fillText('↑ Vitesse particule', 60, legendY);
+        legendY += 15;
+      }
+      if (showWavefront) {
+        ctx.fillStyle = '#ef4444';
+        ctx.fillText('--- Front d\'onde (v)', 60, legendY);
+      }
+
+      // Display wavelength
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '12px Inter';
+      ctx.textAlign = 'right';
+      ctx.fillText(`λ = ${lambda.toFixed(2)} m`, width - 30, 25);
     }
 
   }, [time, mode, amplitude, frequency, frequency2, phase, wavelength, reflectionType,
       harmonicMode, stringLength, showIncident, showReflected, showResultant,
-      getDisplacement, getIncidentWave, getReflectedWave, getModeWave]);
+      getDisplacement, getIncidentWave, getReflectedWave, getModeWave,
+      waveSpeed, showParticles, showWavefront, numParticles, getProgressiveWave, getParticleVelocity]);
 
   // Draw energy visualization
   useEffect(() => {
@@ -1118,7 +1288,7 @@ export function OscillationsWaveSimulator() {
           Oscillations et ondes mécaniques
         </h2>
         <p className="text-gray-600">
-          MHS, ondes stationnaires, modes propres et battements
+          MHS, ondes progressives, ondes stationnaires, modes propres et battements
         </p>
       </div>
 
@@ -1171,6 +1341,14 @@ export function OscillationsWaveSimulator() {
           }`}
         >
           Battements
+        </button>
+        <button
+          onClick={() => setMode('progressive')}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            mode === 'progressive' ? 'bg-violet-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+        >
+          Onde progressive
         </button>
       </div>
 
@@ -1226,6 +1404,15 @@ export function OscillationsWaveSimulator() {
             <BlockMath math={`y = A\\sin(2\\pi f_1 t) + A\\sin(2\\pi f_2 t)`} />
             <div className="mt-2 text-sm">
               <BlockMath math={`f_{bat} = |f_2 - f_1| = ${beatFrequency.toFixed(2)} \\text{ Hz}`} />
+            </div>
+          </>
+        )}
+        {mode === 'progressive' && (
+          <>
+            <p className="text-sm text-violet-600 mb-2 font-medium">Onde progressive (se propageant vers la droite)</p>
+            <BlockMath math={`y(x,t) = A \\sin(kx - \\omega t) = A \\sin\\left(\\frac{2\\pi}{\\lambda}x - 2\\pi f t\\right)`} />
+            <div className="mt-2 text-sm">
+              <BlockMath math={`v = \\lambda f = ${waveSpeed.toFixed(1)} \\text{ m/s} \\quad \\lambda = \\frac{v}{f} = ${(waveSpeed / frequency).toFixed(2)} \\text{ m}`} />
             </div>
           </>
         )}
@@ -1496,6 +1683,52 @@ export function OscillationsWaveSimulator() {
             </div>
           </>
         )}
+
+        {mode === 'progressive' && (
+          <>
+            <div className="space-y-2">
+              <label className="flex items-center justify-between">
+                <span className="font-medium text-gray-700">Célérité <InlineMath math="v" /></span>
+                <span className="text-violet-600 font-mono">{waveSpeed.toFixed(1)} m/s</span>
+              </label>
+              <input
+                type="range" min="0.5" max="5" step="0.1" value={waveSpeed}
+                onChange={(e) => setWaveSpeed(parseFloat(e.target.value))}
+                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+              />
+              <p className="text-xs text-gray-500">λ = v/f = {(waveSpeed / frequency).toFixed(2)} m</p>
+            </div>
+            <div className="space-y-2">
+              <label className="flex items-center justify-between">
+                <span className="font-medium text-gray-700">Nb particules</span>
+                <span className="text-violet-600 font-mono">{numParticles}</span>
+              </label>
+              <input
+                type="range" min="4" max="20" step="1" value={numParticles}
+                onChange={(e) => setNumParticles(parseInt(e.target.value))}
+                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="font-medium text-gray-700 text-sm">Affichage</label>
+              <div className="flex flex-col gap-1">
+                <label className="flex items-center gap-2 text-sm">
+                  <input type="checkbox" checked={showParticles} onChange={(e) => setShowParticles(e.target.checked)} className="rounded" />
+                  <span className="text-violet-600">Particules du milieu</span>
+                </label>
+                <label className="flex items-center gap-2 text-sm">
+                  <input type="checkbox" checked={showWavefront} onChange={(e) => setShowWavefront(e.target.checked)} className="rounded" />
+                  <span className="text-red-600">Front d'onde</span>
+                </label>
+              </div>
+            </div>
+            <div className="bg-cyan-50 rounded-lg p-3 text-sm">
+              <div className="flex justify-between"><span>Longueur d'onde λ:</span><span className="font-mono">{(waveSpeed / frequency).toFixed(2)} m</span></div>
+              <div className="flex justify-between"><span>Nombre d'onde k:</span><span className="font-mono">{(2 * Math.PI * frequency / waveSpeed).toFixed(2)} rad/m</span></div>
+              <div className="flex justify-between"><span>Pulsation ω:</span><span className="font-mono">{(2 * Math.PI * frequency).toFixed(2)} rad/s</span></div>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Visualization */}
@@ -1503,7 +1736,7 @@ export function OscillationsWaveSimulator() {
         {mode !== 'energy' && mode !== 'forced' && (
           <div className="space-y-2">
             <h3 className="font-semibold text-gray-800">
-              {mode === 'shm' ? 'Graphique y(t)' : mode === 'beats' ? 'Battements' : 'Onde sur la corde'}
+              {mode === 'shm' ? 'Graphique y(t)' : mode === 'beats' ? 'Battements' : mode === 'progressive' ? 'Propagation de l\'onde y(x,t)' : 'Onde sur la corde'}
             </h3>
             <canvas ref={canvasRef} width={600} height={250} className="w-full border border-gray-200 rounded-lg" />
           </div>
@@ -1650,6 +1883,10 @@ export function OscillationsWaveSimulator() {
           <div className="bg-blue-50 rounded-lg p-4">
             <h4 className="font-medium text-blue-800 mb-2">Battements</h4>
             <p className="text-blue-700">f<sub>bat</sub> = |f₂-f₁|. Modulation d'amplitude due à deux fréquences proches.</p>
+          </div>
+          <div className="bg-cyan-50 rounded-lg p-4">
+            <h4 className="font-medium text-cyan-800 mb-2">Onde progressive</h4>
+            <p className="text-cyan-700">y(x,t) = A·sin(kx - ωt). L'énergie se propage à v = λf, mais les particules oscillent sur place.</p>
           </div>
         </div>
       </div>
