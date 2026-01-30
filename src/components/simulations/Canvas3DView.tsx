@@ -1,7 +1,8 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Grid, Text } from '@react-three/drei';
+import { OrbitControls, Line } from '@react-three/drei';
 import { VectorArrow3D } from './VectorArrow3D';
 
 interface VectorComponents {
@@ -23,6 +24,50 @@ interface Canvas3DViewProps {
   operation: 'add' | 'subtract' | 'dot' | 'cross';
   showComponents: boolean;
   formulaMode: boolean;
+}
+
+// Simple grid on XY plane
+function SimpleGrid() {
+  const lines: JSX.Element[] = [];
+  const size = 10;
+  const step = 1;
+
+  for (let i = -size; i <= size; i += step) {
+    // Lines parallel to X axis
+    lines.push(
+      <Line
+        key={`x-${i}`}
+        points={[[-size, i, 0], [size, i, 0]]}
+        color="#444444"
+        lineWidth={0.5}
+      />
+    );
+    // Lines parallel to Y axis
+    lines.push(
+      <Line
+        key={`y-${i}`}
+        points={[[i, -size, 0], [i, size, 0]]}
+        color="#444444"
+        lineWidth={0.5}
+      />
+    );
+  }
+
+  return <>{lines}</>;
+}
+
+// Simple axes with colored lines
+function SimpleAxes() {
+  return (
+    <>
+      {/* X axis - Red */}
+      <Line points={[[0, 0, 0], [10, 0, 0]]} color="#ff0000" lineWidth={2} />
+      {/* Y axis - Green */}
+      <Line points={[[0, 0, 0], [0, 10, 0]]} color="#00ff00" lineWidth={2} />
+      {/* Z axis - Blue */}
+      <Line points={[[0, 0, 0], [0, 0, 10]]} color="#0000ff" lineWidth={2} />
+    </>
+  );
 }
 
 // Component to render vectors tip-to-tail (for addition)
@@ -77,7 +122,7 @@ function FromOriginVectors({ vectors, showComponents }: { vectors: VectorData[];
   );
 }
 
-// Component to render the plane formed by two vectors (for cross product)
+// Simple plane using Line instead of bufferGeometry
 function PlaneFromVectors({ vectors }: { vectors: VectorData[] }) {
   if (vectors.length < 2) return null;
 
@@ -86,44 +131,37 @@ function PlaneFromVectors({ vectors }: { vectors: VectorData[] }) {
 
   const v1: [number, number, number] = [comp1.x, comp1.y, comp1.z || 0];
   const v2: [number, number, number] = [comp2.x, comp2.y, comp2.z || 0];
-
-  const scale = 1.2;
-  const scaledV1: [number, number, number] = [v1[0] * scale, v1[1] * scale, v1[2] * scale];
-  const scaledV2: [number, number, number] = [v2[0] * scale, v2[1] * scale, v2[2] * scale];
-  const scaledSum: [number, number, number] = [scaledV1[0] + scaledV2[0], scaledV1[1] + scaledV2[1], scaledV1[2] + scaledV2[2]];
-
-  const positions = new Float32Array([
-    0, 0, 0,
-    ...scaledV1,
-    ...scaledV2,
-    ...scaledV1,
-    ...scaledSum,
-    ...scaledV2
-  ]);
-
-  const key = `${comp1.x}-${comp1.y}-${comp1.z}-${comp2.x}-${comp2.y}-${comp2.z}`;
+  const sum: [number, number, number] = [v1[0] + v2[0], v1[1] + v2[1], v1[2] + v2[2]];
 
   return (
-    <mesh key={key}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={6}
-          array={positions}
-          itemSize={3}
-        />
-      </bufferGeometry>
-      <meshBasicMaterial
+    <>
+      {/* Parallelogram outline */}
+      <Line
+        points={[[0, 0, 0], v1, sum, v2, [0, 0, 0]]}
         color="#4a9eff"
+        lineWidth={1}
+        opacity={0.5}
         transparent
-        opacity={0.2}
-        side={2}
       />
-    </mesh>
+    </>
   );
 }
 
 export default function Canvas3DView({ vectors, result, operation, showComponents, formulaMode }: Canvas3DViewProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#1e293b', color: '#94a3b8' }}>
+        Chargement 3D...
+      </div>
+    );
+  }
+
   return (
     <div style={{ width: '100%', height: '100%' }}>
       <Canvas camera={{ position: [12, 10, 12], fov: 50 }}>
@@ -133,30 +171,10 @@ export default function Canvas3DView({ vectors, result, operation, showComponent
         <directionalLight position={[-10, -10, -5]} intensity={0.3} />
 
         {/* Grid */}
-        <Grid
-          args={[20, 20]}
-          cellColor="#444"
-          sectionColor="#666"
-          cellSize={1}
-          sectionSize={5}
-          fadeDistance={30}
-          fadeStrength={1}
-          followCamera={false}
-        />
+        <SimpleGrid />
 
-        {/* Axes helper */}
-        <axesHelper args={[12]} />
-
-        {/* Axis labels */}
-        <Text position={[12, 0, 0]} fontSize={0.5} color="#ff0000">
-          X
-        </Text>
-        <Text position={[0, 12, 0]} fontSize={0.5} color="#00ff00">
-          Y
-        </Text>
-        <Text position={[0, 0, 12]} fontSize={0.5} color="#0000ff">
-          Z
-        </Text>
+        {/* Axes */}
+        <SimpleAxes />
 
         {/* Render vectors according to operation */}
         {operation === 'add' && !formulaMode ? (

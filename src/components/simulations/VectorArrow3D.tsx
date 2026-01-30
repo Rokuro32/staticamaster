@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { Vector3, Quaternion } from 'three';
-import { Text, Line } from '@react-three/drei';
+import { Line, Html } from '@react-three/drei';
 
 interface VectorArrow3DProps {
   start: [number, number, number];
@@ -24,20 +24,18 @@ export function VectorArrow3D({ start, end, color, label, showComponents = false
   }, [start, end]);
 
   const length = direction.length();
-  const normalizedDir = direction.clone().normalize();
+  const normalizedDir = length > 0.001 ? direction.clone().normalize() : new Vector3(0, 1, 0);
 
   // Calculate midpoint for label
   const midpoint = useMemo((): [number, number, number] => [
     (start[0] + end[0]) / 2,
-    (start[1] + end[1]) / 2 + 0.5,
+    (start[1] + end[1]) / 2 + 0.3,
     (start[2] + end[2]) / 2
   ], [start, end]);
 
   // Arrow dimensions
-  const shaftRadius = 0.05;
   const shaftLength = Math.max(0.1, length - 0.3);
-  const coneRadius = 0.15;
-  const coneHeight = 0.3;
+  const coneHeight = Math.min(0.3, length * 0.3);
 
   // Calculate rotation to align with direction
   const rotation = useMemo(() => {
@@ -67,28 +65,28 @@ export function VectorArrow3D({ start, end, color, label, showComponents = false
     <group>
       {/* Arrow shaft */}
       <mesh position={shaftPosition} quaternion={rotation}>
-        <cylinderGeometry args={[shaftRadius, shaftRadius, shaftLength, 8]} />
+        <cylinderGeometry args={[0.05, 0.05, shaftLength, 8]} />
         <meshStandardMaterial color={color} />
       </mesh>
 
       {/* Arrow cone */}
       <mesh position={conePosition} quaternion={rotation}>
-        <coneGeometry args={[coneRadius, coneHeight, 8]} />
+        <coneGeometry args={[0.15, coneHeight, 8]} />
         <meshStandardMaterial color={color} />
       </mesh>
 
-      {/* Label */}
-      <Text
-        position={midpoint}
-        fontSize={0.4}
-        color={color}
-        anchorX="center"
-        anchorY="middle"
-        outlineWidth={0.02}
-        outlineColor="#000000"
-      >
-        {label}
-      </Text>
+      {/* Label using HTML overlay (more stable than Text) */}
+      <Html position={midpoint} center style={{ pointerEvents: 'none' }}>
+        <div style={{
+          color: color,
+          fontWeight: 'bold',
+          fontSize: '14px',
+          textShadow: '1px 1px 2px black, -1px -1px 2px black',
+          whiteSpace: 'nowrap'
+        }}>
+          {label}
+        </div>
+      </Html>
 
       {/* Component projections */}
       {showComponents && (
@@ -104,8 +102,6 @@ export function VectorArrow3D({ start, end, color, label, showComponents = false
               dashed
               dashSize={0.2}
               gapSize={0.1}
-              opacity={0.5}
-              transparent
             />
           )}
           {Math.abs(end[1] - start[1]) > 0.1 && (
@@ -119,8 +115,6 @@ export function VectorArrow3D({ start, end, color, label, showComponents = false
               dashed
               dashSize={0.2}
               gapSize={0.1}
-              opacity={0.5}
-              transparent
             />
           )}
           {Math.abs(end[2] - start[2]) > 0.1 && (
@@ -134,8 +128,6 @@ export function VectorArrow3D({ start, end, color, label, showComponents = false
               dashed
               dashSize={0.2}
               gapSize={0.1}
-              opacity={0.5}
-              transparent
             />
           )}
         </>
