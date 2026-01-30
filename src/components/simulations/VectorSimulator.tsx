@@ -1,21 +1,28 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { BlockMath, InlineMath } from 'react-katex';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { BlockMath } from 'react-katex';
+import dynamic from 'next/dynamic';
+
+// Dynamic import for 3D components to avoid SSR issues
+const Canvas3DView = dynamic(() => import('./Canvas3DView'), { ssr: false });
 
 type Operation = 'add' | 'subtract' | 'dot' | 'cross';
+type Dimension = '2D' | '3D';
 
 interface Vector {
   id: string;
   label: string;
   magnitude: number;
-  angle: number;
+  angle: number;      // θ (azimuthal, in XY plane)
+  phi: number;        // φ (polar, from Z axis) - only for 3D
   color: string;
 }
 
 interface VectorComponents {
   x: number;
   y: number;
+  z?: number;
 }
 
 interface DotProductResult {
@@ -35,14 +42,17 @@ const VECTOR_COLORS = [
 ];
 
 export function VectorSimulator() {
+  // Dimension mode
+  const [dimension, setDimension] = useState<Dimension>('2D');
+
   // Tableau de vecteurs (2 à 6 vecteurs)
   const [vectors, setVectors] = useState<Vector[]>([
-    { id: 'A', label: 'A', magnitude: 5, angle: 45, color: VECTOR_COLORS[0] },
-    { id: 'B', label: 'B', magnitude: 4, angle: 120, color: VECTOR_COLORS[1] }
+    { id: 'A', label: 'A', magnitude: 5, angle: 45, phi: 90, color: VECTOR_COLORS[0] },
+    { id: 'B', label: 'B', magnitude: 4, angle: 120, phi: 90, color: VECTOR_COLORS[1] }
   ]);
 
   // Mode d'entrée: 'polar' ou 'cartesian'
-  const [inputMode, setInputMode] = useState<'polar' | 'cartesian'>('polar');
+  const [inputMode, setInputMode] = useState<'polar' | 'cartesian'>('cartesian');
 
   // Opération
   const [operation, setOperation] = useState<Operation>('add');
@@ -64,11 +74,27 @@ export function VectorSimulator() {
   const toRad = (deg: number) => (deg * Math.PI) / 180;
   const toDeg = (rad: number) => (rad * 180) / Math.PI;
 
-  // Calcul des composantes
+  // Calcul des composantes 2D
   const getComponents = useCallback((vec: Vector): VectorComponents => ({
     x: vec.magnitude * Math.cos(toRad(vec.angle)),
     y: vec.magnitude * Math.sin(toRad(vec.angle))
   }), []);
+
+  // Calcul des composantes 3D (coordonnées sphériques)
+  const getComponents3D = useCallback((vec: Vector): VectorComponents => {
+    const theta = toRad(vec.angle);
+    const phi = toRad(vec.phi);
+    return {
+      x: vec.magnitude * Math.sin(phi) * Math.cos(theta),
+      y: vec.magnitude * Math.sin(phi) * Math.sin(theta),
+      z: vec.magnitude * Math.cos(phi)
+    };
+  }, []);
+
+  // Get components based on dimension
+  const getVectorComponents = useCallback((vec: Vector): VectorComponents => {
+    return dimension === '3D' ? getComponents3D(vec) : getComponents(vec);
+  }, [dimension, getComponents, getComponents3D]);
 
   // Si on a plus ou moins de 2 vecteurs et qu'on est en mode dot ou cross, revenir à add
   useEffect(() => {
@@ -92,24 +118,25 @@ export function VectorSimulator() {
 
   // Calculer le vecteur résultant
   const computeResult = useCallback((): VectorComponents | DotProductResult => {
-    const components = vectors.map(v => getComponents(v));
+    const components = vectors.map(v => getVectorComponents(v));
 
     if (operation === 'add') {
       return components.reduce((acc, comp) => ({
         x: acc.x + comp.x,
-        y: acc.y + comp.y
-      }), { x: 0, y: 0 });
+        y: acc.y + comp.y,
+        z: (acc.z || 0) + (comp.z || 0)
+      }), { x: 0, y: 0, z: 0 });
     } else if (operation === 'subtract') {
       return components.reduce((acc, comp, idx) => {
-        if (idx === 0) return comp;
-        return { x: acc.x - comp.x, y: acc.y - comp.y };
-      }, { x: 0, y: 0 });
+        if (idx === 0) return { ...comp, z: comp.z || 0 };
+        return { x: acc.x - comp.x, y: acc.y - comp.y, z: (acc.z || 0) - (comp.z || 0) };
+      }, { x: 0, y: 0, z: 0 });
     } else if (operation === 'dot') {
       if (components.length >= 2) {
         const [A, B] = components;
-        const dotProduct = A.x * B.x + A.y * B.y;
-        const magA = Math.sqrt(A.x * A.x + A.y * A.y);
-        const magB = Math.sqrt(B.x * B.x + B.y * B.y);
+        const dotProduct = A.x * B.x + A.y * B.y + (A.z || 0) * (B.z || 0);
+        const magA = Math.sqrt(A.x * A.x + A.y * A.y + (A.z || 0) ** 2);
+        const magB = Math.sqrt(B.x * B.x + B.y * B.y + (B.z || 0) ** 2);
         let angleBetween = 0;
         if (magA > 0.0001 && magB > 0.0001) {
           const cosTheta = dotProduct / (magA * magB);
@@ -122,16 +149,26 @@ export function VectorSimulator() {
     } else if (operation === 'cross') {
       if (components.length >= 2) {
         const [A, B] = components;
-        return { x: 0, y: 0, z: A.x * B.y - A.y * B.x } as VectorComponents & { z: number };
+        const az = A.z || 0;
+        const bz = B.z || 0;
+        return {
+          x: A.y * bz - az * B.y,
+          y: az * B.x - A.x * bz,
+          z: A.x * B.y - A.y * B.x
+        };
       }
-      return { x: 0, y: 0 };
+      return { x: 0, y: 0, z: 0 };
     }
-    return { x: 0, y: 0 };
-  }, [vectors, operation, getComponents]);
+    return { x: 0, y: 0, z: 0 };
+  }, [vectors, operation, getVectorComponents]);
 
   const resultComp = computeResult();
   const isScalarResult = operation === 'dot';
-  const resultMagnitude = isScalarResult ? null : Math.sqrt((resultComp as VectorComponents).x ** 2 + (resultComp as VectorComponents).y ** 2);
+  const resultMagnitude = isScalarResult ? null : Math.sqrt(
+    (resultComp as VectorComponents).x ** 2 +
+    (resultComp as VectorComponents).y ** 2 +
+    ((resultComp as VectorComponents).z || 0) ** 2
+  );
   const resultAngle = isScalarResult ? null : toDeg(Math.atan2((resultComp as VectorComponents).y, (resultComp as VectorComponents).x));
 
   // Ajouter un vecteur
@@ -143,6 +180,7 @@ export function VectorSimulator() {
       label: nextLabel,
       magnitude: 3,
       angle: 0,
+      phi: 90,
       color: VECTOR_COLORS[vectors.length]
     };
     setVectors([...vectors, newVector]);
@@ -160,13 +198,12 @@ export function VectorSimulator() {
   };
 
   // Mise à jour depuis composantes cartésiennes
-  const updateFromCartesian = (id: string, comp: VectorComponents, value: string, isX: boolean) => {
-    const newComp = isX
-      ? { x: parseFloat(value) || 0, y: comp.y }
-      : { x: comp.x, y: parseFloat(value) || 0 };
-    const newMagnitude = Math.sqrt(newComp.x ** 2 + newComp.y ** 2);
+  const updateFromCartesian = (id: string, comp: VectorComponents, axis: 'x' | 'y' | 'z', value: number) => {
+    const newComp = { ...comp, [axis]: value };
+    const newMagnitude = Math.sqrt(newComp.x ** 2 + newComp.y ** 2 + (newComp.z || 0) ** 2);
     const newAngle = toDeg(Math.atan2(newComp.y, newComp.x));
-    updateVector(id, { magnitude: newMagnitude, angle: newAngle });
+    const newPhi = newMagnitude > 0.0001 ? toDeg(Math.acos((newComp.z || 0) / newMagnitude)) : 90;
+    updateVector(id, { magnitude: newMagnitude, angle: newAngle, phi: newPhi });
   };
 
   // Fonction pour insérer du texte à la position du curseur
@@ -190,7 +227,7 @@ export function VectorSimulator() {
       const vectorDict: Record<string, VectorComponents> = {};
       vectors.forEach(vec => {
         if (selectedVectors.includes(vec.label)) {
-          vectorDict[vec.label] = getComponents(vec);
+          vectorDict[vec.label] = getVectorComponents(vec);
         }
       });
 
@@ -237,21 +274,26 @@ export function VectorSimulator() {
           }
 
           const vec = vectorDict[vectorLabel];
-          const scaledVec = { x: vec.x * scalar, y: vec.y * scalar };
+          const scaledVec = { x: vec.x * scalar, y: vec.y * scalar, z: (vec.z || 0) * scalar };
 
           if (result === null) {
             result = scaledVec;
           } else if (currentOp === '+') {
-            result = { x: (result as VectorComponents).x + scaledVec.x, y: (result as VectorComponents).y + scaledVec.y };
+            result = { x: (result as VectorComponents).x + scaledVec.x, y: (result as VectorComponents).y + scaledVec.y, z: ((result as VectorComponents).z || 0) + scaledVec.z };
           } else if (currentOp === '-') {
-            result = { x: (result as VectorComponents).x - scaledVec.x, y: (result as VectorComponents).y - scaledVec.y };
+            result = { x: (result as VectorComponents).x - scaledVec.x, y: (result as VectorComponents).y - scaledVec.y, z: ((result as VectorComponents).z || 0) - scaledVec.z };
           } else if (currentOp === 'dot') {
-            const dotProduct = (result as VectorComponents).x * scaledVec.x + (result as VectorComponents).y * scaledVec.y;
+            const r = result as VectorComponents;
+            const dotProduct = r.x * scaledVec.x + r.y * scaledVec.y + (r.z || 0) * scaledVec.z;
             result = { scalar: dotProduct } as { scalar: number };
             isScalar = true;
           } else if (currentOp === 'cross') {
-            const crossZ = (result as VectorComponents).x * scaledVec.y - (result as VectorComponents).y * scaledVec.x;
-            result = { x: 0, y: 0, z: crossZ } as VectorComponents & { z: number };
+            const r = result as VectorComponents;
+            result = {
+              x: r.y * scaledVec.z - (r.z || 0) * scaledVec.y,
+              y: (r.z || 0) * scaledVec.x - r.x * scaledVec.z,
+              z: r.x * scaledVec.y - r.y * scaledVec.x
+            };
           }
         }
       }
@@ -267,7 +309,7 @@ export function VectorSimulator() {
       setFormulaError((error as Error).message);
       setFormulaResult(null);
     }
-  }, [vectors, selectedVectors, getComponents]);
+  }, [vectors, selectedVectors, getVectorComponents]);
 
   // Évaluer la formule quand elle change
   useEffect(() => {
@@ -276,8 +318,10 @@ export function VectorSimulator() {
     }
   }, [formula, vectors, formulaMode, selectedVectors, evaluateFormula]);
 
-  // Dessiner le canvas
+  // Dessiner le canvas 2D
   useEffect(() => {
+    if (dimension === '3D') return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -347,7 +391,6 @@ export function VectorSimulator() {
       const endX = startX + comp.x * scale;
       const endY = startY - comp.y * scale;
 
-      // Ligne principale
       ctx.strokeStyle = color;
       ctx.lineWidth = 3;
       ctx.beginPath();
@@ -355,7 +398,6 @@ export function VectorSimulator() {
       ctx.lineTo(endX, endY);
       ctx.stroke();
 
-      // Pointe de flèche
       const dx = endX - startX;
       const dy = endY - startY;
       const angle = Math.atan2(dy, dx);
@@ -368,7 +410,6 @@ export function VectorSimulator() {
       ctx.closePath();
       ctx.fill();
 
-      // Label
       ctx.font = 'bold 16px system-ui';
       ctx.fillStyle = color;
       ctx.textAlign = 'left';
@@ -376,7 +417,6 @@ export function VectorSimulator() {
       const labelY = startY - comp.y * scale / 2 - 10;
       ctx.fillText(label, labelX, labelY);
 
-      // Dessiner la flèche au-dessus du label
       const textWidth = ctx.measureText(label).width;
       ctx.strokeStyle = color;
       ctx.lineWidth = 1.5;
@@ -391,7 +431,6 @@ export function VectorSimulator() {
       ctx.lineTo(labelX + textWidth - 4, labelY - 9);
       ctx.stroke();
 
-      // Composantes
       if (showComp && showComponents && (Math.abs(comp.x) > 0.1 || Math.abs(comp.y) > 0.1)) {
         ctx.strokeStyle = color;
         ctx.lineWidth = 1;
@@ -487,14 +526,44 @@ export function VectorSimulator() {
     ctx.fillRect(20, resultY, 20, 3);
     ctx.fillText(operation === 'dot' ? 'Résultat (scalaire)' : operation === 'cross' ? 'C (produit vectoriel)' : 'R (résultant)', 50, resultY + 5);
 
-  }, [vectors, operation, showComponents, formulaMode, formulaResult, selectedVectors, resultComp, resultMagnitude, getComponents]);
+  }, [vectors, operation, showComponents, formulaMode, formulaResult, selectedVectors, resultComp, resultMagnitude, getComponents, dimension]);
+
+  // Prepare 3D data
+  const vectors3DData = useMemo(() => {
+    const displayVectors = formulaMode ? vectors.filter(v => selectedVectors.includes(v.label)) : vectors;
+    return displayVectors.map(vec => ({
+      ...vec,
+      components: getComponents3D(vec)
+    }));
+  }, [vectors, formulaMode, selectedVectors, getComponents3D]);
+
+  const result3D = useMemo(() => {
+    if (isScalarResult) return null;
+    return resultComp as VectorComponents;
+  }, [resultComp, isScalarResult]);
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
       {/* Titre */}
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Calculatrice de Vecteurs 2D</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Calculatrice de Vecteurs</h2>
         <p className="text-gray-600">Addition, soustraction, produit scalaire et produit vectoriel</p>
+      </div>
+
+      {/* Sélecteur de dimension */}
+      <div className="flex justify-center gap-2">
+        <button
+          onClick={() => setDimension('2D')}
+          className={`px-6 py-2 rounded-lg font-bold transition-colors ${dimension === '2D' ? 'bg-violet-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-violet-300'}`}
+        >
+          2D
+        </button>
+        <button
+          onClick={() => setDimension('3D')}
+          className={`px-6 py-2 rounded-lg font-bold transition-colors ${dimension === '3D' ? 'bg-violet-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-violet-300'}`}
+        >
+          3D
+        </button>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
@@ -601,20 +670,20 @@ export function VectorSimulator() {
                   onClick={() => setInputMode('polar')}
                   className={`flex-1 py-2 rounded-lg font-medium transition-colors ${inputMode === 'polar' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
-                  Polaire (|v|, θ)
+                  {dimension === '3D' ? 'Sphérique' : 'Polaire'}
                 </button>
                 <button
                   onClick={() => setInputMode('cartesian')}
                   className={`flex-1 py-2 rounded-lg font-medium transition-colors ${inputMode === 'cartesian' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
-                  Cartésien (x, y)
+                  Cartésien
                 </button>
               </div>
 
               {/* Contrôles pour chaque vecteur */}
               <div className="space-y-3 max-h-96 overflow-y-auto">
                 {vectors.map((vec) => {
-                  const comp = getComponents(vec);
+                  const comp = getVectorComponents(vec);
                   return (
                     <div key={vec.id} className="p-3 rounded-lg border-l-4" style={{ borderLeftColor: vec.color, backgroundColor: `${vec.color}10` }}>
                       <div className="flex items-center justify-between mb-2">
@@ -643,6 +712,17 @@ export function VectorSimulator() {
                               style={{ accentColor: vec.color }}
                             />
                           </div>
+                          {dimension === '3D' && (
+                            <div>
+                              <label className="text-xs text-gray-600">Angle φ (vertical): <strong>{vec.phi.toFixed(1)}°</strong></label>
+                              <input
+                                type="range" min="0" max="180" step="1" value={vec.phi}
+                                onChange={(e) => updateVector(vec.id, { phi: parseFloat(e.target.value) })}
+                                className="w-full h-2 rounded-lg appearance-none cursor-pointer"
+                                style={{ accentColor: vec.color }}
+                              />
+                            </div>
+                          )}
                         </div>
                       ) : (
                         <div className="space-y-2">
@@ -650,7 +730,7 @@ export function VectorSimulator() {
                             <label className="text-xs text-gray-600">{vec.label}x: <strong>{comp.x.toFixed(2)}</strong></label>
                             <input
                               type="range" min="-10" max="10" step="0.1" value={comp.x}
-                              onChange={(e) => updateFromCartesian(vec.id, comp, e.target.value, true)}
+                              onChange={(e) => updateFromCartesian(vec.id, comp, 'x', parseFloat(e.target.value))}
                               className="w-full h-2 rounded-lg appearance-none cursor-pointer"
                               style={{ accentColor: vec.color }}
                             />
@@ -659,11 +739,22 @@ export function VectorSimulator() {
                             <label className="text-xs text-gray-600">{vec.label}y: <strong>{comp.y.toFixed(2)}</strong></label>
                             <input
                               type="range" min="-10" max="10" step="0.1" value={comp.y}
-                              onChange={(e) => updateFromCartesian(vec.id, comp, e.target.value, false)}
+                              onChange={(e) => updateFromCartesian(vec.id, comp, 'y', parseFloat(e.target.value))}
                               className="w-full h-2 rounded-lg appearance-none cursor-pointer"
                               style={{ accentColor: vec.color }}
                             />
                           </div>
+                          {dimension === '3D' && (
+                            <div>
+                              <label className="text-xs text-gray-600">{vec.label}z: <strong>{(comp.z || 0).toFixed(2)}</strong></label>
+                              <input
+                                type="range" min="-10" max="10" step="0.1" value={comp.z || 0}
+                                onChange={(e) => updateFromCartesian(vec.id, comp, 'z', parseFloat(e.target.value))}
+                                className="w-full h-2 rounded-lg appearance-none cursor-pointer"
+                                style={{ accentColor: vec.color }}
+                              />
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
@@ -686,8 +777,18 @@ export function VectorSimulator() {
 
         {/* Canvas */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="border-2 border-slate-700 rounded-lg overflow-hidden">
-            <canvas ref={canvasRef} width={600} height={500} className="w-full" />
+          <div className="border-2 border-slate-700 rounded-lg overflow-hidden" style={{ height: '500px' }}>
+            {dimension === '2D' ? (
+              <canvas ref={canvasRef} width={600} height={500} className="w-full h-full" />
+            ) : (
+              <Canvas3DView
+                vectors={vectors3DData}
+                result={result3D}
+                operation={operation}
+                showComponents={showComponents}
+                formulaMode={formulaMode}
+              />
+            )}
           </div>
 
           {/* Sélection de l'opération */}
@@ -743,11 +844,11 @@ export function VectorSimulator() {
                 <>
                   <div className="bg-white p-2 rounded"><span className="text-gray-500">{operation === 'cross' ? 'Cx' : 'Rx'}:</span> <strong>{((formulaMode && formulaResult) || resultComp as VectorComponents).x.toFixed(2)}</strong></div>
                   <div className="bg-white p-2 rounded"><span className="text-gray-500">{operation === 'cross' ? 'Cy' : 'Ry'}:</span> <strong>{((formulaMode && formulaResult) || resultComp as VectorComponents).y.toFixed(2)}</strong></div>
-                  {operation === 'cross' && 'z' in (resultComp as any) && (
-                    <div className="bg-white p-2 rounded"><span className="text-gray-500">Cz:</span> <strong>{((resultComp as any).z || 0).toFixed(2)}</strong></div>
+                  {(dimension === '3D' || operation === 'cross') && (
+                    <div className="bg-white p-2 rounded"><span className="text-gray-500">{operation === 'cross' ? 'Cz' : 'Rz'}:</span> <strong>{(((formulaMode && formulaResult) || resultComp as VectorComponents).z || 0).toFixed(2)}</strong></div>
                   )}
                   <div className="bg-orange-100 p-2 rounded"><span className="text-gray-500">|{operation === 'cross' ? 'C' : 'R'}|:</span> <strong className="text-orange-700">{resultMagnitude?.toFixed(2)}</strong></div>
-                  {operation !== 'cross' && (
+                  {operation !== 'cross' && dimension === '2D' && (
                     <div className="bg-orange-100 p-2 rounded"><span className="text-gray-500">θ:</span> <strong className="text-orange-700">{resultAngle?.toFixed(1)}°</strong></div>
                   )}
                 </>
@@ -763,7 +864,7 @@ export function VectorSimulator() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
           <div className="bg-blue-50 rounded-lg p-4">
             <h4 className="font-medium text-blue-800 mb-2">Addition vectorielle</h4>
-            <BlockMath math="\vec{R} = \vec{A} + \vec{B} = (A_x + B_x, A_y + B_y)" />
+            <BlockMath math="\vec{R} = \vec{A} + \vec{B} = (A_x + B_x, A_y + B_y, A_z + B_z)" />
             <p className="text-blue-700 mt-2">Méthode du parallélogramme ou tête-à-queue.</p>
           </div>
           <div className="bg-green-50 rounded-lg p-4">
