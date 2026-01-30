@@ -1,1553 +1,796 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { BlockMath, InlineMath } from 'react-katex';
 
-type SimulationMode = 'addition' | 'dotProduct' | 'crossProduct' | 'cartesianPolar';
+type Operation = 'add' | 'subtract' | 'dot' | 'cross';
 
-export function VectorSimulator() {
-  const [mode, setMode] = useState<SimulationMode>('addition');
-
-  const modes: { id: SimulationMode; label: string; description: string }[] = [
-    { id: 'addition', label: 'Addition vectorielle', description: 'Visualisez la somme de deux vecteurs' },
-    { id: 'dotProduct', label: 'Produit scalaire', description: 'Calculez et visualisez le produit scalaire' },
-    { id: 'crossProduct', label: 'Produit vectoriel', description: 'Calculez le produit vectoriel et visualisez le moment' },
-    { id: 'cartesianPolar', label: 'Cartésien ↔ Polaire', description: 'Conversion entre coordonnées' },
-  ];
-
-  return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-      {/* Mode selector */}
-      <div className="border-b border-gray-200 bg-gray-50 p-4">
-        <div className="flex flex-wrap gap-2">
-          {modes.map((m) => (
-            <button
-              key={m.id}
-              onClick={() => setMode(m.id)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                mode === m.id
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
-              }`}
-            >
-              {m.label}
-            </button>
-          ))}
-        </div>
-        <p className="mt-2 text-sm text-gray-600">
-          {modes.find((m) => m.id === mode)?.description}
-        </p>
-      </div>
-
-      {/* Simulator content */}
-      <div className="p-6">
-        {mode === 'addition' && <VectorAddition />}
-        {mode === 'dotProduct' && <DotProductSimulator />}
-        {mode === 'crossProduct' && <CrossProductSimulator />}
-        {mode === 'cartesianPolar' && <CartesianPolarConverter />}
-      </div>
-    </div>
-  );
+interface Vector {
+  id: string;
+  label: string;
+  magnitude: number;
+  angle: number;
+  color: string;
 }
 
-// ============================================
-// VECTOR ADDITION SIMULATOR
-// ============================================
-function VectorAddition() {
+interface VectorComponents {
+  x: number;
+  y: number;
+}
+
+interface DotProductResult {
+  scalar: number;
+  magA: number;
+  magB: number;
+  angle: number;
+}
+
+const VECTOR_COLORS = [
+  '#3b82f6',  // Bleu (A)
+  '#22c55e',  // Vert (B)
+  '#a855f7',  // Violet (C)
+  '#ef4444',  // Rouge (D)
+  '#f59e0b',  // Orange (E)
+  '#06b6d4'   // Cyan (F)
+];
+
+export function VectorSimulator() {
+  // Tableau de vecteurs (2 à 6 vecteurs)
+  const [vectors, setVectors] = useState<Vector[]>([
+    { id: 'A', label: 'A', magnitude: 5, angle: 45, color: VECTOR_COLORS[0] },
+    { id: 'B', label: 'B', magnitude: 4, angle: 120, color: VECTOR_COLORS[1] }
+  ]);
+
+  // Mode d'entrée: 'polar' ou 'cartesian'
+  const [inputMode, setInputMode] = useState<'polar' | 'cartesian'>('polar');
+
+  // Opération
+  const [operation, setOperation] = useState<Operation>('add');
+
+  // Affichage des composantes
+  const [showComponents, setShowComponents] = useState(true);
+
+  // Mode formule
+  const [formulaMode, setFormulaMode] = useState(false);
+  const [formula, setFormula] = useState('');
+  const [formulaResult, setFormulaResult] = useState<VectorComponents & { isScalar?: boolean; scalar?: number } | null>(null);
+  const [formulaError, setFormulaError] = useState('');
+  const [selectedVectors, setSelectedVectors] = useState<string[]>(['A', 'B']);
+  const formulaInputRef = useRef<HTMLInputElement>(null);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [canvasSize] = useState({ width: 600, height: 500 });
 
-  // Vector A
-  const [ax, setAx] = useState(3);
-  const [ay, setAy] = useState(2);
+  // Conversion degrés -> radians
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+  const toDeg = (rad: number) => (rad * 180) / Math.PI;
 
-  // Vector B
-  const [bx, setBx] = useState(1);
-  const [by, setBy] = useState(4);
+  // Calcul des composantes
+  const getComponents = useCallback((vec: Vector): VectorComponents => ({
+    x: vec.magnitude * Math.cos(toRad(vec.angle)),
+    y: vec.magnitude * Math.sin(toRad(vec.angle))
+  }), []);
 
-  // Resultant vector
-  const rx = ax + bx;
-  const ry = ay + by;
+  // Si on a plus ou moins de 2 vecteurs et qu'on est en mode dot ou cross, revenir à add
+  useEffect(() => {
+    if ((operation === 'dot' || operation === 'cross') && vectors.length !== 2) {
+      setOperation('add');
+    }
+  }, [vectors.length, operation]);
 
-  // Magnitudes
-  const magA = Math.sqrt(ax * ax + ay * ay);
-  const magB = Math.sqrt(bx * bx + by * by);
-  const magR = Math.sqrt(rx * rx + ry * ry);
+  // Synchroniser les vecteurs sélectionnés
+  useEffect(() => {
+    const currentLabels = vectors.map(v => v.label);
+    const newLabels = currentLabels.filter(label => !selectedVectors.includes(label));
+    if (newLabels.length > 0) {
+      setSelectedVectors([...selectedVectors, ...newLabels]);
+    }
+    const validSelection = selectedVectors.filter(label => currentLabels.includes(label));
+    if (validSelection.length !== selectedVectors.length) {
+      setSelectedVectors(validSelection);
+    }
+  }, [vectors, selectedVectors]);
 
-  // Scale and origin
-  const scale = 40;
-  const origin = { x: canvasSize.width / 2, y: canvasSize.height / 2 };
+  // Calculer le vecteur résultant
+  const computeResult = useCallback((): VectorComponents | DotProductResult => {
+    const components = vectors.map(v => getComponents(v));
 
-  const toCanvas = useCallback(
-    (x: number, y: number) => ({
-      x: origin.x + x * scale,
-      y: origin.y - y * scale,
-    }),
-    [origin, scale]
-  );
+    if (operation === 'add') {
+      return components.reduce((acc, comp) => ({
+        x: acc.x + comp.x,
+        y: acc.y + comp.y
+      }), { x: 0, y: 0 });
+    } else if (operation === 'subtract') {
+      return components.reduce((acc, comp, idx) => {
+        if (idx === 0) return comp;
+        return { x: acc.x - comp.x, y: acc.y - comp.y };
+      }, { x: 0, y: 0 });
+    } else if (operation === 'dot') {
+      if (components.length >= 2) {
+        const [A, B] = components;
+        const dotProduct = A.x * B.x + A.y * B.y;
+        const magA = Math.sqrt(A.x * A.x + A.y * A.y);
+        const magB = Math.sqrt(B.x * B.x + B.y * B.y);
+        let angleBetween = 0;
+        if (magA > 0.0001 && magB > 0.0001) {
+          const cosTheta = dotProduct / (magA * magB);
+          const clampedCos = Math.max(-1, Math.min(1, cosTheta));
+          angleBetween = toDeg(Math.acos(clampedCos));
+        }
+        return { scalar: dotProduct, magA, magB, angle: angleBetween };
+      }
+      return { scalar: 0, magA: 0, magB: 0, angle: 0 };
+    } else if (operation === 'cross') {
+      if (components.length >= 2) {
+        const [A, B] = components;
+        return { x: 0, y: 0, z: A.x * B.y - A.y * B.x } as VectorComponents & { z: number };
+      }
+      return { x: 0, y: 0 };
+    }
+    return { x: 0, y: 0 };
+  }, [vectors, operation, getComponents]);
 
-  const drawArrow = useCallback(
-    (
-      ctx: CanvasRenderingContext2D,
-      fromX: number,
-      fromY: number,
-      toX: number,
-      toY: number,
-      color: string,
-      label: string,
-      lineWidth: number = 3
-    ) => {
-      const from = toCanvas(fromX, fromY);
-      const to = toCanvas(toX, toY);
+  const resultComp = computeResult();
+  const isScalarResult = operation === 'dot';
+  const resultMagnitude = isScalarResult ? null : Math.sqrt((resultComp as VectorComponents).x ** 2 + (resultComp as VectorComponents).y ** 2);
+  const resultAngle = isScalarResult ? null : toDeg(Math.atan2((resultComp as VectorComponents).y, (resultComp as VectorComponents).x));
 
-      const dx = to.x - from.x;
-      const dy = to.y - from.y;
-      const angle = Math.atan2(dy, dx);
-      const headLength = 15;
+  // Ajouter un vecteur
+  const addVector = () => {
+    if (vectors.length >= 6) return;
+    const nextLabel = String.fromCharCode(65 + vectors.length);
+    const newVector: Vector = {
+      id: nextLabel,
+      label: nextLabel,
+      magnitude: 3,
+      angle: 0,
+      color: VECTOR_COLORS[vectors.length]
+    };
+    setVectors([...vectors, newVector]);
+  };
 
-      // Line
-      ctx.strokeStyle = color;
-      ctx.lineWidth = lineWidth;
+  // Retirer un vecteur
+  const removeVector = (id: string) => {
+    if (vectors.length <= 2) return;
+    setVectors(vectors.filter(v => v.id !== id));
+  };
+
+  // Mettre à jour un vecteur
+  const updateVector = (id: string, updates: Partial<Vector>) => {
+    setVectors(vectors.map(v => v.id === id ? { ...v, ...updates } : v));
+  };
+
+  // Mise à jour depuis composantes cartésiennes
+  const updateFromCartesian = (id: string, comp: VectorComponents, value: string, isX: boolean) => {
+    const newComp = isX
+      ? { x: parseFloat(value) || 0, y: comp.y }
+      : { x: comp.x, y: parseFloat(value) || 0 };
+    const newMagnitude = Math.sqrt(newComp.x ** 2 + newComp.y ** 2);
+    const newAngle = toDeg(Math.atan2(newComp.y, newComp.x));
+    updateVector(id, { magnitude: newMagnitude, angle: newAngle });
+  };
+
+  // Fonction pour insérer du texte à la position du curseur
+  const insertAtCursor = (text: string) => {
+    const input = formulaInputRef.current;
+    if (!input) return;
+    const start = input.selectionStart || 0;
+    const end = input.selectionEnd || 0;
+    const newValue = formula.substring(0, start) + text + formula.substring(end);
+    setFormula(newValue);
+    setTimeout(() => {
+      input.focus();
+      const newPosition = start + text.length;
+      input.setSelectionRange(newPosition, newPosition);
+    }, 0);
+  };
+
+  // Évaluer la formule vectorielle
+  const evaluateFormula = useCallback((formulaText: string) => {
+    try {
+      const vectorDict: Record<string, VectorComponents> = {};
+      vectors.forEach(vec => {
+        if (selectedVectors.includes(vec.label)) {
+          vectorDict[vec.label] = getComponents(vec);
+        }
+      });
+
+      let expr = formulaText.trim();
+      if (!expr) {
+        setFormulaError('');
+        setFormulaResult(null);
+        return;
+      }
+
+      expr = expr.replace(/·/g, ' dot ').replace(/×/g, ' cross ');
+      const tokens = expr.split(/\s+/);
+
+      let result: VectorComponents | { scalar: number } | null = null;
+      let currentOp: string | null = null;
+      let isScalar = false;
+
+      for (let i = 0; i < tokens.length; i++) {
+        const token = tokens[i];
+
+        if (token === '+' || token === '-') {
+          currentOp = token;
+        } else if (token === 'dot') {
+          currentOp = 'dot';
+        } else if (token === 'cross') {
+          currentOp = 'cross';
+        } else if (token === '*') {
+          continue;
+        } else {
+          let scalar = 1;
+          let vectorLabel = token;
+
+          const multMatch = token.match(/^([\d.]+)\*([A-F])$/);
+          if (multMatch) {
+            scalar = parseFloat(multMatch[1]);
+            vectorLabel = multMatch[2];
+          } else if (i > 0 && tokens[i-1] === '*') {
+            scalar = parseFloat(tokens[i-2]);
+            vectorLabel = token;
+          }
+
+          if (!vectorDict[vectorLabel]) {
+            throw new Error(`Vecteur ${vectorLabel} non défini`);
+          }
+
+          const vec = vectorDict[vectorLabel];
+          const scaledVec = { x: vec.x * scalar, y: vec.y * scalar };
+
+          if (result === null) {
+            result = scaledVec;
+          } else if (currentOp === '+') {
+            result = { x: (result as VectorComponents).x + scaledVec.x, y: (result as VectorComponents).y + scaledVec.y };
+          } else if (currentOp === '-') {
+            result = { x: (result as VectorComponents).x - scaledVec.x, y: (result as VectorComponents).y - scaledVec.y };
+          } else if (currentOp === 'dot') {
+            const dotProduct = (result as VectorComponents).x * scaledVec.x + (result as VectorComponents).y * scaledVec.y;
+            result = { scalar: dotProduct } as { scalar: number };
+            isScalar = true;
+          } else if (currentOp === 'cross') {
+            const crossZ = (result as VectorComponents).x * scaledVec.y - (result as VectorComponents).y * scaledVec.x;
+            result = { x: 0, y: 0, z: crossZ } as VectorComponents & { z: number };
+          }
+        }
+      }
+
+      if (result) {
+        setFormulaResult({ ...result as VectorComponents, isScalar });
+        setFormulaError('');
+      } else {
+        setFormulaError('Expression invalide');
+        setFormulaResult(null);
+      }
+    } catch (error) {
+      setFormulaError((error as Error).message);
+      setFormulaResult(null);
+    }
+  }, [vectors, selectedVectors, getComponents]);
+
+  // Évaluer la formule quand elle change
+  useEffect(() => {
+    if (formulaMode) {
+      evaluateFormula(formula);
+    }
+  }, [formula, vectors, formulaMode, selectedVectors, evaluateFormula]);
+
+  // Dessiner le canvas
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const width = canvas.width;
+    const height = canvas.height;
+    const centerX = width / 2;
+    const centerY = height / 2;
+
+    // Effacer le canvas
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(0, 0, width, height);
+
+    // Échelle
+    const displayVectors = formulaMode ? vectors.filter(v => selectedVectors.includes(v.label)) : vectors;
+    const allMagnitudes = [
+      ...displayVectors.map(v => v.magnitude),
+      ...(resultMagnitude !== null ? [resultMagnitude] : []),
+      1
+    ];
+    const maxMag = Math.max(...allMagnitudes) * 1.5;
+    const scale = Math.min(width, height) / 2 / maxMag * 0.8;
+
+    // Dessiner la grille
+    ctx.strokeStyle = '#334155';
+    ctx.lineWidth = 1;
+    const gridStep = Math.ceil(maxMag / 5);
+    for (let i = -Math.ceil(maxMag); i <= Math.ceil(maxMag); i += gridStep) {
       ctx.beginPath();
-      ctx.moveTo(from.x, from.y);
-      ctx.lineTo(to.x, to.y);
+      ctx.moveTo(centerX + i * scale, 0);
+      ctx.lineTo(centerX + i * scale, height);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, centerY - i * scale);
+      ctx.lineTo(width, centerY - i * scale);
+      ctx.stroke();
+    }
+
+    // Dessiner les axes
+    ctx.strokeStyle = '#64748b';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, centerY);
+    ctx.lineTo(width, centerY);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(centerX, 0);
+    ctx.lineTo(centerX, height);
+    ctx.stroke();
+
+    // Labels des axes
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '14px system-ui';
+    ctx.textAlign = 'center';
+    ctx.fillText('x', width - 15, centerY + 20);
+    ctx.fillText('y', centerX + 15, 15);
+
+    // Origine
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Fonction pour dessiner un vecteur
+    const drawVector = (startX: number, startY: number, comp: VectorComponents, color: string, label: string, showComp: boolean = true) => {
+      const endX = startX + comp.x * scale;
+      const endY = startY - comp.y * scale;
+
+      // Ligne principale
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(startX, startY);
+      ctx.lineTo(endX, endY);
       ctx.stroke();
 
-      // Arrow head
+      // Pointe de flèche
+      const dx = endX - startX;
+      const dy = endY - startY;
+      const angle = Math.atan2(dy, dx);
+      const arrowSize = 12;
       ctx.fillStyle = color;
       ctx.beginPath();
-      ctx.moveTo(to.x, to.y);
-      ctx.lineTo(
-        to.x - headLength * Math.cos(angle - Math.PI / 6),
-        to.y - headLength * Math.sin(angle - Math.PI / 6)
-      );
-      ctx.lineTo(
-        to.x - headLength * Math.cos(angle + Math.PI / 6),
-        to.y - headLength * Math.sin(angle + Math.PI / 6)
-      );
+      ctx.moveTo(endX, endY);
+      ctx.lineTo(endX - arrowSize * Math.cos(angle - Math.PI / 6), endY - arrowSize * Math.sin(angle - Math.PI / 6));
+      ctx.lineTo(endX - arrowSize * Math.cos(angle + Math.PI / 6), endY - arrowSize * Math.sin(angle + Math.PI / 6));
       ctx.closePath();
       ctx.fill();
 
       // Label
-      const midX = (from.x + to.x) / 2;
-      const midY = (from.y + to.y) / 2;
       ctx.font = 'bold 16px system-ui';
       ctx.fillStyle = color;
-      ctx.fillText(label, midX + 10, midY - 10);
-    },
-    [toCanvas]
-  );
+      ctx.textAlign = 'left';
+      const labelX = startX + comp.x * scale / 2 + 15;
+      const labelY = startY - comp.y * scale / 2 - 10;
+      ctx.fillText(label, labelX, labelY);
 
-  const draw = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Clear
-    ctx.fillStyle = '#f0f9ff';
-    ctx.fillRect(0, 0, canvasSize.width, canvasSize.height);
-
-    // Grid
-    ctx.strokeStyle = '#bae6fd';
-    ctx.lineWidth = 1;
-
-    for (let x = -10; x <= 10; x++) {
-      const { x: cx } = toCanvas(x, 0);
-      ctx.beginPath();
-      ctx.moveTo(cx, 0);
-      ctx.lineTo(cx, canvasSize.height);
-      ctx.stroke();
-    }
-    for (let y = -10; y <= 10; y++) {
-      const { y: cy } = toCanvas(0, y);
-      ctx.beginPath();
-      ctx.moveTo(0, cy);
-      ctx.lineTo(canvasSize.width, cy);
-      ctx.stroke();
-    }
-
-    // Axes
-    ctx.strokeStyle = '#1e3a5f';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(0, origin.y);
-    ctx.lineTo(canvasSize.width, origin.y);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(origin.x, 0);
-    ctx.lineTo(origin.x, canvasSize.height);
-    ctx.stroke();
-
-    // Axis labels
-    ctx.fillStyle = '#1e3a5f';
-    ctx.font = '14px system-ui';
-    ctx.fillText('x', canvasSize.width - 20, origin.y - 10);
-    ctx.fillText('y', origin.x + 10, 20);
-
-    // Tick marks
-    ctx.font = '12px system-ui';
-    for (let i = -6; i <= 6; i++) {
-      if (i !== 0) {
-        const { x: cx } = toCanvas(i, 0);
-        const { y: cy } = toCanvas(0, i);
-        ctx.fillText(i.toString(), cx - 5, origin.y + 18);
-        ctx.fillText(i.toString(), origin.x + 8, cy + 4);
-      }
-    }
-
-    // Draw parallelogram (hint for addition)
-    ctx.strokeStyle = '#94a3b8';
-    ctx.setLineDash([5, 5]);
-    ctx.lineWidth = 1;
-
-    // From A tip to R
-    const aTip = toCanvas(ax, ay);
-    const rTip = toCanvas(rx, ry);
-    ctx.beginPath();
-    ctx.moveTo(aTip.x, aTip.y);
-    ctx.lineTo(rTip.x, rTip.y);
-    ctx.stroke();
-
-    // From B tip to R
-    const bTip = toCanvas(bx, by);
-    ctx.beginPath();
-    ctx.moveTo(bTip.x, bTip.y);
-    ctx.lineTo(rTip.x, rTip.y);
-    ctx.stroke();
-
-    ctx.setLineDash([]);
-
-    // Draw vectors
-    drawArrow(ctx, 0, 0, ax, ay, '#dc2626', 'A', 3); // Red
-    drawArrow(ctx, 0, 0, bx, by, '#2563eb', 'B', 3); // Blue
-    drawArrow(ctx, 0, 0, rx, ry, '#16a34a', 'R', 4); // Green (resultant)
-
-    // Origin point
-    ctx.fillStyle = '#1e3a5f';
-    ctx.beginPath();
-    ctx.arc(origin.x, origin.y, 5, 0, Math.PI * 2);
-    ctx.fill();
-  }, [ax, ay, bx, by, rx, ry, canvasSize, drawArrow, toCanvas, origin]);
-
-  useEffect(() => {
-    draw();
-  }, [draw]);
-
-  return (
-    <div className="space-y-6">
-      <div className="grid md:grid-cols-2 gap-6">
-        {/* Canvas */}
-        <div className="border-2 border-blue-200 rounded-lg overflow-hidden">
-          <canvas
-            ref={canvasRef}
-            width={canvasSize.width}
-            height={canvasSize.height}
-            className="w-full"
-          />
-        </div>
-
-        {/* Controls */}
-        <div className="space-y-4">
-          {/* Vector A */}
-          <div className="p-4 bg-red-50 rounded-lg border border-red-200">
-            <h3 className="font-semibold text-red-800 mb-3">Vecteur A (rouge)</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-red-700 mb-1">
-                  Ax
-                </label>
-                <input
-                  type="range"
-                  min="-6"
-                  max="6"
-                  step="0.5"
-                  value={ax}
-                  onChange={(e) => setAx(parseFloat(e.target.value))}
-                  className="w-full accent-red-600"
-                />
-                <span className="text-sm font-mono text-red-600">{ax}</span>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-red-700 mb-1">
-                  Ay
-                </label>
-                <input
-                  type="range"
-                  min="-6"
-                  max="6"
-                  step="0.5"
-                  value={ay}
-                  onChange={(e) => setAy(parseFloat(e.target.value))}
-                  className="w-full accent-red-600"
-                />
-                <span className="text-sm font-mono text-red-600">{ay}</span>
-              </div>
-            </div>
-            <p className="mt-2 text-sm text-red-600">
-              |A| = {magA.toFixed(2)}
-            </p>
-          </div>
-
-          {/* Vector B */}
-          <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-            <h3 className="font-semibold text-blue-800 mb-3">Vecteur B (bleu)</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-blue-700 mb-1">
-                  Bx
-                </label>
-                <input
-                  type="range"
-                  min="-6"
-                  max="6"
-                  step="0.5"
-                  value={bx}
-                  onChange={(e) => setBx(parseFloat(e.target.value))}
-                  className="w-full accent-blue-600"
-                />
-                <span className="text-sm font-mono text-blue-600">{bx}</span>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-blue-700 mb-1">
-                  By
-                </label>
-                <input
-                  type="range"
-                  min="-6"
-                  max="6"
-                  step="0.5"
-                  value={by}
-                  onChange={(e) => setBy(parseFloat(e.target.value))}
-                  className="w-full accent-blue-600"
-                />
-                <span className="text-sm font-mono text-blue-600">{by}</span>
-              </div>
-            </div>
-            <p className="mt-2 text-sm text-blue-600">
-              |B| = {magB.toFixed(2)}
-            </p>
-          </div>
-
-          {/* Resultant */}
-          <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-            <h3 className="font-semibold text-green-800 mb-2">Vecteur Résultant R = A + B</h3>
-            <div className="text-green-700">
-              <p className="font-mono">
-                R = ({ax} + {bx}, {ay} + {by}) = ({rx}, {ry})
-              </p>
-              <p className="mt-1">|R| = {magR.toFixed(2)}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Formula */}
-      <div className="bg-gray-50 rounded-lg p-4">
-        <h3 className="font-semibold text-gray-800 mb-2">Formule d'addition vectorielle</h3>
-        <BlockMath math="\vec{R} = \vec{A} + \vec{B} = (A_x + B_x)\hat{i} + (A_y + B_y)\hat{j}" />
-        <div className="mt-3 text-sm text-gray-600">
-          <p>L'addition vectorielle se fait composante par composante. Le vecteur résultant R (vert) est la diagonale du parallélogramme formé par A et B.</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ============================================
-// DOT PRODUCT SIMULATOR
-// ============================================
-function DotProductSimulator() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [canvasSize] = useState({ width: 600, height: 500 });
-
-  // Vector A
-  const [ax, setAx] = useState(4);
-  const [ay, setAy] = useState(2);
-
-  // Vector B
-  const [bx, setBx] = useState(2);
-  const [by, setBy] = useState(4);
-
-  // Calculations
-  const dotProduct = ax * bx + ay * by;
-  const magA = Math.sqrt(ax * ax + ay * ay);
-  const magB = Math.sqrt(bx * bx + by * by);
-
-  // Angle between vectors
-  const cosTheta = magA > 0 && magB > 0 ? dotProduct / (magA * magB) : 0;
-  const theta = Math.acos(Math.max(-1, Math.min(1, cosTheta)));
-  const thetaDeg = (theta * 180) / Math.PI;
-
-  // Projection of A onto B
-  const projAonB = magB > 0 ? dotProduct / magB : 0;
-  const projVecX = magB > 0 ? projAonB * (bx / magB) : 0;
-  const projVecY = magB > 0 ? projAonB * (by / magB) : 0;
-
-  const scale = 40;
-  const origin = { x: canvasSize.width / 2, y: canvasSize.height / 2 };
-
-  const toCanvas = useCallback(
-    (x: number, y: number) => ({
-      x: origin.x + x * scale,
-      y: origin.y - y * scale,
-    }),
-    [origin, scale]
-  );
-
-  const drawArrow = useCallback(
-    (
-      ctx: CanvasRenderingContext2D,
-      fromX: number,
-      fromY: number,
-      toX: number,
-      toY: number,
-      color: string,
-      label: string,
-      lineWidth: number = 3,
-      dashed: boolean = false
-    ) => {
-      const from = toCanvas(fromX, fromY);
-      const to = toCanvas(toX, toY);
-
-      const dx = to.x - from.x;
-      const dy = to.y - from.y;
-      const len = Math.sqrt(dx * dx + dy * dy);
-      if (len < 1) return;
-
-      const angle = Math.atan2(dy, dx);
-      const headLength = 12;
-
+      // Dessiner la flèche au-dessus du label
+      const textWidth = ctx.measureText(label).width;
       ctx.strokeStyle = color;
-      ctx.lineWidth = lineWidth;
-      if (dashed) ctx.setLineDash([5, 5]);
+      ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.moveTo(from.x, from.y);
-      ctx.lineTo(to.x, to.y);
+      ctx.moveTo(labelX, labelY - 12);
+      ctx.lineTo(labelX + textWidth, labelY - 12);
       ctx.stroke();
-      if (dashed) ctx.setLineDash([]);
-
-      ctx.fillStyle = color;
       ctx.beginPath();
-      ctx.moveTo(to.x, to.y);
-      ctx.lineTo(
-        to.x - headLength * Math.cos(angle - Math.PI / 6),
-        to.y - headLength * Math.sin(angle - Math.PI / 6)
-      );
-      ctx.lineTo(
-        to.x - headLength * Math.cos(angle + Math.PI / 6),
-        to.y - headLength * Math.sin(angle + Math.PI / 6)
-      );
-      ctx.closePath();
-      ctx.fill();
-
-      const midX = (from.x + to.x) / 2;
-      const midY = (from.y + to.y) / 2;
-      ctx.font = 'bold 16px system-ui';
-      ctx.fillStyle = color;
-      ctx.fillText(label, midX + 10, midY - 10);
-    },
-    [toCanvas]
-  );
-
-  const draw = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Clear
-    ctx.fillStyle = '#fdf4ff';
-    ctx.fillRect(0, 0, canvasSize.width, canvasSize.height);
-
-    // Grid
-    ctx.strokeStyle = '#f5d0fe';
-    ctx.lineWidth = 1;
-
-    for (let x = -10; x <= 10; x++) {
-      const { x: cx } = toCanvas(x, 0);
-      ctx.beginPath();
-      ctx.moveTo(cx, 0);
-      ctx.lineTo(cx, canvasSize.height);
+      ctx.moveTo(labelX + textWidth, labelY - 12);
+      ctx.lineTo(labelX + textWidth - 4, labelY - 15);
+      ctx.moveTo(labelX + textWidth, labelY - 12);
+      ctx.lineTo(labelX + textWidth - 4, labelY - 9);
       ctx.stroke();
-    }
-    for (let y = -10; y <= 10; y++) {
-      const { y: cy } = toCanvas(0, y);
-      ctx.beginPath();
-      ctx.moveTo(0, cy);
-      ctx.lineTo(canvasSize.width, cy);
-      ctx.stroke();
-    }
 
-    // Axes
-    ctx.strokeStyle = '#581c87';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(0, origin.y);
-    ctx.lineTo(canvasSize.width, origin.y);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(origin.x, 0);
-    ctx.lineTo(origin.x, canvasSize.height);
-    ctx.stroke();
-
-    // Axis labels
-    ctx.fillStyle = '#581c87';
-    ctx.font = '14px system-ui';
-    ctx.fillText('x', canvasSize.width - 20, origin.y - 10);
-    ctx.fillText('y', origin.x + 10, 20);
-
-    // Tick marks
-    ctx.font = '12px system-ui';
-    for (let i = -6; i <= 6; i++) {
-      if (i !== 0) {
-        const { x: cx } = toCanvas(i, 0);
-        const { y: cy } = toCanvas(0, i);
-        ctx.fillText(i.toString(), cx - 5, origin.y + 18);
-        ctx.fillText(i.toString(), origin.x + 8, cy + 4);
+      // Composantes
+      if (showComp && showComponents && (Math.abs(comp.x) > 0.1 || Math.abs(comp.y) > 0.1)) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX + comp.x * scale, startY);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(startX + comp.x * scale, startY);
+        ctx.lineTo(endX, endY);
+        ctx.stroke();
+        ctx.setLineDash([]);
       }
-    }
+    };
 
-    // Draw angle arc
-    if (magA > 0 && magB > 0) {
-      const angleA = Math.atan2(ay, ax);
-      const angleB = Math.atan2(by, bx);
-      const startAngle = Math.min(angleA, angleB);
-      const endAngle = Math.max(angleA, angleB);
-
-      ctx.strokeStyle = '#a855f7';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.arc(origin.x, origin.y, 40, -endAngle, -startAngle);
-      ctx.stroke();
-
-      // Angle label
-      const midAngle = (angleA + angleB) / 2;
-      const labelX = origin.x + 55 * Math.cos(midAngle);
-      const labelY = origin.y - 55 * Math.sin(midAngle);
-      ctx.font = 'bold 14px system-ui';
-      ctx.fillStyle = '#a855f7';
-      ctx.fillText('θ', labelX, labelY);
-    }
-
-    // Draw projection line (perpendicular from A to B direction)
-    if (magB > 0) {
-      ctx.strokeStyle = '#94a3b8';
-      ctx.setLineDash([3, 3]);
-      ctx.lineWidth = 1;
-      const aTip = toCanvas(ax, ay);
-      const projTip = toCanvas(projVecX, projVecY);
-      ctx.beginPath();
-      ctx.moveTo(aTip.x, aTip.y);
-      ctx.lineTo(projTip.x, projTip.y);
-      ctx.stroke();
-      ctx.setLineDash([]);
-    }
-
-    // Draw projection vector
-    if (magB > 0 && Math.abs(projAonB) > 0.1) {
-      drawArrow(ctx, 0, 0, projVecX, projVecY, '#f59e0b', 'proj', 2, true);
-    }
-
-    // Draw vectors
-    drawArrow(ctx, 0, 0, ax, ay, '#dc2626', 'A', 3);
-    drawArrow(ctx, 0, 0, bx, by, '#2563eb', 'B', 3);
-
-    // Origin
-    ctx.fillStyle = '#581c87';
-    ctx.beginPath();
-    ctx.arc(origin.x, origin.y, 5, 0, Math.PI * 2);
-    ctx.fill();
-  }, [ax, ay, bx, by, magA, magB, projVecX, projVecY, projAonB, canvasSize, drawArrow, toCanvas, origin]);
-
-  useEffect(() => {
-    draw();
-  }, [draw]);
-
-  return (
-    <div className="space-y-6">
-      <div className="grid md:grid-cols-2 gap-6">
-        {/* Canvas */}
-        <div className="border-2 border-purple-200 rounded-lg overflow-hidden">
-          <canvas
-            ref={canvasRef}
-            width={canvasSize.width}
-            height={canvasSize.height}
-            className="w-full"
-          />
-        </div>
-
-        {/* Controls */}
-        <div className="space-y-4">
-          {/* Vector A */}
-          <div className="p-4 bg-red-50 rounded-lg border border-red-200">
-            <h3 className="font-semibold text-red-800 mb-3">Vecteur A (rouge)</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-red-700 mb-1">Ax</label>
-                <input
-                  type="range"
-                  min="-6"
-                  max="6"
-                  step="0.5"
-                  value={ax}
-                  onChange={(e) => setAx(parseFloat(e.target.value))}
-                  className="w-full accent-red-600"
-                />
-                <span className="text-sm font-mono text-red-600">{ax}</span>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-red-700 mb-1">Ay</label>
-                <input
-                  type="range"
-                  min="-6"
-                  max="6"
-                  step="0.5"
-                  value={ay}
-                  onChange={(e) => setAy(parseFloat(e.target.value))}
-                  className="w-full accent-red-600"
-                />
-                <span className="text-sm font-mono text-red-600">{ay}</span>
-              </div>
-            </div>
-            <p className="mt-2 text-sm text-red-600">|A| = {magA.toFixed(2)}</p>
-          </div>
-
-          {/* Vector B */}
-          <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-            <h3 className="font-semibold text-blue-800 mb-3">Vecteur B (bleu)</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-blue-700 mb-1">Bx</label>
-                <input
-                  type="range"
-                  min="-6"
-                  max="6"
-                  step="0.5"
-                  value={bx}
-                  onChange={(e) => setBx(parseFloat(e.target.value))}
-                  className="w-full accent-blue-600"
-                />
-                <span className="text-sm font-mono text-blue-600">{bx}</span>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-blue-700 mb-1">By</label>
-                <input
-                  type="range"
-                  min="-6"
-                  max="6"
-                  step="0.5"
-                  value={by}
-                  onChange={(e) => setBy(parseFloat(e.target.value))}
-                  className="w-full accent-blue-600"
-                />
-                <span className="text-sm font-mono text-blue-600">{by}</span>
-              </div>
-            </div>
-            <p className="mt-2 text-sm text-blue-600">|B| = {magB.toFixed(2)}</p>
-          </div>
-
-          {/* Results */}
-          <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-            <h3 className="font-semibold text-purple-800 mb-2">Résultats</h3>
-            <div className="space-y-2 text-purple-700">
-              <p className="font-mono text-lg">
-                A · B = {ax}×{bx} + {ay}×{by} = <strong>{dotProduct}</strong>
-              </p>
-              <p>
-                Angle θ = <strong>{thetaDeg.toFixed(1)}°</strong> ({theta.toFixed(3)} rad)
-              </p>
-              <p className="text-sm">
-                Projection de A sur B = <strong>{projAonB.toFixed(2)}</strong>
-              </p>
-              <div className={`mt-2 text-sm p-2 rounded ${
-                dotProduct > 0 ? 'bg-green-100 text-green-800' :
-                dotProduct < 0 ? 'bg-red-100 text-red-800' :
-                'bg-gray-100 text-gray-800'
-              }`}>
-                {dotProduct > 0 && 'Les vecteurs pointent dans la même direction générale (angle aigu)'}
-                {dotProduct < 0 && 'Les vecteurs pointent dans des directions opposées (angle obtus)'}
-                {dotProduct === 0 && 'Les vecteurs sont perpendiculaires (angle = 90°)'}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Formulas */}
-      <div className="bg-gray-50 rounded-lg p-4">
-        <h3 className="font-semibold text-gray-800 mb-2">Formules du produit scalaire</h3>
-        <div className="grid md:grid-cols-2 gap-4">
-          <div>
-            <p className="text-sm text-gray-600 mb-1">Forme algébrique:</p>
-            <BlockMath math="\vec{A} \cdot \vec{B} = A_x B_x + A_y B_y" />
-          </div>
-          <div>
-            <p className="text-sm text-gray-600 mb-1">Forme géométrique:</p>
-            <BlockMath math="\vec{A} \cdot \vec{B} = |\vec{A}| \cdot |\vec{B}| \cdot \cos\theta" />
-          </div>
-        </div>
-        <div className="mt-3 text-sm text-gray-600">
-          <p>Le produit scalaire donne un scalaire (nombre), pas un vecteur. Il mesure à quel point deux vecteurs pointent dans la même direction.</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ============================================
-// CROSS PRODUCT SIMULATOR
-// ============================================
-function CrossProductSimulator() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [canvasSize] = useState({ width: 600, height: 500 });
-
-  // Vector A (position vector r)
-  const [ax, setAx] = useState(3);
-  const [ay, setAy] = useState(1);
-
-  // Vector B (force vector F)
-  const [bx, setBx] = useState(1);
-  const [by, setBy] = useState(3);
-
-  // Show as moment of force application
-  const [showMomentApplication, setShowMomentApplication] = useState(true);
-
-  // Calculations
-  // For 2D vectors, cross product gives a scalar (z-component)
-  // A × B = Ax*By - Ay*Bx
-  const crossProduct = ax * by - ay * bx;
-  const magA = Math.sqrt(ax * ax + ay * ay);
-  const magB = Math.sqrt(bx * bx + by * by);
-
-  // Angle between vectors
-  const angleA = Math.atan2(ay, ax);
-  const angleB = Math.atan2(by, bx);
-  let angleBetween = angleB - angleA;
-  // Normalize to [-π, π]
-  while (angleBetween > Math.PI) angleBetween -= 2 * Math.PI;
-  while (angleBetween < -Math.PI) angleBetween += 2 * Math.PI;
-  const sinTheta = Math.sin(angleBetween);
-  const thetaDeg = (angleBetween * 180) / Math.PI;
-
-  // Area of parallelogram = |A × B|
-  const parallelogramArea = Math.abs(crossProduct);
-
-  const scale = 40;
-  const origin = { x: canvasSize.width / 2, y: canvasSize.height / 2 };
-
-  const toCanvas = useCallback(
-    (x: number, y: number) => ({
-      x: origin.x + x * scale,
-      y: origin.y - y * scale,
-    }),
-    [origin, scale]
-  );
-
-  const drawArrow = useCallback(
-    (
-      ctx: CanvasRenderingContext2D,
-      fromX: number,
-      fromY: number,
-      toX: number,
-      toY: number,
-      color: string,
-      label: string,
-      lineWidth: number = 3
-    ) => {
-      const from = toCanvas(fromX, fromY);
-      const to = toCanvas(toX, toY);
-
-      const dx = to.x - from.x;
-      const dy = to.y - from.y;
-      const len = Math.sqrt(dx * dx + dy * dy);
-      if (len < 1) return;
-
-      const angle = Math.atan2(dy, dx);
-      const headLength = 12;
-
-      ctx.strokeStyle = color;
-      ctx.lineWidth = lineWidth;
-      ctx.beginPath();
-      ctx.moveTo(from.x, from.y);
-      ctx.lineTo(to.x, to.y);
-      ctx.stroke();
-
-      ctx.fillStyle = color;
-      ctx.beginPath();
-      ctx.moveTo(to.x, to.y);
-      ctx.lineTo(
-        to.x - headLength * Math.cos(angle - Math.PI / 6),
-        to.y - headLength * Math.sin(angle - Math.PI / 6)
-      );
-      ctx.lineTo(
-        to.x - headLength * Math.cos(angle + Math.PI / 6),
-        to.y - headLength * Math.sin(angle + Math.PI / 6)
-      );
-      ctx.closePath();
-      ctx.fill();
-
-      const midX = (from.x + to.x) / 2;
-      const midY = (from.y + to.y) / 2;
-      ctx.font = 'bold 16px system-ui';
-      ctx.fillStyle = color;
-      ctx.fillText(label, midX + 10, midY - 10);
-    },
-    [toCanvas]
-  );
-
-  const draw = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Clear with gradient background
-    const gradient = ctx.createLinearGradient(0, 0, 0, canvasSize.height);
-    gradient.addColorStop(0, '#fef3c7');
-    gradient.addColorStop(1, '#fef9c3');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvasSize.width, canvasSize.height);
-
-    // Grid
-    ctx.strokeStyle = '#fde68a';
-    ctx.lineWidth = 1;
-
-    for (let x = -10; x <= 10; x++) {
-      const { x: cx } = toCanvas(x, 0);
-      ctx.beginPath();
-      ctx.moveTo(cx, 0);
-      ctx.lineTo(cx, canvasSize.height);
-      ctx.stroke();
-    }
-    for (let y = -10; y <= 10; y++) {
-      const { y: cy } = toCanvas(0, y);
-      ctx.beginPath();
-      ctx.moveTo(0, cy);
-      ctx.lineTo(canvasSize.width, cy);
-      ctx.stroke();
-    }
-
-    // Axes
-    ctx.strokeStyle = '#92400e';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(0, origin.y);
-    ctx.lineTo(canvasSize.width, origin.y);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(origin.x, 0);
-    ctx.lineTo(origin.x, canvasSize.height);
-    ctx.stroke();
-
-    // Axis labels
-    ctx.fillStyle = '#92400e';
-    ctx.font = '14px system-ui';
-    ctx.fillText('x', canvasSize.width - 20, origin.y - 10);
-    ctx.fillText('y', origin.x + 10, 20);
-
-    // Tick marks
-    ctx.font = '12px system-ui';
-    for (let i = -6; i <= 6; i++) {
-      if (i !== 0) {
-        const { x: cx } = toCanvas(i, 0);
-        const { y: cy } = toCanvas(0, i);
-        ctx.fillText(i.toString(), cx - 5, origin.y + 18);
-        ctx.fillText(i.toString(), origin.x + 8, cy + 4);
-      }
-    }
-
-    // Draw parallelogram (area = |A × B|)
-    const o = toCanvas(0, 0);
-    const a = toCanvas(ax, ay);
-    const b = toCanvas(bx, by);
-    const ab = toCanvas(ax + bx, ay + by);
-
-    ctx.fillStyle = crossProduct >= 0 ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)';
-    ctx.beginPath();
-    ctx.moveTo(o.x, o.y);
-    ctx.lineTo(a.x, a.y);
-    ctx.lineTo(ab.x, ab.y);
-    ctx.lineTo(b.x, b.y);
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.strokeStyle = crossProduct >= 0 ? '#22c55e' : '#ef4444';
-    ctx.setLineDash([5, 5]);
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    // Draw angle arc
-    if (magA > 0.1 && magB > 0.1) {
-      ctx.strokeStyle = '#f97316';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      const arcRadius = 35;
-      const startAngle = -angleA;
-      const endAngle = -angleB;
-      ctx.arc(origin.x, origin.y, arcRadius, startAngle, endAngle, crossProduct > 0);
-      ctx.stroke();
-
-      // Angle label
-      const midAngle = (angleA + angleB) / 2;
-      ctx.font = 'bold 14px system-ui';
-      ctx.fillStyle = '#f97316';
-      ctx.fillText('θ', origin.x + 50 * Math.cos(midAngle), origin.y - 50 * Math.sin(midAngle));
-    }
-
-    // Draw vectors
-    if (showMomentApplication) {
-      drawArrow(ctx, 0, 0, ax, ay, '#2563eb', 'r', 3); // Position vector
-      drawArrow(ctx, ax, ay, ax + bx, ay + by, '#dc2626', 'F', 3); // Force at end of r
+    // Dessiner tous les vecteurs
+    if (operation === 'add' && !formulaMode) {
+      let currentX = centerX;
+      let currentY = centerY;
+      displayVectors.forEach((vec, idx) => {
+        const comp = getComponents(vec);
+        drawVector(currentX, currentY, comp, vec.color, vec.label, idx === displayVectors.length - 1);
+        currentX += comp.x * scale;
+        currentY -= comp.y * scale;
+      });
     } else {
-      drawArrow(ctx, 0, 0, ax, ay, '#2563eb', 'A', 3);
-      drawArrow(ctx, 0, 0, bx, by, '#dc2626', 'B', 3);
+      displayVectors.forEach(vec => {
+        const comp = getComponents(vec);
+        drawVector(centerX, centerY, comp, vec.color, vec.label, true);
+      });
     }
 
-    // Draw rotation direction indicator
-    if (Math.abs(crossProduct) > 0.1) {
-      const indicatorRadius = 25;
-      const indicatorX = origin.x;
-      const indicatorY = origin.y - 80;
-
-      ctx.strokeStyle = crossProduct > 0 ? '#22c55e' : '#ef4444';
-      ctx.lineWidth = 3;
+    // Dessiner le parallélogramme pour le produit vectoriel
+    if (operation === 'cross' && displayVectors.length >= 2) {
+      const vecA = getComponents(displayVectors[0]);
+      const vecB = getComponents(displayVectors[1]);
+      ctx.fillStyle = 'rgba(59, 130, 246, 0.15)';
+      ctx.strokeStyle = 'rgba(59, 130, 246, 0.4)';
+      ctx.lineWidth = 1.5;
       ctx.beginPath();
-      if (crossProduct > 0) {
-        // Counter-clockwise
-        ctx.arc(indicatorX, indicatorY, indicatorRadius, Math.PI * 0.5, -Math.PI * 0.5, true);
-      } else {
-        // Clockwise
-        ctx.arc(indicatorX, indicatorY, indicatorRadius, -Math.PI * 0.5, Math.PI * 0.5, true);
-      }
-      ctx.stroke();
-
-      // Arrow head on arc
-      const arrowAngle = crossProduct > 0 ? -Math.PI * 0.5 : Math.PI * 0.5;
-      const arrowX = indicatorX + indicatorRadius * Math.cos(arrowAngle);
-      const arrowY = indicatorY + indicatorRadius * Math.sin(arrowAngle);
-      ctx.fillStyle = crossProduct > 0 ? '#22c55e' : '#ef4444';
-      ctx.beginPath();
-      if (crossProduct > 0) {
-        ctx.moveTo(arrowX, arrowY);
-        ctx.lineTo(arrowX + 8, arrowY + 8);
-        ctx.lineTo(arrowX - 4, arrowY + 10);
-      } else {
-        ctx.moveTo(arrowX, arrowY);
-        ctx.lineTo(arrowX + 8, arrowY - 8);
-        ctx.lineTo(arrowX - 4, arrowY - 10);
-      }
+      ctx.moveTo(centerX, centerY);
+      ctx.lineTo(centerX + vecA.x * scale, centerY - vecA.y * scale);
+      ctx.lineTo(centerX + (vecA.x + vecB.x) * scale, centerY - (vecA.y + vecB.y) * scale);
+      ctx.lineTo(centerX + vecB.x * scale, centerY - vecB.y * scale);
       ctx.closePath();
       ctx.fill();
-
-      // Z-axis indicator (into or out of screen)
-      ctx.font = 'bold 14px system-ui';
-      ctx.fillStyle = crossProduct > 0 ? '#22c55e' : '#ef4444';
-      const zLabel = crossProduct > 0 ? '⊙ +z (sort)' : '⊗ -z (entre)';
-      ctx.fillText(zLabel, indicatorX - 35, indicatorY + 50);
+      ctx.stroke();
     }
 
-    // Origin
-    ctx.fillStyle = '#92400e';
-    ctx.beginPath();
-    ctx.arc(origin.x, origin.y, 5, 0, Math.PI * 2);
-    ctx.fill();
+    // Dessiner le vecteur résultant
+    const finalResult = formulaMode && formulaResult ? formulaResult : resultComp;
+    if (operation !== 'dot' && !('scalar' in finalResult)) {
+      const label = operation === 'cross' ? 'C' : 'R';
+      drawVector(centerX, centerY, finalResult as VectorComponents, '#f97316', label, false);
+    }
 
-    // Application point for moment
-    if (showMomentApplication) {
-      ctx.fillStyle = '#2563eb';
+    // Arc pour l'angle entre les vecteurs (produit scalaire)
+    if (operation === 'dot' && displayVectors.length >= 2 && 'angle' in resultComp) {
+      const vecA = getComponents(displayVectors[0]);
+      const vecB = getComponents(displayVectors[1]);
+      const angleA = Math.atan2(vecA.y, vecA.x);
+      const angleB = Math.atan2(vecB.y, vecB.x);
+      let angleDiff = angleB - angleA;
+      while (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
+      while (angleDiff < -Math.PI) angleDiff += 2 * Math.PI;
+
+      const arcRadius = 40;
+      ctx.strokeStyle = '#f97316';
+      ctx.lineWidth = 2.5;
       ctx.beginPath();
-      ctx.arc(a.x, a.y, 6, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }, [ax, ay, bx, by, crossProduct, magA, magB, angleA, angleB, showMomentApplication, canvasSize, drawArrow, toCanvas, origin]);
+      ctx.arc(centerX, centerY, arcRadius, -angleA, -angleB, angleDiff > 0);
+      ctx.stroke();
 
-  useEffect(() => {
-    draw();
-  }, [draw]);
+      ctx.fillStyle = '#f97316';
+      ctx.font = 'bold 13px system-ui';
+      const midAngle = angleA + angleDiff / 2;
+      const labelRadius = arcRadius + 20;
+      ctx.fillText(`θ = ${(resultComp as DotProductResult).angle.toFixed(1)}°`, centerX + labelRadius * Math.cos(midAngle), centerY - labelRadius * Math.sin(midAngle));
+    }
+
+    // Légende
+    ctx.font = '12px system-ui';
+    ctx.textAlign = 'left';
+    const legendY = height - 20 - (displayVectors.length + 1) * 25;
+    displayVectors.forEach((vec, idx) => {
+      ctx.fillStyle = vec.color;
+      ctx.fillRect(20, legendY + idx * 25, 20, 3);
+      ctx.fillText(`Vecteur ${vec.label}`, 50, legendY + idx * 25 + 5);
+    });
+    const resultY = legendY + displayVectors.length * 25;
+    ctx.fillStyle = '#f97316';
+    ctx.fillRect(20, resultY, 20, 3);
+    ctx.fillText(operation === 'dot' ? 'Résultat (scalaire)' : operation === 'cross' ? 'C (produit vectoriel)' : 'R (résultant)', 50, resultY + 5);
+
+  }, [vectors, operation, showComponents, formulaMode, formulaResult, selectedVectors, resultComp, resultMagnitude, getComponents]);
 
   return (
-    <div className="space-y-6">
-      <div className="grid md:grid-cols-2 gap-6">
-        {/* Canvas */}
-        <div className="border-2 border-amber-200 rounded-lg overflow-hidden">
-          <canvas
-            ref={canvasRef}
-            width={canvasSize.width}
-            height={canvasSize.height}
-            className="w-full"
-          />
-        </div>
+    <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
+      {/* Titre */}
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Calculatrice de Vecteurs 2D</h2>
+        <p className="text-gray-600">Addition, soustraction, produit scalaire et produit vectoriel</p>
+      </div>
 
-        {/* Controls */}
+      <div className="grid lg:grid-cols-3 gap-6">
+        {/* Panneau de contrôle */}
         <div className="space-y-4">
-          {/* Mode toggle */}
-          <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+          {/* Mode formule */}
+          <div className="p-3 bg-violet-50 rounded-lg border border-violet-200">
             <label className="flex items-center gap-3 cursor-pointer">
               <input
                 type="checkbox"
-                checked={showMomentApplication}
-                onChange={(e) => setShowMomentApplication(e.target.checked)}
-                className="w-5 h-5 accent-amber-600"
+                checked={formulaMode}
+                onChange={(e) => {
+                  setFormulaMode(e.target.checked);
+                  if (!e.target.checked) {
+                    setFormula('');
+                    setFormulaResult(null);
+                    setFormulaError('');
+                  }
+                }}
+                className="w-5 h-5 accent-violet-600"
               />
-              <span className="text-sm font-medium text-gray-700">
-                Afficher comme moment de force (M = r × F)
-              </span>
+              <span className="font-medium text-violet-800">Mode formule</span>
             </label>
           </div>
 
-          {/* Vector A / r */}
-          <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-            <h3 className="font-semibold text-blue-800 mb-3">
-              {showMomentApplication ? 'Vecteur position r (bleu)' : 'Vecteur A (bleu)'}
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
+          {formulaMode && (
+            <div className="p-4 bg-violet-50 rounded-lg border border-violet-200 space-y-3">
               <div>
-                <label className="block text-sm font-medium text-blue-700 mb-1">
-                  {showMomentApplication ? 'rx' : 'Ax'}
-                </label>
-                <input
-                  type="range"
-                  min="-5"
-                  max="5"
-                  step="0.5"
-                  value={ax}
-                  onChange={(e) => setAx(parseFloat(e.target.value))}
-                  className="w-full accent-blue-600"
-                />
-                <span className="text-sm font-mono text-blue-600">{ax}</span>
+                <label className="block text-sm font-medium text-violet-700 mb-2">Vecteurs disponibles</label>
+                <div className="flex flex-wrap gap-2">
+                  {vectors.map(vec => (
+                    <label key={vec.id} className="flex items-center gap-1 px-2 py-1 bg-white rounded border cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={selectedVectors.includes(vec.label)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedVectors([...selectedVectors, vec.label]);
+                          } else {
+                            setSelectedVectors(selectedVectors.filter(l => l !== vec.label));
+                          }
+                        }}
+                        className="w-4 h-4"
+                      />
+                      <span style={{ color: vec.color }} className="font-bold">{vec.label}</span>
+                    </label>
+                  ))}
+                </div>
               </div>
+
               <div>
-                <label className="block text-sm font-medium text-blue-700 mb-1">
-                  {showMomentApplication ? 'ry' : 'Ay'}
-                </label>
+                <label className="block text-sm font-medium text-violet-700 mb-1">Formule vectorielle</label>
                 <input
-                  type="range"
-                  min="-5"
-                  max="5"
-                  step="0.5"
-                  value={ay}
-                  onChange={(e) => setAy(parseFloat(e.target.value))}
-                  className="w-full accent-blue-600"
+                  ref={formulaInputRef}
+                  type="text"
+                  className={`w-full px-3 py-2 border-2 rounded-lg font-mono ${formulaError ? 'border-red-500' : 'border-violet-300'} focus:outline-none focus:border-violet-500`}
+                  value={formula}
+                  onChange={(e) => setFormula(e.target.value)}
+                  placeholder="Ex: 2*A + B, A · B, A × B"
                 />
-                <span className="text-sm font-mono text-blue-600">{ay}</span>
               </div>
+
+              <div className="flex flex-wrap gap-2">
+                {selectedVectors.map(label => (
+                  <button
+                    key={label}
+                    onClick={() => insertAtCursor(label)}
+                    className="px-3 py-1 bg-white border-2 rounded font-bold hover:bg-gray-50"
+                    style={{ borderColor: vectors.find(v => v.label === label)?.color }}
+                  >
+                    {label}
+                  </button>
+                ))}
+                <button onClick={() => insertAtCursor(' + ')} className="px-3 py-1 bg-green-100 border border-green-300 rounded hover:bg-green-200">+</button>
+                <button onClick={() => insertAtCursor(' - ')} className="px-3 py-1 bg-green-100 border border-green-300 rounded hover:bg-green-200">−</button>
+                <button onClick={() => insertAtCursor('*')} className="px-3 py-1 bg-green-100 border border-green-300 rounded hover:bg-green-200">×</button>
+                <button onClick={() => insertAtCursor(' · ')} className="px-3 py-1 bg-amber-100 border border-amber-300 rounded hover:bg-amber-200 text-xs">Scal.</button>
+                <button onClick={() => insertAtCursor(' × ')} className="px-3 py-1 bg-amber-100 border border-amber-300 rounded hover:bg-amber-200 text-xs">Vect.</button>
+                <button onClick={() => setFormula('')} className="px-3 py-1 bg-red-100 border border-red-300 rounded hover:bg-red-200 text-xs">Effacer</button>
+              </div>
+
+              {formulaError && <p className="text-sm text-red-600">{formulaError}</p>}
+              {formulaResult && !formulaError && <p className="text-sm text-green-600">✓ Formule valide</p>}
             </div>
-            <p className="mt-2 text-sm text-blue-600">
-              |{showMomentApplication ? 'r' : 'A'}| = {magA.toFixed(2)}
-            </p>
-          </div>
+          )}
 
-          {/* Vector B / F */}
-          <div className="p-4 bg-red-50 rounded-lg border border-red-200">
-            <h3 className="font-semibold text-red-800 mb-3">
-              {showMomentApplication ? 'Vecteur force F (rouge)' : 'Vecteur B (rouge)'}
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-red-700 mb-1">
-                  {showMomentApplication ? 'Fx' : 'Bx'}
-                </label>
+          {!formulaMode && (
+            <>
+              {/* Gestion du nombre de vecteurs */}
+              <div className="flex items-center justify-between">
+                <span className="font-medium text-gray-700">Vecteurs: {vectors.length}</span>
+                <button
+                  onClick={addVector}
+                  disabled={vectors.length >= 6}
+                  className="px-4 py-2 bg-violet-600 text-white rounded-lg font-medium hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  + Ajouter
+                </button>
+              </div>
+
+              {/* Mode de saisie */}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setInputMode('polar')}
+                  className={`flex-1 py-2 rounded-lg font-medium transition-colors ${inputMode === 'polar' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                >
+                  Polaire (|v|, θ)
+                </button>
+                <button
+                  onClick={() => setInputMode('cartesian')}
+                  className={`flex-1 py-2 rounded-lg font-medium transition-colors ${inputMode === 'cartesian' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                >
+                  Cartésien (x, y)
+                </button>
+              </div>
+
+              {/* Contrôles pour chaque vecteur */}
+              <div className="space-y-3 max-h-96 overflow-y-auto">
+                {vectors.map((vec) => {
+                  const comp = getComponents(vec);
+                  return (
+                    <div key={vec.id} className="p-3 rounded-lg border-l-4" style={{ borderLeftColor: vec.color, backgroundColor: `${vec.color}10` }}>
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-semibold" style={{ color: vec.color }}>Vecteur {vec.label}</h4>
+                        {vectors.length > 2 && (
+                          <button onClick={() => removeVector(vec.id)} className="text-red-500 hover:text-red-700 font-bold">✕</button>
+                        )}
+                      </div>
+                      {inputMode === 'polar' ? (
+                        <div className="space-y-2">
+                          <div>
+                            <label className="text-xs text-gray-600">Module |{vec.label}|: <strong>{vec.magnitude.toFixed(2)}</strong></label>
+                            <input
+                              type="range" min="0" max="10" step="0.1" value={vec.magnitude}
+                              onChange={(e) => updateVector(vec.id, { magnitude: parseFloat(e.target.value) })}
+                              className="w-full h-2 rounded-lg appearance-none cursor-pointer"
+                              style={{ accentColor: vec.color }}
+                            />
+                          </div>
+                          <div>
+                            <label className="text-xs text-gray-600">Angle θ: <strong>{vec.angle.toFixed(1)}°</strong></label>
+                            <input
+                              type="range" min="0" max="360" step="1" value={vec.angle}
+                              onChange={(e) => updateVector(vec.id, { angle: parseFloat(e.target.value) })}
+                              className="w-full h-2 rounded-lg appearance-none cursor-pointer"
+                              style={{ accentColor: vec.color }}
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="space-y-2">
+                          <div>
+                            <label className="text-xs text-gray-600">{vec.label}x: <strong>{comp.x.toFixed(2)}</strong></label>
+                            <input
+                              type="range" min="-10" max="10" step="0.1" value={comp.x}
+                              onChange={(e) => updateFromCartesian(vec.id, comp, e.target.value, true)}
+                              className="w-full h-2 rounded-lg appearance-none cursor-pointer"
+                              style={{ accentColor: vec.color }}
+                            />
+                          </div>
+                          <div>
+                            <label className="text-xs text-gray-600">{vec.label}y: <strong>{comp.y.toFixed(2)}</strong></label>
+                            <input
+                              type="range" min="-10" max="10" step="0.1" value={comp.y}
+                              onChange={(e) => updateFromCartesian(vec.id, comp, e.target.value, false)}
+                              className="w-full h-2 rounded-lg appearance-none cursor-pointer"
+                              style={{ accentColor: vec.color }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
-                  type="range"
-                  min="-5"
-                  max="5"
-                  step="0.5"
-                  value={bx}
-                  onChange={(e) => setBx(parseFloat(e.target.value))}
-                  className="w-full accent-red-600"
+                  type="checkbox"
+                  checked={showComponents}
+                  onChange={(e) => setShowComponents(e.target.checked)}
+                  className="w-4 h-4 accent-blue-600"
                 />
-                <span className="text-sm font-mono text-red-600">{bx}</span>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-red-700 mb-1">
-                  {showMomentApplication ? 'Fy' : 'By'}
-                </label>
-                <input
-                  type="range"
-                  min="-5"
-                  max="5"
-                  step="0.5"
-                  value={by}
-                  onChange={(e) => setBy(parseFloat(e.target.value))}
-                  className="w-full accent-red-600"
-                />
-                <span className="text-sm font-mono text-red-600">{by}</span>
-              </div>
-            </div>
-            <p className="mt-2 text-sm text-red-600">
-              |{showMomentApplication ? 'F' : 'B'}| = {magB.toFixed(2)}
-            </p>
-          </div>
-
-          {/* Results */}
-          <div className={`p-4 rounded-lg border-2 ${
-            crossProduct > 0
-              ? 'bg-green-50 border-green-300'
-              : crossProduct < 0
-                ? 'bg-red-50 border-red-300'
-                : 'bg-gray-50 border-gray-300'
-          }`}>
-            <h3 className="font-semibold text-gray-800 mb-2">
-              {showMomentApplication ? 'Moment de force' : 'Produit vectoriel'}
-            </h3>
-            <div className="space-y-2">
-              <p className="font-mono text-lg">
-                {showMomentApplication ? 'M = r × F' : 'A × B'} = {ax}×{by} - {ay}×{bx} = <strong className={
-                  crossProduct > 0 ? 'text-green-700' : crossProduct < 0 ? 'text-red-700' : 'text-gray-700'
-                }>{crossProduct.toFixed(2)}</strong>
-              </p>
-              <p className="text-sm text-gray-600">
-                Angle θ = {thetaDeg.toFixed(1)}°
-              </p>
-              <p className="text-sm text-gray-600">
-                Aire du parallélogramme = {parallelogramArea.toFixed(2)}
-              </p>
-              <div className={`mt-2 text-sm p-2 rounded ${
-                crossProduct > 0 ? 'bg-green-100 text-green-800' :
-                crossProduct < 0 ? 'bg-red-100 text-red-800' :
-                'bg-gray-100 text-gray-800'
-              }`}>
-                {crossProduct > 0 && (showMomentApplication
-                  ? 'Moment positif → rotation antihoraire (⊙ sort de l\'écran)'
-                  : 'Résultat positif → direction +z (sort de l\'écran)')}
-                {crossProduct < 0 && (showMomentApplication
-                  ? 'Moment négatif → rotation horaire (⊗ entre dans l\'écran)'
-                  : 'Résultat négatif → direction -z (entre dans l\'écran)')}
-                {crossProduct === 0 && 'Vecteurs parallèles ou colinéaires → produit nul'}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Formulas */}
-      <div className="bg-gray-50 rounded-lg p-4">
-        <h3 className="font-semibold text-gray-800 mb-3">Formules du produit vectoriel</h3>
-        <div className="grid md:grid-cols-2 gap-4">
-          <div className="p-3 bg-white rounded-lg">
-            <p className="text-sm text-gray-600 mb-2">Forme algébrique (2D → scalaire):</p>
-            <BlockMath math="\vec{A} \times \vec{B} = A_x B_y - A_y B_x" />
-          </div>
-          <div className="p-3 bg-white rounded-lg">
-            <p className="text-sm text-gray-600 mb-2">Forme géométrique:</p>
-            <BlockMath math="|\vec{A} \times \vec{B}| = |\vec{A}| \cdot |\vec{B}| \cdot \sin\theta" />
-          </div>
+                <span className="text-sm text-gray-700">Afficher les composantes</span>
+              </label>
+            </>
+          )}
         </div>
 
-        <div className="mt-4 p-3 bg-amber-50 rounded-lg border border-amber-200">
-          <h4 className="font-semibold text-amber-800 mb-2">Application: Moment de force</h4>
-          <BlockMath math="\vec{M} = \vec{r} \times \vec{F}" />
-          <p className="text-sm text-amber-700 mt-2">
-            Le moment de force (ou couple) est le produit vectoriel du vecteur position r (du point de rotation au point d'application)
-            par le vecteur force F. En 2D, le résultat est un scalaire représentant la composante z du moment.
-          </p>
-        </div>
-
-        <div className="mt-4 grid md:grid-cols-3 gap-3">
-          <div className="p-3 bg-white rounded-lg border">
-            <p className="text-sm font-medium text-gray-700">Propriétés:</p>
-            <ul className="text-xs text-gray-600 mt-1 space-y-1">
-              <li>• Anti-commutatif: A×B = -B×A</li>
-              <li>• Non associatif</li>
-              <li>• Distributif</li>
-            </ul>
-          </div>
-          <div className="p-3 bg-white rounded-lg border">
-            <p className="text-sm font-medium text-gray-700">Direction (règle main droite):</p>
-            <p className="text-xs text-gray-600 mt-1">
-              Doigts de A vers B → pouce indique la direction du résultat (perpendiculaire au plan)
-            </p>
-          </div>
-          <div className="p-3 bg-white rounded-lg border">
-            <p className="text-sm font-medium text-gray-700">Interprétation géométrique:</p>
-            <p className="text-xs text-gray-600 mt-1">
-              |A×B| = aire du parallélogramme formé par A et B
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ============================================
-// CARTESIAN ↔ POLAR CONVERTER
-// ============================================
-function CartesianPolarConverter() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [canvasSize] = useState({ width: 600, height: 500 });
-
-  // Mode: edit cartesian or polar
-  const [editMode, setEditMode] = useState<'cartesian' | 'polar'>('cartesian');
-
-  // Cartesian coordinates
-  const [x, setX] = useState(3);
-  const [y, setY] = useState(4);
-
-  // Calculated polar
-  const r = Math.sqrt(x * x + y * y);
-  const thetaRad = Math.atan2(y, x);
-  const thetaDeg = (thetaRad * 180) / Math.PI;
-
-  // For polar input mode
-  const [polarR, setPolarR] = useState(5);
-  const [polarTheta, setPolarTheta] = useState(53.13); // degrees
-
-  // Sync based on edit mode
-  useEffect(() => {
-    if (editMode === 'polar') {
-      const radians = (polarTheta * Math.PI) / 180;
-      setX(parseFloat((polarR * Math.cos(radians)).toFixed(2)));
-      setY(parseFloat((polarR * Math.sin(radians)).toFixed(2)));
-    }
-  }, [editMode, polarR, polarTheta]);
-
-  useEffect(() => {
-    if (editMode === 'cartesian') {
-      setPolarR(parseFloat(r.toFixed(2)));
-      setPolarTheta(parseFloat(thetaDeg.toFixed(2)));
-    }
-  }, [editMode, r, thetaDeg]);
-
-  const scale = 40;
-  const origin = { x: canvasSize.width / 2, y: canvasSize.height / 2 };
-
-  const toCanvas = useCallback(
-    (px: number, py: number) => ({
-      x: origin.x + px * scale,
-      y: origin.y - py * scale,
-    }),
-    [origin, scale]
-  );
-
-  const draw = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Clear
-    ctx.fillStyle = '#f0fdf4';
-    ctx.fillRect(0, 0, canvasSize.width, canvasSize.height);
-
-    // Grid
-    ctx.strokeStyle = '#bbf7d0';
-    ctx.lineWidth = 1;
-
-    for (let gx = -10; gx <= 10; gx++) {
-      const { x: cx } = toCanvas(gx, 0);
-      ctx.beginPath();
-      ctx.moveTo(cx, 0);
-      ctx.lineTo(cx, canvasSize.height);
-      ctx.stroke();
-    }
-    for (let gy = -10; gy <= 10; gy++) {
-      const { y: cy } = toCanvas(0, gy);
-      ctx.beginPath();
-      ctx.moveTo(0, cy);
-      ctx.lineTo(canvasSize.width, cy);
-      ctx.stroke();
-    }
-
-    // Draw polar circles
-    ctx.strokeStyle = '#86efac';
-    ctx.setLineDash([3, 3]);
-    for (let cr = 1; cr <= 6; cr++) {
-      ctx.beginPath();
-      ctx.arc(origin.x, origin.y, cr * scale, 0, Math.PI * 2);
-      ctx.stroke();
-    }
-    ctx.setLineDash([]);
-
-    // Axes
-    ctx.strokeStyle = '#166534';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(0, origin.y);
-    ctx.lineTo(canvasSize.width, origin.y);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(origin.x, 0);
-    ctx.lineTo(origin.x, canvasSize.height);
-    ctx.stroke();
-
-    // Axis labels
-    ctx.fillStyle = '#166534';
-    ctx.font = '14px system-ui';
-    ctx.fillText('x', canvasSize.width - 20, origin.y - 10);
-    ctx.fillText('y', origin.x + 10, 20);
-
-    // Tick marks
-    ctx.font = '12px system-ui';
-    for (let i = -6; i <= 6; i++) {
-      if (i !== 0) {
-        const { x: cx } = toCanvas(i, 0);
-        const { y: cy } = toCanvas(0, i);
-        ctx.fillText(i.toString(), cx - 5, origin.y + 18);
-        ctx.fillText(i.toString(), origin.x + 8, cy + 4);
-      }
-    }
-
-    const point = toCanvas(x, y);
-
-    // Draw angle arc
-    if (r > 0.1) {
-      ctx.strokeStyle = '#f97316';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      const arcRadius = 30;
-      if (thetaRad >= 0) {
-        ctx.arc(origin.x, origin.y, arcRadius, 0, -thetaRad, true);
-      } else {
-        ctx.arc(origin.x, origin.y, arcRadius, 0, -thetaRad, false);
-      }
-      ctx.stroke();
-
-      // Angle label
-      const labelAngle = thetaRad / 2;
-      ctx.font = 'bold 14px system-ui';
-      ctx.fillStyle = '#f97316';
-      ctx.fillText('θ', origin.x + 45 * Math.cos(labelAngle), origin.y - 45 * Math.sin(labelAngle));
-    }
-
-    // Draw x component
-    ctx.strokeStyle = '#dc2626';
-    ctx.lineWidth = 2;
-    ctx.setLineDash([5, 3]);
-    ctx.beginPath();
-    ctx.moveTo(origin.x, origin.y);
-    const xEnd = toCanvas(x, 0);
-    ctx.lineTo(xEnd.x, xEnd.y);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(xEnd.x, xEnd.y);
-    ctx.lineTo(point.x, point.y);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    // Draw r (vector from origin to point)
-    ctx.strokeStyle = '#16a34a';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(origin.x, origin.y);
-    ctx.lineTo(point.x, point.y);
-    ctx.stroke();
-
-    // Arrow head
-    const angle = Math.atan2(origin.y - point.y, point.x - origin.x);
-    ctx.fillStyle = '#16a34a';
-    ctx.beginPath();
-    ctx.moveTo(point.x, point.y);
-    ctx.lineTo(
-      point.x - 12 * Math.cos(angle - Math.PI / 6),
-      point.y + 12 * Math.sin(angle - Math.PI / 6)
-    );
-    ctx.lineTo(
-      point.x - 12 * Math.cos(angle + Math.PI / 6),
-      point.y + 12 * Math.sin(angle + Math.PI / 6)
-    );
-    ctx.closePath();
-    ctx.fill();
-
-    // Labels
-    ctx.font = 'bold 14px system-ui';
-    ctx.fillStyle = '#16a34a';
-    ctx.fillText('r', (origin.x + point.x) / 2 - 15, (origin.y + point.y) / 2 - 10);
-
-    ctx.fillStyle = '#dc2626';
-    ctx.fillText('x', (origin.x + xEnd.x) / 2, origin.y + 20);
-    ctx.fillText('y', point.x + 10, (origin.y + point.y) / 2);
-
-    // Point
-    ctx.fillStyle = '#166534';
-    ctx.beginPath();
-    ctx.arc(point.x, point.y, 8, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Origin
-    ctx.fillStyle = '#166534';
-    ctx.beginPath();
-    ctx.arc(origin.x, origin.y, 5, 0, Math.PI * 2);
-    ctx.fill();
-  }, [x, y, r, thetaRad, canvasSize, toCanvas, origin, scale]);
-
-  useEffect(() => {
-    draw();
-  }, [draw]);
-
-  return (
-    <div className="space-y-6">
-      <div className="grid md:grid-cols-2 gap-6">
         {/* Canvas */}
-        <div className="border-2 border-green-200 rounded-lg overflow-hidden">
-          <canvas
-            ref={canvasRef}
-            width={canvasSize.width}
-            height={canvasSize.height}
-            className="w-full"
-          />
-        </div>
-
-        {/* Controls */}
-        <div className="space-y-4">
-          {/* Mode selector */}
-          <div className="flex gap-2">
-            <button
-              onClick={() => setEditMode('cartesian')}
-              className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
-                editMode === 'cartesian'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Modifier Cartésien
-            </button>
-            <button
-              onClick={() => setEditMode('polar')}
-              className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
-                editMode === 'polar'
-                  ? 'bg-orange-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Modifier Polaire
-            </button>
+        <div className="lg:col-span-2 space-y-4">
+          <div className="border-2 border-slate-700 rounded-lg overflow-hidden">
+            <canvas ref={canvasRef} width={600} height={500} className="w-full" />
           </div>
 
-          {/* Cartesian controls */}
-          <div className={`p-4 rounded-lg border-2 ${
-            editMode === 'cartesian' ? 'bg-blue-50 border-blue-300' : 'bg-gray-50 border-gray-200'
-          }`}>
-            <h3 className="font-semibold text-blue-800 mb-3">
-              Coordonnées Cartésiennes (x, y)
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-blue-700 mb-1">x</label>
-                <input
-                  type="range"
-                  min="-6"
-                  max="6"
-                  step="0.25"
-                  value={x}
-                  onChange={(e) => {
-                    if (editMode === 'cartesian') {
-                      setX(parseFloat(e.target.value));
-                    }
-                  }}
-                  disabled={editMode !== 'cartesian'}
-                  className="w-full accent-blue-600"
-                />
-                <span className="text-lg font-mono text-blue-600">{x}</span>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-blue-700 mb-1">y</label>
-                <input
-                  type="range"
-                  min="-6"
-                  max="6"
-                  step="0.25"
-                  value={y}
-                  onChange={(e) => {
-                    if (editMode === 'cartesian') {
-                      setY(parseFloat(e.target.value));
-                    }
-                  }}
-                  disabled={editMode !== 'cartesian'}
-                  className="w-full accent-blue-600"
-                />
-                <span className="text-lg font-mono text-blue-600">{y}</span>
-              </div>
+          {/* Sélection de l'opération */}
+          {!formulaMode && (
+            <div className="grid grid-cols-4 gap-2">
+              <button
+                onClick={() => setOperation('add')}
+                className={`py-2 px-3 rounded-lg font-medium transition-colors ${operation === 'add' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+              >
+                Σ Addition
+              </button>
+              <button
+                onClick={() => setOperation('subtract')}
+                className={`py-2 px-3 rounded-lg font-medium transition-colors ${operation === 'subtract' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+              >
+                Soustraction
+              </button>
+              <button
+                onClick={() => setOperation('dot')}
+                disabled={vectors.length !== 2}
+                className={`py-2 px-3 rounded-lg font-medium transition-colors ${operation === 'dot' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} disabled:opacity-50`}
+              >
+                A · B
+              </button>
+              <button
+                onClick={() => setOperation('cross')}
+                disabled={vectors.length !== 2}
+                className={`py-2 px-3 rounded-lg font-medium transition-colors ${operation === 'cross' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} disabled:opacity-50`}
+              >
+                A × B
+              </button>
             </div>
-          </div>
+          )}
 
-          {/* Polar controls */}
-          <div className={`p-4 rounded-lg border-2 ${
-            editMode === 'polar' ? 'bg-orange-50 border-orange-300' : 'bg-gray-50 border-gray-200'
-          }`}>
-            <h3 className="font-semibold text-orange-800 mb-3">
-              Coordonnées Polaires (r, θ)
+          {/* Résultat */}
+          <div className="p-4 bg-orange-50 rounded-lg border-l-4 border-orange-500">
+            <h3 className="font-semibold text-orange-800 mb-2">
+              {formulaMode ? `Résultat: ${formula}` : operation === 'dot' ? 'Produit scalaire' : operation === 'cross' ? 'Produit vectoriel' : 'Résultant R'}
             </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-orange-700 mb-1">r (rayon)</label>
-                <input
-                  type="range"
-                  min="0"
-                  max="6"
-                  step="0.25"
-                  value={editMode === 'polar' ? polarR : r}
-                  onChange={(e) => {
-                    if (editMode === 'polar') {
-                      setPolarR(parseFloat(e.target.value));
-                    }
-                  }}
-                  disabled={editMode !== 'polar'}
-                  className="w-full accent-orange-600"
-                />
-                <span className="text-lg font-mono text-orange-600">
-                  {editMode === 'polar' ? polarR : r.toFixed(2)}
-                </span>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-orange-700 mb-1">θ (degrés)</label>
-                <input
-                  type="range"
-                  min="-180"
-                  max="180"
-                  step="1"
-                  value={editMode === 'polar' ? polarTheta : thetaDeg}
-                  onChange={(e) => {
-                    if (editMode === 'polar') {
-                      setPolarTheta(parseFloat(e.target.value));
-                    }
-                  }}
-                  disabled={editMode !== 'polar'}
-                  className="w-full accent-orange-600"
-                />
-                <span className="text-lg font-mono text-orange-600">
-                  {editMode === 'polar' ? polarTheta : thetaDeg.toFixed(1)}°
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Summary */}
-          <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-            <h3 className="font-semibold text-green-800 mb-2">Équivalences</h3>
-            <div className="grid grid-cols-2 gap-4 text-green-700">
-              <div>
-                <p className="text-sm text-green-600">Cartésien:</p>
-                <p className="font-mono text-lg">({x}, {y})</p>
-              </div>
-              <div>
-                <p className="text-sm text-green-600">Polaire:</p>
-                <p className="font-mono text-lg">({r.toFixed(2)}, {thetaDeg.toFixed(1)}°)</p>
-              </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+              {(formulaMode ? (formulaResult?.isScalar || false) : operation === 'dot') ? (
+                <>
+                  {'magA' in resultComp && (
+                    <>
+                      <div className="bg-white p-2 rounded"><span className="text-gray-500">|A|:</span> <strong>{(resultComp as DotProductResult).magA.toFixed(2)}</strong></div>
+                      <div className="bg-white p-2 rounded"><span className="text-gray-500">|B|:</span> <strong>{(resultComp as DotProductResult).magB.toFixed(2)}</strong></div>
+                      <div className="bg-white p-2 rounded"><span className="text-gray-500">θ:</span> <strong>{(resultComp as DotProductResult).angle.toFixed(1)}°</strong></div>
+                      <div className="bg-orange-100 p-2 rounded"><span className="text-gray-500">A·B:</span> <strong className="text-orange-700">{(resultComp as DotProductResult).scalar.toFixed(2)}</strong></div>
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div className="bg-white p-2 rounded"><span className="text-gray-500">{operation === 'cross' ? 'Cx' : 'Rx'}:</span> <strong>{((formulaMode && formulaResult) || resultComp as VectorComponents).x.toFixed(2)}</strong></div>
+                  <div className="bg-white p-2 rounded"><span className="text-gray-500">{operation === 'cross' ? 'Cy' : 'Ry'}:</span> <strong>{((formulaMode && formulaResult) || resultComp as VectorComponents).y.toFixed(2)}</strong></div>
+                  {operation === 'cross' && 'z' in (resultComp as any) && (
+                    <div className="bg-white p-2 rounded"><span className="text-gray-500">Cz:</span> <strong>{((resultComp as any).z || 0).toFixed(2)}</strong></div>
+                  )}
+                  <div className="bg-orange-100 p-2 rounded"><span className="text-gray-500">|{operation === 'cross' ? 'C' : 'R'}|:</span> <strong className="text-orange-700">{resultMagnitude?.toFixed(2)}</strong></div>
+                  {operation !== 'cross' && (
+                    <div className="bg-orange-100 p-2 rounded"><span className="text-gray-500">θ:</span> <strong className="text-orange-700">{resultAngle?.toFixed(1)}°</strong></div>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Formulas */}
-      <div className="bg-gray-50 rounded-lg p-4">
-        <h3 className="font-semibold text-gray-800 mb-3">Formules de conversion</h3>
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <p className="text-sm text-gray-600 mb-2 font-medium">Cartésien → Polaire:</p>
-            <BlockMath math="r = \sqrt{x^2 + y^2}" />
-            <BlockMath math="\theta = \arctan\left(\frac{y}{x}\right)" />
+      {/* Section théorie */}
+      <div className="border-t border-gray-200 pt-6">
+        <h3 className="font-semibold text-gray-800 mb-3">Théorie - Opérations vectorielles</h3>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+          <div className="bg-blue-50 rounded-lg p-4">
+            <h4 className="font-medium text-blue-800 mb-2">Addition vectorielle</h4>
+            <BlockMath math="\vec{R} = \vec{A} + \vec{B} = (A_x + B_x, A_y + B_y)" />
+            <p className="text-blue-700 mt-2">Méthode du parallélogramme ou tête-à-queue.</p>
           </div>
-          <div>
-            <p className="text-sm text-gray-600 mb-2 font-medium">Polaire → Cartésien:</p>
-            <BlockMath math="x = r \cos\theta" />
-            <BlockMath math="y = r \sin\theta" />
+          <div className="bg-green-50 rounded-lg p-4">
+            <h4 className="font-medium text-green-800 mb-2">Soustraction</h4>
+            <BlockMath math="\vec{A} - \vec{B} = \vec{A} + (-\vec{B})" />
+            <p className="text-green-700 mt-2">Inverser B puis additionner.</p>
           </div>
-        </div>
-        <div className="mt-3 text-sm text-gray-600">
-          <p>Les coordonnées polaires utilisent la distance à l'origine (r) et l'angle par rapport à l'axe x positif (θ). Attention au quadrant lors du calcul de θ !</p>
+          <div className="bg-purple-50 rounded-lg p-4">
+            <h4 className="font-medium text-purple-800 mb-2">Produit scalaire</h4>
+            <BlockMath math="\vec{A} \cdot \vec{B} = |\vec{A}||\vec{B}|\cos\theta" />
+            <p className="text-purple-700 mt-2">Résultat = nombre. Mesure l'alignement.</p>
+          </div>
+          <div className="bg-amber-50 rounded-lg p-4">
+            <h4 className="font-medium text-amber-800 mb-2">Produit vectoriel</h4>
+            <BlockMath math="|\vec{A} \times \vec{B}| = |\vec{A}||\vec{B}|\sin\theta" />
+            <p className="text-amber-700 mt-2">Résultat ⊥ au plan. Aire du parallélogramme.</p>
+          </div>
+          <div className="bg-cyan-50 rounded-lg p-4">
+            <h4 className="font-medium text-cyan-800 mb-2">Moment de force</h4>
+            <BlockMath math="\vec{M} = \vec{r} \times \vec{F}" />
+            <p className="text-cyan-700 mt-2">Application importante en statique.</p>
+          </div>
+          <div className="bg-rose-50 rounded-lg p-4">
+            <h4 className="font-medium text-rose-800 mb-2">Conversion</h4>
+            <p className="text-rose-700">Polaire → Cartésien:</p>
+            <BlockMath math="x = r\cos\theta, \quad y = r\sin\theta" />
+          </div>
         </div>
       </div>
     </div>
