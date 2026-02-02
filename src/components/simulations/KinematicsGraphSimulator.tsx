@@ -74,8 +74,8 @@ export function KinematicsGraphSimulator() {
   // Canvas sizes
   const canvasWidth = 380;
   const canvasHeight = 130;
-  const animCanvasWidth = motionType === 'freeFall' ? 180 : 600;
-  const animCanvasHeight = motionType === 'freeFall' ? 350 : 80;
+  const animCanvasWidth = 600;
+  const animCanvasHeight = motionType === 'freeFall' ? 200 : 80;
 
   // Get current gravity value
   const g = gravityPreset === 'custom'
@@ -479,8 +479,8 @@ export function KinematicsGraphSimulator() {
     ctx.fillText(`t = ${currentTime.toFixed(2)}s   x = ${x.toFixed(2)}m   v = ${v.toFixed(2)}m/s`, 10, 15);
   }, [currentTime, getKinematics, showAnimation, motionType, animCanvasWidth, animCanvasHeight, getEffectiveMaxTime]);
 
-  // Draw vertical animation (for Free Fall)
-  const drawVerticalAnimation = useCallback(() => {
+  // Draw free fall animation (horizontal layout with vertical drop)
+  const drawFreeFallAnimation = useCallback(() => {
     const canvas = animationCanvasRef.current;
     if (!canvas || !showAnimation || motionType !== 'freeFall') return;
     const ctx = canvas.getContext('2d');
@@ -492,112 +492,114 @@ export function KinematicsGraphSimulator() {
     // Background gradient (sky)
     const skyGradient = ctx.createLinearGradient(0, 0, 0, animCanvasHeight);
     skyGradient.addColorStop(0, '#87CEEB');
-    skyGradient.addColorStop(0.7, '#B0E0E6');
+    skyGradient.addColorStop(0.8, '#B0E0E6');
     skyGradient.addColorStop(1, '#90EE90');
     ctx.fillStyle = skyGradient;
     ctx.fillRect(0, 0, animCanvasWidth, animCanvasHeight);
 
     // Ground
     ctx.fillStyle = '#8B4513';
-    ctx.fillRect(0, animCanvasHeight - 25, animCanvasWidth, 25);
+    ctx.fillRect(0, animCanvasHeight - 20, animCanvasWidth, 20);
     ctx.fillStyle = '#228B22';
-    ctx.fillRect(0, animCanvasHeight - 30, animCanvasWidth, 8);
+    ctx.fillRect(0, animCanvasHeight - 25, animCanvasWidth, 8);
 
-    // Calculate scale
+    // Calculate scale for vertical height
     const maxHeight = Math.max(y0, y0 + v0Fall * v0Fall / (2 * g) + 5);
-    const padding = 40;
-    const drawHeight = animCanvasHeight - padding - 30;
+    const topPadding = 25;
+    const bottomPadding = 25;
+    const drawHeight = animCanvasHeight - topPadding - bottomPadding;
     const scale = drawHeight / maxHeight;
 
-    // Height ruler
+    // Height ruler on left side
     ctx.strokeStyle = '#666';
     ctx.lineWidth = 1;
-    const rulerX = 22;
+    const rulerX = 30;
     ctx.beginPath();
-    ctx.moveTo(rulerX, padding);
-    ctx.lineTo(rulerX, animCanvasHeight - 30);
+    ctx.moveTo(rulerX, topPadding);
+    ctx.lineTo(rulerX, animCanvasHeight - bottomPadding);
     ctx.stroke();
 
     // Ruler marks
     ctx.fillStyle = '#666';
-    ctx.font = '8px system-ui';
+    ctx.font = '9px system-ui';
     ctx.textAlign = 'right';
     const numMarks = 5;
     for (let i = 0; i <= numMarks; i++) {
       const h = (i / numMarks) * maxHeight;
-      const yPos = animCanvasHeight - 30 - h * scale;
+      const yPos = animCanvasHeight - bottomPadding - h * scale;
       ctx.beginPath();
-      ctx.moveTo(rulerX - 4, yPos);
+      ctx.moveTo(rulerX - 5, yPos);
       ctx.lineTo(rulerX, yPos);
       ctx.stroke();
-      ctx.fillText(`${h.toFixed(0)}`, rulerX - 6, yPos + 3);
+      ctx.fillText(`${h.toFixed(0)}m`, rulerX - 8, yPos + 3);
     }
 
-    // Initial height marker
-    const y0Pos = animCanvasHeight - 30 - y0 * scale;
+    // Initial height marker line
+    const y0Pos = animCanvasHeight - bottomPadding - y0 * scale;
     ctx.strokeStyle = '#16a34a';
-    ctx.setLineDash([3, 3]);
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
     ctx.beginPath();
     ctx.moveTo(rulerX, y0Pos);
-    ctx.lineTo(animCanvasWidth - 15, y0Pos);
+    ctx.lineTo(animCanvasWidth - 100, y0Pos);
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = '#16a34a';
-    ctx.font = '9px system-ui';
+    ctx.font = 'bold 10px system-ui';
     ctx.textAlign = 'left';
-    ctx.fillText('y₀', animCanvasWidth - 14, y0Pos + 3);
+    ctx.fillText('y₀', rulerX + 5, y0Pos - 5);
 
-    // Trajectory trail
-    ctx.strokeStyle = 'rgba(239, 68, 68, 0.3)';
-    ctx.lineWidth = 2;
+    // Draw trajectory trail (vertical line showing path)
+    const ballCenterX = 80;
+    ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)';
+    ctx.lineWidth = 3;
     ctx.beginPath();
-    const numTrailPoints = 30;
+    const numTrailPoints = 40;
     for (let i = 0; i <= numTrailPoints; i++) {
       const t = (i / numTrailPoints) * currentTime;
       const { x: trailY } = getKinematics(t);
-      const trailYPos = animCanvasHeight - 30 - trailY * scale;
-      const trailXPos = animCanvasWidth / 2;
-      if (i === 0) ctx.moveTo(trailXPos, trailYPos);
-      else ctx.lineTo(trailXPos, trailYPos);
+      const trailYPos = animCanvasHeight - bottomPadding - trailY * scale;
+      if (i === 0) ctx.moveTo(ballCenterX, trailYPos);
+      else ctx.lineTo(ballCenterX, trailYPos);
     }
     ctx.stroke();
 
     // Current object position
-    const objX = animCanvasWidth / 2;
-    const objY = animCanvasHeight - 30 - y * scale;
-    const ballRadius = 12;
+    const objY = animCanvasHeight - bottomPadding - y * scale;
+    const ballRadius = 15;
 
-    // Velocity arrow
+    // Velocity arrow (pointing down when falling)
     if (Math.abs(v) > 0.5 && currentTime < groundTime) {
-      const arrowScale = 1.5;
-      const arrowLen = Math.min(Math.abs(v) * arrowScale, 50);
-      const arrowDir = v > 0 ? -1 : 1;
+      const arrowScale = 1.2;
+      const arrowLen = Math.min(Math.abs(v) * arrowScale, 40);
+      const arrowDir = v > 0 ? -1 : 1; // Up when positive, down when negative
 
       ctx.strokeStyle = '#2563eb';
       ctx.lineWidth = 3;
       ctx.beginPath();
-      ctx.moveTo(objX, objY);
-      ctx.lineTo(objX, objY + arrowLen * arrowDir);
+      ctx.moveTo(ballCenterX, objY);
+      ctx.lineTo(ballCenterX, objY + arrowLen * arrowDir);
       ctx.stroke();
 
+      // Arrow head
       ctx.fillStyle = '#2563eb';
       ctx.beginPath();
       const headY = objY + arrowLen * arrowDir;
-      ctx.moveTo(objX, headY);
-      ctx.lineTo(objX - 5, headY - 7 * arrowDir);
-      ctx.lineTo(objX + 5, headY - 7 * arrowDir);
+      ctx.moveTo(ballCenterX, headY);
+      ctx.lineTo(ballCenterX - 6, headY - 8 * arrowDir);
+      ctx.lineTo(ballCenterX + 6, headY - 8 * arrowDir);
       ctx.closePath();
       ctx.fill();
     }
 
     // Ball with shadow
     ctx.shadowColor = 'rgba(0,0,0,0.3)';
-    ctx.shadowBlur = 8;
-    ctx.shadowOffsetY = 4;
+    ctx.shadowBlur = 10;
+    ctx.shadowOffsetY = 5;
 
     const ballGradient = ctx.createRadialGradient(
-      objX - 4, objY - 4, 0,
-      objX, objY, ballRadius
+      ballCenterX - 5, objY - 5, 0,
+      ballCenterX, objY, ballRadius
     );
     ballGradient.addColorStop(0, '#ef4444');
     ballGradient.addColorStop(0.7, '#dc2626');
@@ -605,43 +607,74 @@ export function KinematicsGraphSimulator() {
 
     ctx.fillStyle = ballGradient;
     ctx.beginPath();
-    ctx.arc(objX, objY, ballRadius, 0, Math.PI * 2);
+    ctx.arc(ballCenterX, objY, ballRadius, 0, Math.PI * 2);
     ctx.fill();
 
     ctx.shadowColor = 'transparent';
     ctx.shadowBlur = 0;
     ctx.shadowOffsetY = 0;
 
-    // Highlight
+    // Highlight on ball
     ctx.fillStyle = 'rgba(255,255,255,0.4)';
     ctx.beginPath();
-    ctx.arc(objX - 4, objY - 4, 4, 0, Math.PI * 2);
+    ctx.arc(ballCenterX - 5, objY - 5, 5, 0, Math.PI * 2);
     ctx.fill();
 
-    // Info box
-    ctx.fillStyle = 'rgba(255,255,255,0.9)';
-    ctx.fillRect(5, 5, 90, 50);
-    ctx.strokeStyle = '#374151';
-    ctx.lineWidth = 1;
-    ctx.strokeRect(5, 5, 90, 50);
+    // Info panel on right side
+    const panelX = 140;
+    const panelY = 15;
+    const panelWidth = animCanvasWidth - panelX - 20;
+    const panelHeight = animCanvasHeight - 40;
 
+    ctx.fillStyle = 'rgba(255,255,255,0.95)';
+    ctx.beginPath();
+    ctx.roundRect(panelX, panelY, panelWidth, panelHeight, 8);
+    ctx.fill();
+    ctx.strokeStyle = '#d1d5db';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Panel content
     ctx.fillStyle = '#374151';
-    ctx.font = 'bold 10px system-ui';
+    ctx.font = 'bold 12px system-ui';
     ctx.textAlign = 'left';
-    ctx.fillText(`t = ${currentTime.toFixed(2)} s`, 10, 20);
+    ctx.fillText('Chute libre', panelX + 15, panelY + 25);
+
+    // Gravity info
+    const currentPreset = GRAVITY_PRESETS.find(p => p.id === gravityPreset);
+    ctx.fillStyle = '#6b7280';
+    ctx.font = '11px system-ui';
+    ctx.fillText(`${currentPreset?.emoji || ''} g = ${g.toFixed(2)} m/s²`, panelX + 15, panelY + 45);
+
+    // Current values
+    ctx.font = 'bold 11px system-ui';
+    ctx.fillStyle = '#374151';
+    ctx.fillText(`t = ${currentTime.toFixed(2)} s`, panelX + 15, panelY + 70);
+
     ctx.fillStyle = '#16a34a';
-    ctx.fillText(`y = ${y.toFixed(1)} m`, 10, 34);
+    ctx.fillText(`y = ${y.toFixed(2)} m`, panelX + 15, panelY + 90);
+
     ctx.fillStyle = '#2563eb';
-    ctx.fillText(`v = ${v.toFixed(1)} m/s`, 10, 48);
+    ctx.fillText(`v = ${v.toFixed(2)} m/s`, panelX + 15, panelY + 110);
+
+    ctx.fillStyle = '#dc2626';
+    ctx.fillText(`a = ${(-g).toFixed(2)} m/s²`, panelX + 15, panelY + 130);
+
+    // Impact time info
+    if (groundTime < getEffectiveMaxTime()) {
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '10px system-ui';
+      ctx.fillText(`Impact à t = ${groundTime.toFixed(2)}s`, panelX + 15, panelY + 155);
+    }
 
     // Impact message
     if (currentTime >= groundTime) {
-      ctx.fillStyle = 'rgba(239, 68, 68, 0.9)';
-      ctx.font = 'bold 12px system-ui';
+      ctx.fillStyle = '#ef4444';
+      ctx.font = 'bold 14px system-ui';
       ctx.textAlign = 'center';
-      ctx.fillText('IMPACT!', animCanvasWidth / 2, animCanvasHeight - 42);
+      ctx.fillText('💥 IMPACT!', ballCenterX, animCanvasHeight - 35);
     }
-  }, [currentTime, getKinematics, y0, v0Fall, g, showAnimation, motionType, animCanvasWidth, animCanvasHeight, getGroundTime]);
+  }, [currentTime, getKinematics, y0, v0Fall, g, showAnimation, motionType, animCanvasWidth, animCanvasHeight, getGroundTime, gravityPreset, getEffectiveMaxTime]);
 
   // Draw all
   useEffect(() => {
@@ -651,11 +684,11 @@ export function KinematicsGraphSimulator() {
     drawGraph(accelerationCanvasRef.current, (t) => getKinematics(t).a, '#dc2626', '#fef2f2', 'a', 'm/s²', undefined, 'v');
 
     if (motionType === 'freeFall') {
-      drawVerticalAnimation();
+      drawFreeFallAnimation();
     } else {
       drawHorizontalAnimation();
     }
-  }, [drawGraph, drawHorizontalAnimation, drawVerticalAnimation, getKinematics, motionType]);
+  }, [drawGraph, drawHorizontalAnimation, drawFreeFallAnimation, getKinematics, motionType]);
 
   const handleReset = () => {
     setIsPlaying(false);
@@ -706,23 +739,17 @@ export function KinematicsGraphSimulator() {
       </div>
 
       <div className="p-4">
-        {/* Main layout */}
-        <div className={cn(
-          "flex gap-4",
-          motionType === 'freeFall' ? 'flex-row' : 'flex-col'
-        )}>
-          {/* Animation (left for free fall, top for others) */}
+        {/* Main layout - same for all motion types */}
+        <div className="flex flex-col gap-4">
+          {/* Animation at top */}
           {showAnimation && (
-            <div className={cn(
-              "flex-shrink-0",
-              motionType === 'freeFall' ? '' : 'w-full'
-            )}>
+            <div className="w-full">
               <div className="border border-gray-200 rounded-lg overflow-hidden">
                 <canvas
                   ref={animationCanvasRef}
                   width={animCanvasWidth}
                   height={animCanvasHeight}
-                  className={motionType === 'freeFall' ? '' : 'w-full'}
+                  className="w-full"
                 />
               </div>
             </div>
@@ -730,11 +757,8 @@ export function KinematicsGraphSimulator() {
 
           {/* Graphs and controls */}
           <div className="flex-1 space-y-3">
-            {/* Graphs grid */}
-            <div className={cn(
-              "grid gap-2",
-              motionType === 'freeFall' ? 'grid-cols-1' : 'grid-cols-3'
-            )}>
+            {/* Graphs grid - always 3 columns */}
+            <div className="grid grid-cols-3 gap-2">
               {/* Position graph */}
               <div className="border border-green-300 rounded-lg overflow-hidden bg-gradient-to-b from-green-50 to-white">
                 <div className="px-2 py-1 bg-green-100 border-b border-green-200 flex justify-between items-center">
