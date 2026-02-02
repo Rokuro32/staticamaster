@@ -14,7 +14,6 @@ import { ForceAdditionSimulator } from '@/components/simulations/ForceAdditionSi
 import { RotationDynamicsSimulator } from '@/components/simulations/RotationDynamicsSimulator';
 import { TrussSimulator } from '@/components/simulations/TrussSimulator';
 import { KinematicsGraphSimulator } from '@/components/simulations/KinematicsGraphSimulator';
-import { FreeFallSimulator } from '@/components/simulations/FreeFallSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -244,26 +243,15 @@ export default function SimulationsPage() {
         {/* Vector simulations for kinematics course */}
         {courseId === 'kinematics' && (
           <>
-            {/* Kinematics Graph Simulator Section */}
+            {/* Kinematics Graph Simulator Section - includes MRU, MRUA, Free Fall, Harmonic */}
             <section>
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-2xl">📈</span>
                 <h2 className="text-xl font-bold text-gray-900">
-                  Position, Vitesse, Accélération
+                  Cinématique 1D : MRU, MRUA, Chute libre, Harmonique
                 </h2>
               </div>
               <KinematicsGraphSimulator />
-            </section>
-
-            {/* Free Fall Simulator Section */}
-            <section>
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-2xl">⬇️</span>
-                <h2 className="text-xl font-bold text-gray-900">
-                  Chute Libre
-                </h2>
-              </div>
-              <FreeFallSimulator />
             </section>
 
             {/* Vector Simulator Section */}
