@@ -14,6 +14,7 @@ import { ForceAdditionSimulator } from '@/components/simulations/ForceAdditionSi
 import { RotationDynamicsSimulator } from '@/components/simulations/RotationDynamicsSimulator';
 import { TrussSimulator } from '@/components/simulations/TrussSimulator';
 import { KinematicsGraphSimulator } from '@/components/simulations/KinematicsGraphSimulator';
+import { FreeFallSimulator } from '@/components/simulations/FreeFallSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -252,6 +253,17 @@ export default function SimulationsPage() {
                 </h2>
               </div>
               <KinematicsGraphSimulator />
+            </section>
+
+            {/* Free Fall Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">⬇️</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Chute Libre
+                </h2>
+              </div>
+              <FreeFallSimulator />
             </section>
 
             {/* Vector Simulator Section */}
