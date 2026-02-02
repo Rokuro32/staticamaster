@@ -5,6 +5,7 @@ import { InlineMath } from 'react-katex';
 import { cn } from '@/lib/utils';
 
 type MotionType = 'uniform' | 'uniformAccel' | 'sinusoidal' | 'freeFall' | 'custom';
+type SegmentType = 'mru' | 'mrua';
 
 interface MotionConfig {
   id: MotionType;
@@ -14,13 +15,22 @@ interface MotionConfig {
   color: string;
 }
 
+interface MotionSegment {
+  id: number;
+  type: SegmentType;
+  duration: number;
+  acceleration: number; // Only used for MRUA
+}
+
 const MOTION_TYPES: MotionConfig[] = [
   { id: 'uniform', name: 'MRU', description: 'Mouvement Rectiligne Uniforme (v = constante)', emoji: '➡️', color: 'emerald' },
   { id: 'uniformAccel', name: 'MRUA', description: 'Mouvement Rectiligne Uniformément Accéléré (a = constante)', emoji: '🚀', color: 'blue' },
   { id: 'freeFall', name: 'Chute libre', description: 'Chute libre sous l\'effet de la gravité (a = -g)', emoji: '⬇️', color: 'orange' },
   { id: 'sinusoidal', name: 'Harmonique', description: 'Mouvement Harmonique Simple (oscillation)', emoji: '〰️', color: 'purple' },
-  { id: 'custom', name: 'Personnalisé', description: 'Définissez vos propres conditions initiales', emoji: '⚙️', color: 'gray' },
+  { id: 'custom', name: 'Combiné', description: 'Combinez plusieurs phases MRU et MRUA', emoji: '🔀', color: 'indigo' },
 ];
+
+const SEGMENT_COLORS = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 
 interface GravityPreset {
   id: string;
@@ -54,6 +64,16 @@ export function KinematicsGraphSimulator() {
   const [v0Fall, setV0Fall] = useState(0);
   const [gravityPreset, setGravityPreset] = useState('earth');
   const [customGravity, setCustomGravity] = useState(9.81);
+
+  // Custom multi-segment parameters
+  const [segments, setSegments] = useState<MotionSegment[]>([
+    { id: 1, type: 'mru', duration: 2, acceleration: 0 },
+    { id: 2, type: 'mrua', duration: 2, acceleration: 2 },
+    { id: 3, type: 'mru', duration: 1, acceleration: 0 },
+  ]);
+  const [customX0, setCustomX0] = useState(0);
+  const [customV0, setCustomV0] = useState(2);
+  const [nextSegmentId, setNextSegmentId] = useState(4);
 
   // Time settings
   const [maxTime, setMaxTime] = useState(5);
@@ -90,13 +110,72 @@ export function KinematicsGraphSimulator() {
     return (v0Fall + Math.sqrt(discriminant)) / g;
   }, [motionType, v0Fall, y0, g, maxTime]);
 
+  // Get total duration of all segments for custom mode
+  const getTotalSegmentsDuration = useCallback(() => {
+    return segments.reduce((sum, seg) => sum + seg.duration, 0);
+  }, [segments]);
+
   // Get effective max time (considering ground impact for free fall)
   const getEffectiveMaxTime = useCallback(() => {
     if (motionType === 'freeFall') {
       return Math.min(maxTime, getGroundTime() + 0.3);
     }
+    if (motionType === 'custom') {
+      return getTotalSegmentsDuration();
+    }
     return maxTime;
-  }, [motionType, maxTime, getGroundTime]);
+  }, [motionType, maxTime, getGroundTime, getTotalSegmentsDuration]);
+
+  // Calculate kinematics for custom multi-segment motion
+  const getCustomKinematics = useCallback((t: number) => {
+    let currentX = customX0;
+    let currentV = customV0;
+    let remainingTime = t;
+    let currentA = 0;
+
+    for (const segment of segments) {
+      if (remainingTime <= 0) break;
+
+      const segmentTime = Math.min(remainingTime, segment.duration);
+      const a = segment.type === 'mrua' ? segment.acceleration : 0;
+
+      if (remainingTime <= segment.duration) {
+        // We're in this segment
+        currentA = a;
+        currentX = currentX + currentV * segmentTime + 0.5 * a * segmentTime * segmentTime;
+        currentV = currentV + a * segmentTime;
+        break;
+      } else {
+        // Move through this entire segment
+        currentX = currentX + currentV * segment.duration + 0.5 * a * segment.duration * segment.duration;
+        currentV = currentV + a * segment.duration;
+        remainingTime -= segment.duration;
+      }
+    }
+
+    return { x: currentX, v: currentV, a: currentA };
+  }, [segments, customX0, customV0]);
+
+  // Get which segment we're currently in
+  const getCurrentSegmentIndex = useCallback((t: number) => {
+    let elapsed = 0;
+    for (let i = 0; i < segments.length; i++) {
+      elapsed += segments[i].duration;
+      if (t < elapsed) return i;
+    }
+    return segments.length - 1;
+  }, [segments]);
+
+  // Get segment boundaries for visualization
+  const getSegmentBoundaries = useCallback(() => {
+    const boundaries: number[] = [0];
+    let elapsed = 0;
+    for (const segment of segments) {
+      elapsed += segment.duration;
+      boundaries.push(elapsed);
+    }
+    return boundaries;
+  }, [segments]);
 
   // Calculate position, velocity, acceleration at time t
   const getKinematics = useCallback((t: number) => {
@@ -124,11 +203,11 @@ export function KinematicsGraphSimulator() {
         };
       }
       case 'custom':
-        return { x: x0 + v0 * t + 0.5 * a0 * t * t, v: v0 + a0 * t, a: a0 };
+        return getCustomKinematics(t);
       default:
         return { x: 0, v: 0, a: 0 };
     }
-  }, [motionType, x0, v0, a0, omega, amplitude, y0, v0Fall, g, getGroundTime]);
+  }, [motionType, x0, v0, a0, omega, amplitude, y0, v0Fall, g, getGroundTime, getCustomKinematics]);
 
   // Animation loop
   useEffect(() => {
@@ -232,6 +311,25 @@ export function KinematicsGraphSimulator() {
       ctx.font = '9px system-ui';
       ctx.textAlign = 'center';
       ctx.fillText(t.toFixed(1), canvasX, canvasHeight - padding.bottom + 12);
+    }
+
+    // Segment boundaries for custom mode
+    if (motionType === 'custom') {
+      const boundaries = getSegmentBoundaries();
+      for (let i = 1; i < boundaries.length; i++) {
+        const t = boundaries[i];
+        if (t < effectiveMaxTime) {
+          const canvasX = toCanvasX(t);
+          ctx.strokeStyle = SEGMENT_COLORS[(i - 1) % SEGMENT_COLORS.length] + '60';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([4, 4]);
+          ctx.beginPath();
+          ctx.moveTo(canvasX, padding.top);
+          ctx.lineTo(canvasX, canvasHeight - padding.bottom);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+      }
     }
 
     // Zero line
@@ -384,7 +482,7 @@ export function KinematicsGraphSimulator() {
       ctx.textAlign = 'right';
       ctx.fillText(`aire → Δ${integralLabel}`, canvasWidth - 8, 24);
     }
-  }, [maxTime, currentTime, canvasWidth, canvasHeight, motionType, getGroundTime, getEffectiveMaxTime]);
+  }, [maxTime, currentTime, canvasWidth, canvasHeight, motionType, getGroundTime, getEffectiveMaxTime, getSegmentBoundaries]);
 
   // Draw horizontal animation (for MRU, MRUA, Harmonic, Custom)
   const drawHorizontalAnimation = useCallback(() => {
@@ -920,8 +1018,8 @@ export function KinematicsGraphSimulator() {
                     </>
                   )}
 
-                  {/* MRU/MRUA/Custom parameters */}
-                  {(motionType === 'uniform' || motionType === 'uniformAccel' || motionType === 'custom') && (
+                  {/* MRU/MRUA parameters */}
+                  {(motionType === 'uniform' || motionType === 'uniformAccel') && (
                     <>
                       <div>
                         <label className="block text-[10px] font-medium text-green-700 mb-0.5">x₀ = {x0} m</label>
@@ -947,7 +1045,7 @@ export function KinematicsGraphSimulator() {
                           className="w-full accent-blue-600 h-4"
                         />
                       </div>
-                      {(motionType === 'uniformAccel' || motionType === 'custom') && (
+                      {motionType === 'uniformAccel' && (
                         <div>
                           <label className="block text-[10px] font-medium text-red-700 mb-0.5">a = {a0} m/s²</label>
                           <input
@@ -999,6 +1097,177 @@ export function KinematicsGraphSimulator() {
           </div>
         </div>
 
+        {/* Custom mode segment editor */}
+        {motionType === 'custom' && (
+          <div className="mt-4 bg-indigo-50 rounded-lg p-4 border border-indigo-200">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="text-sm font-bold text-indigo-900">🔀 Éditeur de segments</h4>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-indigo-700">
+                  Durée totale: {getTotalSegmentsDuration().toFixed(1)}s
+                </span>
+                <button
+                  onClick={() => {
+                    setSegments([...segments, {
+                      id: nextSegmentId,
+                      type: 'mru',
+                      duration: 1,
+                      acceleration: 0
+                    }]);
+                    setNextSegmentId(nextSegmentId + 1);
+                    handleReset();
+                  }}
+                  className="px-2 py-1 bg-indigo-600 text-white text-xs rounded hover:bg-indigo-700 transition-colors"
+                >
+                  + Segment
+                </button>
+              </div>
+            </div>
+
+            {/* Initial conditions */}
+            <div className="flex gap-4 mb-3 p-2 bg-white rounded border border-indigo-100">
+              <div className="flex items-center gap-2">
+                <label className="text-xs font-medium text-gray-700">x₀:</label>
+                <input
+                  type="number"
+                  value={customX0}
+                  onChange={(e) => { setCustomX0(parseFloat(e.target.value) || 0); handleReset(); }}
+                  className="w-16 px-2 py-1 text-xs border rounded"
+                  step="0.5"
+                />
+                <span className="text-xs text-gray-500">m</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <label className="text-xs font-medium text-gray-700">v₀:</label>
+                <input
+                  type="number"
+                  value={customV0}
+                  onChange={(e) => { setCustomV0(parseFloat(e.target.value) || 0); handleReset(); }}
+                  className="w-16 px-2 py-1 text-xs border rounded"
+                  step="0.5"
+                />
+                <span className="text-xs text-gray-500">m/s</span>
+              </div>
+            </div>
+
+            {/* Segments list */}
+            <div className="space-y-2">
+              {segments.map((segment, index) => (
+                <div
+                  key={segment.id}
+                  className="flex items-center gap-2 p-2 bg-white rounded border"
+                  style={{ borderLeftColor: SEGMENT_COLORS[index % SEGMENT_COLORS.length], borderLeftWidth: 4 }}
+                >
+                  <span className="text-xs font-bold text-gray-500 w-6">#{index + 1}</span>
+
+                  <select
+                    value={segment.type}
+                    onChange={(e) => {
+                      const newSegments = [...segments];
+                      newSegments[index].type = e.target.value as SegmentType;
+                      if (e.target.value === 'mru') newSegments[index].acceleration = 0;
+                      setSegments(newSegments);
+                      handleReset();
+                    }}
+                    className="px-2 py-1 text-xs border rounded bg-white"
+                  >
+                    <option value="mru">MRU (v=cst)</option>
+                    <option value="mrua">MRUA (a=cst)</option>
+                  </select>
+
+                  <div className="flex items-center gap-1">
+                    <label className="text-xs text-gray-600">Δt:</label>
+                    <input
+                      type="number"
+                      value={segment.duration}
+                      onChange={(e) => {
+                        const newSegments = [...segments];
+                        newSegments[index].duration = Math.max(0.5, parseFloat(e.target.value) || 0.5);
+                        setSegments(newSegments);
+                        handleReset();
+                      }}
+                      className="w-14 px-1 py-1 text-xs border rounded"
+                      min="0.5"
+                      step="0.5"
+                    />
+                    <span className="text-xs text-gray-500">s</span>
+                  </div>
+
+                  {segment.type === 'mrua' && (
+                    <div className="flex items-center gap-1">
+                      <label className="text-xs text-gray-600">a:</label>
+                      <input
+                        type="number"
+                        value={segment.acceleration}
+                        onChange={(e) => {
+                          const newSegments = [...segments];
+                          newSegments[index].acceleration = parseFloat(e.target.value) || 0;
+                          setSegments(newSegments);
+                          handleReset();
+                        }}
+                        className="w-14 px-1 py-1 text-xs border rounded"
+                        step="0.5"
+                      />
+                      <span className="text-xs text-gray-500">m/s²</span>
+                    </div>
+                  )}
+
+                  <div className="flex-1" />
+
+                  {segments.length > 1 && (
+                    <button
+                      onClick={() => {
+                        setSegments(segments.filter((_, i) => i !== index));
+                        handleReset();
+                      }}
+                      className="p-1 text-red-500 hover:bg-red-50 rounded"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Timeline visualization */}
+            <div className="mt-3 p-2 bg-white rounded border border-indigo-100">
+              <div className="text-xs text-gray-600 mb-1">Timeline:</div>
+              <div className="flex h-6 rounded overflow-hidden">
+                {segments.map((segment, index) => {
+                  const totalDuration = getTotalSegmentsDuration();
+                  const widthPercent = (segment.duration / totalDuration) * 100;
+                  return (
+                    <div
+                      key={segment.id}
+                      className="flex items-center justify-center text-[9px] text-white font-medium"
+                      style={{
+                        width: `${widthPercent}%`,
+                        backgroundColor: SEGMENT_COLORS[index % SEGMENT_COLORS.length],
+                        minWidth: '30px'
+                      }}
+                    >
+                      {segment.type.toUpperCase()}
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="flex text-[9px] text-gray-500 mt-1">
+                {getSegmentBoundaries().map((t, i) => (
+                  <span
+                    key={i}
+                    style={{
+                      width: i === 0 ? '0' : `${(segments[i-1]?.duration / getTotalSegmentsDuration()) * 100}%`,
+                      textAlign: i === 0 ? 'left' : 'right'
+                    }}
+                  >
+                    {t.toFixed(1)}s
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Mathematical relations */}
         <div className="mt-4 bg-gradient-to-r from-slate-50 to-gray-50 rounded-lg p-3 border border-gray-200">
           <div className="flex flex-wrap items-center justify-between gap-4">
@@ -1035,11 +1304,23 @@ export function KinematicsGraphSimulator() {
                   <div className="bg-white px-2 py-1 rounded border shadow-sm"><InlineMath math="a = 0" /></div>
                 </>
               )}
-              {(motionType === 'uniformAccel' || motionType === 'custom') && (
+              {motionType === 'uniformAccel' && (
                 <>
                   <div className="bg-white px-2 py-1 rounded border shadow-sm"><InlineMath math="x = x_0 + v_0 t + \frac{1}{2}at^2" /></div>
                   <div className="bg-white px-2 py-1 rounded border shadow-sm"><InlineMath math="v = v_0 + at" /></div>
                   <div className="bg-white px-2 py-1 rounded border shadow-sm"><InlineMath math="a = \text{cst}" /></div>
+                </>
+              )}
+              {motionType === 'custom' && (
+                <>
+                  <div className="bg-emerald-50 px-2 py-1 rounded border border-emerald-200 shadow-sm">
+                    <span className="text-[10px] text-emerald-700 font-medium">MRU: </span>
+                    <InlineMath math="x = x_i + v_i \Delta t" />
+                  </div>
+                  <div className="bg-blue-50 px-2 py-1 rounded border border-blue-200 shadow-sm">
+                    <span className="text-[10px] text-blue-700 font-medium">MRUA: </span>
+                    <InlineMath math="x = x_i + v_i \Delta t + \frac{1}{2}a\Delta t^2" />
+                  </div>
                 </>
               )}
               {motionType === 'freeFall' && (
