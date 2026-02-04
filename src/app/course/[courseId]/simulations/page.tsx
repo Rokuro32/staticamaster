@@ -14,6 +14,7 @@ import { ForceAdditionSimulator } from '@/components/simulations/ForceAdditionSi
 import { RotationDynamicsSimulator } from '@/components/simulations/RotationDynamicsSimulator';
 import { TrussSimulator } from '@/components/simulations/TrussSimulator';
 import { KinematicsGraphSimulator } from '@/components/simulations/KinematicsGraphSimulator';
+import { GuitarStringSimulator } from '@/components/simulations/GuitarStringSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -137,6 +138,17 @@ export default function SimulationsPage() {
                 </h2>
               </div>
               <SoundWaveSimulator />
+            </section>
+
+            {/* Guitar String Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">🎸</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Corde de guitare et harmoniques
+                </h2>
+              </div>
+              <GuitarStringSimulator />
             </section>
 
             {/* Relativity Simulator Section */}
