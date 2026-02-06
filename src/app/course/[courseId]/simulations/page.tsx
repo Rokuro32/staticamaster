@@ -15,6 +15,7 @@ import { RotationDynamicsSimulator } from '@/components/simulations/RotationDyna
 import { TrussSimulator } from '@/components/simulations/TrussSimulator';
 import { KinematicsGraphSimulator } from '@/components/simulations/KinematicsGraphSimulator';
 import { GuitarStringSimulator } from '@/components/simulations/GuitarStringSimulator';
+import { TrigCircleSimulator } from '@/components/simulations/TrigCircleSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -188,6 +189,17 @@ export default function SimulationsPage() {
         {/* Vector simulations for statics course */}
         {courseId === 'statics' && (
           <>
+            {/* Trigonometric Circle Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">🔵</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Cercle Trigonométrique
+                </h2>
+              </div>
+              <TrigCircleSimulator />
+            </section>
+
             {/* Vector Simulator Section */}
             <section>
               <div className="flex items-center gap-3 mb-4">
