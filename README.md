@@ -252,3 +252,4 @@ Usage éducatif - CÉGEP
 ## Support
 
 Pour signaler un problème ou suggérer une amélioration, contactez l'enseignant responsable du cours 203-4A3-RA.
+
