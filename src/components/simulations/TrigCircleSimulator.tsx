@@ -684,14 +684,11 @@ export function TrigCircleSimulator() {
             {QUADRANTS.map((q, i) => (
               <div
                 key={q.name}
-                className={cn(
-                  "rounded-lg p-2 text-center border-2 transition-all",
-                  currentQuadrant === i + 1 ? "ring-2 ring-offset-1" : ""
-                )}
+                className="rounded-lg p-2 text-center border-2 transition-all"
                 style={{
                   backgroundColor: q.color + '15',
-                  borderColor: q.color + '40',
-                  ringColor: q.color
+                  borderColor: currentQuadrant === i + 1 ? q.color : q.color + '40',
+                  boxShadow: currentQuadrant === i + 1 ? `0 0 0 2px ${q.color}40` : 'none'
                 }}
               >
                 <div className="font-bold text-sm" style={{ color: q.color }}>
