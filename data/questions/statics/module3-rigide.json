@@ -238,5 +238,265 @@
       "angle": { "min": 30, "max": 90, "step": 15, "unit": "°" }
     },
     "answerFormula": "F * L * sin(rad(angle))"
+  },
+  {
+    "id": "m3-q6-poutre-charge-repartie",
+    "module": 3,
+    "tags": ["beam", "distributed-load", "equilibrium-2d"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Poutre avec charge répartie uniforme",
+    "statement": "Une poutre AB de {L} m est simplement appuyée (rotule en A, rouleau en B). Elle supporte une charge répartie uniforme w = {w} N/m sur toute sa longueur. Calculez la réaction verticale en A.",
+    "givens": {
+      "L": 6,
+      "w": 500
+    },
+    "unknowns": ["RAy"],
+    "answer": {
+      "variable": "RAy",
+      "value": 1500,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La charge totale est W = w × L",
+      "Par symétrie, chaque appui reprend la moitié",
+      "RAy = w × L / 2"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "3000",
+        "patternType": "value",
+        "message": "Vous avez donné la charge totale au lieu de la réaction",
+        "hint": "La réaction en A est la moitié de la charge totale (symétrie)",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Charge totale W = w×L = 500×6 = 3000 N. Par symétrie (charge uniforme, appuis aux extrémités), RAy = RBy = 3000/2 = 1500 N.",
+    "parameters": {
+      "L": { "min": 4, "max": 10, "step": 1, "unit": "m" },
+      "w": { "min": 200, "max": 1000, "step": 100, "unit": "N/m" }
+    },
+    "answerFormula": "w * L / 2"
+  },
+  {
+    "id": "m3-q7-poutre-porte-a-faux",
+    "module": 3,
+    "tags": ["beam", "cantilever", "moment"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Poutre en porte-à-faux",
+    "statement": "Une poutre de {L} m est encastrée à une extrémité. Une charge P = {P} N est appliquée à l'extrémité libre. Calculez le moment d'encastrement ME.",
+    "givens": {
+      "L": 4,
+      "P": 800
+    },
+    "unknowns": ["ME"],
+    "answer": {
+      "variable": "ME",
+      "value": 3200,
+      "unit": "N·m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'encastrement doit résister au moment créé par P",
+      "ME = P × L",
+      "Le moment est maximal à l'encastrement"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "200",
+        "patternType": "value",
+        "message": "Vous avez divisé au lieu de multiplier",
+        "hint": "ME = P × L",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Le moment à l'encastrement = P × L = 800 × 4 = 3200 N·m. L'encastrement doit fournir ce moment de réaction pour maintenir l'équilibre.",
+    "parameters": {
+      "L": { "min": 2, "max": 6, "step": 0.5, "unit": "m" },
+      "P": { "min": 400, "max": 1500, "step": 100, "unit": "N" }
+    },
+    "answerFormula": "P * L"
+  },
+  {
+    "id": "m3-q8-poutre-deux-charges",
+    "module": 3,
+    "tags": ["beam", "equilibrium-2d", "moments"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Poutre avec deux charges concentrées",
+    "statement": "Une poutre AB de {L} m est appuyée aux extrémités. Deux charges sont appliquées: P1 = {P1} N à {d1} m de A et P2 = {P2} N à {d2} m de A. Calculez la réaction en A.",
+    "givens": {
+      "L": 8,
+      "P1": 600,
+      "d1": 2,
+      "P2": 400,
+      "d2": 6
+    },
+    "unknowns": ["RAy"],
+    "answer": {
+      "variable": "RAy",
+      "value": 550,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Utilisez ΣMB = 0 pour trouver RA directement",
+      "RA × L = P1 × (L-d1) + P2 × (L-d2)",
+      "Vérifiez avec ΣFy = 0"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "500",
+        "patternType": "value",
+        "message": "Vous avez supposé que les réactions sont égales",
+        "hint": "Les charges ne sont pas symétriques, utilisez les moments",
+        "category": "concept"
+      }
+    ],
+    "explanation": "ΣMB = 0: RA×8 = 600×(8-2) + 400×(8-6) = 600×6 + 400×2 = 3600 + 800 = 4400. RA = 4400/8 = 550 N.",
+    "parameters": {
+      "L": { "min": 6, "max": 12, "step": 1, "unit": "m" },
+      "P1": { "min": 300, "max": 800, "step": 100, "unit": "N" },
+      "d1": { "min": 1, "max": 3, "step": 0.5, "unit": "m" },
+      "P2": { "min": 200, "max": 600, "step": 100, "unit": "N" },
+      "d2": { "min": 5, "max": 7, "step": 0.5, "unit": "m" }
+    },
+    "answerFormula": "(P1 * (L - d1) + P2 * (L - d2)) / L"
+  },
+  {
+    "id": "m3-q9-moment-transfert",
+    "module": 3,
+    "tags": ["moment", "parallel-axis"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Transfert de moment",
+    "statement": "Une force F = {F} N crée un moment de {M1} N·m autour du point A. Calculez le moment de cette force autour du point B situé à {dAB} m de A dans la direction perpendiculaire à la ligne d'action de F.",
+    "givens": {
+      "F": 100,
+      "M1": 300,
+      "dAB": 1
+    },
+    "unknowns": ["M2"],
+    "answer": {
+      "variable": "MB",
+      "value": 200,
+      "unit": "N·m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le bras de levier change quand on change de point de référence",
+      "d_A = M1/F = 3 m",
+      "d_B = d_A - dAB (ou + selon la géométrie)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "400",
+        "patternType": "value",
+        "message": "Vous avez additionné au lieu de soustraire",
+        "hint": "Si B est plus proche de la ligne d'action, le moment diminue",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Bras de levier par rapport à A: dA = M1/F = 300/100 = 3 m. Bras de levier par rapport à B: dB = dA - dAB = 3 - 1 = 2 m. MB = F × dB = 100 × 2 = 200 N·m.",
+    "parameters": {
+      "F": { "min": 50, "max": 200, "step": 25, "unit": "N" },
+      "M1": { "min": 200, "max": 500, "step": 50, "unit": "N·m" },
+      "dAB": { "min": 0.5, "max": 2, "step": 0.25, "unit": "m" }
+    },
+    "answerFormula": "F * (M1/F - dAB)"
+  },
+  {
+    "id": "m3-q10-systeme-forces-equivalentes",
+    "module": 3,
+    "tags": ["equivalent-systems", "force-couple"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Système force-couple équivalent",
+    "statement": "Une force F = {F} N est appliquée en un point A. On veut la remplacer par une force équivalente au point O situé à {d} m de A. Quel couple C doit-on ajouter au point O pour que le système soit équivalent?",
+    "givens": {
+      "F": 250,
+      "d": 2
+    },
+    "unknowns": ["C"],
+    "answer": {
+      "variable": "C",
+      "value": 500,
+      "unit": "N·m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le déplacement d'une force crée un couple",
+      "C = F × d",
+      "Le couple compense la perte du moment"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "125",
+        "patternType": "value",
+        "message": "Vous avez divisé au lieu de multiplier",
+        "hint": "C = F × d",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Pour déplacer une force de son point d'application, on doit ajouter un couple C = F × d = 250 × 2 = 500 N·m. Ce couple conserve l'effet de moment de la force originale.",
+    "parameters": {
+      "F": { "min": 100, "max": 400, "step": 50, "unit": "N" },
+      "d": { "min": 1, "max": 4, "step": 0.5, "unit": "m" }
+    },
+    "answerFormula": "F * d"
+  },
+  {
+    "id": "m3-q11-poutre-encastree-charge-repartie",
+    "module": 3,
+    "tags": ["beam", "cantilever", "distributed-load"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Poutre encastrée avec charge répartie",
+    "statement": "Une poutre de {L} m est encastrée à gauche. Elle supporte une charge répartie w = {w} N/m sur toute sa longueur. Calculez le moment d'encastrement.",
+    "givens": {
+      "L": 5,
+      "w": 400
+    },
+    "unknowns": ["ME"],
+    "answer": {
+      "variable": "ME",
+      "value": 5000,
+      "unit": "N·m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La charge répartie peut être remplacée par une force concentrée",
+      "W = w × L agit au centre de la poutre",
+      "ME = W × (L/2) = w × L²/2"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "10000",
+        "patternType": "value",
+        "message": "Vous avez utilisé L au lieu de L/2",
+        "hint": "Le centre de la charge répartie est à L/2 de l'encastrement",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Charge totale W = w × L = 400 × 5 = 2000 N. Elle agit au milieu (L/2 = 2.5 m de l'encastrement). ME = W × L/2 = 2000 × 2.5 = 5000 N·m. Ou ME = w × L²/2 = 400 × 25/2 = 5000 N·m.",
+    "parameters": {
+      "L": { "min": 3, "max": 8, "step": 0.5, "unit": "m" },
+      "w": { "min": 200, "max": 600, "step": 50, "unit": "N/m" }
+    },
+    "answerFormula": "w * L * L / 2"
   }
 ]

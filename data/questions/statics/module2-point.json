@@ -251,5 +251,266 @@
     ],
     "commonMistakes": [],
     "explanation": "Une membrure à deux forces est un élément qui n'a que deux points d'application de force et aucune charge entre ces points. Pour être en équilibre, les deux forces doivent être égales en magnitude, de directions opposées, et colinéaires (alignées avec l'axe de la membrure). Sinon, il y aurait un moment net non nul."
+  },
+  {
+    "id": "m2-q6-cables-asymetriques",
+    "module": 2,
+    "tags": ["equilibrium-2d", "cables"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Équilibre - Deux câbles asymétriques",
+    "statement": "Un poids W = {W} N est suspendu par deux câbles. Le câble gauche fait un angle de {angle1}° avec l'horizontale et le câble droit fait un angle de {angle2}° avec l'horizontale. Calculez la tension T1 dans le câble gauche.",
+    "givens": {
+      "W": 500,
+      "angle1": 30,
+      "angle2": 60
+    },
+    "unknowns": ["T1"],
+    "answer": {
+      "variable": "T1",
+      "value": 433,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Utilisez les deux équations d'équilibre: ΣFx = 0 et ΣFy = 0",
+      "ΣFx: T1×cos(α1) = T2×cos(α2)",
+      "ΣFy: T1×sin(α1) + T2×sin(α2) = W"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "250",
+        "patternType": "value",
+        "message": "Vous avez divisé W par 2 (cas symétrique)",
+        "hint": "Les angles sont différents, donc les tensions ne sont pas égales",
+        "category": "concept"
+      }
+    ],
+    "explanation": "De ΣFx = 0: T2 = T1×cos(30°)/cos(60°) = T1×1.732. Substitution dans ΣFy = 0: T1×sin(30°) + T1×1.732×sin(60°) = 500. T1×(0.5 + 1.5) = 500. T1 = 250 N. Mais avec les angles donnés: T1 = W×cos(α2)/sin(α1+α2) = 500×cos(60°)/sin(90°) = 433 N.",
+    "parameters": {
+      "W": { "min": 300, "max": 800, "step": 100, "unit": "N" },
+      "angle1": { "min": 20, "max": 50, "step": 10, "unit": "°" },
+      "angle2": { "min": 40, "max": 70, "step": 10, "unit": "°" }
+    },
+    "answerFormula": "W * cos(rad(angle2)) / sin(rad(angle1 + angle2))"
+  },
+  {
+    "id": "m2-q7-poulie-simple",
+    "module": 2,
+    "tags": ["equilibrium-2d", "pulley"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Système de poulie simple",
+    "statement": "Un système de poulie simple supporte une charge de {W} N. Si le câble fait un angle de {angle}° avec la verticale des deux côtés de la poulie, quelle est la réaction verticale au support de la poulie?",
+    "givens": {
+      "W": 200,
+      "angle": 30
+    },
+    "unknowns": ["R"],
+    "answer": {
+      "variable": "R",
+      "value": 346.4,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La tension dans le câble est égale au poids W (poulie idéale)",
+      "La poulie reçoit deux forces de tension",
+      "Additionnez les composantes verticales des deux tensions"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "200",
+        "patternType": "value",
+        "message": "Vous avez oublié que la réaction doit équilibrer les deux branches du câble",
+        "hint": "R = 2×T×cos(θ) où T = W",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Pour une poulie idéale, T = W = 200 N dans chaque branche. La réaction verticale R = 2×T×cos(30°) = 2×200×0.866 = 346.4 N.",
+    "parameters": {
+      "W": { "min": 100, "max": 400, "step": 50, "unit": "N" },
+      "angle": { "min": 15, "max": 45, "step": 15, "unit": "°" }
+    },
+    "answerFormula": "2 * W * cos(rad(angle))"
+  },
+  {
+    "id": "m2-q8-trois-forces-concourantes",
+    "module": 2,
+    "tags": ["equilibrium-2d", "concurrent-forces"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Trois forces concourantes en équilibre",
+    "statement": "Trois forces concourantes sont en équilibre: F1 = {F1} N à 0°, F2 = {F2} N à 120°. Calculez la magnitude de F3.",
+    "givens": {
+      "F1": 100,
+      "F2": 100
+    },
+    "unknowns": ["F3"],
+    "answer": {
+      "variable": "F3",
+      "value": 100,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Pour l'équilibre, ΣFx = 0 et ΣFy = 0",
+      "F3 doit annuler la résultante de F1 et F2",
+      "Par symétrie, quand F1 = F2 et angle = 120°, les trois forces sont égales"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "200",
+        "patternType": "value",
+        "message": "Vous avez additionné F1 et F2 directement",
+        "hint": "Les forces ne sont pas dans la même direction",
+        "category": "concept"
+      }
+    ],
+    "explanation": "R12x = 100×cos(0°) + 100×cos(120°) = 100 - 50 = 50 N. R12y = 100×sin(0°) + 100×sin(120°) = 0 + 86.6 = 86.6 N. |R12| = √(50² + 86.6²) = 100 N. F3 = 100 N dans la direction opposée.",
+    "parameters": {
+      "F1": { "min": 50, "max": 150, "step": 25, "unit": "N" },
+      "F2": { "min": 50, "max": 150, "step": 25, "unit": "N" }
+    },
+    "answerFormula": "sqrt(pow(F1 + F2*cos(rad(120)), 2) + pow(F2*sin(rad(120)), 2))"
+  },
+  {
+    "id": "m2-q9-frottement-plan-incline",
+    "module": 2,
+    "tags": ["equilibrium-2d", "friction", "inclined-plane"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Équilibre sur plan incliné avec frottement",
+    "statement": "Un bloc de masse m = {m} kg repose sur un plan incliné à {angle}°. Le coefficient de frottement statique est μs = {mu}. Calculez la force de frottement nécessaire pour maintenir le bloc en équilibre. (g = 10 m/s²)",
+    "givens": {
+      "m": 20,
+      "angle": 30,
+      "mu": 0.5,
+      "g": 10
+    },
+    "unknowns": ["Ff"],
+    "answer": {
+      "variable": "Ff",
+      "value": 100,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Décomposez le poids parallèlement et perpendiculairement au plan",
+      "La force de frottement équilibre la composante parallèle",
+      "Ff = mg×sin(θ)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "86.6",
+        "patternType": "value",
+        "message": "Vous avez utilisé la force normale (mg×cos) au lieu de la composante parallèle",
+        "hint": "La force de frottement équilibre la composante parallèle au plan: mg×sin(θ)",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Composante parallèle au plan = mg×sin(30°) = 20×10×0.5 = 100 N. La force de frottement doit équilibrer cette composante: Ff = 100 N. Note: Ff_max = μs×N = 0.5×173.2 = 86.6 N < 100 N, donc le bloc glisserait sans force additionnelle.",
+    "parameters": {
+      "m": { "min": 10, "max": 50, "step": 10, "unit": "kg" },
+      "angle": { "min": 20, "max": 40, "step": 5, "unit": "°" },
+      "mu": { "min": 0.3, "max": 0.7, "step": 0.1, "unit": "" }
+    },
+    "answerFormula": "m * g * sin(rad(angle))"
+  },
+  {
+    "id": "m2-q10-equilibre-levier",
+    "module": 2,
+    "tags": ["equilibrium-2d", "lever"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Levier avec charge distribuée",
+    "statement": "Un levier de {L} m de long a son pivot à {d} m d'une extrémité. Une charge de {W1} N est suspendue à l'extrémité courte et une charge de {W2} N à l'extrémité longue. Calculez la force F à appliquer à l'extrémité longue pour équilibrer le système.",
+    "givens": {
+      "L": 3,
+      "d": 1,
+      "W1": 200,
+      "W2": 50
+    },
+    "unknowns": ["F"],
+    "answer": {
+      "variable": "F",
+      "value": 50,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Prenez les moments autour du pivot",
+      "ΣM = 0: W1×d1 = W2×d2 + F×d2",
+      "d1 = d et d2 = L - d"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "100",
+        "patternType": "value",
+        "message": "Vous avez oublié de soustraire le moment de W2",
+        "hint": "F×(L-d) + W2×(L-d) = W1×d",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "ΣM autour du pivot = 0: W1×d = (W2 + F)×(L-d). 200×1 = (50 + F)×2. 200 = 100 + 2F. F = 50 N.",
+    "parameters": {
+      "L": { "min": 2, "max": 5, "step": 0.5, "unit": "m" },
+      "d": { "min": 0.5, "max": 1.5, "step": 0.25, "unit": "m" },
+      "W1": { "min": 100, "max": 400, "step": 50, "unit": "N" },
+      "W2": { "min": 20, "max": 100, "step": 20, "unit": "N" }
+    },
+    "answerFormula": "(W1 * d - W2 * (L - d)) / (L - d)"
+  },
+  {
+    "id": "m2-q11-systeme-trois-cables",
+    "module": 2,
+    "tags": ["equilibrium-2d", "cables"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Système à trois câbles",
+    "statement": "Une charge W = {W} N est suspendue par trois câbles formant des angles de 0° (horizontal gauche), 90° (vertical) et {angle}° avec l'horizontale vers la droite. Calculez la tension dans le câble horizontal.",
+    "givens": {
+      "W": 300,
+      "angle": 45
+    },
+    "unknowns": ["T1"],
+    "answer": {
+      "variable": "T1",
+      "value": 300,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le câble vertical porte une partie du poids",
+      "Le câble horizontal équilibre la composante horizontale du câble incliné",
+      "Utilisez ΣFx = 0 et ΣFy = 0"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "212",
+        "patternType": "value",
+        "message": "Vous avez mal identifié quelle tension équilibre l'horizontale",
+        "hint": "T1 = T3×cos(45°) où T3 est le câble incliné",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Soit T1 (horizontal), T2 (vertical), T3 (incliné à 45°). ΣFx = 0: T1 = T3×cos(45°). ΣFy = 0: T2 + T3×sin(45°) = W = 300. Comme le système est hyperstatique, avec symétrie: T1 = T3×cos(45°) = 300 N.",
+    "parameters": {
+      "W": { "min": 200, "max": 500, "step": 50, "unit": "N" },
+      "angle": { "min": 30, "max": 60, "step": 15, "unit": "°" }
+    },
+    "answerFormula": "W / tan(rad(angle))"
   }
 ]

@@ -246,5 +246,315 @@
     ],
     "commonMistakes": [],
     "explanation": "Le comportement élastique correspond à la partie linéaire initiale du diagramme, où la contrainte est proportionnelle à la déformation (loi de Hooke: σ = E×ε). Dans cette zone, si on enlève la charge, le matériau revient à sa longueur initiale. Au-delà de la limite élastique, les déformations deviennent permanentes (plastiques)."
+  },
+  {
+    "id": "m5-q6-allongement-tige",
+    "module": 5,
+    "tags": ["stress", "strain", "youngs-modulus"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Allongement d'une tige sous charge",
+    "statement": "Une tige d'acier de longueur L = {L} mm et de section circulaire de diamètre d = {d} mm est soumise à une force de traction F = {F} kN. Calculez son allongement ΔL en mm. (E = 200 GPa)",
+    "givens": {
+      "L": 2000,
+      "d": 20,
+      "F": 50,
+      "E": 200
+    },
+    "unknowns": ["deltaL"],
+    "answer": {
+      "variable": "ΔL",
+      "value": 1.59,
+      "unit": "mm",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "ΔL = FL/(AE)",
+      "A = πd²/4",
+      "Attention aux unités: F en N, L en mm, E en N/mm²"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.00159",
+        "patternType": "value",
+        "message": "Vous avez gardé le résultat en mètres",
+        "hint": "Si vous travaillez en m, convertissez le résultat final en mm",
+        "category": "unit"
+      }
+    ],
+    "explanation": "A = π×20²/4 = 314.16 mm². σ = F/A = 50000/314.16 = 159.15 MPa. ε = σ/E = 159.15/200000 = 0.000796. ΔL = ε×L = 0.000796×2000 = 1.59 mm.",
+    "parameters": {
+      "L": { "min": 1000, "max": 3000, "step": 500, "unit": "mm" },
+      "d": { "min": 10, "max": 30, "step": 5, "unit": "mm" },
+      "F": { "min": 20, "max": 80, "step": 10, "unit": "kN" }
+    },
+    "answerFormula": "(F * 1000 * L) / (PI * pow(d/2, 2) * E * 1000)"
+  },
+  {
+    "id": "m5-q7-contrainte-thermique",
+    "module": 5,
+    "tags": ["thermal-stress", "stress"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Contrainte thermique",
+    "statement": "Une barre d'acier est fixée aux deux extrémités (ne peut pas se dilater). Si la température augmente de {deltaT}°C, calculez la contrainte induite. (E = 200 GPa, α = 12×10⁻⁶ /°C)",
+    "givens": {
+      "deltaT": 50,
+      "E": 200,
+      "alpha": 0.000012
+    },
+    "unknowns": ["sigma"],
+    "answer": {
+      "variable": "σ",
+      "value": 120,
+      "unit": "MPa",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La déformation thermique empêchée = α × ΔT",
+      "Cette déformation génère une contrainte σ = E × ε = E × α × ΔT",
+      "La contrainte est de compression (la barre veut s'allonger mais ne peut pas)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.0006",
+        "patternType": "value",
+        "message": "Vous avez calculé la déformation, pas la contrainte",
+        "hint": "σ = E × ε = E × α × ΔT",
+        "category": "concept"
+      }
+    ],
+    "explanation": "ε_thermique = α × ΔT = 12×10⁻⁶ × 50 = 0.0006. σ = E × ε = 200×10³ × 0.0006 = 120 MPa (compression).",
+    "parameters": {
+      "deltaT": { "min": 20, "max": 100, "step": 10, "unit": "°C" }
+    },
+    "answerFormula": "E * 1000 * alpha * deltaT"
+  },
+  {
+    "id": "m5-q8-contrainte-cisaillement",
+    "module": 5,
+    "tags": ["shear-stress", "stress"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Contrainte de cisaillement dans un boulon",
+    "statement": "Un boulon de diamètre d = {d} mm assemble deux plaques en cisaillement simple. Si la force de cisaillement est F = {F} kN, calculez la contrainte de cisaillement τ en MPa.",
+    "givens": {
+      "d": 12,
+      "F": 20
+    },
+    "unknowns": ["tau"],
+    "answer": {
+      "variable": "τ",
+      "value": 176.8,
+      "unit": "MPa",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "τ = F/A où A est l'aire cisaillée",
+      "En cisaillement simple, A = πd²/4",
+      "Attention aux unités"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "88.4",
+        "patternType": "value",
+        "message": "Vous avez peut-être considéré un cisaillement double",
+        "hint": "En cisaillement simple, il n'y a qu'un seul plan de cisaillement",
+        "category": "concept"
+      }
+    ],
+    "explanation": "A = π×12²/4 = 113.1 mm². τ = F/A = 20000/113.1 = 176.8 MPa.",
+    "parameters": {
+      "d": { "min": 8, "max": 20, "step": 2, "unit": "mm" },
+      "F": { "min": 10, "max": 40, "step": 5, "unit": "kN" }
+    },
+    "answerFormula": "(F * 1000) / (PI * pow(d/2, 2))"
+  },
+  {
+    "id": "m5-q9-coefficient-poisson",
+    "module": 5,
+    "tags": ["poisson-ratio", "strain"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Effet du coefficient de Poisson",
+    "statement": "Une tige cylindrique de diamètre initial d = {d} mm est étirée avec une déformation longitudinale ε = {epsilon}%. Si le coefficient de Poisson est ν = {nu}, calculez la réduction du diamètre Δd en mm.",
+    "givens": {
+      "d": 25,
+      "epsilon": 0.1,
+      "nu": 0.3
+    },
+    "unknowns": ["deltaD"],
+    "answer": {
+      "variable": "Δd",
+      "value": 0.0075,
+      "unit": "mm",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La déformation transversale ε_t = -ν × ε_l",
+      "Δd = ε_t × d",
+      "Convertissez ε de % en valeur décimale"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "7.5",
+        "patternType": "value",
+        "message": "Vous n'avez pas converti le pourcentage en valeur décimale",
+        "hint": "0.1% = 0.001",
+        "category": "unit"
+      }
+    ],
+    "explanation": "ε_l = 0.1% = 0.001. ε_t = -ν × ε_l = -0.3 × 0.001 = -0.0003. Δd = |ε_t| × d = 0.0003 × 25 = 0.0075 mm (réduction).",
+    "parameters": {
+      "d": { "min": 15, "max": 40, "step": 5, "unit": "mm" },
+      "epsilon": { "min": 0.05, "max": 0.2, "step": 0.05, "unit": "%" },
+      "nu": { "min": 0.25, "max": 0.35, "step": 0.05, "unit": "" }
+    },
+    "answerFormula": "nu * (epsilon / 100) * d"
+  },
+  {
+    "id": "m5-q10-energie-deformation",
+    "module": 5,
+    "tags": ["strain-energy", "stress", "strain"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Énergie de déformation élastique",
+    "statement": "Une barre d'acier de longueur L = {L} m et de section A = {A} mm² est soumise à une contrainte σ = {sigma} MPa. Calculez l'énergie de déformation élastique stockée en Joules. (E = 200 GPa)",
+    "givens": {
+      "L": 2,
+      "A": 500,
+      "sigma": 100,
+      "E": 200
+    },
+    "unknowns": ["U"],
+    "answer": {
+      "variable": "U",
+      "value": 25,
+      "unit": "J",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "U = (σ²/2E) × Volume",
+      "Volume = A × L",
+      "Attention aux unités (convertissez tout en SI)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.025",
+        "patternType": "value",
+        "message": "Erreur d'unités, vérifiez les conversions",
+        "hint": "σ en Pa, E en Pa, A en m², L en m",
+        "category": "unit"
+      }
+    ],
+    "explanation": "U = (σ²/2E) × V = (100²/(2×200000)) × (500×10⁻⁶ × 2) = (10000/400000) × 0.001 = 0.025 × 1 = 25 J. Ou: U = σ²×V/(2E) = (100×10⁶)² × (500×10⁻⁶ × 2) / (2 × 200×10⁹) = 25 J.",
+    "parameters": {
+      "L": { "min": 1, "max": 4, "step": 0.5, "unit": "m" },
+      "A": { "min": 200, "max": 1000, "step": 100, "unit": "mm²" },
+      "sigma": { "min": 50, "max": 200, "step": 25, "unit": "MPa" }
+    },
+    "answerFormula": "(sigma * sigma * A * L) / (2 * E * 1000)"
+  },
+  {
+    "id": "m5-q11-concentration-contrainte",
+    "module": 5,
+    "tags": ["stress-concentration", "stress"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Concentration de contrainte",
+    "statement": "Une plaque de largeur w = {w} mm et d'épaisseur t = {t} mm a un trou circulaire de diamètre d = {d} mm en son centre. Si la charge de traction est P = {P} kN et le facteur de concentration Kt = {Kt}, calculez la contrainte maximale au bord du trou.",
+    "givens": {
+      "w": 100,
+      "t": 10,
+      "d": 20,
+      "P": 40,
+      "Kt": 2.5
+    },
+    "unknowns": ["sigma_max"],
+    "answer": {
+      "variable": "σmax",
+      "value": 125,
+      "unit": "MPa",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La section nette = (w - d) × t",
+      "La contrainte nominale σ_nom = P / A_nette",
+      "La contrainte max = Kt × σ_nom"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "100",
+        "patternType": "value",
+        "message": "Vous avez calculé la contrainte nominale sans appliquer Kt",
+        "hint": "σmax = Kt × σnom",
+        "category": "concept"
+      }
+    ],
+    "explanation": "A_nette = (100 - 20) × 10 = 800 mm². σ_nom = 40000 / 800 = 50 MPa. σ_max = Kt × σ_nom = 2.5 × 50 = 125 MPa.",
+    "parameters": {
+      "w": { "min": 60, "max": 150, "step": 10, "unit": "mm" },
+      "t": { "min": 5, "max": 15, "step": 2.5, "unit": "mm" },
+      "d": { "min": 10, "max": 30, "step": 5, "unit": "mm" },
+      "P": { "min": 20, "max": 80, "step": 10, "unit": "kN" },
+      "Kt": { "min": 2, "max": 3, "step": 0.25, "unit": "" }
+    },
+    "answerFormula": "Kt * (P * 1000) / ((w - d) * t)"
+  },
+  {
+    "id": "m5-q12-contrainte-flexion",
+    "module": 5,
+    "tags": ["bending-stress", "stress"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Contrainte de flexion dans une poutre",
+    "statement": "Une poutre rectangulaire de largeur b = {b} mm et de hauteur h = {h} mm est soumise à un moment de flexion M = {M} N·m. Calculez la contrainte maximale de flexion.",
+    "givens": {
+      "b": 50,
+      "h": 100,
+      "M": 5000
+    },
+    "unknowns": ["sigma_max"],
+    "answer": {
+      "variable": "σmax",
+      "value": 60,
+      "unit": "MPa",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le moment d'inertie I = bh³/12",
+      "La distance maximale au neutre c = h/2",
+      "σmax = Mc/I = 6M/(bh²)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "30",
+        "patternType": "value",
+        "message": "Vous avez peut-être utilisé la mauvaise formule pour I",
+        "hint": "Pour une section rectangulaire, I = bh³/12",
+        "category": "formula"
+      }
+    ],
+    "explanation": "I = bh³/12 = 50×100³/12 = 4.167×10⁶ mm⁴. c = h/2 = 50 mm. σmax = Mc/I = 5000×10³ × 50 / 4.167×10⁶ = 60 MPa. Ou σmax = 6M/(bh²) = 6×5000×10³/(50×100²) = 60 MPa.",
+    "parameters": {
+      "b": { "min": 30, "max": 80, "step": 10, "unit": "mm" },
+      "h": { "min": 80, "max": 150, "step": 10, "unit": "mm" },
+      "M": { "min": 2000, "max": 10000, "step": 1000, "unit": "N·m" }
+    },
+    "answerFormula": "6 * M * 1000 / (b * h * h)"
   }
 ]

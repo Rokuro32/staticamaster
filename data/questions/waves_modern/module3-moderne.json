@@ -297,5 +297,351 @@
       "t": { "min": 10, "max": 60, "step": 10, "unit": "ans" }
     },
     "answerFormula": "pow(0.5, t/T) * 100"
+  },
+  {
+    "id": "wm-m3-q8-energie-cinetique-photon",
+    "module": 3,
+    "tags": ["photoelectric", "photon"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Energie cinetique des photoelectrons",
+    "statement": "De la lumiere de longueur d'onde λ = {lambda} nm frappe un metal dont le travail d'extraction est W = {W} eV. Calculez l'energie cinetique maximale des electrons emis en eV. (h = 4.14×10⁻¹⁵ eV·s, c = 3×10⁸ m/s)",
+    "givens": {
+      "lambda": 400,
+      "W": 2.0,
+      "h": 4.14e-15,
+      "c": 3e8
+    },
+    "unknowns": ["Ek"],
+    "answer": {
+      "variable": "Ek",
+      "value": 1.1,
+      "unit": "eV",
+      "tolerance": 5,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Energie du photon: E = hc/λ",
+      "Equation photoelectrique: Ek = E - W",
+      "Ek = hc/λ - W"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "3.1",
+        "patternType": "value",
+        "message": "Vous avez donne l'energie du photon, pas l'energie cinetique",
+        "hint": "Ek = E_photon - W",
+        "category": "concept"
+      }
+    ],
+    "explanation": "E_photon = hc/λ = (4.14×10⁻¹⁵ × 3×10⁸)/(400×10⁻⁹) = 3.1 eV. Ek = 3.1 - 2.0 = 1.1 eV.",
+    "parameters": {
+      "lambda": { "min": 300, "max": 500, "step": 50, "unit": "nm" },
+      "W": { "min": 1.5, "max": 3.0, "step": 0.5, "unit": "eV" }
+    },
+    "answerFormula": "(h * c / (lambda * 1e-9)) / 1.6e-19 - W"
+  },
+  {
+    "id": "wm-m3-q9-compton",
+    "module": 3,
+    "tags": ["compton", "photon"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Effet Compton",
+    "statement": "Un photon de longueur d'onde λ = {lambda} pm est diffuse par un electron. Si l'angle de diffusion est {theta}°, calculez le changement de longueur d'onde Δλ en pm. (λc = 2.43 pm)",
+    "givens": {
+      "lambda": 100,
+      "theta": 90,
+      "lambda_c": 2.43
+    },
+    "unknowns": ["delta_lambda"],
+    "answer": {
+      "variable": "Δλ",
+      "value": 2.43,
+      "unit": "pm",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Formule de Compton: Δλ = λc(1 - cos(θ))",
+      "λc = h/(mec) = 2.43 pm est la longueur d'onde Compton",
+      "Pour θ = 90°, cos(90°) = 0"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "4.86",
+        "patternType": "value",
+        "message": "Vous avez utilise (1 + cos) au lieu de (1 - cos)",
+        "hint": "Δλ = λc(1 - cos(θ))",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Δλ = λc(1 - cos(θ)) = 2.43 × (1 - cos(90°)) = 2.43 × (1 - 0) = 2.43 pm.",
+    "parameters": {
+      "theta": { "min": 45, "max": 180, "step": 45, "unit": "°" }
+    },
+    "answerFormula": "lambda_c * (1 - cos(rad(theta)))"
+  },
+  {
+    "id": "wm-m3-q10-bohr-energie",
+    "module": 3,
+    "tags": ["bohr", "hydrogen"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Niveaux d'energie de Bohr",
+    "statement": "L'energie du niveau fondamental de l'hydrogene est E1 = -13.6 eV. Calculez l'energie du niveau n = {n}.",
+    "givens": {
+      "E1": -13.6,
+      "n": 3
+    },
+    "unknowns": ["En"],
+    "answer": {
+      "variable": "En",
+      "value": -1.51,
+      "unit": "eV",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "En = E1/n²",
+      "L'energie est inversement proportionnelle a n²",
+      "Les niveaux superieurs ont des energies moins negatives"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "4.53",
+        "patternType": "value",
+        "message": "Vous avez divise par n au lieu de n²",
+        "hint": "En = E1/n²",
+        "category": "formula"
+      }
+    ],
+    "explanation": "En = E1/n² = -13.6/3² = -13.6/9 = -1.51 eV.",
+    "parameters": {
+      "n": { "min": 2, "max": 6, "step": 1, "unit": "" }
+    },
+    "answerFormula": "E1 / (n * n)"
+  },
+  {
+    "id": "wm-m3-q11-transition-hydrogene",
+    "module": 3,
+    "tags": ["bohr", "hydrogen", "photon"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Transition dans l'hydrogene",
+    "statement": "Un electron dans l'hydrogene passe du niveau n = {ni} au niveau n = {nf}. Calculez la longueur d'onde du photon emis en nm. (E1 = -13.6 eV, hc = 1240 eV·nm)",
+    "givens": {
+      "ni": 4,
+      "nf": 2,
+      "E1": -13.6,
+      "hc": 1240
+    },
+    "unknowns": ["lambda"],
+    "answer": {
+      "variable": "λ",
+      "value": 486,
+      "unit": "nm",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "ΔE = |Ef - Ei| = |E1|(1/nf² - 1/ni²)",
+      "λ = hc/ΔE",
+      "Cette transition fait partie de la serie de Balmer (visible)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "2550",
+        "patternType": "value",
+        "message": "Vous avez inverse ni et nf dans le calcul",
+        "hint": "ΔE = |E1|(1/nf² - 1/ni²) avec ni > nf pour emission",
+        "category": "formula"
+      }
+    ],
+    "explanation": "ΔE = 13.6 × (1/2² - 1/4²) = 13.6 × (0.25 - 0.0625) = 13.6 × 0.1875 = 2.55 eV. λ = 1240/2.55 = 486 nm.",
+    "parameters": {
+      "ni": { "min": 3, "max": 6, "step": 1, "unit": "" },
+      "nf": { "min": 1, "max": 3, "step": 1, "unit": "" }
+    },
+    "answerFormula": "hc / (abs(E1) * (1/(nf*nf) - 1/(ni*ni)))"
+  },
+  {
+    "id": "wm-m3-q12-contraction-longueur",
+    "module": 3,
+    "tags": ["relativity", "length-contraction"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Contraction des longueurs",
+    "statement": "Un vaisseau de longueur propre L0 = {L0} m voyage a {v}c. Quelle longueur mesure un observateur au repos?",
+    "givens": {
+      "L0": 100,
+      "v": 0.6
+    },
+    "unknowns": ["L"],
+    "answer": {
+      "variable": "L",
+      "value": 80,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Contraction: L = L0 × √(1 - v²/c²)",
+      "γ = 1/√(1 - v²/c²)",
+      "L = L0/γ = L0 × √(1 - v²)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "125",
+        "patternType": "value",
+        "message": "Vous avez multiplie par γ au lieu de diviser",
+        "hint": "La longueur contractee est plus courte: L = L0/γ",
+        "category": "concept"
+      }
+    ],
+    "explanation": "L = L0 × √(1 - v²) = 100 × √(1 - 0.36) = 100 × √0.64 = 100 × 0.8 = 80 m.",
+    "parameters": {
+      "L0": { "min": 50, "max": 200, "step": 25, "unit": "m" },
+      "v": { "min": 0.4, "max": 0.9, "step": 0.1, "unit": "c" }
+    },
+    "answerFormula": "L0 * sqrt(1 - v*v)"
+  },
+  {
+    "id": "wm-m3-q13-energie-cinetique-relativiste",
+    "module": 3,
+    "tags": ["relativity", "energy"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Energie cinetique relativiste",
+    "statement": "Une particule de masse au repos m0 = {m0} MeV/c² se deplace a v = {v}c. Calculez son energie cinetique en MeV.",
+    "givens": {
+      "m0": 938,
+      "v": 0.8
+    },
+    "unknowns": ["Ek"],
+    "answer": {
+      "variable": "Ek",
+      "value": 625.3,
+      "unit": "MeV",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Ek = (γ - 1)m0c²",
+      "γ = 1/√(1 - v²/c²)",
+      "Pour v = 0.8c, γ = 1/0.6 = 1.667"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "1563.3",
+        "patternType": "value",
+        "message": "Vous avez calcule l'energie totale γm0c², pas l'energie cinetique",
+        "hint": "Ek = (γ - 1)m0c², pas γm0c²",
+        "category": "concept"
+      }
+    ],
+    "explanation": "γ = 1/√(1 - 0.64) = 1/0.6 = 1.667. Ek = (γ - 1)m0c² = (1.667 - 1) × 938 = 0.667 × 938 = 625.3 MeV.",
+    "parameters": {
+      "m0": { "min": 500, "max": 1000, "step": 100, "unit": "MeV/c²" },
+      "v": { "min": 0.5, "max": 0.9, "step": 0.1, "unit": "c" }
+    },
+    "answerFormula": "(1/sqrt(1 - v*v) - 1) * m0"
+  },
+  {
+    "id": "wm-m3-q14-activite-radioactive",
+    "module": 3,
+    "tags": ["radioactivity", "nuclear"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Activite radioactive",
+    "statement": "Un echantillon a une activite initiale A0 = {A0} Bq et une demi-vie de {T} heures. Calculez son activite apres {t} heures.",
+    "givens": {
+      "A0": 1000,
+      "T": 6,
+      "t": 18
+    },
+    "unknowns": ["A"],
+    "answer": {
+      "variable": "A",
+      "value": 125,
+      "unit": "Bq",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "A = A0 × (1/2)^(t/T)",
+      "Calculez d'abord le nombre de demi-vies: t/T",
+      "L'activite diminue de moitie a chaque demi-vie"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "3",
+        "patternType": "value",
+        "message": "Vous avez calcule le nombre de demi-vies, pas l'activite",
+        "hint": "A = A0 × (1/2)^(t/T)",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Nombre de demi-vies = 18/6 = 3. A = 1000 × (1/2)³ = 1000/8 = 125 Bq.",
+    "parameters": {
+      "A0": { "min": 500, "max": 2000, "step": 250, "unit": "Bq" },
+      "T": { "min": 4, "max": 12, "step": 2, "unit": "h" },
+      "t": { "min": 8, "max": 36, "step": 4, "unit": "h" }
+    },
+    "answerFormula": "A0 * pow(0.5, t/T)"
+  },
+  {
+    "id": "wm-m3-q15-defaut-masse",
+    "module": 3,
+    "tags": ["nuclear", "mass-defect"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Defaut de masse et energie de liaison",
+    "statement": "Un noyau a une masse de {M} u et contient {Z} protons et {N} neutrons. La masse du proton est 1.00728 u et celle du neutron est 1.00866 u. Calculez l'energie de liaison en MeV. (1 u = 931.5 MeV/c²)",
+    "givens": {
+      "M": 4.0026,
+      "Z": 2,
+      "N": 2,
+      "mp": 1.00728,
+      "mn": 1.00866,
+      "c2": 931.5
+    },
+    "unknowns": ["E_b"],
+    "answer": {
+      "variable": "Eb",
+      "value": 28.3,
+      "unit": "MeV",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Masse des constituants = Z×mp + N×mn",
+      "Defaut de masse Δm = (Z×mp + N×mn) - M",
+      "Energie de liaison Eb = Δm × 931.5 MeV"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.0304",
+        "patternType": "value",
+        "message": "Vous avez calcule le defaut de masse en u, pas l'energie",
+        "hint": "Eb = Δm × 931.5 MeV/c²",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Masse des constituants = 2×1.00728 + 2×1.00866 = 4.03188 u. Δm = 4.03188 - 4.0026 = 0.02928 u. Eb = 0.02928 × 931.5 = 27.3 MeV.",
+    "parameters": {
+      "M": { "min": 3.9, "max": 4.1, "step": 0.01, "unit": "u" },
+      "Z": { "min": 1, "max": 3, "step": 1, "unit": "" },
+      "N": { "min": 1, "max": 3, "step": 1, "unit": "" }
+    },
+    "answerFormula": "((Z * mp + N * mn) - M) * c2"
   }
 ]

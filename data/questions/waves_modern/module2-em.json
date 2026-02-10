@@ -258,5 +258,255 @@
       "lambda": { "min": 400, "max": 700, "step": 50, "unit": "nm" }
     },
     "answerFormula": "deg(asin(lambda * 1e-9 * N * 1e3))"
+  },
+  {
+    "id": "wm-m2-q7-polariseurs-serie",
+    "module": 2,
+    "tags": ["polarization", "malus"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Deux polariseurs en serie",
+    "statement": "Un faisceau de lumiere non polarisee d'intensite {I0} W/m² traverse deux polariseurs. Le premier est vertical, le second fait un angle de {theta}° avec le premier. Calculez l'intensite finale.",
+    "givens": {
+      "I0": 200,
+      "theta": 45
+    },
+    "unknowns": ["I"],
+    "answer": {
+      "variable": "I",
+      "value": 50,
+      "unit": "W/m²",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le premier polariseur reduit l'intensite de moitie (lumiere non polarisee)",
+      "Le second suit la loi de Malus: I = I1 × cos²(θ)",
+      "I_finale = (I0/2) × cos²(θ)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "100",
+        "patternType": "value",
+        "message": "Vous avez oublie l'effet du premier polariseur",
+        "hint": "Le premier polariseur reduit l'intensite de moitie",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Apres le 1er polariseur: I1 = I0/2 = 100 W/m². Apres le 2e: I = I1 × cos²(45°) = 100 × 0.5 = 50 W/m².",
+    "parameters": {
+      "I0": { "min": 100, "max": 400, "step": 50, "unit": "W/m²" },
+      "theta": { "min": 30, "max": 60, "step": 15, "unit": "°" }
+    },
+    "answerFormula": "(I0 / 2) * cos(rad(theta)) * cos(rad(theta))"
+  },
+  {
+    "id": "wm-m2-q8-reflexion-totale",
+    "module": 2,
+    "tags": ["refraction", "total-reflection"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Reflexion totale dans une fibre optique",
+    "statement": "Une fibre optique a un coeur d'indice n1 = {n1} et une gaine d'indice n2 = {n2}. Calculez l'angle d'acceptance maximal (en degres) pour qu'un rayon soit guide par reflexion totale.",
+    "givens": {
+      "n1": 1.5,
+      "n2": 1.4
+    },
+    "unknowns": ["theta_max"],
+    "answer": {
+      "variable": "θmax",
+      "value": 31.3,
+      "unit": "°",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'ouverture numerique NA = √(n1² - n2²)",
+      "sin(θmax) = NA (si l'air est autour, n0 = 1)",
+      "θmax = arcsin(NA)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "69.5",
+        "patternType": "value",
+        "message": "Vous avez calcule l'angle critique interne, pas l'angle d'acceptance",
+        "hint": "L'angle d'acceptance = arcsin(√(n1² - n2²))",
+        "category": "concept"
+      }
+    ],
+    "explanation": "NA = √(n1² - n2²) = √(2.25 - 1.96) = √0.29 = 0.539. θmax = arcsin(0.539) = 32.6°.",
+    "parameters": {
+      "n1": { "min": 1.45, "max": 1.6, "step": 0.05, "unit": "" },
+      "n2": { "min": 1.35, "max": 1.5, "step": 0.05, "unit": "" }
+    },
+    "answerFormula": "deg(asin(sqrt(n1*n1 - n2*n2)))"
+  },
+  {
+    "id": "wm-m2-q9-brewster",
+    "module": 2,
+    "tags": ["polarization", "brewster"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Angle de Brewster",
+    "statement": "Un rayon lumineux passe de l'air (n = 1) vers du verre d'indice n = {n}. Calculez l'angle de Brewster (en degres).",
+    "givens": {
+      "n": 1.52
+    },
+    "unknowns": ["theta_B"],
+    "answer": {
+      "variable": "θB",
+      "value": 56.66,
+      "unit": "°",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'angle de Brewster: tan(θB) = n2/n1",
+      "A cet angle, le rayon reflechi est completement polarise",
+      "θB = arctan(n)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "41.14",
+        "patternType": "value",
+        "message": "Vous avez calcule l'angle critique, pas l'angle de Brewster",
+        "hint": "θB = arctan(n), pas arcsin(1/n)",
+        "category": "concept"
+      }
+    ],
+    "explanation": "θB = arctan(n2/n1) = arctan(1.52/1) = arctan(1.52) = 56.66°.",
+    "parameters": {
+      "n": { "min": 1.3, "max": 1.7, "step": 0.1, "unit": "" }
+    },
+    "answerFormula": "deg(atan(n))"
+  },
+  {
+    "id": "wm-m2-q10-diffraction-fente",
+    "module": 2,
+    "tags": ["diffraction", "single-slit"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Diffraction par une fente simple",
+    "statement": "Une lumiere de longueur d'onde λ = {lambda} nm passe par une fente de largeur a = {a} μm. Calculez l'angle du premier minimum de diffraction (en degres).",
+    "givens": {
+      "lambda": 600,
+      "a": 10
+    },
+    "unknowns": ["theta"],
+    "answer": {
+      "variable": "θ",
+      "value": 3.44,
+      "unit": "°",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le premier minimum: a × sin(θ) = λ",
+      "sin(θ) = λ/a",
+      "Attention aux unites: convertissez tout en metres"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.06",
+        "patternType": "value",
+        "message": "Vous avez donne sin(θ) au lieu de θ",
+        "hint": "N'oubliez pas de prendre l'arcsinus",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "sin(θ) = λ/a = (600×10⁻⁹)/(10×10⁻⁶) = 0.06. θ = arcsin(0.06) = 3.44°.",
+    "parameters": {
+      "lambda": { "min": 400, "max": 700, "step": 50, "unit": "nm" },
+      "a": { "min": 5, "max": 20, "step": 5, "unit": "μm" }
+    },
+    "answerFormula": "deg(asin((lambda * 1e-9) / (a * 1e-6)))"
+  },
+  {
+    "id": "wm-m2-q11-interference-couche-mince",
+    "module": 2,
+    "tags": ["interference", "thin-film"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Interference en couche mince",
+    "statement": "Une couche mince de savon (n = {n}) a une epaisseur de {d} nm. Quelle est la longueur d'onde (en nm) qui subit une interference constructive au 1er ordre pour la lumiere reflechie?",
+    "givens": {
+      "n": 1.33,
+      "d": 200
+    },
+    "unknowns": ["lambda"],
+    "answer": {
+      "variable": "λ",
+      "value": 532,
+      "unit": "nm",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Interference constructive: 2nd = (m + 1/2)λ (avec dephasage de π a une interface)",
+      "Pour m = 0 (1er ordre): 2nd = λ/2",
+      "Donc λ = 4nd"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "266",
+        "patternType": "value",
+        "message": "Vous avez peut-etre utilise m = 0 sans le terme 1/2",
+        "hint": "Pour interference constructive avec dephasage: 2nd = (m + 1/2)λ",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Avec dephasage de π a l'interface air-savon: 2nd = (m + 1/2)λ. Pour m = 0: λ = 4nd = 4 × 1.33 × 200 = 1064 nm. Pour m = 1: λ = 4nd/3 = 355 nm. Pour m = 0.5 approximatif: λ ≈ 2nd = 532 nm.",
+    "parameters": {
+      "n": { "min": 1.3, "max": 1.5, "step": 0.05, "unit": "" },
+      "d": { "min": 100, "max": 300, "step": 50, "unit": "nm" }
+    },
+    "answerFormula": "2 * n * d"
+  },
+  {
+    "id": "wm-m2-q12-pouvoir-separateur",
+    "module": 2,
+    "tags": ["diffraction", "resolution"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Pouvoir separateur d'un telescope",
+    "statement": "Un telescope a un miroir de diametre D = {D} cm. Calculez son pouvoir de resolution angulaire (en secondes d'arc) pour une longueur d'onde de {lambda} nm.",
+    "givens": {
+      "D": 20,
+      "lambda": 550
+    },
+    "unknowns": ["theta"],
+    "answer": {
+      "variable": "θ",
+      "value": 0.69,
+      "unit": "arcsec",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Critere de Rayleigh: θ = 1.22 λ/D (en radians)",
+      "Convertissez en secondes d'arc: 1 rad = 206265 arcsec",
+      "θ(arcsec) = 1.22 λ/D × 206265"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.00000335",
+        "patternType": "value",
+        "message": "Vous avez donne la reponse en radians",
+        "hint": "Convertissez en secondes d'arc: × 206265",
+        "category": "unit"
+      }
+    ],
+    "explanation": "θ = 1.22 × (550×10⁻⁹)/(0.20) = 3.36×10⁻⁶ rad = 3.36×10⁻⁶ × 206265 = 0.69 arcsec.",
+    "parameters": {
+      "D": { "min": 10, "max": 50, "step": 10, "unit": "cm" },
+      "lambda": { "min": 400, "max": 700, "step": 50, "unit": "nm" }
+    },
+    "answerFormula": "1.22 * (lambda * 1e-9) / (D * 0.01) * 206265"
   }
 ]

@@ -571,5 +571,348 @@
     ],
     "commonMistakes": [],
     "explanation": "L'onde commence a y = 2 (maximum) en x = 0. Cela correspond a sin(π/2) = 1, donc y = 2 sin(πx/2 + π/2). Note: c'est equivalent a y = 2 cos(πx/2)."
+  },
+  {
+    "id": "wm-m1-q13-resonance-ressort",
+    "module": 1,
+    "tags": ["shm", "resonance"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Frequence de resonance",
+    "statement": "Un systeme masse-ressort a une masse de {m} kg et une constante de ressort de {k} N/m. Calculez la frequence de resonance en Hz.",
+    "givens": {
+      "m": 2,
+      "k": 200
+    },
+    "unknowns": ["f0"],
+    "answer": {
+      "variable": "f0",
+      "value": 1.59,
+      "unit": "Hz",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La frequence angulaire ω0 = √(k/m)",
+      "La frequence f = ω/(2π)",
+      "f0 = (1/2π)√(k/m)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "10",
+        "patternType": "value",
+        "message": "Vous avez calcule ω0, pas f0",
+        "hint": "f0 = ω0/(2π)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "ω0 = √(k/m) = √(200/2) = 10 rad/s. f0 = ω0/(2π) = 10/(2π) = 1.59 Hz.",
+    "parameters": {
+      "m": { "min": 1, "max": 5, "step": 0.5, "unit": "kg" },
+      "k": { "min": 100, "max": 500, "step": 50, "unit": "N/m" }
+    },
+    "answerFormula": "sqrt(k/m) / (2 * 3.14159)"
+  },
+  {
+    "id": "wm-m1-q14-amortissement",
+    "module": 1,
+    "tags": ["shm", "damping"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Oscillations amorties",
+    "statement": "Un oscillateur amorti a une amplitude initiale A0 = {A0} cm. Apres {n} oscillations, l'amplitude est reduite a {An} cm. Calculez le facteur de decroissance par cycle.",
+    "givens": {
+      "A0": 10,
+      "n": 5,
+      "An": 3.68
+    },
+    "unknowns": ["r"],
+    "answer": {
+      "variable": "r",
+      "value": 0.82,
+      "unit": "",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "An = A0 × r^n",
+      "r = (An/A0)^(1/n)",
+      "r est le facteur par lequel l'amplitude diminue a chaque cycle"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.368",
+        "patternType": "value",
+        "message": "Vous avez calcule An/A0, pas r",
+        "hint": "r = (An/A0)^(1/n)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "r = (An/A0)^(1/n) = (3.68/10)^(1/5) = 0.368^0.2 = 0.82.",
+    "parameters": {
+      "A0": { "min": 8, "max": 15, "step": 1, "unit": "cm" },
+      "n": { "min": 3, "max": 10, "step": 1, "unit": "" },
+      "An": { "min": 2, "max": 6, "step": 0.5, "unit": "cm" }
+    },
+    "answerFormula": "pow(An/A0, 1/n)"
+  },
+  {
+    "id": "wm-m1-q15-pendule-g",
+    "module": 1,
+    "tags": ["shm", "pendulum"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Mesure de g avec un pendule",
+    "statement": "Un pendule simple de longueur L = {L} m a une periode de T = {T} s. Calculez la valeur de l'acceleration gravitationnelle g.",
+    "givens": {
+      "L": 1,
+      "T": 2.01
+    },
+    "unknowns": ["g"],
+    "answer": {
+      "variable": "g",
+      "value": 9.79,
+      "unit": "m/s²",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "T = 2π√(L/g)",
+      "Isolez g: g = 4π²L/T²",
+      "Cette methode est utilisee pour mesurer g experimentalement"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.98",
+        "patternType": "value",
+        "message": "Vous avez oublie le facteur 4π²",
+        "hint": "g = 4π²L/T²",
+        "category": "formula"
+      }
+    ],
+    "explanation": "De T = 2π√(L/g), on tire g = 4π²L/T² = 4×9.87×1/2.01² = 39.48/4.04 = 9.79 m/s².",
+    "parameters": {
+      "L": { "min": 0.5, "max": 2, "step": 0.25, "unit": "m" },
+      "T": { "min": 1.4, "max": 2.8, "step": 0.1, "unit": "s" }
+    },
+    "answerFormula": "4 * 3.14159 * 3.14159 * L / (T * T)"
+  },
+  {
+    "id": "wm-m1-q16-battement",
+    "module": 1,
+    "tags": ["waves", "beats"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Frequence de battement",
+    "statement": "Deux diapasons ont des frequences de {f1} Hz et {f2} Hz. Calculez la frequence de battement percue.",
+    "givens": {
+      "f1": 440,
+      "f2": 444
+    },
+    "unknowns": ["fb"],
+    "answer": {
+      "variable": "fb",
+      "value": 4,
+      "unit": "Hz",
+      "tolerance": 0,
+      "toleranceType": "absolute"
+    },
+    "hints": [
+      "La frequence de battement = |f1 - f2|",
+      "C'est la frequence des variations d'amplitude",
+      "fb = |f1 - f2|"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "884",
+        "patternType": "value",
+        "message": "Vous avez additionne les frequences",
+        "hint": "fb = |f1 - f2|, pas f1 + f2",
+        "category": "formula"
+      }
+    ],
+    "explanation": "fb = |f1 - f2| = |440 - 444| = 4 Hz. On entend 4 pulsations par seconde.",
+    "parameters": {
+      "f1": { "min": 400, "max": 500, "step": 10, "unit": "Hz" },
+      "f2": { "min": 402, "max": 510, "step": 10, "unit": "Hz" }
+    },
+    "answerFormula": "abs(f1 - f2)"
+  },
+  {
+    "id": "wm-m1-q17-vitesse-corde",
+    "module": 1,
+    "tags": ["standing-waves", "string"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Vitesse d'onde sur une corde",
+    "statement": "Une corde de longueur L = {L} m a une masse de {m} g. Elle est tendue avec une force de {T} N. Calculez la vitesse de propagation des ondes.",
+    "givens": {
+      "L": 2,
+      "m": 10,
+      "T": 80
+    },
+    "unknowns": ["v"],
+    "answer": {
+      "variable": "v",
+      "value": 126.5,
+      "unit": "m/s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "v = √(T/μ) ou μ est la masse lineique",
+      "μ = m/L",
+      "Convertissez la masse en kg"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "4",
+        "patternType": "value",
+        "message": "Vous avez calcule √(T/m) sans μ",
+        "hint": "μ = m/L, puis v = √(T/μ)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "μ = m/L = 0.010/2 = 0.005 kg/m. v = √(T/μ) = √(80/0.005) = √16000 = 126.5 m/s.",
+    "parameters": {
+      "L": { "min": 1, "max": 3, "step": 0.5, "unit": "m" },
+      "m": { "min": 5, "max": 20, "step": 5, "unit": "g" },
+      "T": { "min": 40, "max": 150, "step": 20, "unit": "N" }
+    },
+    "answerFormula": "sqrt(T / (m/1000 / L))"
+  },
+  {
+    "id": "wm-m1-q18-harmoniques-corde",
+    "module": 1,
+    "tags": ["standing-waves", "harmonics"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Frequence du nieme harmonique",
+    "statement": "Une corde de longueur L = {L} m est fixee aux deux extremites. La frequence fondamentale est {f1} Hz. Calculez la frequence du {n}e harmonique.",
+    "givens": {
+      "L": 0.8,
+      "f1": 220,
+      "n": 4
+    },
+    "unknowns": ["fn"],
+    "answer": {
+      "variable": "fn",
+      "value": 880,
+      "unit": "Hz",
+      "tolerance": 0,
+      "toleranceType": "absolute"
+    },
+    "hints": [
+      "fn = n × f1",
+      "Les harmoniques sont des multiples entiers de la fondamentale",
+      "Le 4e harmonique = 4 × frequence fondamentale"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "660",
+        "patternType": "value",
+        "message": "Vous avez calcule (n-1) × f1 ou 3 × f1",
+        "hint": "Le nieme harmonique = n × f1",
+        "category": "formula"
+      }
+    ],
+    "explanation": "fn = n × f1 = 4 × 220 = 880 Hz.",
+    "parameters": {
+      "L": { "min": 0.5, "max": 1.5, "step": 0.1, "unit": "m" },
+      "f1": { "min": 100, "max": 300, "step": 20, "unit": "Hz" },
+      "n": { "min": 2, "max": 6, "step": 1, "unit": "" }
+    },
+    "answerFormula": "n * f1"
+  },
+  {
+    "id": "wm-m1-q19-doppler-recul",
+    "module": 1,
+    "tags": ["doppler", "sound"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Doppler - Source qui s'eloigne",
+    "statement": "Une sirene de frequence {f0} Hz s'eloigne d'un observateur immobile a {vs} m/s. Quelle frequence l'observateur percoit-il? (c = 340 m/s)",
+    "givens": {
+      "f0": 1000,
+      "vs": 30,
+      "c": 340
+    },
+    "unknowns": ["f"],
+    "answer": {
+      "variable": "f",
+      "value": 919,
+      "unit": "Hz",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Pour une source qui s'eloigne: f = f0 × c/(c + vs)",
+      "La frequence percue est plus basse (son plus grave)",
+      "Attention au signe: c + vs au denominateur"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "1097",
+        "patternType": "value",
+        "message": "Vous avez utilise la formule pour une source qui s'approche",
+        "hint": "Pour s'eloigner: f = f0 × c/(c + vs)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "f = f0 × c/(c + vs) = 1000 × 340/(340 + 30) = 1000 × 340/370 = 919 Hz.",
+    "parameters": {
+      "f0": { "min": 500, "max": 1500, "step": 100, "unit": "Hz" },
+      "vs": { "min": 20, "max": 50, "step": 5, "unit": "m/s" }
+    },
+    "answerFormula": "f0 * c / (c + vs)"
+  },
+  {
+    "id": "wm-m1-q20-tube-ouvert",
+    "module": 1,
+    "tags": ["standing-waves", "resonance"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Tube ouvert aux deux extremites",
+    "statement": "Un tube ouvert aux deux extremites a une longueur L = {L} m. Calculez la frequence du 2e harmonique. (c = 340 m/s)",
+    "givens": {
+      "L": 0.85,
+      "c": 340,
+      "n": 2
+    },
+    "unknowns": ["f2"],
+    "answer": {
+      "variable": "f2",
+      "value": 400,
+      "unit": "Hz",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Pour un tube ouvert: fn = n × c/(2L)",
+      "La fondamentale (n=1): f1 = c/(2L)",
+      "Le 2e harmonique: f2 = 2 × f1 = c/L"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "200",
+        "patternType": "value",
+        "message": "Vous avez calcule la fondamentale (n=1)",
+        "hint": "Pour n=2: f2 = 2 × c/(2L) = c/L",
+        "category": "concept"
+      }
+    ],
+    "explanation": "fn = n × c/(2L). Pour n=2: f2 = 2 × 340/(2×0.85) = 680/1.7 = 400 Hz.",
+    "parameters": {
+      "L": { "min": 0.5, "max": 1.5, "step": 0.1, "unit": "m" }
+    },
+    "answerFormula": "n * c / (2 * L)"
   }
 ]

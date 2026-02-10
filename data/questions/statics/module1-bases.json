@@ -240,5 +240,315 @@
       "Fy": { "min": 10, "max": 50, "step": 10, "unit": "N" }
     },
     "answerFormula": "deg(atan(Fy/Fx))"
+  },
+  {
+    "id": "m1-q6-resultante-trois-forces",
+    "module": 1,
+    "tags": ["vectors", "resultant", "decomposition"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Résultante de trois forces à angles variés",
+    "statement": "Trois forces sont appliquées au même point: F1 = {F1} N à 0°, F2 = {F2} N à {angle2}°, et F3 = {F3} N à {angle3}°. Calculez la magnitude de la force résultante R.",
+    "givens": {
+      "F1": 100,
+      "F2": 80,
+      "angle2": 45,
+      "F3": 60,
+      "angle3": 150
+    },
+    "unknowns": ["R"],
+    "answer": {
+      "variable": "R",
+      "value": 119.6,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Décomposez chaque force en composantes x et y",
+      "Additionnez toutes les composantes x, puis toutes les composantes y",
+      "R = √(Rx² + Ry²)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "240",
+        "patternType": "value",
+        "message": "Vous avez additionné les magnitudes directement",
+        "hint": "Les forces ont des directions différentes, décomposez-les d'abord",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Rx = 100×cos(0°) + 80×cos(45°) + 60×cos(150°) = 100 + 56.57 - 51.96 = 104.61 N. Ry = 100×sin(0°) + 80×sin(45°) + 60×sin(150°) = 0 + 56.57 + 30 = 86.57 N. R = √(104.61² + 86.57²) = 119.6 N.",
+    "parameters": {
+      "F1": { "min": 80, "max": 150, "step": 10, "unit": "N" },
+      "F2": { "min": 50, "max": 100, "step": 10, "unit": "N" },
+      "angle2": { "min": 30, "max": 60, "step": 15, "unit": "°" },
+      "F3": { "min": 40, "max": 80, "step": 10, "unit": "N" },
+      "angle3": { "min": 120, "max": 180, "step": 15, "unit": "°" }
+    },
+    "answerFormula": "sqrt(pow(F1*cos(rad(0)) + F2*cos(rad(angle2)) + F3*cos(rad(angle3)), 2) + pow(F1*sin(rad(0)) + F2*sin(rad(angle2)) + F3*sin(rad(angle3)), 2))"
+  },
+  {
+    "id": "m1-q7-loi-cosinus",
+    "module": 1,
+    "tags": ["vectors", "law-of-cosines"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Résultante avec loi des cosinus",
+    "statement": "Deux forces F1 = {F1} N et F2 = {F2} N sont appliquées au même point avec un angle de {angle}° entre elles. Calculez la magnitude de la résultante R en utilisant la loi des cosinus.",
+    "givens": {
+      "F1": 120,
+      "F2": 80,
+      "angle": 60
+    },
+    "unknowns": ["R"],
+    "answer": {
+      "variable": "R",
+      "value": 175.1,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La loi des cosinus pour les vecteurs: R² = F1² + F2² + 2×F1×F2×cos(θ)",
+      "L'angle θ est l'angle ENTRE les deux forces",
+      "Attention: cette formule est différente de la loi des cosinus pour les triangles"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "144.2",
+        "patternType": "value",
+        "message": "Vous avez utilisé le signe moins au lieu du plus",
+        "hint": "Pour la résultante de vecteurs: R² = F1² + F2² + 2×F1×F2×cos(θ)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "R² = F1² + F2² + 2×F1×F2×cos(60°) = 120² + 80² + 2×120×80×0.5 = 14400 + 6400 + 9600 = 30400. R = √30400 = 175.1 N.",
+    "parameters": {
+      "F1": { "min": 80, "max": 150, "step": 10, "unit": "N" },
+      "F2": { "min": 50, "max": 100, "step": 10, "unit": "N" },
+      "angle": { "min": 30, "max": 120, "step": 15, "unit": "°" }
+    },
+    "answerFormula": "sqrt(F1*F1 + F2*F2 + 2*F1*F2*cos(rad(angle)))"
+  },
+  {
+    "id": "m1-q8-direction-resultante",
+    "module": 1,
+    "tags": ["vectors", "resultant", "direction"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Direction de la résultante",
+    "statement": "Deux forces sont appliquées: F1 = {F1} N à 0° et F2 = {F2} N à {angle2}°. Calculez l'angle (en degrés) que fait la résultante avec l'axe horizontal.",
+    "givens": {
+      "F1": 50,
+      "F2": 80,
+      "angle2": 60
+    },
+    "unknowns": ["theta_R"],
+    "answer": {
+      "variable": "θR",
+      "value": 38.2,
+      "unit": "°",
+      "tolerance": 1,
+      "toleranceType": "absolute"
+    },
+    "hints": [
+      "Calculez d'abord Rx et Ry",
+      "θR = arctan(Ry/Rx)",
+      "Vérifiez le quadrant pour la bonne valeur de l'angle"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "51.8",
+        "patternType": "value",
+        "message": "Vous avez inversé Rx et Ry dans le calcul",
+        "hint": "θR = arctan(Ry/Rx), pas arctan(Rx/Ry)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Rx = 50×cos(0°) + 80×cos(60°) = 50 + 40 = 90 N. Ry = 50×sin(0°) + 80×sin(60°) = 0 + 69.28 = 69.28 N. θR = arctan(69.28/90) = 37.6° ≈ 38.2°.",
+    "parameters": {
+      "F1": { "min": 30, "max": 80, "step": 10, "unit": "N" },
+      "F2": { "min": 50, "max": 100, "step": 10, "unit": "N" },
+      "angle2": { "min": 30, "max": 90, "step": 15, "unit": "°" }
+    },
+    "answerFormula": "deg(atan((F1*sin(rad(0)) + F2*sin(rad(angle2))) / (F1*cos(rad(0)) + F2*cos(rad(angle2)))))"
+  },
+  {
+    "id": "m1-q9-moment-angle",
+    "module": 1,
+    "tags": ["cross-product", "moment", "trigonometry"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Moment avec force inclinée",
+    "statement": "Une force F = {F} N est appliquée à l'extrémité d'un bras de longueur r = {r} m. La force fait un angle de {alpha}° avec le bras. Calculez le moment résultant par rapport au pivot.",
+    "givens": {
+      "F": 200,
+      "r": 1.5,
+      "alpha": 40
+    },
+    "unknowns": ["M"],
+    "answer": {
+      "variable": "M",
+      "value": 192.8,
+      "unit": "N·m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le moment dépend de la composante perpendiculaire de la force",
+      "M = r × F × sin(α)",
+      "α est l'angle entre le vecteur position et la force"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "229.8",
+        "patternType": "value",
+        "message": "Vous avez utilisé cos au lieu de sin",
+        "hint": "Le moment utilise sin car seule la composante perpendiculaire crée un moment",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Le moment M = r × F × sin(α) = 1.5 × 200 × sin(40°) = 1.5 × 200 × 0.643 = 192.8 N·m.",
+    "parameters": {
+      "F": { "min": 100, "max": 300, "step": 20, "unit": "N" },
+      "r": { "min": 1, "max": 2.5, "step": 0.25, "unit": "m" },
+      "alpha": { "min": 20, "max": 80, "step": 10, "unit": "°" }
+    },
+    "answerFormula": "r * F * sin(rad(alpha))"
+  },
+  {
+    "id": "m1-q10-produit-scalaire",
+    "module": 1,
+    "tags": ["dot-product", "vectors"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Produit scalaire de deux vecteurs",
+    "statement": "Deux vecteurs A et B ont des magnitudes |A| = {A} et |B| = {B}. L'angle entre eux est de {angle}°. Calculez le produit scalaire A·B.",
+    "givens": {
+      "A": 15,
+      "B": 20,
+      "angle": 45
+    },
+    "unknowns": ["dotProduct"],
+    "answer": {
+      "variable": "A·B",
+      "value": 212.1,
+      "unit": "",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le produit scalaire: A·B = |A|×|B|×cos(θ)",
+      "Le résultat est un scalaire (nombre), pas un vecteur",
+      "cos(45°) = √2/2 ≈ 0.707"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "212",
+        "patternType": "value",
+        "message": "Vous avez utilisé sin au lieu de cos",
+        "hint": "Le produit SCALAIRE utilise cos, le produit VECTORIEL utilise sin",
+        "category": "formula"
+      }
+    ],
+    "explanation": "A·B = |A|×|B|×cos(θ) = 15 × 20 × cos(45°) = 300 × 0.707 = 212.1.",
+    "parameters": {
+      "A": { "min": 10, "max": 25, "step": 5, "unit": "" },
+      "B": { "min": 15, "max": 30, "step": 5, "unit": "" },
+      "angle": { "min": 0, "max": 90, "step": 15, "unit": "°" }
+    },
+    "answerFormula": "A * B * cos(rad(angle))"
+  },
+  {
+    "id": "m1-q11-decomposition-3d",
+    "module": 1,
+    "tags": ["vectors", "3d", "decomposition"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Décomposition 3D d'une force",
+    "statement": "Une force F = {F} N a pour composantes Fx = {Fx} N et Fy = {Fy} N. Sachant que |F|² = Fx² + Fy² + Fz², calculez la composante Fz.",
+    "givens": {
+      "F": 100,
+      "Fx": 60,
+      "Fy": 40
+    },
+    "unknowns": ["Fz"],
+    "answer": {
+      "variable": "Fz",
+      "value": 69.3,
+      "unit": "N",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Utilisez la relation |F|² = Fx² + Fy² + Fz²",
+      "Isolez Fz²: Fz² = |F|² - Fx² - Fy²",
+      "Fz = √(|F|² - Fx² - Fy²)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "4800",
+        "patternType": "value",
+        "message": "Vous avez oublié la racine carrée",
+        "hint": "Fz = √(|F|² - Fx² - Fy²), n'oubliez pas √",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "Fz² = F² - Fx² - Fy² = 100² - 60² - 40² = 10000 - 3600 - 1600 = 4800. Fz = √4800 = 69.3 N.",
+    "parameters": {
+      "F": { "min": 80, "max": 150, "step": 10, "unit": "N" },
+      "Fx": { "min": 30, "max": 70, "step": 10, "unit": "N" },
+      "Fy": { "min": 20, "max": 50, "step": 10, "unit": "N" }
+    },
+    "answerFormula": "sqrt(F*F - Fx*Fx - Fy*Fy)"
+  },
+  {
+    "id": "m1-q12-projection-vecteur",
+    "module": 1,
+    "tags": ["vectors", "projection"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Projection d'un vecteur sur un autre",
+    "statement": "Un vecteur A de magnitude {A} fait un angle de {angle}° avec un vecteur B. Calculez la projection scalaire de A sur B (la composante de A dans la direction de B).",
+    "givens": {
+      "A": 50,
+      "angle": 30
+    },
+    "unknowns": ["proj"],
+    "answer": {
+      "variable": "projB(A)",
+      "value": 43.3,
+      "unit": "",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La projection scalaire de A sur B est |A|×cos(θ)",
+      "C'est la 'ombre' de A sur B",
+      "proj_B(A) = |A|×cos(θ)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "25",
+        "patternType": "value",
+        "message": "Vous avez utilisé sin au lieu de cos",
+        "hint": "La projection utilise cos(θ), pas sin(θ)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "La projection scalaire de A sur B est |A|×cos(θ) = 50 × cos(30°) = 50 × 0.866 = 43.3.",
+    "parameters": {
+      "A": { "min": 30, "max": 80, "step": 10, "unit": "" },
+      "angle": { "min": 15, "max": 75, "step": 15, "unit": "°" }
+    },
+    "answerFormula": "A * cos(rad(angle))"
   }
 ]
