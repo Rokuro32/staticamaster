@@ -250,13 +250,6 @@
         "message": "Vous avez donne la reponse en radians",
         "hint": "Convertissez en tours: n = θ/(2π)",
         "category": "unit"
-      },
-      {
-        "pattern": "50",
-        "patternType": "value",
-        "message": "Vous avez oublie le facteur ½",
-        "hint": "θ = ½αt², pas αt²",
-        "category": "formula"
       }
     ],
     "explanation": "θ = ½αt² = ½ × 2 × 5² = 25 rad. Nombre de tours: n = 25/(2π) = 25/6.28 ≈ 3.98 tours.",
@@ -265,5 +258,357 @@
       "t": { "min": 3, "max": 8, "step": 1, "unit": "s" }
     },
     "answerFormula": "0.5 * alpha * t * t / (2 * 3.14159)"
+  },
+  {
+    "id": "kin-m3-q7-train-compose",
+    "module": 3,
+    "tags": ["speed-transmission", "gear-train"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Train d'engrenages compose",
+    "statement": "Un train d'engrenages a trois etages: z1={z1} dents (moteur), z2={z2} dents, z3={z3} dents (solidaire de z2), z4={z4} dents (sortie). Si l'entree tourne a {n1} tr/min, quelle est la vitesse de sortie?",
+    "givens": {
+      "z1": 20,
+      "z2": 60,
+      "z3": 15,
+      "z4": 45,
+      "n1": 1800
+    },
+    "unknowns": ["n4"],
+    "answer": {
+      "variable": "n4",
+      "value": 200,
+      "unit": "tr/min",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le rapport total est le produit des rapports individuels",
+      "i_total = (z1/z2) × (z3/z4)",
+      "n4 = n1 × i_total"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "16200",
+        "patternType": "value",
+        "message": "Vous avez inverse les rapports",
+        "hint": "i = z_moteur/z_recepteur pour chaque etage",
+        "category": "formula"
+      }
+    ],
+    "explanation": "i_total = (z1/z2) × (z3/z4) = (20/60) × (15/45) = (1/3) × (1/3) = 1/9. n4 = 1800 × 1/9 = 200 tr/min.",
+    "parameters": {
+      "z1": { "min": 15, "max": 25, "step": 5, "unit": "dents" },
+      "z2": { "min": 45, "max": 75, "step": 15, "unit": "dents" },
+      "z3": { "min": 10, "max": 20, "step": 5, "unit": "dents" },
+      "z4": { "min": 30, "max": 60, "step": 15, "unit": "dents" },
+      "n1": { "min": 1200, "max": 2400, "step": 300, "unit": "tr/min" }
+    },
+    "answerFormula": "n1 * (z1/z2) * (z3/z4)"
+  },
+  {
+    "id": "kin-m3-q8-couple-moteur",
+    "module": 3,
+    "tags": ["torque", "power"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Couple et puissance",
+    "statement": "Un moteur developpe une puissance de {P} kW a {n} tr/min. Calculez le couple moteur en N·m.",
+    "givens": {
+      "P": 15,
+      "n": 3000
+    },
+    "unknowns": ["C"],
+    "answer": {
+      "variable": "C",
+      "value": 47.75,
+      "unit": "N·m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "P = C × ω",
+      "ω = 2πn/60 (conversion tr/min → rad/s)",
+      "C = P/ω = P × 60/(2πn)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "5",
+        "patternType": "value",
+        "message": "Vous avez divise par n directement sans conversion",
+        "hint": "Convertissez n en rad/s: ω = 2πn/60",
+        "category": "unit"
+      }
+    ],
+    "explanation": "ω = 2π × 3000/60 = 314.16 rad/s. C = P/ω = 15000/314.16 = 47.75 N·m.",
+    "parameters": {
+      "P": { "min": 5, "max": 30, "step": 5, "unit": "kW" },
+      "n": { "min": 1500, "max": 6000, "step": 500, "unit": "tr/min" }
+    },
+    "answerFormula": "P * 1000 * 60 / (2 * 3.14159 * n)"
+  },
+  {
+    "id": "kin-m3-q9-energie-cinetique-rotation",
+    "module": 3,
+    "tags": ["energy", "inertia"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Energie cinetique de rotation",
+    "statement": "Un disque homogene de masse {m} kg et de rayon {r} m tourne a {n} tr/min. Calculez son energie cinetique de rotation.",
+    "givens": {
+      "m": 10,
+      "r": 0.4,
+      "n": 300
+    },
+    "unknowns": ["Ec"],
+    "answer": {
+      "variable": "Ec",
+      "value": 394.78,
+      "unit": "J",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le moment d'inertie d'un disque est I = ½mr²",
+      "L'energie cinetique de rotation est Ec = ½Iω²",
+      "ω = 2πn/60"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "789.57",
+        "patternType": "value",
+        "message": "Vous avez utilise I = mr² au lieu de I = ½mr²",
+        "hint": "Pour un disque homogene: I = ½mr²",
+        "category": "formula"
+      }
+    ],
+    "explanation": "I = ½mr² = ½ × 10 × 0.4² = 0.8 kg·m². ω = 2π × 300/60 = 31.42 rad/s. Ec = ½Iω² = ½ × 0.8 × 31.42² = 394.78 J.",
+    "parameters": {
+      "m": { "min": 5, "max": 20, "step": 5, "unit": "kg" },
+      "r": { "min": 0.2, "max": 0.6, "step": 0.1, "unit": "m" },
+      "n": { "min": 200, "max": 600, "step": 100, "unit": "tr/min" }
+    },
+    "answerFormula": "0.5 * (0.5 * m * r * r) * (2 * 3.14159 * n / 60) * (2 * 3.14159 * n / 60)"
+  },
+  {
+    "id": "kin-m3-q10-temps-freinage",
+    "module": 3,
+    "tags": ["angular-acceleration", "braking"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Temps de freinage d'un volant",
+    "statement": "Un volant tourne a {n} tr/min. On applique un frein qui produit une deceleration de {alpha} rad/s². Combien de temps faut-il pour l'arreter?",
+    "givens": {
+      "n": 1200,
+      "alpha": 4
+    },
+    "unknowns": ["t"],
+    "answer": {
+      "variable": "t",
+      "value": 31.42,
+      "unit": "s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Convertissez n en rad/s: ω0 = 2πn/60",
+      "ωf = 0 (arret complet)",
+      "t = (ω0 - ωf)/α = ω0/α"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "300",
+        "patternType": "value",
+        "message": "Vous n'avez pas converti en rad/s",
+        "hint": "ω0 = 2πn/60, pas juste n",
+        "category": "unit"
+      }
+    ],
+    "explanation": "ω0 = 2π × 1200/60 = 125.66 rad/s. t = ω0/α = 125.66/4 = 31.42 s.",
+    "parameters": {
+      "n": { "min": 600, "max": 1800, "step": 300, "unit": "tr/min" },
+      "alpha": { "min": 2, "max": 8, "step": 1, "unit": "rad/s²" }
+    },
+    "answerFormula": "(2 * 3.14159 * n / 60) / alpha"
+  },
+  {
+    "id": "kin-m3-q11-rendement-transmission",
+    "module": 3,
+    "tags": ["efficiency", "power"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Rendement d'une transmission",
+    "statement": "Un moteur de {P_in} kW entraine un reducteur de rapport {i}:1 avec un rendement de {eta}%. Quelle est la puissance disponible a la sortie en kW?",
+    "givens": {
+      "P_in": 20,
+      "i": 4,
+      "eta": 85
+    },
+    "unknowns": ["P_out"],
+    "answer": {
+      "variable": "P_out",
+      "value": 17,
+      "unit": "kW",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le rendement est η = P_out/P_in",
+      "P_out = P_in × η",
+      "Le rapport de reduction n'affecte pas la puissance (seulement couple et vitesse)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "4.25",
+        "patternType": "value",
+        "message": "Vous avez divise par le rapport de reduction",
+        "hint": "Le rapport affecte couple et vitesse, pas la puissance (P_out = η × P_in)",
+        "category": "concept"
+      }
+    ],
+    "explanation": "P_out = P_in × η = 20 × 0.85 = 17 kW. Le rapport de reduction affecte le couple (×4) et la vitesse (÷4), mais pas la puissance.",
+    "parameters": {
+      "P_in": { "min": 10, "max": 50, "step": 10, "unit": "kW" },
+      "i": { "min": 2, "max": 6, "step": 1, "unit": "" },
+      "eta": { "min": 75, "max": 95, "step": 5, "unit": "%" }
+    },
+    "answerFormula": "P_in * eta / 100"
+  },
+  {
+    "id": "kin-m3-q12-acceleration-angulaire-couple",
+    "module": 3,
+    "tags": ["torque", "inertia", "angular-acceleration"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Acceleration angulaire par couple",
+    "statement": "Un disque de moment d'inertie {I} kg·m² est soumis a un couple moteur de {Cm} N·m et un couple de frottement de {Cf} N·m. Calculez l'acceleration angulaire.",
+    "givens": {
+      "I": 2.5,
+      "Cm": 50,
+      "Cf": 10
+    },
+    "unknowns": ["alpha"],
+    "answer": {
+      "variable": "α",
+      "value": 16,
+      "unit": "rad/s²",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le couple net est C_net = Cm - Cf",
+      "Equation fondamentale: C_net = I × α",
+      "α = C_net / I"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "24",
+        "patternType": "value",
+        "message": "Vous avez additionne les couples au lieu de soustraire",
+        "hint": "Le frottement s'oppose au mouvement: C_net = Cm - Cf",
+        "category": "sign"
+      }
+    ],
+    "explanation": "C_net = 50 - 10 = 40 N·m. α = C_net/I = 40/2.5 = 16 rad/s².",
+    "parameters": {
+      "I": { "min": 1, "max": 5, "step": 0.5, "unit": "kg·m²" },
+      "Cm": { "min": 30, "max": 80, "step": 10, "unit": "N·m" },
+      "Cf": { "min": 5, "max": 20, "step": 5, "unit": "N·m" }
+    },
+    "answerFormula": "(Cm - Cf) / I"
+  },
+  {
+    "id": "kin-m3-q13-vitesse-courroie",
+    "module": 3,
+    "tags": ["belt-drive", "speed-transmission"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Vitesse de la courroie",
+    "statement": "Une transmission par courroie utilise une poulie motrice de {d1} mm tournant a {n1} tr/min et une poulie receptrice de {d2} mm. Calculez la vitesse lineaire de la courroie en m/s.",
+    "givens": {
+      "d1": 200,
+      "n1": 1500,
+      "d2": 400
+    },
+    "unknowns": ["v"],
+    "answer": {
+      "variable": "v",
+      "value": 15.71,
+      "unit": "m/s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La vitesse de la courroie = vitesse tangentielle de la poulie",
+      "v = ω × r = (2πn/60) × (d/2)",
+      "v = πdn/60 (avec d en metres)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "15707",
+        "patternType": "value",
+        "message": "Vous n'avez pas converti mm en m",
+        "hint": "d = 200 mm = 0.2 m",
+        "category": "unit"
+      }
+    ],
+    "explanation": "v = π × d1 × n1 / 60 = π × 0.2 × 1500/60 = π × 0.2 × 25 = 15.71 m/s.",
+    "parameters": {
+      "d1": { "min": 100, "max": 300, "step": 50, "unit": "mm" },
+      "n1": { "min": 1000, "max": 2500, "step": 500, "unit": "tr/min" },
+      "d2": { "min": 200, "max": 500, "step": 100, "unit": "mm" }
+    },
+    "answerFormula": "3.14159 * (d1/1000) * n1 / 60"
+  },
+  {
+    "id": "kin-m3-q14-couple-sortie",
+    "module": 3,
+    "tags": ["torque", "gear-ratio"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Couple en sortie de reducteur",
+    "statement": "Un moteur developpe un couple de {C_in} N·m. Il entraine un reducteur de rapport {i}:1 avec un rendement de {eta}%. Quel est le couple disponible en sortie?",
+    "givens": {
+      "C_in": 30,
+      "i": 5,
+      "eta": 90
+    },
+    "unknowns": ["C_out"],
+    "answer": {
+      "variable": "C_out",
+      "value": 135,
+      "unit": "N·m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le couple est multiplie par le rapport de reduction",
+      "Mais il faut tenir compte du rendement",
+      "C_out = C_in × i × η"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "150",
+        "patternType": "value",
+        "message": "Vous avez oublie le rendement",
+        "hint": "C_out = C_in × i × η, n'oubliez pas η",
+        "category": "concept"
+      }
+    ],
+    "explanation": "C_out = C_in × i × η = 30 × 5 × 0.90 = 135 N·m.",
+    "parameters": {
+      "C_in": { "min": 20, "max": 50, "step": 10, "unit": "N·m" },
+      "i": { "min": 3, "max": 8, "step": 1, "unit": "" },
+      "eta": { "min": 80, "max": 95, "step": 5, "unit": "%" }
+    },
+    "answerFormula": "C_in * i * eta / 100"
   }
 ]

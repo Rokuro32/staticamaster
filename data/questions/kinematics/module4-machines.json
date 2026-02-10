@@ -219,7 +219,7 @@
     "type": "numeric",
     "active": true,
     "title": "Indexage - Division simple",
-    "statement": "Un diviseur a un rapport de {R}:1 et un plateau a {T} trous. Pour usiner une piece a {n} divisions, combien de tours complets et de trous doit-on avancer?",
+    "statement": "Un diviseur a un rapport de {R}:1 et un plateau a {T} trous. Pour usiner une piece a {n} divisions, combien de tours complets de manivelle faut-il?",
     "givens": {
       "R": 40,
       "T": 18,
@@ -254,5 +254,353 @@
       "n": { "min": 4, "max": 12, "step": 2, "unit": "divisions" }
     },
     "answerFormula": "R / n"
+  },
+  {
+    "id": "kin-m4-q7-temps-usinage",
+    "module": 4,
+    "tags": ["machining-time"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Temps d'usinage en chariotage",
+    "statement": "Une piece de longueur {L} mm est usinee sur un tour. La vitesse de rotation est {n} tr/min et l'avance est {f} mm/tr. Calculez le temps d'usinage en minutes.",
+    "givens": {
+      "L": 150,
+      "n": 500,
+      "f": 0.3
+    },
+    "unknowns": ["t"],
+    "answer": {
+      "variable": "t",
+      "value": 1,
+      "unit": "min",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La vitesse d'avance est Vf = f × n",
+      "Le temps d'usinage est t = L / Vf",
+      "t = L / (f × n)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "22500",
+        "patternType": "value",
+        "message": "Vous avez multiplie au lieu de diviser",
+        "hint": "t = L/(f×n), pas L×f×n",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Vf = f × n = 0.3 × 500 = 150 mm/min. t = L/Vf = 150/150 = 1 min.",
+    "parameters": {
+      "L": { "min": 100, "max": 300, "step": 50, "unit": "mm" },
+      "n": { "min": 300, "max": 800, "step": 100, "unit": "tr/min" },
+      "f": { "min": 0.2, "max": 0.5, "step": 0.1, "unit": "mm/tr" }
+    },
+    "answerFormula": "L / (f * n)"
+  },
+  {
+    "id": "kin-m4-q8-debit-copeaux",
+    "module": 4,
+    "tags": ["cutting-rate"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Debit de copeaux",
+    "statement": "Lors d'un chariotage, la profondeur de passe est {ap} mm, l'avance {f} mm/tr et la vitesse de coupe {Vc} m/min. Calculez le debit de copeaux en cm³/min.",
+    "givens": {
+      "ap": 2,
+      "f": 0.3,
+      "Vc": 100
+    },
+    "unknowns": ["Q"],
+    "answer": {
+      "variable": "Q",
+      "value": 60,
+      "unit": "cm³/min",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le debit de copeaux est Q = ap × f × Vc",
+      "Attention aux unites: convertissez en cm³/min",
+      "Vc en m/min = 1000 mm/min = 100 cm/min"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "60000",
+        "patternType": "value",
+        "message": "Vous n'avez pas converti les unites correctement",
+        "hint": "Q = ap × f × Vc × (facteur de conversion)",
+        "category": "unit"
+      }
+    ],
+    "explanation": "Q = ap × f × Vc = 2 mm × 0.3 mm/tr × (100 × 1000 mm/min) = 60000 mm³/min = 60 cm³/min.",
+    "parameters": {
+      "ap": { "min": 1, "max": 4, "step": 0.5, "unit": "mm" },
+      "f": { "min": 0.2, "max": 0.5, "step": 0.1, "unit": "mm/tr" },
+      "Vc": { "min": 80, "max": 150, "step": 10, "unit": "m/min" }
+    },
+    "answerFormula": "ap * f * Vc"
+  },
+  {
+    "id": "kin-m4-q9-nombre-passes",
+    "module": 4,
+    "tags": ["machining-strategy"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Nombre de passes en chariotage",
+    "statement": "Une piece brute de diametre {d_brut} mm doit etre usinee au diametre final {d_final} mm. La profondeur de passe maximale est {ap_max} mm. Combien de passes faut-il?",
+    "givens": {
+      "d_brut": 60,
+      "d_final": 48,
+      "ap_max": 2
+    },
+    "unknowns": ["n_passes"],
+    "answer": {
+      "variable": "n_passes",
+      "value": 3,
+      "unit": "passes",
+      "tolerance": 0,
+      "toleranceType": "absolute"
+    },
+    "hints": [
+      "La surepaisseur totale est (d_brut - d_final)/2 (par cote)",
+      "Nombre de passes = surepaisseur / ap_max, arrondi au superieur",
+      "Attention: le diametre diminue de 2×ap par passe"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "6",
+        "patternType": "value",
+        "message": "Vous avez oublie de diviser par 2 pour la surepaisseur par cote",
+        "hint": "Surepaisseur par cote = (d_brut - d_final)/2",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Surepaisseur par cote = (60 - 48)/2 = 6 mm. Nombre de passes = 6/2 = 3 passes.",
+    "parameters": {
+      "d_brut": { "min": 50, "max": 100, "step": 10, "unit": "mm" },
+      "d_final": { "min": 40, "max": 90, "step": 10, "unit": "mm" },
+      "ap_max": { "min": 1, "max": 3, "step": 0.5, "unit": "mm" }
+    },
+    "answerFormula": "ceil((d_brut - d_final) / 2 / ap_max)"
+  },
+  {
+    "id": "kin-m4-q10-puissance-coupe",
+    "module": 4,
+    "tags": ["cutting-power"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Puissance de coupe",
+    "statement": "Lors d'un usinage, la force de coupe est {Fc} N et la vitesse de coupe est {Vc} m/min. Calculez la puissance de coupe en kW.",
+    "givens": {
+      "Fc": 1200,
+      "Vc": 150
+    },
+    "unknowns": ["Pc"],
+    "answer": {
+      "variable": "Pc",
+      "value": 3,
+      "unit": "kW",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Puissance = Force × Vitesse",
+      "Pc = Fc × Vc",
+      "Attention aux unites: convertissez Vc en m/s et Pc en kW"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "180000",
+        "patternType": "value",
+        "message": "Vous n'avez pas converti en kW",
+        "hint": "Vc en m/min doit etre converti en m/s (÷60), puis P en W en kW (÷1000)",
+        "category": "unit"
+      }
+    ],
+    "explanation": "Pc = Fc × Vc = 1200 N × (150/60 m/s) = 1200 × 2.5 = 3000 W = 3 kW.",
+    "parameters": {
+      "Fc": { "min": 800, "max": 2000, "step": 200, "unit": "N" },
+      "Vc": { "min": 100, "max": 200, "step": 25, "unit": "m/min" }
+    },
+    "answerFormula": "Fc * Vc / 60 / 1000"
+  },
+  {
+    "id": "kin-m4-q11-train-planetaire-inversion",
+    "module": 4,
+    "tags": ["planetary-gear"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Train planetaire - Soleil fixe",
+    "statement": "Un train planetaire a une couronne de {Zc} dents et un soleil de {Zs} dents. Si le soleil est fixe et le porte-satellites tourne a {nps} tr/min, calculez la vitesse de la couronne.",
+    "givens": {
+      "Zc": 90,
+      "Zs": 30,
+      "nps": 100
+    },
+    "unknowns": ["nc"],
+    "answer": {
+      "variable": "nc",
+      "value": 133.33,
+      "unit": "tr/min",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Avec le soleil fixe: nc/nps = (Zs + Zc)/Zc",
+      "nc = nps × (Zs + Zc)/Zc",
+      "La couronne tourne dans le meme sens que le porte-satellites"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "75",
+        "patternType": "value",
+        "message": "Vous avez inverse le rapport",
+        "hint": "nc = nps × (Zs + Zc)/Zc, pas nps × Zc/(Zs + Zc)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "nc = nps × (Zs + Zc)/Zc = 100 × (30 + 90)/90 = 100 × 120/90 = 133.33 tr/min.",
+    "parameters": {
+      "Zc": { "min": 60, "max": 120, "step": 15, "unit": "dents" },
+      "Zs": { "min": 20, "max": 40, "step": 10, "unit": "dents" },
+      "nps": { "min": 50, "max": 200, "step": 25, "unit": "tr/min" }
+    },
+    "answerFormula": "nps * (Zs + Zc) / Zc"
+  },
+  {
+    "id": "kin-m4-q12-indexage-differentiel",
+    "module": 4,
+    "tags": ["indexing", "differential"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Indexage differentiel",
+    "statement": "On desire usiner {n} divisions avec un diviseur de rapport {R}:1. Le plateau disponible a {T} trous. Calculez le nombre de tours et de trous necessaires. Donnez le nombre de trous supplementaires apres les tours complets.",
+    "givens": {
+      "n": 7,
+      "R": 40,
+      "T": 21
+    },
+    "unknowns": ["trous_supp"],
+    "answer": {
+      "variable": "trous_supp",
+      "value": 15,
+      "unit": "trous",
+      "tolerance": 0,
+      "toleranceType": "absolute"
+    },
+    "hints": [
+      "Tours totaux = R/n = 40/7 ≈ 5.714 tours",
+      "Partie fractionnaire = 5/7 = 0.714...",
+      "Trous = fraction × T = (5/7) × 21"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "3",
+        "patternType": "value",
+        "message": "Vous avez arrondi incorrectement",
+        "hint": "5/7 × 21 = 5 × 21/7 = 5 × 3 = 15 trous",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "R/n = 40/7 = 5 + 5/7 tours. La fraction 5/7 sur un plateau de 21 trous donne: 5/7 × 21 = 15 trous. Donc 5 tours + 15 trous.",
+    "parameters": {
+      "n": { "min": 7, "max": 13, "step": 2, "unit": "divisions" },
+      "R": { "min": 40, "max": 60, "step": 20, "unit": "" },
+      "T": { "min": 18, "max": 27, "step": 3, "unit": "trous" }
+    },
+    "answerFormula": "round((R / n - floor(R / n)) * T)"
+  },
+  {
+    "id": "kin-m4-q13-etat-surface",
+    "module": 4,
+    "tags": ["surface-finish"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Rugosite theorique",
+    "statement": "Un outil de tournage a un rayon de bec {r} mm et une avance de {f} mm/tr. Calculez la rugosite theorique Rt en microns.",
+    "givens": {
+      "r": 0.8,
+      "f": 0.2
+    },
+    "unknowns": ["Rt"],
+    "answer": {
+      "variable": "Rt",
+      "value": 6.25,
+      "unit": "μm",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La rugosite theorique est Rt = f²/(8r)",
+      "Rt est en mm, convertir en μm (×1000)",
+      "Rt = f²/(8r) × 1000 μm"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "0.00625",
+        "patternType": "value",
+        "message": "Vous avez oublie de convertir en microns",
+        "hint": "Rt en mm × 1000 = Rt en μm",
+        "category": "unit"
+      }
+    ],
+    "explanation": "Rt = f²/(8r) = 0.2²/(8×0.8) = 0.04/6.4 = 0.00625 mm = 6.25 μm.",
+    "parameters": {
+      "r": { "min": 0.4, "max": 1.2, "step": 0.2, "unit": "mm" },
+      "f": { "min": 0.1, "max": 0.4, "step": 0.05, "unit": "mm/tr" }
+    },
+    "answerFormula": "f * f / (8 * r) * 1000"
+  },
+  {
+    "id": "kin-m4-q14-vis-mere",
+    "module": 4,
+    "tags": ["threading", "lead-screw"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Filetage - Rapport des pignons",
+    "statement": "Un tour a une vis-mere de pas {p_vm} mm. On veut usiner un filetage de pas {p_piece} mm. Si le pignon moteur a {Zm} dents, combien de dents doit avoir le pignon recepteur?",
+    "givens": {
+      "p_vm": 6,
+      "p_piece": 2,
+      "Zm": 20
+    },
+    "unknowns": ["Zr"],
+    "answer": {
+      "variable": "Zr",
+      "value": 60,
+      "unit": "dents",
+      "tolerance": 0,
+      "toleranceType": "absolute"
+    },
+    "hints": [
+      "Le rapport de transmission doit etre i = p_piece/p_vm",
+      "i = Zm/Zr, donc Zr = Zm × p_vm/p_piece",
+      "La vis-mere avance plus vite que la piece"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "6.67",
+        "patternType": "value",
+        "message": "Vous avez inverse le rapport",
+        "hint": "Zr = Zm × p_vm/p_piece, pas Zm × p_piece/p_vm",
+        "category": "formula"
+      }
+    ],
+    "explanation": "i = p_piece/p_vm = 2/6 = 1/3. Donc Zm/Zr = 1/3 → Zr = 3 × Zm = 3 × 20 = 60 dents.",
+    "parameters": {
+      "p_vm": { "min": 4, "max": 8, "step": 2, "unit": "mm" },
+      "p_piece": { "min": 1, "max": 4, "step": 0.5, "unit": "mm" },
+      "Zm": { "min": 15, "max": 30, "step": 5, "unit": "dents" }
+    },
+    "answerFormula": "Zm * p_vm / p_piece"
   }
 ]

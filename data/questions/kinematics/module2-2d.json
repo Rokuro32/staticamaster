@@ -33,13 +33,6 @@
         "message": "Vous avez utilise sin(θ) au lieu de sin(2θ)",
         "hint": "La formule de la portee utilise sin(2θ), pas sin(θ)",
         "category": "formula"
-      },
-      {
-        "pattern": "160",
-        "patternType": "value",
-        "message": "Vous avez oublie de diviser par g",
-        "hint": "R = v0² × sin(2θ) / g",
-        "category": "calculation"
       }
     ],
     "explanation": "La portee horizontale est R = (v0² × sin(2θ)) / g = (40² × sin(60°)) / 10 = (1600 × 0.866) / 10 = 138.56 m.",
@@ -82,13 +75,6 @@
         "patternType": "value",
         "message": "Vous avez oublie le facteur 2 au denominateur",
         "hint": "hmax = v0y² / (2g), pas v0y² / g",
-        "category": "formula"
-      },
-      {
-        "pattern": "11.25",
-        "patternType": "value",
-        "message": "Vous avez utilise cos au lieu de sin",
-        "hint": "La composante verticale utilise sin(θ), pas cos(θ)",
         "category": "formula"
       }
     ],
@@ -173,13 +159,6 @@
         "message": "Vous avez multiplie n × r directement",
         "hint": "N'oubliez pas de convertir en rad/s: ω = 2πn/60",
         "category": "unit"
-      },
-      {
-        "pattern": "376.99",
-        "patternType": "value",
-        "message": "Vous avez oublie de convertir les minutes en secondes",
-        "hint": "Divisez par 60 pour convertir tours/min en tours/s",
-        "category": "unit"
       }
     ],
     "explanation": "ω = 2πn/60 = 2π×120/60 = 4π rad/s ≈ 12.57 rad/s. v = ωr = 12.57 × 0.5 = 6.28 m/s.",
@@ -222,13 +201,6 @@
         "message": "Vous avez calcule v/r au lieu de v²/r",
         "hint": "L'acceleration centripete est ac = v²/r, pas v/r",
         "category": "formula"
-      },
-      {
-        "pattern": "32",
-        "patternType": "value",
-        "message": "Vous avez multiplie au lieu de diviser",
-        "hint": "ac = v²/r, pas v² × r",
-        "category": "calculation"
       }
     ],
     "explanation": "L'acceleration centripete est ac = v²/r = 8²/4 = 64/4 = 16 m/s².",
@@ -272,13 +244,6 @@
         "message": "Vous avez additionne les vitesses directement",
         "hint": "Les vitesses sont perpendiculaires, utilisez Pythagore: vr = √(vb² + vc²)",
         "category": "concept"
-      },
-      {
-        "pattern": "1",
-        "patternType": "value",
-        "message": "Vous avez soustrait les vitesses",
-        "hint": "Le courant ne s'oppose pas au bateau, ils sont perpendiculaires",
-        "category": "concept"
       }
     ],
     "explanation": "Comme les vitesses sont perpendiculaires, vr = √(vb² + vc²) = √(4² + 3²) = √(16 + 9) = √25 = 5 m/s.",
@@ -288,5 +253,400 @@
       "vc": { "min": 2, "max": 6, "step": 1, "unit": "m/s" }
     },
     "answerFormula": "sqrt(vb*vb + vc*vc)"
+  },
+  {
+    "id": "kin-m2-q7-projectile-falaise",
+    "module": 2,
+    "tags": ["projectile", "planar-motion"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Projectile lance d'une falaise",
+    "statement": "Un objet est lance horizontalement depuis une falaise de {h} m de haut avec une vitesse de {v0} m/s. A quelle distance horizontale de la base de la falaise atterrit-il? (g = 10 m/s²)",
+    "givens": {
+      "h": 45,
+      "v0": 20,
+      "g": 10
+    },
+    "unknowns": ["x"],
+    "answer": {
+      "variable": "x",
+      "value": 60,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le temps de chute depend seulement de h: t = √(2h/g)",
+      "La distance horizontale est x = v0 × t",
+      "Les mouvements horizontal et vertical sont independants"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "900",
+        "patternType": "value",
+        "message": "Vous avez multiplie h × v0",
+        "hint": "Calculez d'abord le temps de chute: t = √(2h/g)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Temps de chute: t = √(2h/g) = √(2×45/10) = √9 = 3 s. Distance horizontale: x = v0 × t = 20 × 3 = 60 m.",
+    "parameters": {
+      "h": { "min": 20, "max": 80, "step": 10, "unit": "m" },
+      "v0": { "min": 10, "max": 30, "step": 5, "unit": "m/s" }
+    },
+    "answerFormula": "v0 * sqrt(2 * h / g)"
+  },
+  {
+    "id": "kin-m2-q8-projectile-angle-optimal",
+    "module": 2,
+    "tags": ["projectile", "optimization"],
+    "difficulty": "advanced",
+    "type": "mcq",
+    "active": true,
+    "title": "Angle optimal pour portee maximale",
+    "statement": "Un projectile est lance avec une vitesse fixe v0 depuis le sol. Quel angle maximise la portee horizontale?",
+    "givens": {},
+    "unknowns": ["theta_opt"],
+    "choices": [
+      {
+        "id": "A",
+        "text": "30°",
+        "correct": false
+      },
+      {
+        "id": "B",
+        "text": "45°",
+        "correct": true
+      },
+      {
+        "id": "C",
+        "text": "60°",
+        "correct": false
+      },
+      {
+        "id": "D",
+        "text": "Cela depend de la vitesse initiale",
+        "correct": false
+      }
+    ],
+    "hints": [
+      "La portee est R = v0² sin(2θ)/g",
+      "sin(2θ) est maximal quand 2θ = 90°",
+      "Donc θ = 45° maximise la portee"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "A",
+        "patternType": "choice",
+        "message": "30° donne la meme portee que 60°",
+        "hint": "sin(60°) = sin(120°), donc 30° et 60° donnent la meme portee",
+        "category": "concept"
+      }
+    ],
+    "explanation": "R = v0² sin(2θ)/g. Le sinus est maximal (= 1) quand son argument vaut 90°. Donc 2θ = 90°, ce qui donne θ = 45°."
+  },
+  {
+    "id": "kin-m2-q9-derive-courant",
+    "module": 2,
+    "tags": ["relative-motion", "planar-motion"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Derive d'un bateau par le courant",
+    "statement": "Un bateau traverse une riviere de {L} m de large en visant perpendiculairement a la rive. Sa vitesse propre est {vb} m/s et le courant est de {vc} m/s. De combien de metres sera-t-il derive en aval?",
+    "givens": {
+      "L": 120,
+      "vb": 4,
+      "vc": 3
+    },
+    "unknowns": ["derive"],
+    "answer": {
+      "variable": "derive",
+      "value": 90,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Le temps de traversee depend de la vitesse perpendiculaire: t = L/vb",
+      "La derive est causee par le courant: derive = vc × t",
+      "derive = vc × L/vb"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "24",
+        "patternType": "value",
+        "message": "Vous avez utilise la vitesse resultante",
+        "hint": "Le temps de traversee est t = L/vb, pas L/√(vb²+vc²)",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Temps de traversee: t = L/vb = 120/4 = 30 s. Derive: d = vc × t = 3 × 30 = 90 m.",
+    "parameters": {
+      "L": { "min": 80, "max": 200, "step": 20, "unit": "m" },
+      "vb": { "min": 3, "max": 6, "step": 1, "unit": "m/s" },
+      "vc": { "min": 2, "max": 5, "step": 1, "unit": "m/s" }
+    },
+    "answerFormula": "vc * L / vb"
+  },
+  {
+    "id": "kin-m2-q10-virage-voiture",
+    "module": 2,
+    "tags": ["circular-motion", "friction"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Vitesse maximale dans un virage",
+    "statement": "Une voiture prend un virage de rayon {r} m sur une route horizontale. Le coefficient de friction est μ = {mu}. Quelle est la vitesse maximale sans deraper? (g = 10 m/s²)",
+    "givens": {
+      "r": 50,
+      "mu": 0.8,
+      "g": 10
+    },
+    "unknowns": ["vmax"],
+    "answer": {
+      "variable": "vmax",
+      "value": 20,
+      "unit": "m/s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La force centripete est fournie par la friction: Fc ≤ μmg",
+      "mv²/r ≤ μmg, donc v² ≤ μgr",
+      "vmax = √(μgr)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "400",
+        "patternType": "value",
+        "message": "Vous avez oublie la racine carree",
+        "hint": "vmax = √(μgr), pas μgr",
+        "category": "formula"
+      }
+    ],
+    "explanation": "La force centripete maximale est μmg. Donc mv²/r = μmg → v² = μgr → vmax = √(0.8×10×50) = √400 = 20 m/s.",
+    "parameters": {
+      "r": { "min": 30, "max": 100, "step": 10, "unit": "m" },
+      "mu": { "min": 0.5, "max": 1.0, "step": 0.1, "unit": "" }
+    },
+    "answerFormula": "sqrt(mu * g * r)"
+  },
+  {
+    "id": "kin-m2-q11-projectile-vitesse-impact",
+    "module": 2,
+    "tags": ["projectile", "energy"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Vitesse d'impact d'un projectile",
+    "statement": "Un projectile est lance avec une vitesse de {v0} m/s selon un angle de {theta}° depuis le sol. Quelle est sa vitesse au moment ou il retombe au sol? (g = 10 m/s²)",
+    "givens": {
+      "v0": 50,
+      "theta": 30,
+      "g": 10
+    },
+    "unknowns": ["v_impact"],
+    "answer": {
+      "variable": "v_impact",
+      "value": 50,
+      "unit": "m/s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Par conservation de l'energie, la vitesse au retour au sol est egale a v0",
+      "L'angle n'affecte pas la magnitude de la vitesse d'impact",
+      "La direction change mais pas la grandeur"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "25",
+        "patternType": "value",
+        "message": "Vous avez calcule seulement la composante verticale",
+        "hint": "La vitesse totale = v0 par conservation de l'energie",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Par conservation de l'energie mecanique (sans frottement), le projectile retombe avec la meme vitesse qu'au lancement: v_impact = v0 = 50 m/s. Seule la direction change.",
+    "parameters": {
+      "v0": { "min": 30, "max": 60, "step": 10, "unit": "m/s" },
+      "theta": { "min": 20, "max": 70, "step": 10, "unit": "°" }
+    },
+    "answerFormula": "v0"
+  },
+  {
+    "id": "kin-m2-q12-avion-vent",
+    "module": 2,
+    "tags": ["relative-motion", "vectors"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Avion dans le vent - Cap a prendre",
+    "statement": "Un avion doit voler vers le nord. Sa vitesse propre est {va} km/h. Un vent de {vv} km/h souffle vers l'est. De quel angle (en degres) vers l'ouest doit-il s'orienter pour maintenir une trajectoire nord?",
+    "givens": {
+      "va": 200,
+      "vv": 50
+    },
+    "unknowns": ["angle"],
+    "answer": {
+      "variable": "angle",
+      "value": 14.48,
+      "unit": "°",
+      "tolerance": 3,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'avion doit compenser le vent vers l'est en s'orientant vers l'ouest",
+      "La composante ouest de va doit egaler vv",
+      "sin(θ) = vv/va, donc θ = arcsin(vv/va)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "75.52",
+        "patternType": "value",
+        "message": "Vous avez calcule l'angle complementaire",
+        "hint": "θ = arcsin(vv/va), pas arccos(vv/va)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Pour compenser le vent: va×sin(θ) = vv → sin(θ) = 50/200 = 0.25 → θ = arcsin(0.25) = 14.48°.",
+    "parameters": {
+      "va": { "min": 150, "max": 300, "step": 50, "unit": "km/h" },
+      "vv": { "min": 30, "max": 80, "step": 10, "unit": "km/h" }
+    },
+    "answerFormula": "deg(asin(vv/va))"
+  },
+  {
+    "id": "kin-m2-q13-satellite-orbite",
+    "module": 2,
+    "tags": ["circular-motion", "gravity"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Vitesse orbitale d'un satellite",
+    "statement": "Un satellite orbite la Terre a une altitude de {h} km. Calculez sa vitesse orbitale. (Rayon Terre = 6400 km, g a la surface = 10 m/s²)",
+    "givens": {
+      "h": 400,
+      "R": 6400,
+      "g0": 10
+    },
+    "unknowns": ["v"],
+    "answer": {
+      "variable": "v",
+      "value": 7.72,
+      "unit": "km/s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'acceleration gravitationnelle a l'altitude h: g = g0 × R²/(R+h)²",
+      "La force gravitationnelle fournit l'acceleration centripete: g = v²/(R+h)",
+      "v = √(g0 × R² / (R+h))"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "8",
+        "patternType": "value",
+        "message": "Vous avez utilise g0 au lieu de g a l'altitude h",
+        "hint": "g diminue avec l'altitude: g = g0 × R²/(R+h)²",
+        "category": "concept"
+      }
+    ],
+    "explanation": "r = R + h = 6800 km. v = √(g0×R²/r) = √(10×6400²×10⁶/6800×10³) = √(10×4.096×10¹³/6.8×10⁶) = √(6.02×10⁷) ≈ 7720 m/s = 7.72 km/s.",
+    "parameters": {
+      "h": { "min": 200, "max": 800, "step": 100, "unit": "km" }
+    },
+    "answerFormula": "sqrt(g0 * R * R / (R + h)) / 1000"
+  },
+  {
+    "id": "kin-m2-q14-projectile-cible",
+    "module": 2,
+    "tags": ["projectile", "target"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Atteindre une cible",
+    "statement": "Un canon situe au sol doit atteindre une cible a {d} m de distance horizontale et {h} m de hauteur. La vitesse du projectile est {v0} m/s. Quel angle de tir (en degres) faut-il utiliser? Donnez l'angle le plus faible. (g = 10 m/s²)",
+    "givens": {
+      "d": 100,
+      "h": 20,
+      "v0": 40,
+      "g": 10
+    },
+    "unknowns": ["theta"],
+    "answer": {
+      "variable": "theta",
+      "value": 36.87,
+      "unit": "°",
+      "tolerance": 3,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Equations: x = v0×cos(θ)×t et y = v0×sin(θ)×t - ½gt²",
+      "Eliminez t: y = x×tan(θ) - gx²/(2v0²cos²(θ))",
+      "Utilisez l'identite 1/cos²(θ) = 1 + tan²(θ)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "45",
+        "patternType": "value",
+        "message": "45° maximise la portee au sol, pas a une hauteur h",
+        "hint": "La cible est en hauteur, l'angle optimal est different",
+        "category": "concept"
+      }
+    ],
+    "explanation": "En posant u = tan(θ): 20 = 100u - 10×10000/(2×1600)×(1+u²) → 20 = 100u - 31.25(1+u²) → 31.25u² - 100u + 51.25 = 0. u = (100 ± √(10000-6406.25))/62.5 = (100 ± 60)/62.5. u = 0.64 → θ = 32.6° (ou u = 2.56 → θ = 68.7°).",
+    "parameters": {
+      "d": { "min": 80, "max": 150, "step": 10, "unit": "m" },
+      "h": { "min": 10, "max": 30, "step": 5, "unit": "m" },
+      "v0": { "min": 35, "max": 50, "step": 5, "unit": "m/s" }
+    },
+    "answerFormula": "deg(atan((v0*v0 - sqrt(v0*v0*v0*v0 - g*(g*d*d + 2*h*v0*v0)))/(g*d)))"
+  },
+  {
+    "id": "kin-m2-q15-acceleration-totale",
+    "module": 2,
+    "tags": ["circular-motion", "acceleration"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Acceleration totale en mouvement circulaire",
+    "statement": "Une voiture dans un virage de rayon {r} m a une vitesse de {v} m/s et accelere tangentiellement a {at} m/s². Quelle est l'acceleration totale?",
+    "givens": {
+      "r": 50,
+      "v": 20,
+      "at": 3
+    },
+    "unknowns": ["a_total"],
+    "answer": {
+      "variable": "a_total",
+      "value": 8.54,
+      "unit": "m/s²",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'acceleration centripete est ac = v²/r",
+      "Les accelerations tangentielle et centripete sont perpendiculaires",
+      "a_total = √(at² + ac²)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "11",
+        "patternType": "value",
+        "message": "Vous avez additionne les accelerations directement",
+        "hint": "at et ac sont perpendiculaires: a = √(at² + ac²)",
+        "category": "concept"
+      }
+    ],
+    "explanation": "ac = v²/r = 400/50 = 8 m/s². Les accelerations sont perpendiculaires: a_total = √(3² + 8²) = √(9 + 64) = √73 = 8.54 m/s².",
+    "parameters": {
+      "r": { "min": 30, "max": 80, "step": 10, "unit": "m" },
+      "v": { "min": 15, "max": 25, "step": 5, "unit": "m/s" },
+      "at": { "min": 2, "max": 5, "step": 1, "unit": "m/s²" }
+    },
+    "answerFormula": "sqrt(at*at + (v*v/r)*(v*v/r))"
   }
 ]
