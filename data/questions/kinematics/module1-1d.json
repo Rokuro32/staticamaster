@@ -277,5 +277,750 @@
       "v2": { "min": 50, "max": 90, "step": 10, "unit": "km/h" }
     },
     "answerFormula": "D / (v1 + v2)"
+  },
+  {
+    "id": "kin-m1-q7-poursuite",
+    "module": 1,
+    "tags": ["mru", "mrua", "pursuit"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Poursuite - Voiture de police",
+    "statement": "Une voiture roule à vitesse constante de {v_cible} m/s. Une voiture de police, initialement à {d0} m derrière, démarre et accélère à {a} m/s². Après combien de secondes la police rattrapera-t-elle la voiture?",
+    "givens": {
+      "v_cible": 20,
+      "d0": 100,
+      "a": 3
+    },
+    "unknowns": ["t"],
+    "answer": {
+      "variable": "t",
+      "value": 10,
+      "unit": "s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Position de la cible: x₁ = d₀ + v_cible × t",
+      "Position de la police: x₂ = ½at²",
+      "Elles se rencontrent quand x₁ = x₂",
+      "Résolvez l'équation quadratique: ½at² = d₀ + v_cible × t"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "5",
+        "patternType": "value",
+        "message": "Vous avez oublié la distance initiale d₀",
+        "hint": "La police commence à d₀ mètres derrière",
+        "category": "concept"
+      },
+      {
+        "pattern": "6.67",
+        "patternType": "value",
+        "message": "Vous avez utilisé MRU pour la police",
+        "hint": "La police accélère (MRUA), utilisez x = ½at²",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Position cible: x₁ = 100 + 20t. Position police: x₂ = ½×3×t² = 1.5t². À la rencontre: 1.5t² = 100 + 20t → 1.5t² - 20t - 100 = 0. Avec la formule quadratique: t = (20 + √(400 + 600))/3 = (20 + √1000)/3 ≈ 10 s.",
+    "parameters": {
+      "v_cible": { "min": 15, "max": 25, "step": 5, "unit": "m/s" },
+      "d0": { "min": 50, "max": 150, "step": 25, "unit": "m" },
+      "a": { "min": 2, "max": 5, "step": 0.5, "unit": "m/s²" }
+    },
+    "answerFormula": "(v_cible + sqrt(v_cible*v_cible + 2*a*d0)) / a"
+  },
+  {
+    "id": "kin-m1-q8-distance-freinage",
+    "module": 1,
+    "tags": ["mrua", "braking", "safety"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Distance d'arrêt totale",
+    "statement": "Un conducteur roule à {v0} km/h. Son temps de réaction est de {t_reaction} s. Ensuite, il freine avec une décélération de {a} m/s². Quelle est la distance totale d'arrêt en mètres?",
+    "givens": {
+      "v0": 90,
+      "t_reaction": 1,
+      "a": 8
+    },
+    "unknowns": ["d_total"],
+    "answer": {
+      "variable": "d_total",
+      "value": 64.06,
+      "unit": "m",
+      "tolerance": 3,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Convertissez d'abord la vitesse en m/s: v = v₀ × (1000/3600)",
+      "Distance de réaction (MRU): d₁ = v × t_réaction",
+      "Distance de freinage (MRUA): d₂ = v²/(2a)",
+      "Distance totale: d = d₁ + d₂"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "39.06",
+        "patternType": "value",
+        "message": "Vous avez oublié la distance de réaction",
+        "hint": "Pendant le temps de réaction, la voiture continue à vitesse constante",
+        "category": "concept"
+      },
+      {
+        "pattern": "531.25",
+        "patternType": "value",
+        "message": "Vous n'avez pas converti km/h en m/s",
+        "hint": "90 km/h = 25 m/s (divisez par 3.6)",
+        "category": "units"
+      }
+    ],
+    "explanation": "v = 90/3.6 = 25 m/s. Distance réaction: d₁ = 25 × 1 = 25 m. Distance freinage: d₂ = 25²/(2×8) = 625/16 = 39.06 m. Total: d = 25 + 39.06 = 64.06 m.",
+    "parameters": {
+      "v0": { "min": 50, "max": 130, "step": 10, "unit": "km/h" },
+      "t_reaction": { "min": 0.5, "max": 2, "step": 0.5, "unit": "s" },
+      "a": { "min": 6, "max": 10, "step": 1, "unit": "m/s²" }
+    },
+    "answerFormula": "(v0/3.6) * t_reaction + (v0/3.6)*(v0/3.6)/(2*a)"
+  },
+  {
+    "id": "kin-m1-q9-mouvement-phases",
+    "module": 1,
+    "tags": ["mru", "mrua", "multi-phase"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Mouvement en trois phases",
+    "statement": "Un train accélère de 0 à {v_max} m/s en {t1} s (MRUA), puis roule à vitesse constante pendant {t2} s (MRU), puis freine jusqu'à l'arrêt en {t3} s (MRUA). Quelle est la distance totale parcourue?",
+    "givens": {
+      "v_max": 30,
+      "t1": 20,
+      "t2": 60,
+      "t3": 15
+    },
+    "unknowns": ["d_total"],
+    "answer": {
+      "variable": "d_total",
+      "value": 2325,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Phase 1 (MRUA): d₁ = ½ × a₁ × t₁² où a₁ = v_max/t₁",
+      "Phase 2 (MRU): d₂ = v_max × t₂",
+      "Phase 3 (MRUA): d₃ = v_max × t₃ - ½ × a₃ × t₃² où a₃ = v_max/t₃",
+      "Ou utilisez d₃ = (v_max + 0)/2 × t₃ = v_max × t₃ / 2"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "1800",
+        "patternType": "value",
+        "message": "Vous n'avez calculé que la phase MRU",
+        "hint": "N'oubliez pas les phases d'accélération et de freinage",
+        "category": "concept"
+      },
+      {
+        "pattern": "2850",
+        "patternType": "value",
+        "message": "Vous avez oublié le facteur ½ pour les phases MRUA",
+        "hint": "Pour MRUA: d = ½at² ou d = (v₀+vf)/2 × t",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Phase 1: d₁ = (0+30)/2 × 20 = 300 m. Phase 2: d₂ = 30 × 60 = 1800 m. Phase 3: d₃ = (30+0)/2 × 15 = 225 m. Total: 300 + 1800 + 225 = 2325 m.",
+    "parameters": {
+      "v_max": { "min": 20, "max": 40, "step": 5, "unit": "m/s" },
+      "t1": { "min": 10, "max": 30, "step": 5, "unit": "s" },
+      "t2": { "min": 30, "max": 90, "step": 15, "unit": "s" },
+      "t3": { "min": 10, "max": 20, "step": 5, "unit": "s" }
+    },
+    "answerFormula": "(v_max/2)*t1 + v_max*t2 + (v_max/2)*t3"
+  },
+  {
+    "id": "kin-m1-q10-chute-vitesse-initiale",
+    "module": 1,
+    "tags": ["free-fall", "mrua", "projectile"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Lancer vertical vers le haut",
+    "statement": "Une balle est lancée verticalement vers le haut avec une vitesse initiale de {v0} m/s. Quelle hauteur maximale atteindra-t-elle? (g = 10 m/s²)",
+    "givens": {
+      "v0": 25,
+      "g": 10
+    },
+    "unknowns": ["h_max"],
+    "answer": {
+      "variable": "h_max",
+      "value": 31.25,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Au point le plus haut, la vitesse est nulle (vf = 0)",
+      "Utilisez vf² = v0² - 2gh",
+      "Isolez h: h = v0²/(2g)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "62.5",
+        "patternType": "value",
+        "message": "Vous avez oublié le facteur 2 au dénominateur",
+        "hint": "h = v₀²/(2g), pas v₀²/g",
+        "category": "formula"
+      },
+      {
+        "pattern": "2.5",
+        "patternType": "value",
+        "message": "Vous avez calculé le temps au lieu de la hauteur",
+        "hint": "Pour la hauteur: h = v₀²/(2g)",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Au sommet, vf = 0. Avec vf² = v0² - 2gh: 0 = 25² - 2×10×h → h = 625/20 = 31.25 m.",
+    "parameters": {
+      "v0": { "min": 15, "max": 40, "step": 5, "unit": "m/s" }
+    },
+    "answerFormula": "v0*v0/(2*g)"
+  },
+  {
+    "id": "kin-m1-q11-graphique-position",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "mru", "mrua"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Interprétation d'un graphique x(t)",
+    "statement": "Un graphique position-temps montre une parabole orientée vers le haut (concavité positive) avec une pente initiale nulle. Quel type de mouvement cela représente-t-il?",
+    "givens": {},
+    "unknowns": ["type_mouvement"],
+    "choices": [
+      {
+        "id": "A",
+        "text": "MRU (vitesse constante positive)",
+        "correct": false
+      },
+      {
+        "id": "B",
+        "text": "MRUA avec accélération positive, partant du repos",
+        "correct": true
+      },
+      {
+        "id": "C",
+        "text": "MRUA avec accélération négative (freinage)",
+        "correct": false
+      },
+      {
+        "id": "D",
+        "text": "Objet immobile",
+        "correct": false
+      }
+    ],
+    "hints": [
+      "Une parabole dans un graphique x(t) indique un MRUA",
+      "La pente représente la vitesse: pente nulle = vitesse nulle",
+      "Concavité positive = accélération positive"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "A",
+        "patternType": "choice",
+        "message": "Un MRU donne une droite, pas une parabole",
+        "hint": "Pour un MRU: x = x₀ + vt (fonction linéaire)",
+        "category": "concept"
+      },
+      {
+        "pattern": "C",
+        "patternType": "choice",
+        "message": "Une accélération négative donnerait une concavité vers le bas",
+        "hint": "La concavité du graphique x(t) indique le signe de l'accélération",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Une parabole x(t) indique un MRUA (x = x₀ + v₀t + ½at²). La pente initiale nulle signifie v₀ = 0 (départ du repos). La concavité positive indique a > 0. C'est donc un MRUA avec accélération positive, partant du repos."
+  },
+  {
+    "id": "kin-m1-q12-graphique-vitesse",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "acceleration"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Calcul à partir d'un graphique v(t)",
+    "statement": "Sur un graphique v(t), la vitesse passe de 10 m/s à 30 m/s en 4 secondes de façon linéaire. Quelle est l'accélération?",
+    "givens": {
+      "v0": 10,
+      "vf": 30,
+      "t": 4
+    },
+    "unknowns": ["a"],
+    "choices": [
+      {
+        "id": "A",
+        "text": "2.5 m/s²",
+        "correct": false
+      },
+      {
+        "id": "B",
+        "text": "5 m/s²",
+        "correct": true
+      },
+      {
+        "id": "C",
+        "text": "7.5 m/s²",
+        "correct": false
+      },
+      {
+        "id": "D",
+        "text": "10 m/s²",
+        "correct": false
+      }
+    ],
+    "hints": [
+      "L'accélération est la pente du graphique v(t)",
+      "a = Δv/Δt = (vf - v0)/t",
+      "Calculez la variation de vitesse divisée par le temps"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "C",
+        "patternType": "choice",
+        "message": "Vous avez peut-être utilisé la mauvaise formule",
+        "hint": "a = (vf - v0)/t, pas (vf + v0)/t",
+        "category": "formula"
+      },
+      {
+        "pattern": "A",
+        "patternType": "choice",
+        "message": "Vérifiez votre calcul",
+        "hint": "(30 - 10)/4 = 20/4 = 5 m/s²",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "L'accélération est la pente du graphique v(t): a = Δv/Δt = (30 - 10)/4 = 20/4 = 5 m/s²."
+  },
+  {
+    "id": "kin-m1-q13-aire-sous-courbe",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "displacement"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Aire sous la courbe v(t)",
+    "statement": "Un graphique v(t) montre une droite partant de {v0} m/s à t=0 et atteignant {vf} m/s à t={t} s. Calculez le déplacement total (aire sous la courbe).",
+    "givens": {
+      "v0": 5,
+      "vf": 25,
+      "t": 8
+    },
+    "unknowns": ["d"],
+    "answer": {
+      "variable": "d",
+      "value": 120,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'aire sous la courbe v(t) représente le déplacement",
+      "Cette forme est un trapèze",
+      "Aire trapèze = (base₁ + base₂) × hauteur / 2 = (v₀ + vf) × t / 2"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "200",
+        "patternType": "value",
+        "message": "Vous avez utilisé vf × t au lieu de l'aire du trapèze",
+        "hint": "La vitesse varie, utilisez la moyenne: (v₀ + vf)/2 × t",
+        "category": "concept"
+      },
+      {
+        "pattern": "80",
+        "patternType": "value",
+        "message": "Vous avez calculé l'aire du triangle au-dessus de v₀",
+        "hint": "N'oubliez pas l'aire du rectangle sous v₀",
+        "category": "concept"
+      }
+    ],
+    "explanation": "L'aire du trapèze = (v₀ + vf)/2 × t = (5 + 25)/2 × 8 = 15 × 8 = 120 m.",
+    "parameters": {
+      "v0": { "min": 0, "max": 10, "step": 5, "unit": "m/s" },
+      "vf": { "min": 15, "max": 30, "step": 5, "unit": "m/s" },
+      "t": { "min": 4, "max": 12, "step": 2, "unit": "s" }
+    },
+    "answerFormula": "(v0 + vf) / 2 * t"
+  },
+  {
+    "id": "kin-m1-q14-graphique-acceleration",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "velocity"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Variation de vitesse depuis a(t)",
+    "statement": "Un graphique a(t) montre une accélération constante de {a} m/s² pendant {t1} s, puis 0 m/s² pendant {t2} s. Si v₀ = 0, quelle est la vitesse finale?",
+    "givens": {
+      "a": 4,
+      "t1": 5,
+      "t2": 10,
+      "v0": 0
+    },
+    "unknowns": ["vf"],
+    "answer": {
+      "variable": "vf",
+      "value": 20,
+      "unit": "m/s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'aire sous la courbe a(t) représente la variation de vitesse Δv",
+      "Phase 1: Δv₁ = a × t₁",
+      "Phase 2: Δv₂ = 0 (accélération nulle)",
+      "vf = v₀ + Δv₁ + Δv₂"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "60",
+        "patternType": "value",
+        "message": "Vous avez multiplié l'accélération par le temps total",
+        "hint": "L'accélération n'est pas constante: elle est de a pendant t₁, puis 0 pendant t₂",
+        "category": "concept"
+      },
+      {
+        "pattern": "40",
+        "patternType": "value",
+        "message": "Vous avez peut-être additionné les temps incorrectement",
+        "hint": "Seule la phase 1 contribue à Δv: Δv = a × t₁",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "Phase 1: Δv₁ = 4 × 5 = 20 m/s. Phase 2: Δv₂ = 0. Vitesse finale: vf = 0 + 20 + 0 = 20 m/s.",
+    "parameters": {
+      "a": { "min": 2, "max": 6, "step": 1, "unit": "m/s²" },
+      "t1": { "min": 3, "max": 8, "step": 1, "unit": "s" },
+      "t2": { "min": 5, "max": 15, "step": 5, "unit": "s" }
+    },
+    "answerFormula": "v0 + a * t1"
+  },
+  {
+    "id": "kin-m1-q15-rattrapage",
+    "module": 1,
+    "tags": ["mru", "pursuit", "equations"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Rattrapage entre deux véhicules",
+    "statement": "Un camion roule à {v_camion} km/h. Une voiture, à {d0} km derrière, roule à {v_voiture} km/h dans la même direction. Dans combien de minutes la voiture rattrapera-t-elle le camion?",
+    "givens": {
+      "v_camion": 80,
+      "v_voiture": 120,
+      "d0": 20
+    },
+    "unknowns": ["t"],
+    "answer": {
+      "variable": "t",
+      "value": 30,
+      "unit": "min",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Les deux véhicules vont dans la même direction",
+      "Vitesse relative: v_rel = v_voiture - v_camion",
+      "Temps = distance / vitesse relative",
+      "Convertissez le résultat en minutes"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "6",
+        "patternType": "value",
+        "message": "Vous avez utilisé la somme des vitesses",
+        "hint": "Ils vont dans la même direction: v_rel = v_voiture - v_camion",
+        "category": "concept"
+      },
+      {
+        "pattern": "0.5",
+        "patternType": "value",
+        "message": "Vous avez donné la réponse en heures",
+        "hint": "Convertissez en minutes: × 60",
+        "category": "units"
+      }
+    ],
+    "explanation": "Vitesse relative: 120 - 80 = 40 km/h. Temps: t = 20 km / 40 km/h = 0.5 h = 30 min.",
+    "parameters": {
+      "v_camion": { "min": 60, "max": 100, "step": 10, "unit": "km/h" },
+      "v_voiture": { "min": 100, "max": 140, "step": 10, "unit": "km/h" },
+      "d0": { "min": 10, "max": 40, "step": 5, "unit": "km" }
+    },
+    "answerFormula": "d0 / (v_voiture - v_camion) * 60"
+  },
+  {
+    "id": "kin-m1-q16-freinage-urgence",
+    "module": 1,
+    "tags": ["mrua", "braking", "safety"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Freinage d'urgence - Collision évitée?",
+    "statement": "Une voiture roule à {v0} km/h. Le conducteur voit un obstacle à {d_obstacle} m. Après un temps de réaction de {t_reaction} s, il freine avec une décélération de {a} m/s². À quelle distance de l'obstacle s'arrêtera-t-il? (Réponse négative = collision)",
+    "givens": {
+      "v0": 108,
+      "d_obstacle": 80,
+      "t_reaction": 0.8,
+      "a": 9
+    },
+    "unknowns": ["d_marge"],
+    "answer": {
+      "variable": "d_marge",
+      "value": 6,
+      "unit": "m",
+      "tolerance": 5,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Convertissez v₀ en m/s: v = v₀ / 3.6",
+      "Distance réaction: d_réac = v × t_réaction",
+      "Distance freinage: d_frein = v² / (2a)",
+      "Marge = d_obstacle - d_réac - d_frein"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "-18",
+        "patternType": "value",
+        "message": "Vérifiez la conversion km/h → m/s",
+        "hint": "108 km/h = 30 m/s (divisez par 3.6)",
+        "category": "units"
+      },
+      {
+        "pattern": "30",
+        "patternType": "value",
+        "message": "Vous avez oublié la distance de réaction",
+        "hint": "Pendant t_réaction, la voiture roule encore à vitesse constante",
+        "category": "concept"
+      }
+    ],
+    "explanation": "v = 108/3.6 = 30 m/s. d_réac = 30 × 0.8 = 24 m. d_frein = 30²/(2×9) = 900/18 = 50 m. Distance totale: 24 + 50 = 74 m. Marge: 80 - 74 = 6 m (collision évitée).",
+    "parameters": {
+      "v0": { "min": 72, "max": 144, "step": 18, "unit": "km/h" },
+      "d_obstacle": { "min": 60, "max": 120, "step": 10, "unit": "m" },
+      "t_reaction": { "min": 0.5, "max": 1.5, "step": 0.3, "unit": "s" },
+      "a": { "min": 7, "max": 11, "step": 1, "unit": "m/s²" }
+    },
+    "answerFormula": "d_obstacle - (v0/3.6)*t_reaction - (v0/3.6)*(v0/3.6)/(2*a)"
+  },
+  {
+    "id": "kin-m1-q17-chute-rebond",
+    "module": 1,
+    "tags": ["free-fall", "mrua", "collision"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Chute et rebond",
+    "statement": "Une balle est lâchée d'une hauteur de {h} m. Elle rebondit et remonte à {percent}% de sa hauteur initiale. Quelle est la vitesse juste avant le premier rebond? (g = 10 m/s²)",
+    "givens": {
+      "h": 20,
+      "percent": 80,
+      "g": 10
+    },
+    "unknowns": ["v_impact"],
+    "answer": {
+      "variable": "v_impact",
+      "value": 20,
+      "unit": "m/s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La vitesse d'impact ne dépend que de la hauteur initiale",
+      "Le pourcentage de rebond n'affecte pas la vitesse d'impact",
+      "Utilisez vf² = 2gh (car v₀ = 0)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "16",
+        "patternType": "value",
+        "message": "Vous avez appliqué le pourcentage de rebond à la vitesse",
+        "hint": "Le pourcentage concerne la hauteur de rebond, pas la vitesse d'impact",
+        "category": "concept"
+      },
+      {
+        "pattern": "17.89",
+        "patternType": "value",
+        "message": "Vous avez appliqué √(80%) à la vitesse",
+        "hint": "La vitesse d'impact dépend seulement de h: v = √(2gh)",
+        "category": "concept"
+      }
+    ],
+    "explanation": "La vitesse juste avant l'impact dépend uniquement de la hauteur de chute initiale. v = √(2gh) = √(2×10×20) = √400 = 20 m/s. Le pourcentage de rebond affecte la hauteur de remontée, pas la vitesse d'impact.",
+    "parameters": {
+      "h": { "min": 10, "max": 40, "step": 5, "unit": "m" },
+      "percent": { "min": 50, "max": 90, "step": 10, "unit": "%" }
+    },
+    "answerFormula": "sqrt(2 * g * h)"
+  },
+  {
+    "id": "kin-m1-q18-ascenseur",
+    "module": 1,
+    "tags": ["mrua", "multi-phase", "practical"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Mouvement d'ascenseur",
+    "statement": "Un ascenseur part du repos, accélère à {a1} m/s² pendant {t1} s, monte à vitesse constante pendant {t2} s, puis décélère à {a2} m/s² jusqu'à l'arrêt. Quelle hauteur totale a-t-il parcourue?",
+    "givens": {
+      "a1": 1.5,
+      "t1": 2,
+      "t2": 8,
+      "a2": 1
+    },
+    "unknowns": ["h_total"],
+    "answer": {
+      "variable": "h_total",
+      "value": 28.5,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Calculez d'abord la vitesse max: v_max = a₁ × t₁",
+      "Phase 1: h₁ = ½ × a₁ × t₁²",
+      "Phase 2: h₂ = v_max × t₂",
+      "Phase 3: calculez t₃ = v_max/a₂, puis h₃ = v_max × t₃ - ½ × a₂ × t₃²"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "24",
+        "patternType": "value",
+        "message": "Vous avez oublié une des phases",
+        "hint": "Il y a 3 phases: accélération, vitesse constante, décélération",
+        "category": "concept"
+      },
+      {
+        "pattern": "30",
+        "patternType": "value",
+        "message": "Vérifiez le calcul de la phase de décélération",
+        "hint": "Pour la décélération: d = v²/(2a) ou d = v×t/2",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "v_max = 1.5 × 2 = 3 m/s. Phase 1: h₁ = ½×1.5×4 = 3 m. Phase 2: h₂ = 3×8 = 24 m. Phase 3: t₃ = 3/1 = 3 s, h₃ = 3²/(2×1) = 4.5/2 = 1.5 m (ou v_max×t₃/2 = 3×3/2 = 4.5/2 = 1.5 m). Total: 3 + 24 + 1.5 = 28.5 m.",
+    "parameters": {
+      "a1": { "min": 1, "max": 2, "step": 0.5, "unit": "m/s²" },
+      "t1": { "min": 2, "max": 4, "step": 1, "unit": "s" },
+      "t2": { "min": 5, "max": 12, "step": 1, "unit": "s" },
+      "a2": { "min": 0.5, "max": 1.5, "step": 0.5, "unit": "m/s²" }
+    },
+    "answerFormula": "0.5*a1*t1*t1 + (a1*t1)*t2 + (a1*t1)*(a1*t1)/(2*a2)"
+  },
+  {
+    "id": "kin-m1-q19-pente-graphique",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "analysis"],
+    "difficulty": "expert",
+    "type": "mcq",
+    "active": true,
+    "title": "Analyse complète de graphiques",
+    "statement": "Sur un graphique x(t), on observe: (1) une droite croissante de t=0 à t=2s, (2) un plateau horizontal de t=2s à t=5s, (3) une parabole descendante de t=5s à t=8s. Quelle description est correcte?",
+    "givens": {},
+    "unknowns": ["description"],
+    "choices": [
+      {
+        "id": "A",
+        "text": "MRU vers l'avant, arrêt, MRUA vers l'arrière",
+        "correct": false
+      },
+      {
+        "id": "B",
+        "text": "MRU vers l'avant, arrêt, MRU vers l'arrière",
+        "correct": false
+      },
+      {
+        "id": "C",
+        "text": "MRU vers l'avant, arrêt, MRUA avec décélération",
+        "correct": true
+      },
+      {
+        "id": "D",
+        "text": "MRUA vers l'avant, MRU, MRUA vers l'arrière",
+        "correct": false
+      }
+    ],
+    "hints": [
+      "Une droite dans x(t) = MRU (vitesse constante)",
+      "Un plateau = position constante = objet immobile",
+      "Une parabole = MRUA (accélération non nulle)",
+      "Parabole descendante = x diminue = retour vers l'origine"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "A",
+        "patternType": "choice",
+        "message": "Regardez bien: la parabole descend, mais l'objet ne va pas forcément 'vers l'arrière' au début",
+        "hint": "Au début de la phase 3, l'objet peut encore se déplacer dans le sens positif, mais décélère",
+        "category": "concept"
+      },
+      {
+        "pattern": "D",
+        "patternType": "choice",
+        "message": "La phase 1 est une droite, pas une parabole",
+        "hint": "Droite = vitesse constante = MRU",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Phase 1: droite = MRU (vitesse constante positive). Phase 2: plateau = arrêt (v=0). Phase 3: parabole descendante = MRUA. Si la parabole a une concavité vers le bas et descend, l'objet décélère puis revient en arrière. La description 'MRUA avec décélération' capture le mieux cette situation."
+  },
+  {
+    "id": "kin-m1-q20-vitesse-moyenne-trajet",
+    "module": 1,
+    "tags": ["mru", "average", "multi-phase"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Vitesse moyenne sur un trajet aller-retour",
+    "statement": "Une voiture parcourt {d} km à {v1} km/h à l'aller, puis revient par le même chemin à {v2} km/h. Quelle est sa vitesse moyenne pour l'ensemble du trajet?",
+    "givens": {
+      "d": 120,
+      "v1": 60,
+      "v2": 40
+    },
+    "unknowns": ["v_moy"],
+    "answer": {
+      "variable": "v_moy",
+      "value": 48,
+      "unit": "km/h",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La vitesse moyenne ≠ moyenne des vitesses!",
+      "v_moy = distance totale / temps total",
+      "Calculez le temps pour chaque trajet: t = d/v",
+      "Distance totale = 2d, temps total = d/v₁ + d/v₂"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "50",
+        "patternType": "value",
+        "message": "Vous avez fait la moyenne arithmétique des vitesses",
+        "hint": "v_moy ≠ (v₁ + v₂)/2! Utilisez: v_moy = 2d / (d/v₁ + d/v₂) = 2v₁v₂/(v₁+v₂)",
+        "category": "concept"
+      },
+      {
+        "pattern": "100",
+        "patternType": "value",
+        "message": "Vérifiez votre formule",
+        "hint": "v_moy = distance totale / temps total",
+        "category": "formula"
+      }
+    ],
+    "explanation": "Temps aller: t₁ = 120/60 = 2 h. Temps retour: t₂ = 120/40 = 3 h. Distance totale: 240 km. Temps total: 5 h. v_moy = 240/5 = 48 km/h. (Ou: v_moy = 2×60×40/(60+40) = 4800/100 = 48 km/h)",
+    "parameters": {
+      "d": { "min": 60, "max": 180, "step": 30, "unit": "km" },
+      "v1": { "min": 40, "max": 80, "step": 10, "unit": "km/h" },
+      "v2": { "min": 30, "max": 60, "step": 10, "unit": "km/h" }
+    },
+    "answerFormula": "2 * v1 * v2 / (v1 + v2)"
   }
 ]
