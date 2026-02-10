@@ -48,7 +48,7 @@ export default function QuizPage() {
     try {
       setLoading(true);
       const response = await fetch(
-        `/api/questions?courseId=${courseId}&moduleId=${moduleId}&count=5`
+        `/api/questions?courseId=${courseId}&moduleId=${moduleId}&all=true`
       );
 
       if (!response.ok) {

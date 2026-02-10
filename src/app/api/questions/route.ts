@@ -6,6 +6,7 @@ import {
   generateQuiz,
   saveQuestion,
   getQuestionStats,
+  instantiateQuestion,
 } from '@/lib/questions';
 import type { ModuleId } from '@/types/question';
 import type { CourseId } from '@/types/course';
@@ -27,14 +28,6 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ stats: questionStats, courseId });
     }
 
-    // Retourner toutes les questions
-    if (all) {
-      const questions = courseId
-        ? loadQuestionsByCourse(courseId)
-        : loadAllQuestions();
-      return NextResponse.json({ questions, courseId });
-    }
-
     // Retourner les questions d'un module spécifique
     if (moduleId) {
       const parsedModuleId = parseInt(moduleId) as ModuleId;
@@ -51,7 +44,25 @@ export async function GET(request: NextRequest) {
         }
       }
 
-      // Générer un quiz avec des variantes
+      // Retourner toutes les questions du module si all=true
+      if (all) {
+        const allModuleQuestions = getQuestionsByModule(parsedModuleId, courseId || undefined);
+        // Instancier toutes les questions avec des variantes
+        const instantiatedQuestions = allModuleQuestions.map((q, index) => {
+          const actualSeed = seed ? parseInt(seed) + index : Date.now() + index;
+          return instantiateQuestion(q, actualSeed);
+        });
+
+        return NextResponse.json({
+          questions: instantiatedQuestions,
+          courseId: courseId || 'statics',
+          moduleId: parsedModuleId,
+          count: instantiatedQuestions.length,
+          seed: seed || 'random',
+        });
+      }
+
+      // Générer un quiz avec un nombre limité de questions
       const questions = generateQuiz(
         parsedModuleId,
         count,
@@ -66,6 +77,14 @@ export async function GET(request: NextRequest) {
         count: questions.length,
         seed: seed || 'random',
       });
+    }
+
+    // Retourner toutes les questions du cours si all=true
+    if (all) {
+      const questions = courseId
+        ? loadQuestionsByCourse(courseId)
+        : loadAllQuestions();
+      return NextResponse.json({ questions, courseId });
     }
 
     // Par défaut, retourner toutes les questions du cours ou globales

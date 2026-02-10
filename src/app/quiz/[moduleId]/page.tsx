@@ -31,7 +31,7 @@ export default function QuizPage() {
   const loadQuestions = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/questions?moduleId=${moduleId}&count=5`);
+      const response = await fetch(`/api/questions?moduleId=${moduleId}&all=true`);
 
       if (!response.ok) {
         throw new Error('Erreur lors du chargement des questions');
