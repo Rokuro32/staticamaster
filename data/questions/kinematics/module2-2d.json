@@ -648,5 +648,285 @@
       "at": { "min": 2, "max": 5, "step": 1, "unit": "m/s²" }
     },
     "answerFormula": "sqrt(at*at + (v*v/r)*(v*v/r))"
+  },
+  {
+    "id": "kin-m2-q16-graphique-trajectoire",
+    "module": 2,
+    "tags": ["graphs", "projectile", "trajectory"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Graphique y(x) - Forme de la trajectoire",
+    "statement": "Un graphique y(x) d'un projectile lance horizontalement depuis une hauteur montre une courbe. Quelle est la forme de cette trajectoire?",
+    "givens": {},
+    "unknowns": ["forme"],
+    "choices": [
+      {
+        "id": "A",
+        "text": "Une droite inclinee",
+        "correct": false
+      },
+      {
+        "id": "B",
+        "text": "Une parabole orientee vers le bas",
+        "correct": true
+      },
+      {
+        "id": "C",
+        "text": "Un cercle",
+        "correct": false
+      },
+      {
+        "id": "D",
+        "text": "Une parabole orientee vers le haut",
+        "correct": false
+      }
+    ],
+    "hints": [
+      "x = v0×t (lineaire) et y = h - ½gt² (parabolique)",
+      "Eliminez t: y = h - g/(2v0²) × x²",
+      "C'est une parabole en x avec coefficient negatif"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "A",
+        "patternType": "choice",
+        "message": "Une droite impliquerait que y varie lineairement avec x",
+        "hint": "La composante y est acceleree (chute libre), pas constante",
+        "category": "concept"
+      }
+    ],
+    "explanation": "En eliminant t: x = v0×t → t = x/v0. Substitution: y = h - ½g(x/v0)² = h - (g/2v0²)x². C'est une parabole avec le coefficient de x² negatif, donc orientee vers le bas."
+  },
+  {
+    "id": "kin-m2-q17-graphique-vx-vy",
+    "module": 2,
+    "tags": ["graphs", "projectile", "velocity-components"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Graphiques vx(t) et vy(t) d'un projectile",
+    "statement": "Pour un projectile lance avec un angle, quel ensemble de graphiques vx(t) et vy(t) est correct?",
+    "givens": {},
+    "unknowns": ["graphiques"],
+    "choices": [
+      {
+        "id": "A",
+        "text": "vx: ligne horizontale constante, vy: droite descendante",
+        "correct": true
+      },
+      {
+        "id": "B",
+        "text": "vx: droite descendante, vy: ligne horizontale",
+        "correct": false
+      },
+      {
+        "id": "C",
+        "text": "vx et vy: toutes deux des droites descendantes",
+        "correct": false
+      },
+      {
+        "id": "D",
+        "text": "vx et vy: toutes deux des paraboles",
+        "correct": false
+      }
+    ],
+    "hints": [
+      "Horizontalement: pas d'acceleration, donc vx = constante",
+      "Verticalement: acceleration = -g, donc vy diminue lineairement",
+      "Les equations sont: vx = v0×cos(θ) et vy = v0×sin(θ) - gt"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "C",
+        "patternType": "choice",
+        "message": "Il n'y a pas d'acceleration horizontale",
+        "hint": "ax = 0, donc vx reste constant",
+        "category": "concept"
+      }
+    ],
+    "explanation": "vx = v0×cos(θ) = constante (pas d'acceleration horizontale), donc graphique horizontal. vy = v0×sin(θ) - gt, droite de pente -g qui descend lineairement."
+  },
+  {
+    "id": "kin-m2-q18-graphique-hauteur-temps",
+    "module": 2,
+    "tags": ["graphs", "projectile", "height"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Graphique y(t) - Temps au sommet",
+    "statement": "Un graphique y(t) d'un projectile montre une parabole inversee. Le projectile part du sol, atteint une hauteur max de {hmax} m et retombe. Si le temps total de vol est {T} s, a quel instant atteint-il le sommet?",
+    "givens": {
+      "hmax": 45,
+      "T": 6
+    },
+    "unknowns": ["t_sommet"],
+    "answer": {
+      "variable": "t_sommet",
+      "value": 3,
+      "unit": "s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La trajectoire y(t) est symetrique (en l'absence de resistance de l'air)",
+      "Le sommet est atteint a mi-temps du vol",
+      "t_sommet = T/2"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "1.5",
+        "patternType": "value",
+        "message": "Vous avez peut-etre divise par 4",
+        "hint": "Le sommet est au milieu du temps de vol: t = T/2",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "Par symetrie de la trajectoire, le sommet est atteint exactement a mi-temps: t_sommet = T/2 = 6/2 = 3 s.",
+    "parameters": {
+      "hmax": { "min": 20, "max": 80, "step": 5, "unit": "m" },
+      "T": { "min": 4, "max": 10, "step": 2, "unit": "s" }
+    },
+    "answerFormula": "T / 2"
+  },
+  {
+    "id": "kin-m2-q19-graphique-circ-vt",
+    "module": 2,
+    "tags": ["graphs", "circular-motion", "velocity"],
+    "difficulty": "advanced",
+    "type": "mcq",
+    "active": true,
+    "title": "Mouvement circulaire uniforme - Graphique v(t)",
+    "statement": "Pour un objet en mouvement circulaire uniforme, comment apparait le graphique de la composante vx en fonction du temps?",
+    "givens": {},
+    "unknowns": ["forme_vx"],
+    "choices": [
+      {
+        "id": "A",
+        "text": "Une sinusoide (fonction cosinus ou sinus)",
+        "correct": true
+      },
+      {
+        "id": "B",
+        "text": "Une ligne horizontale constante",
+        "correct": false
+      },
+      {
+        "id": "C",
+        "text": "Une droite croissante",
+        "correct": false
+      },
+      {
+        "id": "D",
+        "text": "Une parabole",
+        "correct": false
+      }
+    ],
+    "hints": [
+      "En mouvement circulaire: x = R×cos(ωt), y = R×sin(ωt)",
+      "La vitesse vx = dx/dt = -Rω×sin(ωt)",
+      "C'est une fonction sinusoidale"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "B",
+        "patternType": "choice",
+        "message": "La norme |v| est constante, mais pas les composantes",
+        "hint": "Les composantes vx et vy varient sinusoidalement",
+        "category": "concept"
+      }
+    ],
+    "explanation": "x = R×cos(ωt) → vx = -Rω×sin(ωt). La composante vx varie sinusoidalement entre -Rω et +Rω. La NORME de v est constante, mais ses COMPOSANTES oscillent."
+  },
+  {
+    "id": "kin-m2-q20-graphique-projectile-composantes",
+    "module": 2,
+    "tags": ["graphs", "projectile", "components"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Lecture graphique - Composantes initiales",
+    "statement": "Sur un graphique vx(t), la ligne horizontale est a {vx} m/s. Sur le graphique vy(t), la droite part de {vy0} m/s et a une pente de -10 m/s². Quelle est la vitesse initiale totale du projectile?",
+    "givens": {
+      "vx": 30,
+      "vy0": 40
+    },
+    "unknowns": ["v0"],
+    "answer": {
+      "variable": "v0",
+      "value": 50,
+      "unit": "m/s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "vx = v0×cos(θ) = constante (lu sur le graphique)",
+      "vy0 = v0×sin(θ) (ordonnee a l'origine du graphique vy)",
+      "v0 = √(vx² + vy0²)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "70",
+        "patternType": "value",
+        "message": "Vous avez additionne les composantes directement",
+        "hint": "v0 = √(vx² + vy0²), pas vx + vy0",
+        "category": "formula"
+      }
+    ],
+    "explanation": "v0 = √(vx² + vy0²) = √(30² + 40²) = √(900 + 1600) = √2500 = 50 m/s.",
+    "parameters": {
+      "vx": { "min": 20, "max": 40, "step": 5, "unit": "m/s" },
+      "vy0": { "min": 25, "max": 50, "step": 5, "unit": "m/s" }
+    },
+    "answerFormula": "sqrt(vx*vx + vy0*vy0)"
+  },
+  {
+    "id": "kin-m2-q21-graphique-acc-centripete",
+    "module": 2,
+    "tags": ["graphs", "circular-motion", "acceleration"],
+    "difficulty": "expert",
+    "type": "mcq",
+    "active": true,
+    "title": "Graphique acceleration centripete",
+    "statement": "Un objet effectue un mouvement circulaire avec une vitesse v qui augmente lineairement avec le temps: v = kt. Comment evolue l'acceleration centripete ac en fonction du temps?",
+    "givens": {},
+    "unknowns": ["evolution_ac"],
+    "choices": [
+      {
+        "id": "A",
+        "text": "ac est constante",
+        "correct": false
+      },
+      {
+        "id": "B",
+        "text": "ac augmente lineairement avec t",
+        "correct": false
+      },
+      {
+        "id": "C",
+        "text": "ac augmente comme t² (paraboliquement)",
+        "correct": true
+      },
+      {
+        "id": "D",
+        "text": "ac diminue avec le temps",
+        "correct": false
+      }
+    ],
+    "hints": [
+      "L'acceleration centripete est ac = v²/r",
+      "Si v = kt, alors ac = (kt)²/r = k²t²/r",
+      "ac est proportionnelle a t²"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "B",
+        "patternType": "choice",
+        "message": "La vitesse augmente lineairement, mais ac depend de v²",
+        "hint": "ac = v²/r, donc si v ∝ t, alors ac ∝ t²",
+        "category": "concept"
+      }
+    ],
+    "explanation": "ac = v²/r. Si v = kt (lineaire), alors ac = (kt)²/r = (k²/r)×t². L'acceleration centripete evolue comme t², formant une parabole sur un graphique ac(t)."
   }
 ]

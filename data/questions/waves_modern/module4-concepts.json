@@ -1,0 +1,1262 @@
+[
+  {
+    "id": "wm-m4-q1-pendule",
+    "module": 4,
+    "tags": ["concept-matching", "shm"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Pendule d'horloge",
+    "statement": "Une horloge grand-père utilise un pendule qui oscille régulièrement de gauche à droite. Quel concept physique décrit le mieux ce mouvement?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Mouvement harmonique simple (MHS)",
+        "isCorrect": true,
+        "feedback": "Correct! Le pendule simple effectue un MHS pour de petites amplitudes, avec une période qui ne dépend que de la longueur et de g."
+      },
+      {
+        "id": "b",
+        "text": "Onde stationnaire",
+        "isCorrect": false,
+        "feedback": "Non, une onde stationnaire nécessite la superposition de deux ondes se propageant en sens opposés."
+      },
+      {
+        "id": "c",
+        "text": "Effet Doppler",
+        "isCorrect": false,
+        "feedback": "Non, l'effet Doppler concerne le changement de fréquence d'une onde due au mouvement relatif."
+      },
+      {
+        "id": "d",
+        "text": "Résonance",
+        "isCorrect": false,
+        "feedback": "La résonance est liée au MHS, mais le mouvement régulier du pendule est un MHS, pas la résonance elle-même."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Le mouvement est périodique et répétitif", "La position varie sinusoïdalement dans le temps"],
+    "commonMistakes": [],
+    "explanation": "Le pendule simple est l'exemple classique du MHS. Pour de petites oscillations, le mouvement est sinusoïdal avec une période T = 2π√(L/g)."
+  },
+  {
+    "id": "wm-m4-q2-corde-guitare",
+    "module": 4,
+    "tags": ["concept-matching", "standing-waves"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Corde de guitare vibrante",
+    "statement": "Quand on pince une corde de guitare, elle vibre avec des points qui restent immobiles (les nœuds) et des points qui vibrent au maximum (les ventres). Quel concept décrit ce phénomène?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Onde stationnaire",
+        "isCorrect": true,
+        "feedback": "Correct! La superposition des ondes incidentes et réfléchies crée une onde stationnaire avec nœuds et ventres fixes."
+      },
+      {
+        "id": "b",
+        "text": "Effet Doppler",
+        "isCorrect": false,
+        "feedback": "Non, l'effet Doppler concerne le changement de fréquence perçue dû au mouvement."
+      },
+      {
+        "id": "c",
+        "text": "Diffraction",
+        "isCorrect": false,
+        "feedback": "Non, la diffraction est le contournement d'obstacles par les ondes."
+      },
+      {
+        "id": "d",
+        "text": "Polarisation",
+        "isCorrect": false,
+        "feedback": "Non, la polarisation concerne l'orientation du champ électrique des ondes EM."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Il y a des points fixes et des points de vibration maximale", "C'est le résultat de la superposition d'ondes"],
+    "commonMistakes": [],
+    "explanation": "Les ondes stationnaires se forment quand deux ondes de même fréquence se superposent en voyageant en sens opposés. Les points immobiles sont les nœuds, les points de vibration maximale sont les ventres."
+  },
+  {
+    "id": "wm-m4-q3-ambulance",
+    "module": 4,
+    "tags": ["concept-matching", "doppler"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Sirène d'ambulance",
+    "statement": "Une ambulance passe devant vous à grande vitesse. Vous remarquez que le son de la sirène est plus aigu quand elle s'approche et plus grave quand elle s'éloigne. Quel concept explique cela?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Effet Doppler",
+        "isCorrect": true,
+        "feedback": "Correct! L'effet Doppler explique le changement de fréquence perçue dû au mouvement relatif entre la source et l'observateur."
+      },
+      {
+        "id": "b",
+        "text": "Résonance",
+        "isCorrect": false,
+        "feedback": "Non, la résonance est l'amplification d'oscillations à une fréquence particulière."
+      },
+      {
+        "id": "c",
+        "text": "Interférence",
+        "isCorrect": false,
+        "feedback": "Non, l'interférence est la superposition de deux ondes créant des zones constructives et destructives."
+      },
+      {
+        "id": "d",
+        "text": "Battement",
+        "isCorrect": false,
+        "feedback": "Non, les battements résultent de la superposition de deux fréquences légèrement différentes."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Le changement de fréquence est dû au mouvement", "Le son perçu change quand la source se rapproche ou s'éloigne"],
+    "commonMistakes": [],
+    "explanation": "L'effet Doppler: quand la source s'approche, les fronts d'onde sont comprimés (fréquence plus élevée, son plus aigu). Quand elle s'éloigne, ils sont étirés (fréquence plus basse, son plus grave)."
+  },
+  {
+    "id": "wm-m4-q4-huile-eau",
+    "module": 4,
+    "tags": ["concept-matching", "thin-films"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Film d'huile sur l'eau",
+    "statement": "Sur une flaque d'eau avec un film d'huile, vous voyez des couleurs arc-en-ciel. Quel phénomène optique en est responsable?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Interférence en couche mince",
+        "isCorrect": true,
+        "feedback": "Correct! La lumière réfléchie aux deux interfaces (air-huile et huile-eau) interfère, créant des couleurs selon l'épaisseur."
+      },
+      {
+        "id": "b",
+        "text": "Diffraction",
+        "isCorrect": false,
+        "feedback": "Non, la diffraction est le contournement d'obstacles ou le passage par des ouvertures étroites."
+      },
+      {
+        "id": "c",
+        "text": "Polarisation",
+        "isCorrect": false,
+        "feedback": "Non, la polarisation ne crée pas de couleurs mais affecte l'orientation de l'onde."
+      },
+      {
+        "id": "d",
+        "text": "Réfraction",
+        "isCorrect": false,
+        "feedback": "La réfraction joue un rôle, mais les couleurs sont dues à l'interférence entre les rayons réfléchis."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Les couleurs dépendent de l'épaisseur du film", "Il y a deux surfaces de réflexion"],
+    "commonMistakes": [],
+    "explanation": "L'interférence en couche mince: la lumière se réfléchit sur les deux surfaces du film. Selon l'épaisseur et la longueur d'onde, certaines couleurs sont renforcées (interférence constructive) et d'autres annulées."
+  },
+  {
+    "id": "wm-m4-q5-lunettes-soleil",
+    "module": 4,
+    "tags": ["concept-matching", "polarization"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Lunettes de soleil polarisées",
+    "statement": "Les lunettes de soleil polarisées réduisent l'éblouissement des reflets sur l'eau ou la route. Quel principe physique utilisent-elles?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Polarisation",
+        "isCorrect": true,
+        "feedback": "Correct! Les reflets sont partiellement polarisés horizontalement, et les lunettes avec filtres verticaux les bloquent."
+      },
+      {
+        "id": "b",
+        "text": "Absorption",
+        "isCorrect": false,
+        "feedback": "Les lunettes absorbent bien de la lumière, mais l'effet anti-éblouissement vient de la polarisation."
+      },
+      {
+        "id": "c",
+        "text": "Réfraction",
+        "isCorrect": false,
+        "feedback": "Non, la réfraction change la direction de la lumière, pas son intensité sélective."
+      },
+      {
+        "id": "d",
+        "text": "Diffraction",
+        "isCorrect": false,
+        "feedback": "Non, la diffraction concerne le contournement d'obstacles par la lumière."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Les reflets ont une orientation particulière", "Le filtre bloque certaines orientations de la lumière"],
+    "commonMistakes": [],
+    "explanation": "La lumière réfléchie à l'angle de Brewster est polarisée horizontalement. Les lunettes avec un filtre polarisant vertical bloquent cette lumière, réduisant l'éblouissement."
+  },
+  {
+    "id": "wm-m4-q6-masse-ressort",
+    "module": 4,
+    "tags": ["concept-matching", "shm"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Masse sur un ressort",
+    "statement": "Un bloc attaché à un ressort est étiré puis relâché. Il oscille de haut en bas de façon régulière. Quel type de mouvement effectue-t-il?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Mouvement harmonique simple (MHS)",
+        "isCorrect": true,
+        "feedback": "Correct! Le système masse-ressort est l'exemple canonique du MHS, avec x(t) = A cos(ωt + φ)."
+      },
+      {
+        "id": "b",
+        "text": "Mouvement rectiligne uniforme",
+        "isCorrect": false,
+        "feedback": "Non, le MRU implique une vitesse constante, ce qui n'est pas le cas ici."
+      },
+      {
+        "id": "c",
+        "text": "Onde progressive",
+        "isCorrect": false,
+        "feedback": "Non, une onde progressive se déplace dans l'espace. Ici, la masse oscille sur place."
+      },
+      {
+        "id": "d",
+        "text": "Battement",
+        "isCorrect": false,
+        "feedback": "Non, les battements nécessitent deux fréquences légèrement différentes."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Le mouvement est périodique", "La force de rappel est proportionnelle au déplacement"],
+    "commonMistakes": [],
+    "explanation": "Le système masse-ressort suit la loi de Hooke: F = -kx. Cette force de rappel proportionnelle au déplacement produit un MHS de période T = 2π√(m/k)."
+  },
+  {
+    "id": "wm-m4-q7-fentes-young",
+    "module": 4,
+    "tags": ["concept-matching", "interference"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Expérience des fentes de Young",
+    "statement": "Dans l'expérience des fentes de Young, un faisceau lumineux passe par deux fentes étroites et crée sur un écran des bandes alternativement brillantes et sombres. Quel phénomène est mis en évidence?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Interférence",
+        "isCorrect": true,
+        "feedback": "Correct! Les deux fentes agissent comme des sources cohérentes dont les ondes interfèrent, créant des franges."
+      },
+      {
+        "id": "b",
+        "text": "Diffraction",
+        "isCorrect": false,
+        "feedback": "La diffraction joue un rôle dans chaque fente, mais les franges sont dues à l'interférence entre les deux fentes."
+      },
+      {
+        "id": "c",
+        "text": "Réfraction",
+        "isCorrect": false,
+        "feedback": "Non, la réfraction est le changement de direction à une interface entre deux milieux."
+      },
+      {
+        "id": "d",
+        "text": "Polarisation",
+        "isCorrect": false,
+        "feedback": "Non, la polarisation concerne l'orientation du champ électrique."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Les ondes de deux sources se superposent", "Des maxima et minima apparaissent"],
+    "commonMistakes": [],
+    "explanation": "L'interférence des ondes issues des deux fentes: quand elles arrivent en phase, elles s'additionnent (frange brillante). Quand elles arrivent en opposition de phase, elles s'annulent (frange sombre)."
+  },
+  {
+    "id": "wm-m4-q8-diapasons",
+    "module": 4,
+    "tags": ["concept-matching", "beats"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Deux diapasons désaccordés",
+    "statement": "Deux diapasons vibrent à des fréquences légèrement différentes (440 Hz et 442 Hz). Quand on les fait vibrer ensemble, on entend un son dont l'intensité varie périodiquement. Quel phénomène observe-t-on?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Battements",
+        "isCorrect": true,
+        "feedback": "Correct! Les battements sont les variations périodiques d'amplitude résultant de la superposition de deux fréquences proches."
+      },
+      {
+        "id": "b",
+        "text": "Résonance",
+        "isCorrect": false,
+        "feedback": "Non, la résonance amplifie une seule fréquence, pas le mélange de deux."
+      },
+      {
+        "id": "c",
+        "text": "Effet Doppler",
+        "isCorrect": false,
+        "feedback": "Non, l'effet Doppler nécessite un mouvement relatif."
+      },
+      {
+        "id": "d",
+        "text": "Onde stationnaire",
+        "isCorrect": false,
+        "feedback": "Non, les ondes stationnaires ont des nœuds et ventres fixes."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Les deux fréquences sont proches mais différentes", "On entend des pulsations"],
+    "commonMistakes": [],
+    "explanation": "Les battements: la fréquence de battement = |f1 - f2| = 2 Hz. On entend donc 2 pulsations par seconde dans l'intensité du son."
+  },
+  {
+    "id": "wm-m4-q9-verre-brise",
+    "module": 4,
+    "tags": ["concept-matching", "resonance"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Verre brisé par une note",
+    "statement": "Une chanteuse d'opéra peut briser un verre de cristal en chantant une note précise à volume élevé. Quel phénomène physique permet cela?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Résonance",
+        "isCorrect": true,
+        "feedback": "Correct! Quand la fréquence de la voix correspond à la fréquence propre du verre, l'amplitude des vibrations augmente jusqu'à la rupture."
+      },
+      {
+        "id": "b",
+        "text": "Battements",
+        "isCorrect": false,
+        "feedback": "Non, les battements nécessitent deux fréquences proches."
+      },
+      {
+        "id": "c",
+        "text": "Interférence destructive",
+        "isCorrect": false,
+        "feedback": "Non, l'interférence destructive réduit l'amplitude, elle ne la brise pas."
+      },
+      {
+        "id": "d",
+        "text": "Effet Doppler",
+        "isCorrect": false,
+        "feedback": "Non, l'effet Doppler concerne le changement de fréquence perçue."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Le verre a une fréquence propre de vibration", "L'amplitude augmente quand la fréquence externe correspond"],
+    "commonMistakes": [],
+    "explanation": "La résonance: chaque objet a des fréquences propres. Quand on excite un objet à sa fréquence propre, l'énergie s'accumule et l'amplitude peut devenir destructrice."
+  },
+  {
+    "id": "wm-m4-q10-arc-en-ciel",
+    "module": 4,
+    "tags": ["concept-matching", "dispersion"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Arc-en-ciel",
+    "statement": "Après une pluie, on peut voir un arc-en-ciel quand le soleil est derrière nous. Les couleurs se séparent car chacune est déviée différemment. Quel phénomène est responsable?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Dispersion (réfraction dépendante de λ)",
+        "isCorrect": true,
+        "feedback": "Correct! L'indice de réfraction varie avec la longueur d'onde, séparant les couleurs (le violet est plus dévié que le rouge)."
+      },
+      {
+        "id": "b",
+        "text": "Diffraction",
+        "isCorrect": false,
+        "feedback": "Non, la diffraction étale la lumière mais ne sépare pas les couleurs de cette façon."
+      },
+      {
+        "id": "c",
+        "text": "Interférence",
+        "isCorrect": false,
+        "feedback": "Non, l'interférence crée des franges, pas une séparation continue des couleurs."
+      },
+      {
+        "id": "d",
+        "text": "Polarisation",
+        "isCorrect": false,
+        "feedback": "La lumière de l'arc-en-ciel est partiellement polarisée, mais la séparation des couleurs vient de la dispersion."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Chaque couleur a une longueur d'onde différente", "L'indice de réfraction dépend de la longueur d'onde"],
+    "commonMistakes": [],
+    "explanation": "La dispersion: dans les gouttes d'eau, l'indice de réfraction varie avec λ (n violet > n rouge). Chaque couleur est donc réfractée différemment, créant l'arc-en-ciel."
+  },
+  {
+    "id": "wm-m4-q11-photoelectrique",
+    "module": 4,
+    "tags": ["concept-matching", "photoelectric"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Cellule photoélectrique",
+    "statement": "Une surface métallique éclairée par de la lumière ultraviolette émet des électrons, mais pas quand elle est éclairée par de la lumière rouge même très intense. Quel phénomène observe-t-on?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Effet photoélectrique",
+        "isCorrect": true,
+        "feedback": "Correct! L'énergie d'un photon (E = hf) doit dépasser le travail d'extraction. La fréquence compte, pas l'intensité."
+      },
+      {
+        "id": "b",
+        "text": "Effet Compton",
+        "isCorrect": false,
+        "feedback": "Non, l'effet Compton est la diffusion de photons X par des électrons, avec changement de longueur d'onde."
+      },
+      {
+        "id": "c",
+        "text": "Fluorescence",
+        "isCorrect": false,
+        "feedback": "Non, la fluorescence est l'émission de lumière après absorption, pas l'émission d'électrons."
+      },
+      {
+        "id": "d",
+        "text": "Réfraction",
+        "isCorrect": false,
+        "feedback": "Non, la réfraction concerne le changement de direction de la lumière."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["L'énergie d'un photon dépend de sa fréquence", "Il y a une fréquence seuil"],
+    "commonMistakes": [],
+    "explanation": "L'effet photoélectrique a révélé la nature quantique de la lumière: E = hf. Si hf < W (travail d'extraction), aucun électron n'est émis, peu importe l'intensité."
+  },
+  {
+    "id": "wm-m4-q12-cd-dvd",
+    "module": 4,
+    "tags": ["concept-matching", "diffraction"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Couleurs sur un CD",
+    "statement": "La surface d'un CD ou DVD présente des reflets colorés arc-en-ciel quand on l'éclaire avec de la lumière blanche. Quel phénomène optique cause ces couleurs?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Diffraction par un réseau",
+        "isCorrect": true,
+        "feedback": "Correct! Les pistes du CD agissent comme un réseau de diffraction, séparant les couleurs selon leurs longueurs d'onde."
+      },
+      {
+        "id": "b",
+        "text": "Réfraction",
+        "isCorrect": false,
+        "feedback": "Non, il n'y a pas de changement de milieu comme dans un prisme."
+      },
+      {
+        "id": "c",
+        "text": "Polarisation",
+        "isCorrect": false,
+        "feedback": "Non, la polarisation n'affecte pas la couleur."
+      },
+      {
+        "id": "d",
+        "text": "Fluorescence",
+        "isCorrect": false,
+        "feedback": "Non, le CD n'émet pas de lumière, il la réfléchit."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Le CD a des pistes microscopiques régulièrement espacées", "C'est similaire à un réseau de diffraction"],
+    "commonMistakes": [],
+    "explanation": "Diffraction: les pistes d'un CD (espacement ~1.6 μm) forment un réseau de diffraction. Chaque longueur d'onde est diffractée à un angle différent: d sin(θ) = mλ."
+  },
+  {
+    "id": "wm-m4-q13-micro-ondes",
+    "module": 4,
+    "tags": ["concept-matching", "standing-waves"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Points chauds dans un micro-ondes",
+    "statement": "Dans un four à micro-ondes sans plateau tournant, certains endroits chauffent beaucoup plus que d'autres (points chauds et points froids). Quel phénomène explique cela?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Ondes stationnaires",
+        "isCorrect": true,
+        "feedback": "Correct! Les micro-ondes réfléchies créent des ondes stationnaires avec des nœuds (froids) et des ventres (chauds)."
+      },
+      {
+        "id": "b",
+        "text": "Effet Doppler",
+        "isCorrect": false,
+        "feedback": "Non, rien ne se déplace à grande vitesse dans le four."
+      },
+      {
+        "id": "c",
+        "text": "Réfraction",
+        "isCorrect": false,
+        "feedback": "Non, la réfraction ne crée pas de motif de points chauds/froids."
+      },
+      {
+        "id": "d",
+        "text": "Diffraction",
+        "isCorrect": false,
+        "feedback": "Non, la diffraction étale les ondes mais ne crée pas ce motif régulier."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Les ondes sont réfléchies par les parois métalliques", "Il y a des zones d'amplitude maximale et nulle"],
+    "commonMistakes": [],
+    "explanation": "Les micro-ondes se réfléchissent sur les parois et interfèrent, créant des ondes stationnaires. Les ventres (amplitude max) chauffent, les nœuds (amplitude nulle) restent froids."
+  },
+  {
+    "id": "wm-m4-q14-jumelles",
+    "module": 4,
+    "tags": ["concept-matching", "relativity"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Paradoxe des jumeaux",
+    "statement": "Un jumeau voyage dans l'espace à une vitesse proche de celle de la lumière pendant 10 ans (temps du vaisseau), puis revient. Il retrouve son frère resté sur Terre beaucoup plus vieux que lui. Quel concept explique cela?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Dilatation du temps (relativité restreinte)",
+        "isCorrect": true,
+        "feedback": "Correct! Le temps s'écoule plus lentement pour l'observateur en mouvement par rapport à celui au repos."
+      },
+      {
+        "id": "b",
+        "text": "Contraction des longueurs",
+        "isCorrect": false,
+        "feedback": "La contraction des longueurs est aussi un effet relativiste, mais c'est la dilatation du temps qui explique le vieillissement différent."
+      },
+      {
+        "id": "c",
+        "text": "Effet Doppler relativiste",
+        "isCorrect": false,
+        "feedback": "L'effet Doppler affecte les fréquences observées, mais pas le vieillissement réel."
+      },
+      {
+        "id": "d",
+        "text": "Équivalence masse-énergie",
+        "isCorrect": false,
+        "feedback": "E = mc² est un autre aspect de la relativité, mais pas celui qui explique ce paradoxe."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Le temps s'écoule différemment selon la vitesse", "C'est un effet prédit par Einstein"],
+    "commonMistakes": [],
+    "explanation": "La dilatation du temps: t = t₀/√(1-v²/c²). Pour le voyageur, moins de temps s'écoule. Ce n'est pas symétrique car le voyageur subit des accélérations."
+  },
+  {
+    "id": "wm-m4-q15-ecran-lcd",
+    "module": 4,
+    "tags": ["concept-matching", "polarization"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Écran LCD",
+    "statement": "Un écran LCD (cristaux liquides) utilise deux filtres croisés et des cristaux qui peuvent faire tourner la polarisation de la lumière. Quel concept physique est au cœur de son fonctionnement?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Polarisation",
+        "isCorrect": true,
+        "feedback": "Correct! Les filtres polarisants contrôlent quelle lumière passe. Les cristaux liquides modulent la rotation de la polarisation."
+      },
+      {
+        "id": "b",
+        "text": "Interférence",
+        "isCorrect": false,
+        "feedback": "Non, les LCD n'utilisent pas l'interférence pour former l'image."
+      },
+      {
+        "id": "c",
+        "text": "Diffraction",
+        "isCorrect": false,
+        "feedback": "Non, la diffraction n'est pas le principe de fonctionnement des LCD."
+      },
+      {
+        "id": "d",
+        "text": "Fluorescence",
+        "isCorrect": false,
+        "feedback": "Non, les LCD ne sont pas fluorescents (contrairement aux écrans plasma ou OLED)."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Il y a deux filtres dont les axes sont perpendiculaires", "Les cristaux peuvent faire tourner le plan de polarisation"],
+    "commonMistakes": [],
+    "explanation": "Les LCD: lumière polarisée par le 1er filtre, rotation par les cristaux (contrôlée électriquement), puis 2e filtre. Si la polarisation est alignée avec le 2e filtre, la lumière passe (pixel clair)."
+  },
+  {
+    "id": "wm-m4-q16-rayon-x",
+    "module": 4,
+    "tags": ["concept-matching", "em-spectrum"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Radiographie médicale",
+    "statement": "Les rayons X peuvent traverser les tissus mous mais sont absorbés par les os, ce qui permet de faire des radiographies. Pourquoi les rayons X ont-ils ce pouvoir de pénétration?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Haute énergie des photons (courte longueur d'onde)",
+        "isCorrect": true,
+        "feedback": "Correct! Les rayons X ont des photons très énergétiques (E = hf) qui peuvent traverser la matière moins dense."
+      },
+      {
+        "id": "b",
+        "text": "Polarisation",
+        "isCorrect": false,
+        "feedback": "Non, la polarisation n'affecte pas la pénétration."
+      },
+      {
+        "id": "c",
+        "text": "Interférence constructive",
+        "isCorrect": false,
+        "feedback": "Non, l'interférence n'explique pas la pénétration."
+      },
+      {
+        "id": "d",
+        "text": "Résonance",
+        "isCorrect": false,
+        "feedback": "Non, ce n'est pas un phénomène de résonance."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Les rayons X ont une très courte longueur d'onde", "L'énergie d'un photon E = hf = hc/λ"],
+    "commonMistakes": [],
+    "explanation": "Les rayons X (λ ~ 0.01-10 nm) ont des photons très énergétiques qui interagissent peu avec les atomes légers (tissus) mais sont absorbés par les atomes lourds (calcium des os)."
+  },
+  {
+    "id": "wm-m4-q17-tuyau-orgue",
+    "module": 4,
+    "tags": ["concept-matching", "standing-waves"],
+    "difficulty": "advanced",
+    "type": "mcq",
+    "active": true,
+    "title": "Tuyau d'orgue",
+    "statement": "Un tuyau d'orgue fermé à une extrémité ne peut produire que certaines fréquences (la fondamentale et les harmoniques impairs). Quel phénomène détermine ces fréquences?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Ondes stationnaires (résonance acoustique)",
+        "isCorrect": true,
+        "feedback": "Correct! Seules les ondes qui ont un nœud à l'extrémité fermée et un ventre à l'extrémité ouverte peuvent exister."
+      },
+      {
+        "id": "b",
+        "text": "Effet Doppler",
+        "isCorrect": false,
+        "feedback": "Non, le tuyau et l'air sont immobiles."
+      },
+      {
+        "id": "c",
+        "text": "Battements",
+        "isCorrect": false,
+        "feedback": "Non, les battements résultent de deux fréquences proches."
+      },
+      {
+        "id": "d",
+        "text": "Diffraction",
+        "isCorrect": false,
+        "feedback": "Non, la diffraction se produit à l'ouverture mais ne détermine pas les fréquences."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Les conditions aux limites déterminent les modes possibles", "Il faut un nœud à l'extrémité fermée"],
+    "commonMistakes": [],
+    "explanation": "Un tuyau fermé impose un nœud de pression à l'extrémité fermée et un ventre à l'extrémité ouverte. Seuls les harmoniques impairs (f, 3f, 5f...) satisfont ces conditions."
+  },
+  {
+    "id": "wm-m4-q18-effet-tunnel",
+    "module": 4,
+    "tags": ["concept-matching", "quantum"],
+    "difficulty": "advanced",
+    "type": "mcq",
+    "active": true,
+    "title": "Particule traversant une barrière",
+    "statement": "En mécanique quantique, une particule peut parfois traverser une barrière d'énergie potentielle qu'elle ne pourrait classiquement pas franchir. Quel phénomène est-ce?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Effet tunnel",
+        "isCorrect": true,
+        "feedback": "Correct! La fonction d'onde ne s'annule pas brusquement à la barrière, permettant une probabilité non nulle de passage."
+      },
+      {
+        "id": "b",
+        "text": "Principe d'incertitude",
+        "isCorrect": false,
+        "feedback": "Le principe d'incertitude est lié, mais le phénomène spécifique est l'effet tunnel."
+      },
+      {
+        "id": "c",
+        "text": "Dualité onde-particule",
+        "isCorrect": false,
+        "feedback": "La dualité est fondamentale mais ne décrit pas spécifiquement ce phénomène."
+      },
+      {
+        "id": "d",
+        "text": "Effet photoélectrique",
+        "isCorrect": false,
+        "feedback": "Non, l'effet photoélectrique concerne l'éjection d'électrons par des photons."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["La particule 'tunnel' à travers la barrière", "C'est un effet purement quantique"],
+    "commonMistakes": [],
+    "explanation": "L'effet tunnel: en mécanique quantique, la fonction d'onde décroît exponentiellement dans la barrière mais ne s'annule pas. Si la barrière est mince, il y a une probabilité de passage."
+  },
+  {
+    "id": "wm-m4-q19-radar-vitesse",
+    "module": 4,
+    "tags": ["concept-matching", "doppler"],
+    "difficulty": "advanced",
+    "type": "mcq",
+    "active": true,
+    "title": "Radar de vitesse",
+    "statement": "Un radar de police mesure la vitesse des voitures en envoyant des ondes radio et en analysant le signal réfléchi. Quel principe physique permet de déterminer la vitesse?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Effet Doppler",
+        "isCorrect": true,
+        "feedback": "Correct! La fréquence du signal réfléchi est décalée proportionnellement à la vitesse de la voiture."
+      },
+      {
+        "id": "b",
+        "text": "Interférence",
+        "isCorrect": false,
+        "feedback": "Non, le radar mesure le décalage de fréquence, pas un motif d'interférence."
+      },
+      {
+        "id": "c",
+        "text": "Résonance",
+        "isCorrect": false,
+        "feedback": "Non, il n'y a pas de phénomène de résonance dans le radar."
+      },
+      {
+        "id": "d",
+        "text": "Diffraction",
+        "isCorrect": false,
+        "feedback": "Non, la diffraction ne mesure pas la vitesse."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Le signal réfléchi a une fréquence différente", "Le décalage dépend de la vitesse"],
+    "commonMistakes": [],
+    "explanation": "Le radar utilise l'effet Doppler: si la voiture s'approche, la fréquence réfléchie est plus élevée. Le décalage Δf permet de calculer la vitesse: v = c·Δf/(2f₀)."
+  },
+  {
+    "id": "wm-m4-q20-de-broglie",
+    "module": 4,
+    "tags": ["concept-matching", "wave-particle"],
+    "difficulty": "advanced",
+    "type": "mcq",
+    "active": true,
+    "title": "Électrons dans un microscope électronique",
+    "statement": "Un microscope électronique peut voir des détails beaucoup plus fins qu'un microscope optique car les électrons accélérés ont une 'longueur d'onde' très courte. Quel concept permet de parler de longueur d'onde pour des électrons?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Dualité onde-particule (de Broglie)",
+        "isCorrect": true,
+        "feedback": "Correct! Selon de Broglie, toute particule de quantité de mouvement p a une longueur d'onde λ = h/p."
+      },
+      {
+        "id": "b",
+        "text": "Effet photoélectrique",
+        "isCorrect": false,
+        "feedback": "Non, l'effet photoélectrique concerne les photons éjectant des électrons."
+      },
+      {
+        "id": "c",
+        "text": "Principe d'incertitude",
+        "isCorrect": false,
+        "feedback": "Le principe d'incertitude est lié mais ne définit pas la longueur d'onde."
+      },
+      {
+        "id": "d",
+        "text": "Effet Compton",
+        "isCorrect": false,
+        "feedback": "Non, l'effet Compton concerne la diffusion de photons par des électrons."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Les particules peuvent se comporter comme des ondes", "La longueur d'onde dépend de la quantité de mouvement"],
+    "commonMistakes": [],
+    "explanation": "La dualité onde-particule de de Broglie: λ = h/p = h/(mv). Des électrons rapides ont un petit p donc une petite λ, permettant de 'voir' des détails fins."
+  },
+  {
+    "id": "wm-m4-q21-balancoire",
+    "module": 4,
+    "tags": ["concept-matching", "resonance"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Pousser une balançoire",
+    "statement": "Pour faire monter une balançoire de plus en plus haut, il faut la pousser au bon moment (à chaque passage au point le plus bas). Si on pousse au mauvais moment, elle ne monte pas. Quel concept explique cela?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Résonance",
+        "isCorrect": true,
+        "feedback": "Correct! Pousser à la fréquence propre de la balançoire (au bon rythme) permet d'accumuler de l'énergie."
+      },
+      {
+        "id": "b",
+        "text": "Battements",
+        "isCorrect": false,
+        "feedback": "Non, les battements impliquent deux fréquences proches."
+      },
+      {
+        "id": "c",
+        "text": "Amortissement",
+        "isCorrect": false,
+        "feedback": "L'amortissement dissipe l'énergie, c'est l'opposé de ce qu'on observe ici."
+      },
+      {
+        "id": "d",
+        "text": "Interférence",
+        "isCorrect": false,
+        "feedback": "Non, l'interférence concerne la superposition d'ondes."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["La fréquence des poussées doit correspondre à la fréquence propre", "L'énergie s'accumule quand on pousse au bon moment"],
+    "commonMistakes": [],
+    "explanation": "La résonance: en poussant à la fréquence propre de la balançoire, chaque poussée ajoute de l'énergie en phase avec le mouvement. L'amplitude augmente progressivement."
+  },
+  {
+    "id": "wm-m4-q22-hologramme",
+    "module": 4,
+    "tags": ["concept-matching", "interference"],
+    "difficulty": "advanced",
+    "type": "mcq",
+    "active": true,
+    "title": "Hologramme",
+    "statement": "Un hologramme enregistre non seulement l'intensité mais aussi la phase de la lumière, permettant de recréer une image 3D. Quel phénomène physique est utilisé pour enregistrer l'information de phase?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Interférence",
+        "isCorrect": true,
+        "feedback": "Correct! L'hologramme enregistre le motif d'interférence entre le faisceau objet et un faisceau de référence."
+      },
+      {
+        "id": "b",
+        "text": "Diffraction",
+        "isCorrect": false,
+        "feedback": "La diffraction est utilisée lors de la lecture, mais l'enregistrement utilise l'interférence."
+      },
+      {
+        "id": "c",
+        "text": "Polarisation",
+        "isCorrect": false,
+        "feedback": "Non, la polarisation n'encode pas l'information 3D."
+      },
+      {
+        "id": "d",
+        "text": "Réfraction",
+        "isCorrect": false,
+        "feedback": "Non, la réfraction ne permet pas d'enregistrer la phase."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["On superpose deux faisceaux laser cohérents", "Le motif résultant encode la phase"],
+    "commonMistakes": [],
+    "explanation": "L'holographie: le faisceau réfléchi par l'objet interfère avec un faisceau de référence. Le motif d'interférence enregistré contient l'information de phase nécessaire pour recréer l'image 3D."
+  },
+  {
+    "id": "wm-m4-q23-satellite-gps",
+    "module": 4,
+    "tags": ["concept-matching", "relativity"],
+    "difficulty": "advanced",
+    "type": "mcq",
+    "active": true,
+    "title": "Correction GPS",
+    "statement": "Les horloges des satellites GPS avancent légèrement plus vite que celles sur Terre. Sans correction relativiste, la précision du GPS se dégraderait de plusieurs kilomètres par jour. Quel effet relativiste doit être corrigé?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Dilatation du temps (gravité et vitesse)",
+        "isCorrect": true,
+        "feedback": "Correct! La gravité plus faible en altitude (relativité générale) et la vitesse du satellite (relativité restreinte) affectent les horloges."
+      },
+      {
+        "id": "b",
+        "text": "Contraction des longueurs",
+        "isCorrect": false,
+        "feedback": "La contraction des longueurs existe mais n'affecte pas le chronométrage GPS."
+      },
+      {
+        "id": "c",
+        "text": "Effet Doppler",
+        "isCorrect": false,
+        "feedback": "L'effet Doppler affecte les signaux mais le problème principal est la dérive des horloges."
+      },
+      {
+        "id": "d",
+        "text": "Effet photoélectrique",
+        "isCorrect": false,
+        "feedback": "Non, l'effet photoélectrique n'est pas impliqué dans le GPS."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Le temps s'écoule différemment selon la gravité", "Les satellites sont en mouvement rapide"],
+    "commonMistakes": [],
+    "explanation": "Deux effets: 1) Relativité générale: moins de gravité = horloge plus rapide (+45 μs/jour). 2) Relativité restreinte: vitesse = horloge plus lente (-7 μs/jour). Net: +38 μs/jour à corriger."
+  },
+  {
+    "id": "wm-m4-q24-onde-radio",
+    "module": 4,
+    "tags": ["concept-matching", "em-spectrum"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Signal radio AM",
+    "statement": "Une station de radio AM (amplitude modulée) transmet de la musique en faisant varier l'amplitude d'une onde porteuse. L'onde porteuse et le signal audio sont de quel type?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Onde électromagnétique (porteuse) et onde mécanique (son)",
+        "isCorrect": true,
+        "feedback": "Correct! L'onde radio est EM (pas besoin de milieu), le son original est mécanique (vibration de l'air)."
+      },
+      {
+        "id": "b",
+        "text": "Les deux sont des ondes mécaniques",
+        "isCorrect": false,
+        "feedback": "Non, les ondes radio se propagent dans le vide, ce ne sont pas des ondes mécaniques."
+      },
+      {
+        "id": "c",
+        "text": "Les deux sont des ondes électromagnétiques",
+        "isCorrect": false,
+        "feedback": "Non, le son est une onde mécanique (pression dans l'air)."
+      },
+      {
+        "id": "d",
+        "text": "Onde mécanique (porteuse) et onde EM (son)",
+        "isCorrect": false,
+        "feedback": "Non, c'est l'inverse."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Les ondes radio voyagent dans le vide", "Le son a besoin d'un milieu matériel"],
+    "commonMistakes": [],
+    "explanation": "Les ondes radio sont EM (champs électriques et magnétiques oscillants, v = c). Le son est mécanique (oscillation de pression dans un milieu, v ≈ 340 m/s dans l'air)."
+  },
+  {
+    "id": "wm-m4-q25-amortisseur-voiture",
+    "module": 4,
+    "tags": ["concept-matching", "damping"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Amortisseur de voiture",
+    "statement": "Les amortisseurs d'une voiture empêchent la carrosserie de continuer à osciller après avoir passé une bosse. Quel phénomène physique décrit leur action?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Amortissement",
+        "isCorrect": true,
+        "feedback": "Correct! L'amortisseur dissipe l'énergie des oscillations en la convertissant en chaleur (friction dans l'huile)."
+      },
+      {
+        "id": "b",
+        "text": "Résonance",
+        "isCorrect": false,
+        "feedback": "Non, la résonance amplifie les oscillations, c'est l'opposé."
+      },
+      {
+        "id": "c",
+        "text": "Interférence destructive",
+        "isCorrect": false,
+        "feedback": "Non, l'interférence concerne la superposition d'ondes, pas la dissipation d'énergie."
+      },
+      {
+        "id": "d",
+        "text": "Battements",
+        "isCorrect": false,
+        "feedback": "Non, les battements sont des variations d'amplitude due à deux fréquences proches."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["L'amplitude des oscillations diminue avec le temps", "De l'énergie est dissipée"],
+    "commonMistakes": [],
+    "explanation": "L'amortissement: une force proportionnelle à la vitesse (friction visqueuse dans l'huile) dissipe l'énergie mécanique en chaleur, réduisant progressivement l'amplitude."
+  },
+  {
+    "id": "wm-m4-q26-etoile-redshift",
+    "module": 4,
+    "tags": ["concept-matching", "doppler"],
+    "difficulty": "advanced",
+    "type": "mcq",
+    "active": true,
+    "title": "Décalage vers le rouge des galaxies",
+    "statement": "Les astronomes observent que les raies spectrales des galaxies lointaines sont décalées vers le rouge (longueurs d'onde plus grandes). Quel phénomène indique que ces galaxies s'éloignent de nous?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Effet Doppler (décalage vers le rouge)",
+        "isCorrect": true,
+        "feedback": "Correct! Quand une source s'éloigne, les longueurs d'onde sont étirées (redshift). C'est une preuve de l'expansion de l'univers."
+      },
+      {
+        "id": "b",
+        "text": "Absorption atmosphérique",
+        "isCorrect": false,
+        "feedback": "Non, l'atmosphère n'affecte pas toutes les raies de la même façon systématique."
+      },
+      {
+        "id": "c",
+        "text": "Diffraction",
+        "isCorrect": false,
+        "feedback": "Non, la diffraction ne décale pas les longueurs d'onde."
+      },
+      {
+        "id": "d",
+        "text": "Réfraction",
+        "isCorrect": false,
+        "feedback": "Non, la réfraction change la direction, pas la longueur d'onde."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Les longueurs d'onde sont étirées", "C'est lié au mouvement de récession"],
+    "commonMistakes": [],
+    "explanation": "L'effet Doppler pour la lumière: z = Δλ/λ = v/c (pour v << c). Le redshift des galaxies montre qu'elles s'éloignent, preuve de l'expansion de l'univers (loi de Hubble)."
+  },
+  {
+    "id": "wm-m4-q27-bulle-savon",
+    "module": 4,
+    "tags": ["concept-matching", "thin-films"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Couleurs d'une bulle de savon",
+    "statement": "Une bulle de savon présente des couleurs irisées qui changent au fur et à mesure que le film s'amincit. Quel phénomène crée ces couleurs changeantes?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Interférence en couche mince",
+        "isCorrect": true,
+        "feedback": "Correct! L'épaisseur du film détermine quelles longueurs d'onde interfèrent constructivement ou destructivement."
+      },
+      {
+        "id": "b",
+        "text": "Dispersion",
+        "isCorrect": false,
+        "feedback": "Non, la dispersion sépare les couleurs par réfraction, mais ici c'est l'interférence qui est en jeu."
+      },
+      {
+        "id": "c",
+        "text": "Diffraction",
+        "isCorrect": false,
+        "feedback": "Non, la diffraction se produit aux bords d'obstacles."
+      },
+      {
+        "id": "d",
+        "text": "Polarisation",
+        "isCorrect": false,
+        "feedback": "Non, la polarisation n'affecte pas la couleur."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Les couleurs changent avec l'épaisseur", "La lumière se réfléchit sur les deux surfaces du film"],
+    "commonMistakes": [],
+    "explanation": "Interférence en couche mince: les rayons réfléchis sur les deux surfaces interfèrent. L'épaisseur e détermine le déphasage: 2ne = mλ pour interférence constructive."
+  },
+  {
+    "id": "wm-m4-q28-electron-diffraction",
+    "module": 4,
+    "tags": ["concept-matching", "wave-particle"],
+    "difficulty": "expert",
+    "type": "mcq",
+    "active": true,
+    "title": "Diffraction d'électrons",
+    "statement": "En envoyant un faisceau d'électrons sur un cristal, on observe un motif de diffraction similaire à celui obtenu avec des rayons X. Cela démontre que les électrons ont des propriétés:",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Ondulatoires (dualité onde-particule)",
+        "isCorrect": true,
+        "feedback": "Correct! La diffraction est un phénomène ondulatoire. Les électrons se comportent comme des ondes avec λ = h/p."
+      },
+      {
+        "id": "b",
+        "text": "Purement corpusculaires",
+        "isCorrect": false,
+        "feedback": "Non, des particules pures ne pourraient pas créer un motif de diffraction."
+      },
+      {
+        "id": "c",
+        "text": "Magnétiques",
+        "isCorrect": false,
+        "feedback": "Les électrons ont un moment magnétique, mais ce n'est pas ce que montre la diffraction."
+      },
+      {
+        "id": "d",
+        "text": "Relativistes",
+        "isCorrect": false,
+        "feedback": "La diffraction d'électrons lents n'est pas un effet relativiste."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["La diffraction est un phénomène ondulatoire", "Les électrons montrent un comportement d'onde"],
+    "commonMistakes": [],
+    "explanation": "La diffraction d'électrons (Davisson-Germer, 1927) a confirmé la dualité onde-particule. Les électrons se comportent comme des ondes avec λ = h/(mv), vérifiant l'hypothèse de de Broglie."
+  },
+  {
+    "id": "wm-m4-q29-fibre-optique",
+    "module": 4,
+    "tags": ["concept-matching", "total-reflection"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Fibre optique",
+    "statement": "Dans une fibre optique, la lumière reste confinée dans le cœur de la fibre même si celle-ci est courbée. Quel phénomène permet ce guidage de la lumière?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Réflexion totale interne",
+        "isCorrect": true,
+        "feedback": "Correct! Quand l'angle d'incidence dépasse l'angle critique, la lumière est totalement réfléchie à l'interface cœur-gaine."
+      },
+      {
+        "id": "b",
+        "text": "Diffraction",
+        "isCorrect": false,
+        "feedback": "Non, la diffraction étale la lumière, elle ne la confine pas."
+      },
+      {
+        "id": "c",
+        "text": "Interférence",
+        "isCorrect": false,
+        "feedback": "Non, l'interférence ne guide pas la lumière."
+      },
+      {
+        "id": "d",
+        "text": "Polarisation",
+        "isCorrect": false,
+        "feedback": "Non, la polarisation n'affecte pas le confinement."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["L'indice du cœur est supérieur à celui de la gaine", "La lumière ne peut pas sortir si l'angle est assez grand"],
+    "commonMistakes": [],
+    "explanation": "Réflexion totale interne: quand n_cœur > n_gaine et que l'angle d'incidence > angle critique (sin θc = n_gaine/n_cœur), toute la lumière est réfléchie et reste dans la fibre."
+  },
+  {
+    "id": "wm-m4-q30-radiocarbone",
+    "module": 4,
+    "tags": ["concept-matching", "radioactivity"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Datation au carbone 14",
+    "statement": "La datation au carbone 14 permet de déterminer l'âge d'objets organiques anciens en mesurant la proportion de ¹⁴C restant. Sur quel phénomène physique cette méthode repose-t-elle?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Décroissance radioactive",
+        "isCorrect": true,
+        "feedback": "Correct! Le ¹⁴C se désintègre avec une demi-vie de 5730 ans. La proportion restante indique le temps écoulé."
+      },
+      {
+        "id": "b",
+        "text": "Fission nucléaire",
+        "isCorrect": false,
+        "feedback": "Non, la fission divise des noyaux lourds, pas le carbone."
+      },
+      {
+        "id": "c",
+        "text": "Fusion nucléaire",
+        "isCorrect": false,
+        "feedback": "Non, la fusion combine des noyaux légers à très haute température."
+      },
+      {
+        "id": "d",
+        "text": "Effet photoélectrique",
+        "isCorrect": false,
+        "feedback": "Non, l'effet photoélectrique concerne l'éjection d'électrons par des photons."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Le ¹⁴C se transforme en ¹⁴N au fil du temps", "La quantité diminue exponentiellement"],
+    "commonMistakes": [],
+    "explanation": "La décroissance radioactive du ¹⁴C: N(t) = N₀ × (1/2)^(t/T½) avec T½ = 5730 ans. En mesurant N/N₀, on peut calculer l'âge de l'échantillon (jusqu'à ~50 000 ans)."
+  }
+]

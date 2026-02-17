@@ -1022,5 +1022,670 @@
       "v2": { "min": 30, "max": 60, "step": 10, "unit": "km/h" }
     },
     "answerFormula": "2 * v1 * v2 / (v1 + v2)"
+  },
+  {
+    "id": "kin-m1-q21-graphique-xt-pente",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "velocity"],
+    "difficulty": "beginner",
+    "type": "numeric",
+    "active": true,
+    "title": "Graphique x(t) - Lecture de vitesse",
+    "statement": "Sur un graphique position-temps, un objet passe de x = {x1} m à t = {t1} s à x = {x2} m à t = {t2} s en ligne droite. Quelle est sa vitesse?",
+    "givens": {
+      "x1": 10,
+      "t1": 2,
+      "x2": 50,
+      "t2": 10
+    },
+    "unknowns": ["v"],
+    "answer": {
+      "variable": "v",
+      "value": 5,
+      "unit": "m/s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La vitesse est la pente du graphique x(t)",
+      "v = Δx / Δt = (x₂ - x₁) / (t₂ - t₁)",
+      "Une ligne droite signifie vitesse constante (MRU)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "6.25",
+        "patternType": "value",
+        "message": "Vous avez divisé x₂ par t₂",
+        "hint": "Utilisez les variations: Δx/Δt, pas x/t",
+        "category": "formula"
+      }
+    ],
+    "explanation": "La pente = Δx/Δt = (50-10)/(10-2) = 40/8 = 5 m/s.",
+    "parameters": {
+      "x1": { "min": 0, "max": 20, "step": 5, "unit": "m" },
+      "t1": { "min": 0, "max": 4, "step": 1, "unit": "s" },
+      "x2": { "min": 30, "max": 80, "step": 10, "unit": "m" },
+      "t2": { "min": 6, "max": 14, "step": 2, "unit": "s" }
+    },
+    "answerFormula": "(x2 - x1) / (t2 - t1)"
+  },
+  {
+    "id": "kin-m1-q22-graphique-vt-type",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "motion-type"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Graphique v(t) - Type de mouvement",
+    "statement": "Un graphique vitesse-temps montre une ligne horizontale à v = 15 m/s. Quel type de mouvement cela représente-t-il?",
+    "givens": {},
+    "unknowns": ["type"],
+    "choices": [
+      {
+        "id": "A",
+        "text": "Mouvement rectiligne uniforme (MRU)",
+        "correct": true
+      },
+      {
+        "id": "B",
+        "text": "Mouvement rectiligne uniformément accéléré (MRUA)",
+        "correct": false
+      },
+      {
+        "id": "C",
+        "text": "Objet au repos",
+        "correct": false
+      },
+      {
+        "id": "D",
+        "text": "Mouvement avec accélération variable",
+        "correct": false
+      }
+    ],
+    "hints": [
+      "Une ligne horizontale signifie v = constante",
+      "Si v est constante et non nulle, c'est un MRU",
+      "Pour un MRUA, la courbe v(t) serait une droite inclinée"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "C",
+        "patternType": "choice",
+        "message": "Un objet au repos aurait v = 0",
+        "hint": "La ligne est à v = 15 m/s, pas à v = 0",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Une ligne horizontale sur un graphique v(t) indique une vitesse constante. Comme v = 15 m/s ≠ 0, l'objet se déplace à vitesse constante: c'est un MRU."
+  },
+  {
+    "id": "kin-m1-q23-graphique-vt-distance",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "displacement"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Graphique v(t) - Calcul de distance",
+    "statement": "Un graphique v(t) montre un rectangle: vitesse constante de {v} m/s pendant {t} secondes. Quelle distance l'objet a-t-il parcourue?",
+    "givens": {
+      "v": 12,
+      "t": 5
+    },
+    "unknowns": ["d"],
+    "answer": {
+      "variable": "d",
+      "value": 60,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'aire sous la courbe v(t) représente le déplacement",
+      "Aire d'un rectangle = base × hauteur",
+      "d = v × t"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "2.4",
+        "patternType": "value",
+        "message": "Vous avez divisé au lieu de multiplier",
+        "hint": "d = v × t (aire du rectangle)",
+        "category": "formula"
+      }
+    ],
+    "explanation": "L'aire sous la courbe v(t) = v × t = 12 × 5 = 60 m.",
+    "parameters": {
+      "v": { "min": 5, "max": 20, "step": 1, "unit": "m/s" },
+      "t": { "min": 3, "max": 10, "step": 1, "unit": "s" }
+    },
+    "answerFormula": "v * t"
+  },
+  {
+    "id": "kin-m1-q24-graphique-vt-triangle",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "displacement"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Graphique v(t) triangulaire",
+    "statement": "Un graphique v(t) montre une droite partant de 0 m/s à t=0 et atteignant {v_max} m/s à t={t} s. Quelle distance a été parcourue?",
+    "givens": {
+      "v_max": 20,
+      "t": 8
+    },
+    "unknowns": ["d"],
+    "answer": {
+      "variable": "d",
+      "value": 80,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La forme sous la courbe est un triangle",
+      "Aire d'un triangle = ½ × base × hauteur",
+      "d = ½ × t × v_max"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "160",
+        "patternType": "value",
+        "message": "Vous avez oublié le facteur ½",
+        "hint": "Aire d'un triangle = ½ × base × hauteur",
+        "category": "formula"
+      }
+    ],
+    "explanation": "L'aire du triangle = ½ × base × hauteur = ½ × 8 × 20 = 80 m.",
+    "parameters": {
+      "v_max": { "min": 10, "max": 30, "step": 5, "unit": "m/s" },
+      "t": { "min": 4, "max": 12, "step": 2, "unit": "s" }
+    },
+    "answerFormula": "0.5 * v_max * t"
+  },
+  {
+    "id": "kin-m1-q25-graphique-at-constante",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "acceleration"],
+    "difficulty": "intermediate",
+    "type": "numeric",
+    "active": true,
+    "title": "Graphique a(t) - Changement de vitesse",
+    "statement": "Un graphique a(t) montre une accélération constante de {a} m/s² pendant {t} secondes. Si la vitesse initiale est {v0} m/s, quelle est la vitesse finale?",
+    "givens": {
+      "a": 3,
+      "t": 6,
+      "v0": 10
+    },
+    "unknowns": ["vf"],
+    "answer": {
+      "variable": "vf",
+      "value": 28,
+      "unit": "m/s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "L'aire sous la courbe a(t) représente le changement de vitesse Δv",
+      "Δv = a × t (aire du rectangle)",
+      "vf = v₀ + Δv"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "18",
+        "patternType": "value",
+        "message": "Vous avez oublié d'ajouter la vitesse initiale",
+        "hint": "vf = v₀ + Δv = v₀ + a×t",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Δv = aire sous a(t) = a × t = 3 × 6 = 18 m/s. vf = v₀ + Δv = 10 + 18 = 28 m/s.",
+    "parameters": {
+      "a": { "min": 2, "max": 5, "step": 0.5, "unit": "m/s²" },
+      "t": { "min": 4, "max": 10, "step": 2, "unit": "s" },
+      "v0": { "min": 0, "max": 20, "step": 5, "unit": "m/s" }
+    },
+    "answerFormula": "v0 + a * t"
+  },
+  {
+    "id": "kin-m1-q26-graphique-xt-concavite",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "acceleration"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Graphique x(t) - Signe de l'accélération",
+    "statement": "Un graphique x(t) montre une parabole avec une concavité vers le bas (forme de 'n'). Que peut-on conclure sur l'accélération?",
+    "givens": {},
+    "unknowns": ["signe_a"],
+    "choices": [
+      {
+        "id": "A",
+        "text": "L'accélération est positive",
+        "correct": false
+      },
+      {
+        "id": "B",
+        "text": "L'accélération est négative",
+        "correct": true
+      },
+      {
+        "id": "C",
+        "text": "L'accélération est nulle",
+        "correct": false
+      },
+      {
+        "id": "D",
+        "text": "On ne peut pas déterminer le signe",
+        "correct": false
+      }
+    ],
+    "hints": [
+      "La concavité du graphique x(t) est liée au signe de l'accélération",
+      "x = x₀ + v₀t + ½at² est une parabole dont la concavité dépend du signe de a",
+      "Concavité vers le haut (∪) = a > 0, concavité vers le bas (∩) = a < 0"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "A",
+        "patternType": "choice",
+        "message": "C'est l'inverse!",
+        "hint": "Concavité vers le bas = coefficient de t² négatif = a < 0",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Dans x(t) = x₀ + v₀t + ½at², le coefficient de t² est ½a. Une concavité vers le bas signifie que ce coefficient est négatif, donc a < 0. L'objet décélère (ou accélère dans le sens négatif)."
+  },
+  {
+    "id": "kin-m1-q27-graphique-vt-negatif",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "displacement"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Graphique v(t) avec partie négative",
+    "statement": "Un graphique v(t) montre: v = {v1} m/s de t=0 à t={t1} s, puis v = -{v2} m/s de t={t1} s à t={t2} s. Quel est le déplacement total?",
+    "givens": {
+      "v1": 10,
+      "t1": 4,
+      "v2": 5,
+      "t2": 8
+    },
+    "unknowns": ["delta_x"],
+    "answer": {
+      "variable": "Δx",
+      "value": 20,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Les aires au-dessus de l'axe sont positives, en dessous sont négatives",
+      "Déplacement = aire au-dessus - aire en dessous",
+      "Attention: le déplacement peut être différent de la distance parcourue"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "60",
+        "patternType": "value",
+        "message": "Vous avez additionné les aires au lieu de les soustraire",
+        "hint": "La vitesse négative indique un mouvement vers l'arrière",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Aire positive (t=0 à t=4): 10 × 4 = 40 m. Aire négative (t=4 à t=8): -5 × 4 = -20 m. Déplacement total: 40 + (-20) = 20 m.",
+    "parameters": {
+      "v1": { "min": 5, "max": 15, "step": 5, "unit": "m/s" },
+      "t1": { "min": 2, "max": 6, "step": 2, "unit": "s" },
+      "v2": { "min": 3, "max": 10, "step": 1, "unit": "m/s" },
+      "t2": { "min": 6, "max": 12, "step": 2, "unit": "s" }
+    },
+    "answerFormula": "v1 * t1 - v2 * (t2 - t1)"
+  },
+  {
+    "id": "kin-m1-q28-graphique-vt-acceleration-variable",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "acceleration"],
+    "difficulty": "advanced",
+    "type": "mcq",
+    "active": true,
+    "title": "Graphique v(t) courbe - Accélération",
+    "statement": "Un graphique v(t) montre une courbe qui monte de plus en plus rapidement (concave vers le haut). Comment évolue l'accélération?",
+    "givens": {},
+    "unknowns": ["evolution_a"],
+    "choices": [
+      {
+        "id": "A",
+        "text": "L'accélération est constante",
+        "correct": false
+      },
+      {
+        "id": "B",
+        "text": "L'accélération augmente avec le temps",
+        "correct": true
+      },
+      {
+        "id": "C",
+        "text": "L'accélération diminue avec le temps",
+        "correct": false
+      },
+      {
+        "id": "D",
+        "text": "L'accélération est nulle",
+        "correct": false
+      }
+    ],
+    "hints": [
+      "L'accélération est la pente du graphique v(t)",
+      "Si la courbe devient de plus en plus pentue, la pente augmente",
+      "Une courbe concave vers le haut = pente croissante"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "A",
+        "patternType": "choice",
+        "message": "Une accélération constante donnerait une droite",
+        "hint": "Pour a = constante, v(t) est une droite (pas une courbe)",
+        "category": "concept"
+      }
+    ],
+    "explanation": "L'accélération = dv/dt = pente de v(t). Si la courbe est concave vers le haut et monte, sa pente augmente avec le temps. Donc l'accélération augmente."
+  },
+  {
+    "id": "kin-m1-q29-graphique-phases",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "multi-phase"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Graphique v(t) en escalier",
+    "statement": "Un graphique v(t) montre: v = {v1} m/s de t=0 à t={t1} s, v = {v2} m/s de t={t1} s à t={t2} s, v = {v3} m/s de t={t2} s à t={t3} s. Calculez la distance totale parcourue.",
+    "givens": {
+      "v1": 8,
+      "t1": 3,
+      "v2": 12,
+      "t2": 7,
+      "v3": 4,
+      "t3": 10
+    },
+    "unknowns": ["d_total"],
+    "answer": {
+      "variable": "d",
+      "value": 84,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Calculez l'aire de chaque rectangle",
+      "d₁ = v₁ × (t₁ - 0)",
+      "d₂ = v₂ × (t₂ - t₁)",
+      "d₃ = v₃ × (t₃ - t₂)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "240",
+        "patternType": "value",
+        "message": "Vous avez multiplié chaque vitesse par le temps final correspondant",
+        "hint": "Utilisez les durées de chaque phase: (t₁-0), (t₂-t₁), (t₃-t₂)",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "Phase 1: d₁ = 8 × 3 = 24 m. Phase 2: d₂ = 12 × (7-3) = 12 × 4 = 48 m. Phase 3: d₃ = 4 × (10-7) = 4 × 3 = 12 m. Total: 24 + 48 + 12 = 84 m.",
+    "parameters": {
+      "v1": { "min": 5, "max": 12, "step": 1, "unit": "m/s" },
+      "t1": { "min": 2, "max": 4, "step": 1, "unit": "s" },
+      "v2": { "min": 10, "max": 15, "step": 1, "unit": "m/s" },
+      "t2": { "min": 5, "max": 9, "step": 1, "unit": "s" },
+      "v3": { "min": 2, "max": 8, "step": 1, "unit": "m/s" },
+      "t3": { "min": 9, "max": 14, "step": 1, "unit": "s" }
+    },
+    "answerFormula": "v1 * t1 + v2 * (t2 - t1) + v3 * (t3 - t2)"
+  },
+  {
+    "id": "kin-m1-q30-graphique-xt-rencontre",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "encounter"],
+    "difficulty": "advanced",
+    "type": "mcq",
+    "active": true,
+    "title": "Graphique x(t) - Point de rencontre",
+    "statement": "Sur un même graphique x(t), deux droites se croisent au point (t=5s, x=30m). Que signifie ce croisement?",
+    "givens": {},
+    "unknowns": ["signification"],
+    "choices": [
+      {
+        "id": "A",
+        "text": "Les deux objets se rencontrent à x=30m à t=5s",
+        "correct": true
+      },
+      {
+        "id": "B",
+        "text": "Les deux objets ont la même vitesse à t=5s",
+        "correct": false
+      },
+      {
+        "id": "C",
+        "text": "Les deux objets ont la même accélération",
+        "correct": false
+      },
+      {
+        "id": "D",
+        "text": "L'un des objets s'arrête et l'autre continue",
+        "correct": false
+      }
+    ],
+    "hints": [
+      "Sur un graphique x(t), chaque point représente une position à un instant donné",
+      "Si deux courbes se croisent, les deux objets ont la même position au même instant",
+      "La pente représente la vitesse, pas le croisement"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "B",
+        "patternType": "choice",
+        "message": "Même vitesse = même pente, pas même point",
+        "hint": "Des droites parallèles ont la même vitesse, des droites qui se croisent se rencontrent",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Sur un graphique x(t), le croisement de deux courbes signifie que les deux objets sont au même endroit (x=30m) au même moment (t=5s). C'est le point de rencontre."
+  },
+  {
+    "id": "kin-m1-q31-graphique-vt-freinage",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "braking"],
+    "difficulty": "advanced",
+    "type": "numeric",
+    "active": true,
+    "title": "Graphique v(t) - Distance de freinage",
+    "statement": "Un graphique v(t) montre une droite descendant de {v0} m/s à 0 m/s en {t} secondes. Calculez la distance de freinage.",
+    "givens": {
+      "v0": 30,
+      "t": 6
+    },
+    "unknowns": ["d_frein"],
+    "answer": {
+      "variable": "d",
+      "value": 90,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "La forme sous la courbe est un triangle",
+      "Aire = ½ × base × hauteur = ½ × t × v₀",
+      "Ou utilisez d = (v₀ + vf)/2 × t avec vf = 0"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "180",
+        "patternType": "value",
+        "message": "Vous avez oublié le facteur ½",
+        "hint": "La vitesse diminue, donc l'aire est un triangle, pas un rectangle",
+        "category": "formula"
+      },
+      {
+        "pattern": "5",
+        "patternType": "value",
+        "message": "Vous avez calculé l'accélération au lieu de la distance",
+        "hint": "L'aire sous v(t) donne la distance, pas la pente",
+        "category": "concept"
+      }
+    ],
+    "explanation": "L'aire du triangle = ½ × base × hauteur = ½ × 6 × 30 = 90 m. (Ou: d = vitesse moyenne × temps = (30+0)/2 × 6 = 90 m)",
+    "parameters": {
+      "v0": { "min": 15, "max": 40, "step": 5, "unit": "m/s" },
+      "t": { "min": 3, "max": 10, "step": 1, "unit": "s" }
+    },
+    "answerFormula": "0.5 * v0 * t"
+  },
+  {
+    "id": "kin-m1-q32-graphique-correspondance",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "matching"],
+    "difficulty": "expert",
+    "type": "mcq",
+    "active": true,
+    "title": "Correspondance entre graphiques",
+    "statement": "Un graphique x(t) montre une parabole concave vers le haut (∪). Quel graphique v(t) lui correspond?",
+    "givens": {},
+    "unknowns": ["graphique_v"],
+    "choices": [
+      {
+        "id": "A",
+        "text": "Une droite horizontale",
+        "correct": false
+      },
+      {
+        "id": "B",
+        "text": "Une droite croissante (pente positive)",
+        "correct": true
+      },
+      {
+        "id": "C",
+        "text": "Une droite décroissante (pente négative)",
+        "correct": false
+      },
+      {
+        "id": "D",
+        "text": "Une parabole",
+        "correct": false
+      }
+    ],
+    "hints": [
+      "v(t) est la dérivée de x(t)",
+      "Si x(t) est une parabole, v(t) est linéaire",
+      "Concavité vers le haut en x(t) = accélération positive = v croissante"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "A",
+        "patternType": "choice",
+        "message": "Une droite horizontale en v(t) donnerait une droite en x(t)",
+        "hint": "Si v = constante, alors x = x₀ + vt (linéaire)",
+        "category": "concept"
+      },
+      {
+        "pattern": "D",
+        "patternType": "choice",
+        "message": "Si v(t) était une parabole, a(t) serait linéaire et x(t) serait cubique",
+        "hint": "La dérivée d'une parabole est une droite",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Si x(t) = ½at² + v₀t + x₀ (parabole), alors v(t) = dx/dt = at + v₀ (droite). Concavité vers le haut signifie a > 0, donc v(t) est une droite croissante."
+  },
+  {
+    "id": "kin-m1-q33-graphique-retour-origine",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "position"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Graphique v(t) - Retour à l'origine",
+    "statement": "Un graphique v(t) montre: v = {v1} m/s de t=0 à t={t1} s, puis v = -{v2} m/s de t={t1} s jusqu'à ce que l'objet revienne à sa position initiale. À quel instant l'objet revient-il à l'origine?",
+    "givens": {
+      "v1": 12,
+      "t1": 5,
+      "v2": 8
+    },
+    "unknowns": ["t_final"],
+    "answer": {
+      "variable": "t",
+      "value": 12.5,
+      "unit": "s",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Position initiale = position finale = 0 donc déplacement total = 0",
+      "Aire positive = aire négative",
+      "v₁ × t₁ = v₂ × (t_final - t₁)"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "7.5",
+        "patternType": "value",
+        "message": "Vous avez calculé le temps de retour seul, pas l'instant final",
+        "hint": "t_final = t₁ + temps de retour",
+        "category": "concept"
+      }
+    ],
+    "explanation": "Aller: d₁ = 12 × 5 = 60 m. Retour: il faut parcourir 60 m à 8 m/s. Temps retour = 60/8 = 7.5 s. t_final = 5 + 7.5 = 12.5 s.",
+    "parameters": {
+      "v1": { "min": 8, "max": 15, "step": 1, "unit": "m/s" },
+      "t1": { "min": 3, "max": 8, "step": 1, "unit": "s" },
+      "v2": { "min": 4, "max": 12, "step": 2, "unit": "m/s" }
+    },
+    "answerFormula": "t1 + (v1 * t1) / v2"
+  },
+  {
+    "id": "kin-m1-q34-graphique-aire-trapeze",
+    "module": 1,
+    "tags": ["graphs", "interpretation", "displacement"],
+    "difficulty": "expert",
+    "type": "numeric",
+    "active": true,
+    "title": "Graphique v(t) - Aire complexe",
+    "statement": "Un graphique v(t) montre: accélération de 0 à {v_max} m/s en {t1} s, puis vitesse constante pendant {t2} s, puis freinage jusqu'à {v_fin} m/s en {t3} s. Calculez le déplacement total.",
+    "givens": {
+      "v_max": 20,
+      "t1": 4,
+      "v_fin": 8,
+      "t2": 6,
+      "t3": 3
+    },
+    "unknowns": ["d_total"],
+    "answer": {
+      "variable": "d",
+      "value": 202,
+      "unit": "m",
+      "tolerance": 2,
+      "toleranceType": "percent"
+    },
+    "hints": [
+      "Phase 1: triangle (0 → v_max)",
+      "Phase 2: rectangle (v_max constant)",
+      "Phase 3: trapèze (v_max → v_fin)",
+      "Additionnez les trois aires"
+    ],
+    "commonMistakes": [
+      {
+        "pattern": "208",
+        "patternType": "value",
+        "message": "Vérifiez le calcul de l'aire du trapèze",
+        "hint": "Trapèze = (base₁ + base₂) × hauteur / 2 = (v_max + v_fin) × t₃ / 2",
+        "category": "calculation"
+      }
+    ],
+    "explanation": "Triangle: ½ × 4 × 20 = 40 m. Rectangle: 20 × 6 = 120 m. Trapèze: (20 + 8)/2 × 3 = 42 m. Total: 40 + 120 + 42 = 202 m.",
+    "parameters": {
+      "v_max": { "min": 15, "max": 25, "step": 5, "unit": "m/s" },
+      "t1": { "min": 2, "max": 6, "step": 1, "unit": "s" },
+      "t2": { "min": 4, "max": 10, "step": 2, "unit": "s" },
+      "v_fin": { "min": 5, "max": 12, "step": 1, "unit": "m/s" },
+      "t3": { "min": 2, "max": 5, "step": 1, "unit": "s" }
+    },
+    "answerFormula": "0.5 * v_max * t1 + v_max * t2 + (v_max + v_fin) / 2 * t3"
   }
 ]

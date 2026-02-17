@@ -151,6 +151,14 @@ export const COURSES: Course[] = [
         competencies: ['relativity', 'photon', 'blackbody', 'photoelectric', 'compton', 'wave-particle', 'de-broglie', 'heisenberg', 'schrodinger', 'quantum-numbers', 'nuclear', 'radioactivity'],
         icon: '⚛️',
       },
+      {
+        id: 4,
+        title: 'Concept Identification',
+        titleFr: 'Identification des concepts',
+        description: 'Associer des situations physiques aux bons concepts : MHS, ondes stationnaires, Doppler, interférence, etc.',
+        competencies: ['concept-matching', 'shm', 'standing-waves', 'doppler', 'interference', 'diffraction', 'polarization', 'photoelectric', 'relativity'],
+        icon: '🎯',
+      },
     ],
   },
 ];
