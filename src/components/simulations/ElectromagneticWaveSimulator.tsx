@@ -2,6 +2,20 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { InlineMath, BlockMath } from 'react-katex';
+import dynamic from 'next/dynamic';
+
+// Dynamic import for 3D view to avoid SSR issues
+const EMWave3DView = dynamic(() => import('./EMWave3DView'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[400px] flex items-center justify-center bg-slate-900 text-slate-400 rounded-xl">
+      <div className="text-center">
+        <div className="animate-spin w-8 h-8 border-4 border-violet-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+        Chargement de la vue 3D...
+      </div>
+    </div>
+  ),
+});
 
 type SimulationMode = 'emwave' | 'polarization' | 'spectrum' | 'maxwell' | 'poynting' | 'young' | 'interference' | 'diffraction' | 'bragg' | 'resolution';
 type PolarizationType = 'linear' | 'circular' | 'elliptical';
@@ -10,6 +24,7 @@ export function ElectromagneticWaveSimulator() {
   const [mode, setMode] = useState<SimulationMode>('emwave');
   const [isPlaying, setIsPlaying] = useState(true);
   const [time, setTime] = useState(0);
+  const [view3D, setView3D] = useState(true); // New state for 3D toggle
 
   // Common parameters
   const [amplitude, setAmplitude] = useState(1);
@@ -20,6 +35,7 @@ export function ElectromagneticWaveSimulator() {
   const [showEField, setShowEField] = useState(true);
   const [showBField, setShowBField] = useState(true);
   const [showPoynting, setShowPoynting] = useState(false);
+  const [showWavefronts, setShowWavefronts] = useState(false);
 
   // Polarization parameters
   const [polarizationType, setPolarizationType] = useState<PolarizationType>('linear');
@@ -1314,6 +1330,28 @@ export function ElectromagneticWaveSimulator() {
           {/* Mode-specific controls */}
           {(mode === 'emwave' || mode === 'poynting') && (
             <>
+              {/* 2D/3D Toggle */}
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-gray-700">Vue:</span>
+                <div className="flex bg-gray-100 rounded-lg p-1">
+                  <button
+                    onClick={() => setView3D(false)}
+                    className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
+                      !view3D ? 'bg-white shadow text-violet-700' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    2D
+                  </button>
+                  <button
+                    onClick={() => setView3D(true)}
+                    className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
+                      view3D ? 'bg-white shadow text-violet-700' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    3D
+                  </button>
+                </div>
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Amplitude: {amplitude.toFixed(1)}
@@ -1342,7 +1380,7 @@ export function ElectromagneticWaveSimulator() {
                   className="w-full"
                 />
               </div>
-              <div className="flex gap-4">
+              <div className="flex flex-wrap gap-4">
                 <label className="flex items-center gap-2">
                   <input
                     type="checkbox"
@@ -1370,6 +1408,17 @@ export function ElectromagneticWaveSimulator() {
                   />
                   <span className="text-sm text-green-600 font-medium">Poynting</span>
                 </label>
+                {view3D && (
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={showWavefronts}
+                      onChange={(e) => setShowWavefronts(e.target.checked)}
+                      className="rounded"
+                    />
+                    <span className="text-sm text-purple-600 font-medium">Fronts d'onde</span>
+                  </label>
+                )}
               </div>
             </>
           )}
@@ -1677,15 +1726,41 @@ export function ElectromagneticWaveSimulator() {
           )}
         </div>
 
-        {/* Canvas */}
+        {/* Canvas / 3D View */}
         <div className="bg-gray-50 rounded-xl p-4 mb-6">
-          <canvas
-            ref={canvasRef}
-            width={800}
-            height={350}
-            className="w-full rounded-lg"
-          />
+          {(mode === 'emwave' || mode === 'poynting') && view3D ? (
+            <div className="h-[400px] rounded-lg overflow-hidden">
+              <EMWave3DView
+                amplitude={amplitude}
+                frequency={frequency}
+                wavelength={wavelength}
+                showEField={showEField}
+                showBField={showBField}
+                showPoynting={showPoynting}
+                showWavefronts={showWavefronts}
+                isPlaying={isPlaying}
+              />
+            </div>
+          ) : (
+            <canvas
+              ref={canvasRef}
+              width={800}
+              height={350}
+              className="w-full rounded-lg"
+            />
+          )}
         </div>
+
+        {/* 3D View Instructions */}
+        {(mode === 'emwave' || mode === 'poynting') && view3D && (
+          <div className="mb-6 p-3 bg-violet-50 rounded-lg text-sm text-violet-700">
+            <span className="font-medium">Navigation 3D:</span> Clic gauche + glisser pour tourner,
+            molette pour zoomer, clic droit + glisser pour déplacer.
+            <span className="ml-2 text-violet-500">
+              E oscille en Y (rouge), B oscille en X (bleu), propagation en Z.
+            </span>
+          </div>
+        )}
 
         {/* Formulas */}
         <div className="bg-violet-50 rounded-xl p-4">
