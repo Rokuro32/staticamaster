@@ -4,11 +4,23 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { InlineMath, BlockMath } from 'react-katex';
 import dynamic from 'next/dynamic';
 
-// Dynamic import for 3D view to avoid SSR issues
+// Dynamic import for 3D views to avoid SSR issues
 const EMWave3DView = dynamic(() => import('./EMWave3DView'), {
   ssr: false,
   loading: () => (
     <div className="w-full h-[400px] flex items-center justify-center bg-slate-900 text-slate-400 rounded-xl">
+      <div className="text-center">
+        <div className="animate-spin w-8 h-8 border-4 border-violet-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+        Chargement de la vue 3D...
+      </div>
+    </div>
+  ),
+});
+
+const MaxwellSandbox3D = dynamic(() => import('./MaxwellSandbox3D'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[500px] flex items-center justify-center bg-slate-900 text-slate-400 rounded-xl">
       <div className="text-center">
         <div className="animate-spin w-8 h-8 border-4 border-violet-500 border-t-transparent rounded-full mx-auto mb-2"></div>
         Chargement de la vue 3D...
@@ -1673,6 +1685,28 @@ export function ElectromagneticWaveSimulator() {
 
           {mode === 'maxwell' && (
             <>
+              {/* 2D/3D Toggle for Maxwell */}
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-gray-700">Vue:</span>
+                <div className="flex bg-gray-100 rounded-lg p-1">
+                  <button
+                    onClick={() => setView3D(false)}
+                    className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
+                      !view3D ? 'bg-white shadow text-violet-700' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    2D
+                  </button>
+                  <button
+                    onClick={() => setView3D(true)}
+                    className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
+                      view3D ? 'bg-white shadow text-violet-700' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    3D
+                  </button>
+                </div>
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Mode</label>
                 <select
@@ -1685,20 +1719,22 @@ export function ElectromagneticWaveSimulator() {
                   <option value="static">Charge statique (champ E)</option>
                 </select>
               </div>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => addCharge(true)}
-                  className="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-medium"
-                >
-                  + Charge +
-                </button>
-                <button
-                  onClick={() => addCharge(false)}
-                  className="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium"
-                >
-                  + Charge −
-                </button>
-                {selectedChargeId !== null && (
+              {/* Only show charge buttons in 2D mode - 3D has its own buttons */}
+              {!view3D && (
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => addCharge(true)}
+                    className="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-medium"
+                  >
+                    + Charge +
+                  </button>
+                  <button
+                    onClick={() => addCharge(false)}
+                    className="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium"
+                  >
+                    + Charge −
+                  </button>
+                  {selectedChargeId !== null && (
                   <button
                     onClick={removeSelectedCharge}
                     className="px-3 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors text-sm font-medium"
@@ -1712,7 +1748,8 @@ export function ElectromagneticWaveSimulator() {
                 >
                   Effacer tout
                 </button>
-              </div>
+                </div>
+              )}
               <div className="flex flex-wrap gap-4">
                 <label className="flex items-center gap-2">
                   <input
@@ -1894,12 +1931,21 @@ export function ElectromagneticWaveSimulator() {
                 isPlaying={isPlaying}
               />
             </div>
+          ) : mode === 'maxwell' && view3D ? (
+            <div className="h-[500px] rounded-lg overflow-hidden">
+              <MaxwellSandbox3D
+                isPlaying={isPlaying}
+                chargeMode={chargeMode}
+                showEField={showEFieldLines}
+                showBField={showBFieldLines}
+              />
+            </div>
           ) : (
             <canvas
               ref={canvasRef}
               width={800}
               height={350}
-              className={`w-full rounded-lg ${mode === 'maxwell' ? 'cursor-pointer' : ''}`}
+              className={`w-full rounded-lg ${mode === 'maxwell' && !view3D ? 'cursor-pointer' : ''}`}
               onMouseDown={handleCanvasMouseDown}
               onMouseMove={handleCanvasMouseMove}
               onMouseUp={handleCanvasMouseUp}
@@ -1915,6 +1961,16 @@ export function ElectromagneticWaveSimulator() {
             molette pour zoomer, clic droit + glisser pour déplacer.
             <span className="ml-2 text-violet-500">
               E oscille en Y (rouge), B oscille en X (bleu), propagation en Z.
+            </span>
+          </div>
+        )}
+
+        {mode === 'maxwell' && view3D && (
+          <div className="mb-6 p-3 bg-violet-50 rounded-lg text-sm text-violet-700">
+            <span className="font-medium">Navigation 3D:</span> Clic gauche + glisser pour tourner,
+            molette pour zoomer. Cliquez sur une charge pour la sélectionner.
+            <span className="ml-2 text-violet-500">
+              Utilisez les boutons en bas à gauche pour ajouter/supprimer des charges.
             </span>
           </div>
         )}
