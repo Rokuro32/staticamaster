@@ -16,6 +16,7 @@ import { TrussSimulator } from '@/components/simulations/TrussSimulator';
 import { KinematicsGraphSimulator } from '@/components/simulations/KinematicsGraphSimulator';
 import { GuitarStringSimulator } from '@/components/simulations/GuitarStringSimulator';
 import { TrigCircleSimulator } from '@/components/simulations/TrigCircleSimulator';
+import { ElectromagneticWaveSimulator } from '@/components/simulations/ElectromagneticWaveSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -152,6 +153,22 @@ export default function SimulationsPage() {
               <GuitarStringSimulator />
             </section>
 
+            {/* Electromagnetic Waves Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">💡</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Ondes électromagnétiques
+                </h2>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Explorez les propriétés des ondes EM : champs E et B perpendiculaires, polarisation,
+                spectre électromagnétique, équations de Maxwell, vecteur de Poynting, interférence de Young,
+                diffraction, loi de Bragg et pouvoir de résolution.
+              </p>
+              <ElectromagneticWaveSimulator />
+            </section>
+
             {/* Relativity Simulator Section */}
             <section>
               <div className="flex items-center gap-3 mb-4">
@@ -173,13 +190,10 @@ export default function SimulationsPage() {
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
-                  💡 Interférence de Young (lumière)
-                </span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
-                  🌈 Diffraction
-                </span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
                   ⚛️ Effet photoélectrique
+                </span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
+                  🔭 Lentilles et miroirs
                 </span>
               </div>
             </section>
