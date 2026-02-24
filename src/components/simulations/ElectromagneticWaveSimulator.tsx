@@ -69,15 +69,21 @@ export function ElectromagneticWaveSimulator() {
     oscillating: boolean;
     oscillationAmplitude: number;
     oscillationFrequency: number;
+    // For tracking manual drag velocity
+    lastX: number;
+    lastY: number;
+    dragVx: number;
+    dragVy: number;
   }
   const [charges, setCharges] = useState<Charge[]>([
-    { id: 1, x: 400, y: 175, q: 1, vx: 0, vy: 0, oscillating: true, oscillationAmplitude: 50, oscillationFrequency: 1 }
+    { id: 1, x: 400, y: 175, q: 1, vx: 0, vy: 0, oscillating: true, oscillationAmplitude: 50, oscillationFrequency: 1, lastX: 400, lastY: 175, dragVx: 0, dragVy: 0 }
   ]);
   const [selectedChargeId, setSelectedChargeId] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [showEFieldLines, setShowEFieldLines] = useState(true);
   const [showBFieldLines, setShowBFieldLines] = useState(true);
   const [chargeMode, setChargeMode] = useState<'dipole' | 'moving' | 'static'>('dipole');
+  const lastDragTimeRef = useRef<number>(0);
 
   // Canvas refs
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -151,29 +157,59 @@ export function ElectromagneticWaveSimulator() {
     const x = (e.clientX - rect.left) * scaleX;
     const y = (e.clientY - rect.top) * scaleY;
 
-    setCharges(prev => prev.map(charge =>
-      charge.id === selectedChargeId
-        ? { ...charge, x: Math.max(20, Math.min(780, x)), y: Math.max(20, Math.min(330, y)) }
-        : charge
-    ));
+    const now = performance.now();
+    const dt = (now - lastDragTimeRef.current) / 1000;
+    lastDragTimeRef.current = now;
+
+    setCharges(prev => prev.map(charge => {
+      if (charge.id === selectedChargeId) {
+        const newX = Math.max(20, Math.min(780, x));
+        const newY = Math.max(20, Math.min(330, y));
+        // Calculate drag velocity
+        const dragVx = dt > 0.001 ? (newX - charge.x) / dt : 0;
+        const dragVy = dt > 0.001 ? (newY - charge.y) / dt : 0;
+        return {
+          ...charge,
+          x: newX,
+          y: newY,
+          lastX: charge.x,
+          lastY: charge.y,
+          dragVx: dragVx * 0.3 + charge.dragVx * 0.7, // Smooth velocity
+          dragVy: dragVy * 0.3 + charge.dragVy * 0.7
+        };
+      }
+      return charge;
+    }));
   }, [mode, isDragging, selectedChargeId]);
 
   const handleCanvasMouseUp = useCallback(() => {
     setIsDragging(false);
+    // Decay drag velocity when released
+    setCharges(prev => prev.map(charge => ({
+      ...charge,
+      dragVx: charge.dragVx * 0.5,
+      dragVy: charge.dragVy * 0.5
+    })));
   }, []);
 
   const addCharge = useCallback((positive: boolean) => {
     const newId = Math.max(0, ...charges.map(c => c.id)) + 1;
+    const newX = 200 + Math.random() * 400;
+    const newY = 100 + Math.random() * 150;
     setCharges(prev => [...prev, {
       id: newId,
-      x: 200 + Math.random() * 400,
-      y: 100 + Math.random() * 150,
+      x: newX,
+      y: newY,
       q: positive ? 1 : -1,
       vx: chargeMode === 'moving' ? (Math.random() - 0.5) * 2 : 0,
       vy: chargeMode === 'moving' ? (Math.random() - 0.5) * 2 : 0,
       oscillating: chargeMode === 'dipole',
       oscillationAmplitude: 40,
-      oscillationFrequency: 0.8 + Math.random() * 0.4
+      oscillationFrequency: 0.8 + Math.random() * 0.4,
+      lastX: newX,
+      lastY: newY,
+      dragVx: 0,
+      dragVy: 0
     }]);
   }, [charges, chargeMode]);
 
@@ -780,22 +816,29 @@ export function ElectromagneticWaveSimulator() {
     }
 
     // Calculate fields at each point
-    const gridSpacing = 30;
-    const arrowScale = 15;
+    const gridSpacing = 25; // Denser grid for better visualization
+    const arrowScale = 20; // Larger arrows
 
-    // For each charge, calculate its current position (with oscillation)
+    // For each charge, calculate its current position and velocity
     const chargePositions = charges.map(charge => {
       let x = charge.x;
       let y = charge.y;
+      let effectiveVx = charge.dragVx; // Include drag velocity
+      let effectiveVy = charge.dragVy;
 
       if (charge.oscillating && chargeMode === 'dipole') {
         // Oscillating charge - creates EM radiation
         const oscillationOffset = charge.oscillationAmplitude * Math.sin(2 * Math.PI * charge.oscillationFrequency * time);
         y = charge.y + oscillationOffset;
+        // Add oscillation velocity
+        effectiveVy += charge.oscillationAmplitude * 2 * Math.PI * charge.oscillationFrequency *
+                       Math.cos(2 * Math.PI * charge.oscillationFrequency * time);
       } else if (chargeMode === 'moving') {
         // Moving charge - creates magnetic field
         x = charge.x + charge.vx * time * 50;
         y = charge.y + charge.vy * time * 50;
+        effectiveVx += charge.vx * 50;
+        effectiveVy += charge.vy * 50;
         // Wrap around
         if (x > width) x = x % width;
         if (x < 0) x = width + (x % width);
@@ -803,10 +846,10 @@ export function ElectromagneticWaveSimulator() {
         if (y < 0) y = height + (y % height);
       }
 
-      return { ...charge, currentX: x, currentY: y };
+      return { ...charge, currentX: x, currentY: y, effectiveVx, effectiveVy };
     });
 
-    // Draw electric field lines
+    // Draw electric field lines - ALWAYS show for all modes
     if (showEFieldLines) {
       for (let gx = gridSpacing / 2; gx < width; gx += gridSpacing) {
         for (let gy = gridSpacing / 2; gy < height; gy += gridSpacing) {
@@ -820,8 +863,8 @@ export function ElectromagneticWaveSimulator() {
             const r2 = dx * dx + dy * dy;
             const r = Math.sqrt(r2);
 
-            if (r > 20) {
-              const k = 1000; // Coulomb constant (scaled for visualization)
+            if (r > 15) { // Closer to charge
+              const k = 2000; // Increased Coulomb constant for visibility
               const E = k * charge.q / r2;
               Ex += E * dx / r;
               Ey += E * dy / r;
@@ -829,64 +872,55 @@ export function ElectromagneticWaveSimulator() {
           });
 
           const E = Math.sqrt(Ex * Ex + Ey * Ey);
-          if (E > 0.5) {
-            const maxE = 50;
+          if (E > 0.1) { // Much lower threshold
+            const maxE = 30; // Lower max for better scaling
             const normalizedE = Math.min(E / maxE, 1);
-            const arrowLength = arrowScale * normalizedE;
+            const arrowLength = 8 + arrowScale * normalizedE; // Minimum arrow length
 
             // Normalize direction
             const dirX = Ex / E;
             const dirY = Ey / E;
 
-            // Draw arrow
-            const alpha = 0.3 + 0.7 * normalizedE;
+            // Draw arrow with better visibility
+            const alpha = 0.4 + 0.6 * normalizedE;
             ctx.strokeStyle = `rgba(239, 68, 68, ${alpha})`;
             ctx.fillStyle = `rgba(239, 68, 68, ${alpha})`;
-            ctx.lineWidth = 1.5;
+            ctx.lineWidth = 2;
 
             ctx.beginPath();
             ctx.moveTo(gx, gy);
             ctx.lineTo(gx + dirX * arrowLength, gy + dirY * arrowLength);
             ctx.stroke();
 
-            // Arrow head
-            if (arrowLength > 5) {
-              const headSize = 4;
-              const angle = Math.atan2(dirY, dirX);
-              ctx.beginPath();
-              ctx.moveTo(gx + dirX * arrowLength, gy + dirY * arrowLength);
-              ctx.lineTo(
-                gx + dirX * arrowLength - headSize * Math.cos(angle - 0.5),
-                gy + dirY * arrowLength - headSize * Math.sin(angle - 0.5)
-              );
-              ctx.lineTo(
-                gx + dirX * arrowLength - headSize * Math.cos(angle + 0.5),
-                gy + dirY * arrowLength - headSize * Math.sin(angle + 0.5)
-              );
-              ctx.closePath();
-              ctx.fill();
-            }
+            // Arrow head - always draw
+            const headSize = 5;
+            const angle = Math.atan2(dirY, dirX);
+            ctx.beginPath();
+            ctx.moveTo(gx + dirX * arrowLength, gy + dirY * arrowLength);
+            ctx.lineTo(
+              gx + dirX * arrowLength - headSize * Math.cos(angle - 0.4),
+              gy + dirY * arrowLength - headSize * Math.sin(angle - 0.4)
+            );
+            ctx.lineTo(
+              gx + dirX * arrowLength - headSize * Math.cos(angle + 0.4),
+              gy + dirY * arrowLength - headSize * Math.sin(angle + 0.4)
+            );
+            ctx.closePath();
+            ctx.fill();
           }
         }
       }
     }
 
-    // Draw magnetic field (for moving/oscillating charges)
-    if (showBFieldLines && (chargeMode === 'moving' || chargeMode === 'dipole')) {
+    // Draw magnetic field - show when charges are moving (any mode, including manual drag)
+    if (showBFieldLines) {
       chargePositions.forEach(charge => {
-        // Velocity for magnetic field calculation
-        let vx = charge.vx;
-        let vy = charge.vy;
-
-        if (charge.oscillating && chargeMode === 'dipole') {
-          // Velocity from oscillation
-          vy = charge.oscillationAmplitude * 2 * Math.PI * charge.oscillationFrequency *
-               Math.cos(2 * Math.PI * charge.oscillationFrequency * time);
-          vx = 0;
-        }
-
+        const vx = charge.effectiveVx;
+        const vy = charge.effectiveVy;
         const speed = Math.sqrt(vx * vx + vy * vy);
-        if (speed > 0.1) {
+
+        // Show B field if charge is moving at all (including dragging)
+        if (speed > 5) { // Lower threshold
           // Draw circular magnetic field lines around the velocity vector
           const numCircles = 4;
           for (let i = 1; i <= numCircles; i++) {
@@ -1033,7 +1067,7 @@ export function ElectromagneticWaveSimulator() {
       ctx.fillText('Rayonnement', width - 130, 56);
     }
 
-  }, [mode, time, charges, chargeMode, showEFieldLines, showBFieldLines, selectedChargeId]);
+  }, [mode, time, charges, chargeMode, showEFieldLines, showBFieldLines, selectedChargeId, isDragging]);
 
   // Draw Young's double slit
   useEffect(() => {
