@@ -17,7 +17,7 @@ const EMWave3DView = dynamic(() => import('./EMWave3DView'), {
   ),
 });
 
-type SimulationMode = 'emwave' | 'polarization' | 'spectrum' | 'maxwell' | 'poynting' | 'young' | 'interference' | 'diffraction' | 'bragg' | 'resolution';
+type SimulationMode = 'emwave' | 'polarization' | 'spectrum' | 'maxwell' | 'young' | 'diffraction' | 'bragg';
 type PolarizationType = 'linear' | 'circular' | 'elliptical';
 
 export function ElectromagneticWaveSimulator() {
@@ -58,9 +58,26 @@ export function ElectromagneticWaveSimulator() {
   const [diffractionOrder, setDiffractionOrder] = useState(1);
   const [crystalSpacing, setCrystalSpacing] = useState(0.3); // nm for Bragg
 
-  // Resolution parameters
-  const [apertureDiameter, setApertureDiameter] = useState(10); // mm
-  const [objectDistance, setObjectDistance] = useState(1000); // m
+  // Maxwell sandbox parameters - charges
+  interface Charge {
+    id: number;
+    x: number;
+    y: number;
+    q: number; // positive or negative
+    vx: number;
+    vy: number;
+    oscillating: boolean;
+    oscillationAmplitude: number;
+    oscillationFrequency: number;
+  }
+  const [charges, setCharges] = useState<Charge[]>([
+    { id: 1, x: 400, y: 175, q: 1, vx: 0, vy: 0, oscillating: true, oscillationAmplitude: 50, oscillationFrequency: 1 }
+  ]);
+  const [selectedChargeId, setSelectedChargeId] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [showEFieldLines, setShowEFieldLines] = useState(true);
+  const [showBFieldLines, setShowBFieldLines] = useState(true);
+  const [chargeMode, setChargeMode] = useState<'dipole' | 'moving' | 'static'>('dipole');
 
   // Canvas refs
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -93,6 +110,84 @@ export function ElectromagneticWaveSimulator() {
       }
     };
   }, [isPlaying]);
+
+  // Maxwell sandbox mouse handlers
+  const handleCanvasMouseDown = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (mode !== 'maxwell') return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
+
+    // Check if clicking on a charge
+    const clickedCharge = charges.find(charge => {
+      const dx = x - charge.x;
+      const dy = y - charge.y;
+      return Math.sqrt(dx * dx + dy * dy) < 20;
+    });
+
+    if (clickedCharge) {
+      setSelectedChargeId(clickedCharge.id);
+      setIsDragging(true);
+    } else {
+      setSelectedChargeId(null);
+    }
+  }, [mode, charges]);
+
+  const handleCanvasMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (mode !== 'maxwell' || !isDragging || selectedChargeId === null) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
+
+    setCharges(prev => prev.map(charge =>
+      charge.id === selectedChargeId
+        ? { ...charge, x: Math.max(20, Math.min(780, x)), y: Math.max(20, Math.min(330, y)) }
+        : charge
+    ));
+  }, [mode, isDragging, selectedChargeId]);
+
+  const handleCanvasMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  const addCharge = useCallback((positive: boolean) => {
+    const newId = Math.max(0, ...charges.map(c => c.id)) + 1;
+    setCharges(prev => [...prev, {
+      id: newId,
+      x: 200 + Math.random() * 400,
+      y: 100 + Math.random() * 150,
+      q: positive ? 1 : -1,
+      vx: chargeMode === 'moving' ? (Math.random() - 0.5) * 2 : 0,
+      vy: chargeMode === 'moving' ? (Math.random() - 0.5) * 2 : 0,
+      oscillating: chargeMode === 'dipole',
+      oscillationAmplitude: 40,
+      oscillationFrequency: 0.8 + Math.random() * 0.4
+    }]);
+  }, [charges, chargeMode]);
+
+  const removeSelectedCharge = useCallback(() => {
+    if (selectedChargeId !== null) {
+      setCharges(prev => prev.filter(c => c.id !== selectedChargeId));
+      setSelectedChargeId(null);
+    }
+  }, [selectedChargeId]);
+
+  const clearCharges = useCallback(() => {
+    setCharges([]);
+    setSelectedChargeId(null);
+  }, []);
 
   // Speed of light
   const c = 3e8; // m/s
@@ -198,21 +293,9 @@ export function ElectromagneticWaveSimulator() {
     return null;
   }, [crystalSpacing, wavelength, diffractionOrder]);
 
-  // Rayleigh criterion
-  const getAngularResolution = useCallback(() => {
-    const D = apertureDiameter * 1e-3;
-    const lambda = wavelength * 1e-9;
-    return 1.22 * lambda / D; // radians
-  }, [apertureDiameter, wavelength]);
-
-  const getMinSeparation = useCallback(() => {
-    const theta = getAngularResolution();
-    return objectDistance * theta; // meters
-  }, [getAngularResolution, objectDistance]);
-
   // Draw EM Wave (3D perspective)
   useEffect(() => {
-    if (mode !== 'emwave' && mode !== 'poynting') return;
+    if (mode !== 'emwave') return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -369,7 +452,7 @@ export function ElectromagneticWaveSimulator() {
     }
 
     // Draw Poynting vector
-    if (showPoynting || mode === 'poynting') {
+    if (showPoynting) {
       ctx.strokeStyle = '#10b981';
       ctx.fillStyle = '#10b981';
       ctx.lineWidth = 3;
@@ -664,7 +747,7 @@ export function ElectromagneticWaveSimulator() {
 
   }, [mode, wavelength]);
 
-  // Draw Maxwell's equations visualization
+  // Draw Maxwell's charge sandbox - interactive charges creating E and B fields
   useEffect(() => {
     if (mode !== 'maxwell') return;
 
@@ -676,106 +759,285 @@ export function ElectromagneticWaveSimulator() {
     const width = canvas.width;
     const height = canvas.height;
 
-    ctx.fillStyle = '#f8fafc';
+    // Dark background
+    ctx.fillStyle = '#0f172a';
     ctx.fillRect(0, 0, width, height);
 
-    // Draw grid representing field
-    const gridSize = 40;
-    const rows = Math.floor(height / gridSize);
-    const cols = Math.floor(width / gridSize);
+    // Draw grid
+    ctx.strokeStyle = 'rgba(148, 163, 184, 0.1)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < width; x += 40) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, height);
+      ctx.stroke();
+    }
+    for (let y = 0; y < height; y += 40) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(width, y);
+      ctx.stroke();
+    }
 
-    // Animated field visualization
-    for (let i = 0; i < cols; i++) {
-      for (let j = 0; j < rows; j++) {
-        const x = i * gridSize + gridSize / 2;
-        const y = j * gridSize + gridSize / 2;
+    // Calculate fields at each point
+    const gridSpacing = 30;
+    const arrowScale = 15;
 
-        // Simulate propagating EM wave
-        const phase = (i * 0.5 - time * frequency * 2) * Math.PI;
-        const eStrength = Math.sin(phase) * amplitude;
-        const bStrength = Math.cos(phase) * amplitude;
+    // For each charge, calculate its current position (with oscillation)
+    const chargePositions = charges.map(charge => {
+      let x = charge.x;
+      let y = charge.y;
 
-        // Draw E field (vertical arrows)
-        if (Math.abs(eStrength) > 0.1) {
-          ctx.strokeStyle = `rgba(239, 68, 68, ${Math.abs(eStrength)})`;
-          ctx.fillStyle = `rgba(239, 68, 68, ${Math.abs(eStrength)})`;
-          ctx.lineWidth = 2;
+      if (charge.oscillating && chargeMode === 'dipole') {
+        // Oscillating charge - creates EM radiation
+        const oscillationOffset = charge.oscillationAmplitude * Math.sin(2 * Math.PI * charge.oscillationFrequency * time);
+        y = charge.y + oscillationOffset;
+      } else if (chargeMode === 'moving') {
+        // Moving charge - creates magnetic field
+        x = charge.x + charge.vx * time * 50;
+        y = charge.y + charge.vy * time * 50;
+        // Wrap around
+        if (x > width) x = x % width;
+        if (x < 0) x = width + (x % width);
+        if (y > height) y = y % height;
+        if (y < 0) y = height + (y % height);
+      }
 
-          const arrowLength = 15 * eStrength;
-          ctx.beginPath();
-          ctx.moveTo(x, y);
-          ctx.lineTo(x, y - arrowLength);
-          ctx.stroke();
+      return { ...charge, currentX: x, currentY: y };
+    });
 
-          if (Math.abs(arrowLength) > 5) {
+    // Draw electric field lines
+    if (showEFieldLines) {
+      for (let gx = gridSpacing / 2; gx < width; gx += gridSpacing) {
+        for (let gy = gridSpacing / 2; gy < height; gy += gridSpacing) {
+          let Ex = 0;
+          let Ey = 0;
+
+          // Sum contributions from all charges
+          chargePositions.forEach(charge => {
+            const dx = gx - charge.currentX;
+            const dy = gy - charge.currentY;
+            const r2 = dx * dx + dy * dy;
+            const r = Math.sqrt(r2);
+
+            if (r > 20) {
+              const k = 1000; // Coulomb constant (scaled for visualization)
+              const E = k * charge.q / r2;
+              Ex += E * dx / r;
+              Ey += E * dy / r;
+            }
+          });
+
+          const E = Math.sqrt(Ex * Ex + Ey * Ey);
+          if (E > 0.5) {
+            const maxE = 50;
+            const normalizedE = Math.min(E / maxE, 1);
+            const arrowLength = arrowScale * normalizedE;
+
+            // Normalize direction
+            const dirX = Ex / E;
+            const dirY = Ey / E;
+
+            // Draw arrow
+            const alpha = 0.3 + 0.7 * normalizedE;
+            ctx.strokeStyle = `rgba(239, 68, 68, ${alpha})`;
+            ctx.fillStyle = `rgba(239, 68, 68, ${alpha})`;
+            ctx.lineWidth = 1.5;
+
             ctx.beginPath();
-            ctx.moveTo(x, y - arrowLength);
-            ctx.lineTo(x - 3, y - arrowLength + Math.sign(arrowLength) * 5);
-            ctx.lineTo(x + 3, y - arrowLength + Math.sign(arrowLength) * 5);
-            ctx.closePath();
-            ctx.fill();
+            ctx.moveTo(gx, gy);
+            ctx.lineTo(gx + dirX * arrowLength, gy + dirY * arrowLength);
+            ctx.stroke();
+
+            // Arrow head
+            if (arrowLength > 5) {
+              const headSize = 4;
+              const angle = Math.atan2(dirY, dirX);
+              ctx.beginPath();
+              ctx.moveTo(gx + dirX * arrowLength, gy + dirY * arrowLength);
+              ctx.lineTo(
+                gx + dirX * arrowLength - headSize * Math.cos(angle - 0.5),
+                gy + dirY * arrowLength - headSize * Math.sin(angle - 0.5)
+              );
+              ctx.lineTo(
+                gx + dirX * arrowLength - headSize * Math.cos(angle + 0.5),
+                gy + dirY * arrowLength - headSize * Math.sin(angle + 0.5)
+              );
+              ctx.closePath();
+              ctx.fill();
+            }
           }
-        }
-
-        // Draw B field (dots/crosses for into/out of page)
-        ctx.strokeStyle = `rgba(59, 130, 246, ${Math.abs(bStrength)})`;
-        ctx.fillStyle = `rgba(59, 130, 246, ${Math.abs(bStrength)})`;
-        ctx.lineWidth = 1.5;
-
-        const dotX = x + 12;
-        if (bStrength > 0.1) {
-          ctx.beginPath();
-          ctx.arc(dotX, y, 4, 0, 2 * Math.PI);
-          ctx.fill();
-        } else if (bStrength < -0.1) {
-          ctx.beginPath();
-          ctx.moveTo(dotX - 4, y - 4);
-          ctx.lineTo(dotX + 4, y + 4);
-          ctx.moveTo(dotX + 4, y - 4);
-          ctx.lineTo(dotX - 4, y + 4);
-          ctx.stroke();
         }
       }
     }
 
-    // Propagation arrow
-    ctx.strokeStyle = '#10b981';
-    ctx.fillStyle = '#10b981';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(50, height - 30);
-    ctx.lineTo(width - 50, height - 30);
-    ctx.stroke();
+    // Draw magnetic field (for moving/oscillating charges)
+    if (showBFieldLines && (chargeMode === 'moving' || chargeMode === 'dipole')) {
+      chargePositions.forEach(charge => {
+        // Velocity for magnetic field calculation
+        let vx = charge.vx;
+        let vy = charge.vy;
 
-    ctx.beginPath();
-    ctx.moveTo(width - 50, height - 30);
-    ctx.lineTo(width - 65, height - 38);
-    ctx.lineTo(width - 65, height - 22);
-    ctx.closePath();
-    ctx.fill();
+        if (charge.oscillating && chargeMode === 'dipole') {
+          // Velocity from oscillation
+          vy = charge.oscillationAmplitude * 2 * Math.PI * charge.oscillationFrequency *
+               Math.cos(2 * Math.PI * charge.oscillationFrequency * time);
+          vx = 0;
+        }
 
-    ctx.font = '14px system-ui';
-    ctx.fillText('Direction de propagation', width / 2 - 80, height - 10);
+        const speed = Math.sqrt(vx * vx + vy * vy);
+        if (speed > 0.1) {
+          // Draw circular magnetic field lines around the velocity vector
+          const numCircles = 4;
+          for (let i = 1; i <= numCircles; i++) {
+            const radius = 30 + i * 25;
+            const alpha = 0.5 - i * 0.1;
+
+            ctx.strokeStyle = `rgba(59, 130, 246, ${alpha})`;
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.arc(charge.currentX, charge.currentY, radius, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Draw direction indicators (dots for out, crosses for in)
+            const numIndicators = 8;
+            for (let j = 0; j < numIndicators; j++) {
+              const angle = (j / numIndicators) * 2 * Math.PI + time * 0.5;
+              const ix = charge.currentX + radius * Math.cos(angle);
+              const iy = charge.currentY + radius * Math.sin(angle);
+
+              // B field direction depends on charge sign and velocity direction
+              const bDirection = charge.q * (vy > 0 ? 1 : -1);
+              const isOut = (Math.cos(angle) > 0) === (bDirection > 0);
+
+              ctx.fillStyle = `rgba(59, 130, 246, ${alpha + 0.2})`;
+              ctx.strokeStyle = `rgba(59, 130, 246, ${alpha + 0.2})`;
+              ctx.lineWidth = 1.5;
+
+              if (isOut) {
+                // Dot (coming out)
+                ctx.beginPath();
+                ctx.arc(ix, iy, 3, 0, 2 * Math.PI);
+                ctx.fill();
+              } else {
+                // Cross (going in)
+                ctx.beginPath();
+                ctx.moveTo(ix - 3, iy - 3);
+                ctx.lineTo(ix + 3, iy + 3);
+                ctx.moveTo(ix + 3, iy - 3);
+                ctx.lineTo(ix - 3, iy + 3);
+                ctx.stroke();
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Draw radiation waves for oscillating dipole
+    if (chargeMode === 'dipole') {
+      chargePositions.forEach(charge => {
+        if (charge.oscillating) {
+          const numWaves = 6;
+          for (let i = 0; i < numWaves; i++) {
+            const wavePhase = (time * charge.oscillationFrequency * 2 + i / numWaves) % 1;
+            const radius = wavePhase * Math.max(width, height);
+            const alpha = 0.3 * (1 - wavePhase);
+
+            if (alpha > 0.02) {
+              ctx.strokeStyle = `rgba(168, 85, 247, ${alpha})`;
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.arc(charge.currentX, charge.currentY, radius, 0, 2 * Math.PI);
+              ctx.stroke();
+            }
+          }
+        }
+      });
+    }
+
+    // Draw charges
+    chargePositions.forEach(charge => {
+      const isSelected = charge.id === selectedChargeId;
+      const radius = isSelected ? 18 : 15;
+
+      // Glow effect
+      const gradient = ctx.createRadialGradient(
+        charge.currentX, charge.currentY, 0,
+        charge.currentX, charge.currentY, radius * 2
+      );
+
+      if (charge.q > 0) {
+        gradient.addColorStop(0, 'rgba(239, 68, 68, 0.8)');
+        gradient.addColorStop(0.5, 'rgba(239, 68, 68, 0.3)');
+        gradient.addColorStop(1, 'rgba(239, 68, 68, 0)');
+      } else {
+        gradient.addColorStop(0, 'rgba(59, 130, 246, 0.8)');
+        gradient.addColorStop(0.5, 'rgba(59, 130, 246, 0.3)');
+        gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+      }
+
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(charge.currentX, charge.currentY, radius * 2, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Charge circle
+      ctx.fillStyle = charge.q > 0 ? '#ef4444' : '#3b82f6';
+      ctx.beginPath();
+      ctx.arc(charge.currentX, charge.currentY, radius, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Selection ring
+      if (isSelected) {
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(charge.currentX, charge.currentY, radius + 5, 0, 2 * Math.PI);
+        ctx.stroke();
+      }
+
+      // Plus or minus sign
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 16px system-ui';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(charge.q > 0 ? '+' : '−', charge.currentX, charge.currentY);
+    });
 
     // Legend
-    ctx.fillStyle = '#ef4444';
-    ctx.fillRect(20, 20, 20, 3);
-    ctx.fillStyle = '#1e293b';
+    ctx.fillStyle = '#94a3b8';
     ctx.font = '12px system-ui';
-    ctx.fillText('E (vertical)', 50, 25);
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText('Cliquez pour sélectionner/déplacer une charge', 10, 10);
+    ctx.fillText(`Mode: ${chargeMode === 'dipole' ? 'Dipôle oscillant' : chargeMode === 'moving' ? 'Charge en mouvement' : 'Charge statique'}`, 10, 28);
+
+    // Field legend
+    ctx.fillStyle = '#ef4444';
+    ctx.fillRect(width - 150, 10, 15, 15);
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillText('Champ E', width - 130, 12);
 
     ctx.fillStyle = '#3b82f6';
-    ctx.beginPath();
-    ctx.arc(30, 45, 5, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.fillStyle = '#1e293b';
-    ctx.fillText('B (perpendiculaire)', 50, 50);
+    ctx.fillRect(width - 150, 32, 15, 15);
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillText('Champ B', width - 130, 34);
 
-  }, [mode, time, amplitude, frequency]);
+    if (chargeMode === 'dipole') {
+      ctx.fillStyle = '#a855f7';
+      ctx.fillRect(width - 150, 54, 15, 15);
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('Rayonnement', width - 130, 56);
+    }
+
+  }, [mode, time, charges, chargeMode, showEFieldLines, showBFieldLines, selectedChargeId]);
 
   // Draw Young's double slit
   useEffect(() => {
-    if (mode !== 'young' && mode !== 'interference') return;
+    if (mode !== 'young') return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -1104,177 +1366,15 @@ export function ElectromagneticWaveSimulator() {
 
   }, [mode, wavelength, crystalSpacing, diffractionOrder, getBraggAngle]);
 
-  // Draw Resolution (Rayleigh criterion)
-  useEffect(() => {
-    if (mode !== 'resolution') return;
-
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const width = canvas.width;
-    const height = canvas.height;
-
-    ctx.fillStyle = '#1e293b';
-    ctx.fillRect(0, 0, width, height);
-
-    const centerY = height / 2;
-
-    // Draw two point sources
-    const sourceSpacing = 80;
-    const source1X = width / 3;
-    const source2X = width / 3 + sourceSpacing;
-
-    // Draw Airy patterns
-    const patternWidth = 200;
-    const patternStartX = width / 2 + 50;
-
-    // First Airy pattern
-    ctx.strokeStyle = '#ef4444';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    for (let x = 0; x < patternWidth; x++) {
-      const relX = (x - patternWidth / 2 + 20) / 30;
-      let intensity;
-      if (Math.abs(relX) < 0.001) {
-        intensity = 1;
-      } else {
-        const bessel = Math.sin(Math.PI * relX) / (Math.PI * relX);
-        intensity = bessel * bessel;
-      }
-      const y = centerY - 100 * intensity;
-
-      if (x === 0) {
-        ctx.moveTo(patternStartX + x, y);
-      } else {
-        ctx.lineTo(patternStartX + x, y);
-      }
-    }
-    ctx.stroke();
-
-    // Second Airy pattern
-    ctx.strokeStyle = '#3b82f6';
-    ctx.beginPath();
-    for (let x = 0; x < patternWidth; x++) {
-      const relX = (x - patternWidth / 2 - 20) / 30;
-      let intensity;
-      if (Math.abs(relX) < 0.001) {
-        intensity = 1;
-      } else {
-        const bessel = Math.sin(Math.PI * relX) / (Math.PI * relX);
-        intensity = bessel * bessel;
-      }
-      const y = centerY - 100 * intensity;
-
-      if (x === 0) {
-        ctx.moveTo(patternStartX + x, y);
-      } else {
-        ctx.lineTo(patternStartX + x, y);
-      }
-    }
-    ctx.stroke();
-
-    // Combined pattern
-    ctx.strokeStyle = '#22c55e';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    for (let x = 0; x < patternWidth; x++) {
-      const relX1 = (x - patternWidth / 2 + 20) / 30;
-      const relX2 = (x - patternWidth / 2 - 20) / 30;
-
-      let i1, i2;
-      if (Math.abs(relX1) < 0.001) i1 = 1;
-      else i1 = Math.pow(Math.sin(Math.PI * relX1) / (Math.PI * relX1), 2);
-
-      if (Math.abs(relX2) < 0.001) i2 = 1;
-      else i2 = Math.pow(Math.sin(Math.PI * relX2) / (Math.PI * relX2), 2);
-
-      const combinedIntensity = i1 + i2;
-      const y = centerY + 80 - 50 * combinedIntensity;
-
-      if (x === 0) {
-        ctx.moveTo(patternStartX + x, y);
-      } else {
-        ctx.lineTo(patternStartX + x, y);
-      }
-    }
-    ctx.stroke();
-
-    // Draw aperture
-    ctx.strokeStyle = '#64748b';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.arc(source1X - 80, centerY, 40, 0, 2 * Math.PI);
-    ctx.stroke();
-
-    ctx.fillStyle = '#64748b';
-    ctx.font = '11px system-ui';
-    ctx.fillText('Ouverture', source1X - 105, centerY + 60);
-    ctx.fillText(`D = ${apertureDiameter} mm`, source1X - 105, centerY + 75);
-
-    // Draw point sources
-    ctx.fillStyle = '#ef4444';
-    ctx.beginPath();
-    ctx.arc(source1X, centerY - 30, 8, 0, 2 * Math.PI);
-    ctx.fill();
-
-    ctx.fillStyle = '#3b82f6';
-    ctx.beginPath();
-    ctx.arc(source2X, centerY - 30, 8, 0, 2 * Math.PI);
-    ctx.fill();
-
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '11px system-ui';
-    ctx.fillText('Sources', source1X + 20, centerY - 50);
-
-    // Labels
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '12px system-ui';
-    ctx.fillText('Figures d\'Airy individuelles', patternStartX, 30);
-    ctx.fillText('Pattern combiné', patternStartX, centerY + 40);
-
-    // Results
-    const angularRes = getAngularResolution();
-    const minSep = getMinSeparation();
-
-    ctx.fillStyle = '#f59e0b';
-    ctx.font = 'bold 14px system-ui';
-    ctx.fillText('Critère de Rayleigh:', 20, height - 60);
-
-    ctx.font = '12px system-ui';
-    ctx.fillStyle = '#ffffff';
-    ctx.fillText(`θ_min = 1.22 λ/D = ${(angularRes * 1e6).toFixed(2)} μrad`, 20, height - 40);
-    ctx.fillText(`Séparation min à ${objectDistance} m: ${(minSep * 1000).toFixed(2)} mm`, 20, height - 20);
-
-    // Legend
-    ctx.fillStyle = '#ef4444';
-    ctx.fillRect(width - 130, 20, 15, 3);
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '11px system-ui';
-    ctx.fillText('Source 1', width - 110, 25);
-
-    ctx.fillStyle = '#3b82f6';
-    ctx.fillRect(width - 130, 40, 15, 3);
-    ctx.fillText('Source 2', width - 110, 45);
-
-    ctx.fillStyle = '#22c55e';
-    ctx.fillRect(width - 130, 60, 15, 3);
-    ctx.fillText('Combiné', width - 110, 65);
-
-  }, [mode, wavelength, apertureDiameter, objectDistance, getAngularResolution, getMinSeparation]);
 
   const modes = [
     { id: 'emwave', label: 'Onde E-M', icon: '〰️' },
     { id: 'polarization', label: 'Polarisation', icon: '🔄' },
     { id: 'spectrum', label: 'Spectre EM', icon: '🌈' },
-    { id: 'maxwell', label: 'Maxwell', icon: '⚡' },
-    { id: 'poynting', label: 'Poynting', icon: '➡️' },
+    { id: 'maxwell', label: 'Charges & Champs', icon: '⚡' },
     { id: 'young', label: 'Young', icon: '💡' },
-    { id: 'interference', label: 'Interférence', icon: '🌊' },
     { id: 'diffraction', label: 'Diffraction', icon: '🔦' },
     { id: 'bragg', label: 'Bragg', icon: '💎' },
-    { id: 'resolution', label: 'Résolution', icon: '🔬' },
   ];
 
   return (
@@ -1328,7 +1428,7 @@ export function ElectromagneticWaveSimulator() {
           </div>
 
           {/* Mode-specific controls */}
-          {(mode === 'emwave' || mode === 'poynting') && (
+          {mode === 'emwave' && (
             <>
               {/* 2D/3D Toggle */}
               <div className="flex items-center gap-2">
@@ -1537,7 +1637,72 @@ export function ElectromagneticWaveSimulator() {
             </div>
           )}
 
-          {(mode === 'young' || mode === 'interference') && (
+          {mode === 'maxwell' && (
+            <>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Mode</label>
+                <select
+                  value={chargeMode}
+                  onChange={(e) => setChargeMode(e.target.value as 'dipole' | 'moving' | 'static')}
+                  className="w-full p-2 border rounded-lg"
+                >
+                  <option value="dipole">Dipôle oscillant (rayonnement EM)</option>
+                  <option value="moving">Charge en mouvement (champ B)</option>
+                  <option value="static">Charge statique (champ E)</option>
+                </select>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => addCharge(true)}
+                  className="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-medium"
+                >
+                  + Charge +
+                </button>
+                <button
+                  onClick={() => addCharge(false)}
+                  className="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium"
+                >
+                  + Charge −
+                </button>
+                {selectedChargeId !== null && (
+                  <button
+                    onClick={removeSelectedCharge}
+                    className="px-3 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors text-sm font-medium"
+                  >
+                    Supprimer
+                  </button>
+                )}
+                <button
+                  onClick={clearCharges}
+                  className="px-3 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors text-sm font-medium"
+                >
+                  Effacer tout
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-4">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={showEFieldLines}
+                    onChange={(e) => setShowEFieldLines(e.target.checked)}
+                    className="rounded"
+                  />
+                  <span className="text-sm text-red-600 font-medium">Champ E</span>
+                </label>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={showBFieldLines}
+                    onChange={(e) => setShowBFieldLines(e.target.checked)}
+                    className="rounded"
+                  />
+                  <span className="text-sm text-blue-600 font-medium">Champ B</span>
+                </label>
+              </div>
+            </>
+          )}
+
+          {mode === 'young' && (
             <>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -1678,57 +1843,11 @@ export function ElectromagneticWaveSimulator() {
             </>
           )}
 
-          {mode === 'resolution' && (
-            <>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  λ: {wavelength} nm
-                </label>
-                <input
-                  type="range"
-                  min="380"
-                  max="750"
-                  step="10"
-                  value={wavelength}
-                  onChange={(e) => setWavelength(parseInt(e.target.value))}
-                  className="w-full"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Diamètre ouverture: {apertureDiameter} mm
-                </label>
-                <input
-                  type="range"
-                  min="1"
-                  max="100"
-                  step="1"
-                  value={apertureDiameter}
-                  onChange={(e) => setApertureDiameter(parseInt(e.target.value))}
-                  className="w-full"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Distance objets: {objectDistance} m
-                </label>
-                <input
-                  type="range"
-                  min="10"
-                  max="10000"
-                  step="10"
-                  value={objectDistance}
-                  onChange={(e) => setObjectDistance(parseInt(e.target.value))}
-                  className="w-full"
-                />
-              </div>
-            </>
-          )}
         </div>
 
         {/* Canvas / 3D View */}
         <div className="bg-gray-50 rounded-xl p-4 mb-6">
-          {(mode === 'emwave' || mode === 'poynting') && view3D ? (
+          {mode === 'emwave' && view3D ? (
             <div className="h-[400px] rounded-lg overflow-hidden">
               <EMWave3DView
                 amplitude={amplitude}
@@ -1746,13 +1865,17 @@ export function ElectromagneticWaveSimulator() {
               ref={canvasRef}
               width={800}
               height={350}
-              className="w-full rounded-lg"
+              className={`w-full rounded-lg ${mode === 'maxwell' ? 'cursor-pointer' : ''}`}
+              onMouseDown={handleCanvasMouseDown}
+              onMouseMove={handleCanvasMouseMove}
+              onMouseUp={handleCanvasMouseUp}
+              onMouseLeave={handleCanvasMouseUp}
             />
           )}
         </div>
 
         {/* 3D View Instructions */}
-        {(mode === 'emwave' || mode === 'poynting') && view3D && (
+        {mode === 'emwave' && view3D && (
           <div className="mb-6 p-3 bg-violet-50 rounded-lg text-sm text-violet-700">
             <span className="font-medium">Navigation 3D:</span> Clic gauche + glisser pour tourner,
             molette pour zoomer, clic droit + glisser pour déplacer.
@@ -1766,7 +1889,7 @@ export function ElectromagneticWaveSimulator() {
         <div className="bg-violet-50 rounded-xl p-4">
           <h3 className="font-semibold text-violet-900 mb-3">Formules</h3>
 
-          {(mode === 'emwave' || mode === 'poynting') && (
+          {mode === 'emwave' && (
             <div className="space-y-2">
               <div className="text-sm text-violet-800">
                 <BlockMath math="E(z,t) = E_0 \sin(kz - \omega t) \quad \text{(Champ électrique)}" />
@@ -1812,15 +1935,32 @@ export function ElectromagneticWaveSimulator() {
           {mode === 'maxwell' && (
             <div className="space-y-2">
               <div className="text-sm text-violet-800">
-                <BlockMath math="\nabla \cdot \vec{E} = \frac{\rho}{\epsilon_0} \quad \text{(Gauss)}" />
-                <BlockMath math="\nabla \cdot \vec{B} = 0 \quad \text{(Pas de monopôle)}" />
-                <BlockMath math="\nabla \times \vec{E} = -\frac{\partial \vec{B}}{\partial t} \quad \text{(Faraday)}" />
-                <BlockMath math="\nabla \times \vec{B} = \mu_0 \vec{J} + \mu_0 \epsilon_0 \frac{\partial \vec{E}}{\partial t} \quad \text{(Ampère-Maxwell)}" />
+                <p className="font-semibold mb-2">Équations de Maxwell:</p>
+                <BlockMath math="\nabla \cdot \vec{E} = \frac{\rho}{\epsilon_0} \quad \text{(Gauss - sources de E)}" />
+                <BlockMath math="\nabla \times \vec{B} = \mu_0 \vec{J} + \mu_0 \epsilon_0 \frac{\partial \vec{E}}{\partial t} \quad \text{(Ampère - courant crée B)}" />
+                {chargeMode === 'dipole' && (
+                  <>
+                    <p className="mt-3 font-semibold">Rayonnement du dipôle:</p>
+                    <BlockMath math="P = \frac{\mu_0 p_0^2 \omega^4}{12\pi c} \quad \text{(Puissance rayonnée)}" />
+                  </>
+                )}
+                {chargeMode === 'moving' && (
+                  <>
+                    <p className="mt-3 font-semibold">Champ d'une charge en mouvement:</p>
+                    <BlockMath math="\vec{B} = \frac{\mu_0}{4\pi} \frac{q\vec{v} \times \hat{r}}{r^2} \quad \text{(Biot-Savart)}" />
+                  </>
+                )}
+                {chargeMode === 'static' && (
+                  <>
+                    <p className="mt-3 font-semibold">Champ électrostatique:</p>
+                    <BlockMath math="\vec{E} = \frac{1}{4\pi\epsilon_0} \frac{q}{r^2} \hat{r} \quad \text{(Coulomb)}" />
+                  </>
+                )}
               </div>
             </div>
           )}
 
-          {(mode === 'young' || mode === 'interference') && (
+          {mode === 'young' && (
             <div className="space-y-2">
               <div className="text-sm text-violet-800">
                 <BlockMath math="\Delta = d \sin\theta \approx \frac{dy}{L}" />
@@ -1855,20 +1995,6 @@ export function ElectromagneticWaveSimulator() {
             </div>
           )}
 
-          {mode === 'resolution' && (
-            <div className="space-y-2">
-              <div className="text-sm text-violet-800">
-                <BlockMath math="\theta_{min} = 1.22 \frac{\lambda}{D} \quad \text{(Critère de Rayleigh)}" />
-                <BlockMath math="\Delta s = L \cdot \theta_{min} \quad \text{(Séparation minimale)}" />
-                <p className="mt-2">
-                  Résolution angulaire: θ = {(getAngularResolution() * 1e6).toFixed(2)} μrad
-                </p>
-                <p>
-                  Séparation min à {objectDistance} m: {(getMinSeparation() * 1000).toFixed(2)} mm
-                </p>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>
