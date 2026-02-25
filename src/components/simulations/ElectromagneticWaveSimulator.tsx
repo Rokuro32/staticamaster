@@ -29,8 +29,9 @@ const MaxwellSandbox3D = dynamic(() => import('./MaxwellSandbox3D'), {
   ),
 });
 
-type SimulationMode = 'emwave' | 'polarization' | 'spectrum' | 'maxwell' | 'young' | 'diffraction' | 'bragg';
+type SimulationMode = 'emwave' | 'polarization' | 'spectrum' | 'maxwell' | 'young' | 'diffraction' | 'bragg' | 'optics';
 type PolarizationType = 'linear' | 'circular' | 'elliptical';
+type OpticsMode = 'reflection' | 'refraction' | 'totalReflection' | 'dispersion';
 
 export function ElectromagneticWaveSimulator() {
   const [mode, setMode] = useState<SimulationMode>('emwave');
@@ -56,6 +57,15 @@ export function ElectromagneticWaveSimulator() {
   const [showAnalyzer, setShowAnalyzer] = useState(false);
   const [phaseShift, setPhaseShift] = useState(90); // for circular/elliptical
   const [amplitudeRatio, setAmplitudeRatio] = useState(1); // Ey/Ex ratio
+
+  // Optics parameters (reflection, refraction, dispersion)
+  const [opticsMode, setOpticsMode] = useState<OpticsMode>('refraction');
+  const [incidentAngle, setIncidentAngle] = useState(45); // degrees
+  const [n1, setN1] = useState(1.0); // refractive index of medium 1 (air)
+  const [n2, setN2] = useState(1.5); // refractive index of medium 2 (glass)
+  const [showNormal, setShowNormal] = useState(true);
+  const [showAngles, setShowAngles] = useState(true);
+  const [prismAngle, setPrismAngle] = useState(60); // degrees for prism
 
   // Young's slits parameters
   const [slitSeparation, setSlitSeparation] = useState(0.5); // mm
@@ -1412,12 +1422,339 @@ export function ElectromagneticWaveSimulator() {
 
   }, [mode, wavelength, crystalSpacing, diffractionOrder, getBraggAngle]);
 
+  // Draw Optics (Reflection, Refraction, Dispersion)
+  useEffect(() => {
+    if (mode !== 'optics') return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const width = canvas.width;
+    const height = canvas.height;
+    const centerX = width / 2;
+    const centerY = height / 2;
+
+    // Clear canvas
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillRect(0, 0, width, height);
+
+    if (opticsMode === 'dispersion') {
+      // Draw prism dispersion
+      const prismHeight = 200;
+      const prismBase = prismHeight / Math.tan((prismAngle / 2) * Math.PI / 180);
+
+      // Draw prism
+      ctx.fillStyle = 'rgba(147, 197, 253, 0.3)';
+      ctx.strokeStyle = '#3b82f6';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY - prismHeight / 2);
+      ctx.lineTo(centerX - prismBase / 2, centerY + prismHeight / 2);
+      ctx.lineTo(centerX + prismBase / 2, centerY + prismHeight / 2);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Incident white light
+      const entryX = centerX - prismBase / 4;
+      const entryY = centerY;
+
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(50, centerY - 50);
+      ctx.lineTo(entryX, entryY);
+      ctx.stroke();
+
+      // Add white glow effect
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+      ctx.lineWidth = 8;
+      ctx.beginPath();
+      ctx.moveTo(50, centerY - 50);
+      ctx.lineTo(entryX, entryY);
+      ctx.stroke();
+
+      // Dispersion - different colors refract at different angles
+      const colors = [
+        { name: 'Rouge', color: '#ef4444', n: 1.51, hue: 0 },
+        { name: 'Orange', color: '#f97316', n: 1.52, hue: 30 },
+        { name: 'Jaune', color: '#eab308', n: 1.53, hue: 60 },
+        { name: 'Vert', color: '#22c55e', n: 1.54, hue: 120 },
+        { name: 'Bleu', color: '#3b82f6', n: 1.55, hue: 240 },
+        { name: 'Violet', color: '#8b5cf6', n: 1.56, hue: 270 },
+      ];
+
+      const baseAngle = 25; // Entry angle into prism
+
+      colors.forEach((c, i) => {
+        // Calculate refraction through prism
+        const n = c.n;
+        const refractedAngle = Math.asin(Math.sin(baseAngle * Math.PI / 180) / n);
+        const exitAngle = refractedAngle + (prismAngle * Math.PI / 180 - Math.PI / 3);
+
+        // Draw refracted ray inside prism (simplified)
+        const exitX = centerX + prismBase / 4 - i * 5;
+        const exitY = centerY + 20;
+
+        ctx.strokeStyle = c.color;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(entryX, entryY);
+        ctx.lineTo(exitX, exitY);
+        ctx.stroke();
+
+        // Draw dispersed ray exiting
+        const spreadAngle = 30 + i * 8; // Violet bends more than red
+        const rayLength = 180;
+        const endX = exitX + rayLength * Math.cos((spreadAngle - 60) * Math.PI / 180);
+        const endY = exitY + rayLength * Math.sin((spreadAngle - 60) * Math.PI / 180);
+
+        ctx.beginPath();
+        ctx.moveTo(exitX, exitY);
+        ctx.lineTo(endX, endY);
+        ctx.stroke();
+      });
+
+      // Labels
+      ctx.fillStyle = '#1e293b';
+      ctx.font = '14px system-ui';
+      ctx.fillText('Lumière blanche', 30, centerY - 70);
+      ctx.fillText('Prisme', centerX - 20, centerY + prismHeight / 2 + 25);
+
+      // Color labels on dispersed rays
+      ctx.font = '12px system-ui';
+      colors.forEach((c, i) => {
+        ctx.fillStyle = c.color;
+        const spreadAngle = 30 + i * 8;
+        const labelX = centerX + prismBase / 4 - i * 5 + 200 * Math.cos((spreadAngle - 60) * Math.PI / 180);
+        const labelY = centerY + 20 + 200 * Math.sin((spreadAngle - 60) * Math.PI / 180);
+        ctx.fillText(c.name, labelX, labelY);
+      });
+
+    } else {
+      // Draw interface between two media
+
+      // Medium 1 (top)
+      ctx.fillStyle = n1 < n2 ? 'rgba(186, 230, 253, 0.4)' : 'rgba(147, 197, 253, 0.6)';
+      ctx.fillRect(0, 0, width, centerY);
+
+      // Medium 2 (bottom)
+      ctx.fillStyle = n1 < n2 ? 'rgba(147, 197, 253, 0.6)' : 'rgba(186, 230, 253, 0.4)';
+      ctx.fillRect(0, centerY, width, height - centerY);
+
+      // Draw interface line
+      ctx.strokeStyle = '#64748b';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, centerY);
+      ctx.lineTo(width, centerY);
+      ctx.stroke();
+
+      // Draw normal (dashed)
+      if (showNormal) {
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(centerX, 30);
+        ctx.lineTo(centerX, height - 30);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#64748b';
+        ctx.font = '12px system-ui';
+        ctx.fillText('Normale', centerX + 10, 45);
+      }
+
+      // Calculate angles
+      const theta1Rad = incidentAngle * Math.PI / 180;
+      const sinTheta2 = (n1 / n2) * Math.sin(theta1Rad);
+      const isTotalReflection = Math.abs(sinTheta2) > 1;
+      const theta2Rad = isTotalReflection ? Math.PI / 2 : Math.asin(sinTheta2);
+
+      // Calculate critical angle for total internal reflection
+      const criticalAngle = n1 > n2 ? Math.asin(n2 / n1) * 180 / Math.PI : null;
+
+      const rayLength = 150;
+
+      // Draw incident ray
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      const incStartX = centerX - rayLength * Math.sin(theta1Rad);
+      const incStartY = centerY - rayLength * Math.cos(theta1Rad);
+      ctx.moveTo(incStartX, incStartY);
+      ctx.lineTo(centerX, centerY);
+      ctx.stroke();
+
+      // Arrow on incident ray
+      ctx.fillStyle = '#ef4444';
+      const arrowAngle1 = Math.PI / 2 - theta1Rad;
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.lineTo(centerX - 12 * Math.cos(arrowAngle1 + 0.3), centerY - 12 * Math.sin(arrowAngle1 + 0.3));
+      ctx.lineTo(centerX - 12 * Math.cos(arrowAngle1 - 0.3), centerY - 12 * Math.sin(arrowAngle1 - 0.3));
+      ctx.closePath();
+      ctx.fill();
+
+      // Draw reflected ray
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = isTotalReflection ? 3 : 2;
+      ctx.globalAlpha = isTotalReflection ? 1 : 0.7;
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      const refEndX = centerX + rayLength * Math.sin(theta1Rad);
+      const refEndY = centerY - rayLength * Math.cos(theta1Rad);
+      ctx.lineTo(refEndX, refEndY);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      // Arrow on reflected ray
+      ctx.fillStyle = '#f59e0b';
+      ctx.globalAlpha = isTotalReflection ? 1 : 0.7;
+      const arrowAngle2 = Math.PI / 2 + theta1Rad;
+      const arrowPosX = centerX + (rayLength - 30) * Math.sin(theta1Rad);
+      const arrowPosY = centerY - (rayLength - 30) * Math.cos(theta1Rad);
+      ctx.beginPath();
+      ctx.moveTo(arrowPosX + 6 * Math.cos(arrowAngle2), arrowPosY - 6 * Math.sin(arrowAngle2));
+      ctx.lineTo(arrowPosX - 6 * Math.cos(arrowAngle2 + 0.4), arrowPosY + 6 * Math.sin(arrowAngle2 + 0.4));
+      ctx.lineTo(arrowPosX - 6 * Math.cos(arrowAngle2 - 0.4), arrowPosY + 6 * Math.sin(arrowAngle2 - 0.4));
+      ctx.closePath();
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      // Draw refracted ray (if not total internal reflection)
+      if (!isTotalReflection) {
+        ctx.strokeStyle = '#22c55e';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        const transEndX = centerX + rayLength * Math.sin(theta2Rad);
+        const transEndY = centerY + rayLength * Math.cos(theta2Rad);
+        ctx.lineTo(transEndX, transEndY);
+        ctx.stroke();
+
+        // Arrow on refracted ray
+        ctx.fillStyle = '#22c55e';
+        const arrowAngle3 = -Math.PI / 2 + theta2Rad;
+        const arrowPos3X = centerX + (rayLength - 30) * Math.sin(theta2Rad);
+        const arrowPos3Y = centerY + (rayLength - 30) * Math.cos(theta2Rad);
+        ctx.beginPath();
+        ctx.moveTo(arrowPos3X + 6 * Math.cos(arrowAngle3), arrowPos3Y + 6 * Math.sin(arrowAngle3));
+        ctx.lineTo(arrowPos3X - 6 * Math.cos(arrowAngle3 + 0.4), arrowPos3Y - 6 * Math.sin(arrowAngle3 + 0.4));
+        ctx.lineTo(arrowPos3X - 6 * Math.cos(arrowAngle3 - 0.4), arrowPos3Y - 6 * Math.sin(arrowAngle3 - 0.4));
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // Draw angle arcs
+      if (showAngles) {
+        const arcRadius = 40;
+
+        // Incident angle arc
+        ctx.strokeStyle = '#ef4444';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, arcRadius, -Math.PI / 2, -Math.PI / 2 + theta1Rad, false);
+        ctx.stroke();
+
+        // Reflected angle arc
+        ctx.strokeStyle = '#f59e0b';
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, arcRadius + 5, -Math.PI / 2 - theta1Rad, -Math.PI / 2, false);
+        ctx.stroke();
+
+        // Refracted angle arc (if applicable)
+        if (!isTotalReflection) {
+          ctx.strokeStyle = '#22c55e';
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, arcRadius, Math.PI / 2 - theta2Rad, Math.PI / 2, false);
+          ctx.stroke();
+        }
+
+        // Angle labels
+        ctx.font = '14px system-ui';
+        ctx.fillStyle = '#ef4444';
+        ctx.fillText(`θ₁ = ${incidentAngle}°`, centerX - 80, centerY - 50);
+
+        ctx.fillStyle = '#f59e0b';
+        ctx.fillText(`θᵣ = ${incidentAngle}°`, centerX + 30, centerY - 50);
+
+        if (!isTotalReflection) {
+          ctx.fillStyle = '#22c55e';
+          ctx.fillText(`θ₂ = ${(theta2Rad * 180 / Math.PI).toFixed(1)}°`, centerX + 30, centerY + 60);
+        }
+      }
+
+      // Labels for media
+      ctx.font = '14px system-ui';
+      ctx.fillStyle = '#1e293b';
+      ctx.fillText(`Milieu 1: n₁ = ${n1.toFixed(2)}`, 20, 30);
+      ctx.fillText(`Milieu 2: n₂ = ${n2.toFixed(2)}`, 20, height - 20);
+
+      // Warning for total internal reflection
+      if (isTotalReflection) {
+        ctx.fillStyle = '#dc2626';
+        ctx.font = 'bold 14px system-ui';
+        ctx.fillText('⚠️ Réflexion totale interne!', width - 200, 30);
+
+        if (criticalAngle !== null) {
+          ctx.font = '12px system-ui';
+          ctx.fillText(`Angle critique: ${criticalAngle.toFixed(1)}°`, width - 200, 50);
+        }
+      }
+
+      // Show critical angle indicator for totalReflection mode
+      if (opticsMode === 'totalReflection' && criticalAngle !== null) {
+        ctx.strokeStyle = '#dc2626';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+
+        const critRad = criticalAngle * Math.PI / 180;
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(centerX - rayLength * Math.sin(critRad), centerY - rayLength * Math.cos(critRad));
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#dc2626';
+        ctx.font = '11px system-ui';
+        ctx.fillText(`θc = ${criticalAngle.toFixed(1)}°`, centerX - 120, centerY - 80);
+      }
+
+      // Legend
+      ctx.font = '12px system-ui';
+      const legendY = height - 60;
+
+      ctx.fillStyle = '#ef4444';
+      ctx.fillRect(width - 180, legendY, 15, 3);
+      ctx.fillStyle = '#1e293b';
+      ctx.fillText('Incident', width - 160, legendY + 5);
+
+      ctx.fillStyle = '#f59e0b';
+      ctx.fillRect(width - 180, legendY + 15, 15, 3);
+      ctx.fillStyle = '#1e293b';
+      ctx.fillText('Réfléchi', width - 160, legendY + 20);
+
+      if (!isTotalReflection) {
+        ctx.fillStyle = '#22c55e';
+        ctx.fillRect(width - 180, legendY + 30, 15, 3);
+        ctx.fillStyle = '#1e293b';
+        ctx.fillText('Réfracté', width - 160, legendY + 35);
+      }
+    }
+
+  }, [mode, opticsMode, incidentAngle, n1, n2, showNormal, showAngles, prismAngle]);
+
 
   const modes = [
     { id: 'emwave', label: 'Onde E-M', icon: '〰️' },
     { id: 'polarization', label: 'Polarisation', icon: '🔄' },
     { id: 'spectrum', label: 'Spectre EM', icon: '🌈' },
     { id: 'maxwell', label: 'Charges & Champs', icon: '⚡' },
+    { id: 'optics', label: 'Réfraction', icon: '🔻' },
     { id: 'young', label: 'Young', icon: '💡' },
     { id: 'diffraction', label: 'Diffraction', icon: '🔦' },
     { id: 'bragg', label: 'Bragg', icon: '💎' },
@@ -1914,6 +2251,112 @@ export function ElectromagneticWaveSimulator() {
             </>
           )}
 
+          {mode === 'optics' && (
+            <>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Mode</label>
+                <select
+                  value={opticsMode}
+                  onChange={(e) => setOpticsMode(e.target.value as OpticsMode)}
+                  className="w-full p-2 border rounded-lg"
+                >
+                  <option value="reflection">Réflexion</option>
+                  <option value="refraction">Réfraction (Snell)</option>
+                  <option value="totalReflection">Réflexion totale interne</option>
+                  <option value="dispersion">Dispersion (Prisme)</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Angle d'incidence: {incidentAngle}°
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="89"
+                  step="1"
+                  value={incidentAngle}
+                  onChange={(e) => setIncidentAngle(parseInt(e.target.value))}
+                  className="w-full"
+                />
+              </div>
+              {opticsMode !== 'dispersion' && (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      n₁ (milieu 1): {n1.toFixed(2)}
+                    </label>
+                    <input
+                      type="range"
+                      min="1.0"
+                      max="2.5"
+                      step="0.01"
+                      value={n1}
+                      onChange={(e) => setN1(parseFloat(e.target.value))}
+                      className="w-full"
+                    />
+                    <div className="flex justify-between text-xs text-gray-500 mt-1">
+                      <span>Air (1.0)</span>
+                      <span>Eau (1.33)</span>
+                      <span>Verre (1.5)</span>
+                      <span>Diamant (2.4)</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      n₂ (milieu 2): {n2.toFixed(2)}
+                    </label>
+                    <input
+                      type="range"
+                      min="1.0"
+                      max="2.5"
+                      step="0.01"
+                      value={n2}
+                      onChange={(e) => setN2(parseFloat(e.target.value))}
+                      className="w-full"
+                    />
+                  </div>
+                </>
+              )}
+              {opticsMode === 'dispersion' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Angle du prisme: {prismAngle}°
+                  </label>
+                  <input
+                    type="range"
+                    min="30"
+                    max="90"
+                    step="1"
+                    value={prismAngle}
+                    onChange={(e) => setPrismAngle(parseInt(e.target.value))}
+                    className="w-full"
+                  />
+                </div>
+              )}
+              <div className="flex flex-wrap gap-4">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={showNormal}
+                    onChange={(e) => setShowNormal(e.target.checked)}
+                    className="rounded"
+                  />
+                  <span className="text-sm font-medium">Normale</span>
+                </label>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={showAngles}
+                    onChange={(e) => setShowAngles(e.target.checked)}
+                    className="rounded"
+                  />
+                  <span className="text-sm font-medium">Angles</span>
+                </label>
+              </div>
+            </>
+          )}
+
         </div>
 
         {/* Canvas / 3D View */}
@@ -2079,6 +2522,46 @@ export function ElectromagneticWaveSimulator() {
                 {getBraggAngle() !== null && (
                   <p className="mt-2">
                     Angle de Bragg: θ = {getBraggAngle()!.toFixed(2)}°
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {mode === 'optics' && (
+            <div className="space-y-2">
+              <div className="text-sm text-violet-800">
+                <BlockMath math="n_1 \sin\theta_1 = n_2 \sin\theta_2 \quad \text{(Loi de Snell-Descartes)}" />
+                <BlockMath math="\theta_r = \theta_i \quad \text{(Loi de la réflexion)}" />
+                {opticsMode === 'totalReflection' && (
+                  <>
+                    <BlockMath math="\theta_c = \arcsin\left(\frac{n_2}{n_1}\right) \quad \text{(Angle critique, } n_1 > n_2\text{)}" />
+                    {n1 > n2 && (
+                      <p className="mt-2 text-violet-700">
+                        Angle critique: θc = {(Math.asin(n2 / n1) * 180 / Math.PI).toFixed(1)}°
+                      </p>
+                    )}
+                    {n1 <= n2 && (
+                      <p className="mt-2 text-amber-600">
+                        ⚠️ Pas de réflexion totale possible (n₁ ≤ n₂)
+                      </p>
+                    )}
+                  </>
+                )}
+                {opticsMode === 'dispersion' && (
+                  <>
+                    <BlockMath math="n(\lambda) = A + \frac{B}{\lambda^2} \quad \text{(Loi de Cauchy)}" />
+                    <p className="mt-2 text-violet-700">
+                      L'indice de réfraction varie avec la longueur d'onde: les courtes λ (violet) sont plus réfractées.
+                    </p>
+                  </>
+                )}
+                {opticsMode === 'refraction' && (
+                  <p className="mt-2 text-violet-700">
+                    Angle réfracté: θ₂ = {n1 / n2 * Math.sin(incidentAngle * Math.PI / 180) <= 1
+                      ? (Math.asin(n1 / n2 * Math.sin(incidentAngle * Math.PI / 180)) * 180 / Math.PI).toFixed(1)
+                      : '—'
+                    }°
                   </p>
                 )}
               </div>
