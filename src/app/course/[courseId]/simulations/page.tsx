@@ -17,6 +17,7 @@ import { KinematicsGraphSimulator } from '@/components/simulations/KinematicsGra
 import { GuitarStringSimulator } from '@/components/simulations/GuitarStringSimulator';
 import { TrigCircleSimulator } from '@/components/simulations/TrigCircleSimulator';
 import { ElectromagneticWaveSimulator } from '@/components/simulations/ElectromagneticWaveSimulator';
+import { ProjectileMotionSimulator } from '@/components/simulations/ProjectileMotionSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -292,6 +293,21 @@ export default function SimulationsPage() {
               <KinematicsGraphSimulator />
             </section>
 
+            {/* Projectile Motion Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">🎯</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Cinématique 2D : Projectile, Circulaire
+                </h2>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Visualisez la décomposition du mouvement 2D : MRU en x (horizontal) et MRUA en y (vertical).
+                Explorez le mouvement projectile, circulaire uniforme, et les mouvements personnalisés.
+              </p>
+              <ProjectileMotionSimulator />
+            </section>
+
             {/* Vector Simulator Section */}
             <section>
               <div className="flex items-center gap-3 mb-4">
@@ -313,10 +329,10 @@ export default function SimulationsPage() {
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
-                  🎯 Mouvement projectile
+                  ⚙️ Engrenages et transmission
                 </span>
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
-                  🔄 Mouvement circulaire
+                  🚗 Mouvement relatif
                 </span>
               </div>
             </section>
