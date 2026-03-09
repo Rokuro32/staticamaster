@@ -18,6 +18,7 @@ import { GuitarStringSimulator } from '@/components/simulations/GuitarStringSimu
 import { TrigCircleSimulator } from '@/components/simulations/TrigCircleSimulator';
 import { ElectromagneticWaveSimulator } from '@/components/simulations/ElectromagneticWaveSimulator';
 import { ProjectileMotionSimulator } from '@/components/simulations/ProjectileMotionSimulator';
+import { RelativeMotionSimulator } from '@/components/simulations/RelativeMotionSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -308,6 +309,22 @@ export default function SimulationsPage() {
               <ProjectileMotionSimulator />
             </section>
 
+            {/* Relative Motion Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">🚂</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Mouvement Relatif
+                </h2>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Comprenez comment la vitesse dépend du référentiel d'observation.
+                Explorez la loi de composition des vitesses avec des exemples concrets :
+                personne dans un train, bateau traversant une rivière, voitures sur une route.
+              </p>
+              <RelativeMotionSimulator />
+            </section>
+
             {/* Vector Simulator Section */}
             <section>
               <div className="flex items-center gap-3 mb-4">
@@ -332,7 +349,7 @@ export default function SimulationsPage() {
                   ⚙️ Engrenages et transmission
                 </span>
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
-                  🚗 Mouvement relatif
+                  🌀 Accélération centripète
                 </span>
               </div>
             </section>
