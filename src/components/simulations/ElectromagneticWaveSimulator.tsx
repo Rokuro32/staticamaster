@@ -71,6 +71,7 @@ export function ElectromagneticWaveSimulator() {
   const [slitSeparation, setSlitSeparation] = useState(0.5); // mm
   const [screenDistance, setScreenDistance] = useState(1); // m
   const [slitWidth, setSlitWidth] = useState(0.1); // mm
+  const [numSlits, setNumSlits] = useState(2); // Number of slits (2 = Young, N = diffraction grating)
 
   // Diffraction parameters
   const [singleSlitWidth, setSingleSlitWidth] = useState(0.2); // mm
@@ -293,26 +294,38 @@ export function ElectromagneticWaveSimulator() {
     return Math.cos(theta) ** 2;
   }, [analyzerAngle, polarizationAngle]);
 
-  // Young's double slit interference
+  // Young's N-slit interference (generalized for any number of slits)
   const getYoungIntensity = useCallback((y: number) => {
     // y is position on screen in meters
     const d = slitSeparation * 1e-3; // convert to meters
     const L = screenDistance;
     const lambda = wavelength * 1e-9;
     const a = slitWidth * 1e-3;
+    const N = numSlits;
 
-    // Phase difference
+    // Phase difference between adjacent slits
     const delta = (2 * Math.PI * d * y) / (lambda * L);
 
     // Single slit envelope (diffraction)
     const beta = (Math.PI * a * y) / (lambda * L);
-    const singleSlitFactor = beta !== 0 ? (Math.sin(beta) / beta) ** 2 : 1;
+    const singleSlitFactor = Math.abs(beta) > 0.001 ? (Math.sin(beta) / beta) ** 2 : 1;
 
-    // Double slit interference
-    const doubleSlit = Math.cos(delta / 2) ** 2;
+    // N-slit interference factor: (sin(N*delta/2) / sin(delta/2))^2 / N^2
+    // For N=2, this reduces to cos^2(delta/2) * 4 / 4 = cos^2(delta/2)
+    let multiSlitFactor;
+    const halfDelta = delta / 2;
 
-    return singleSlitFactor * doubleSlit;
-  }, [slitSeparation, screenDistance, wavelength, slitWidth]);
+    if (Math.abs(Math.sin(halfDelta)) < 0.0001) {
+      // At principal maxima, the limit is N^2
+      multiSlitFactor = 1;
+    } else {
+      const numerator = Math.sin(N * halfDelta);
+      const denominator = Math.sin(halfDelta);
+      multiSlitFactor = (numerator / denominator) ** 2 / (N * N);
+    }
+
+    return singleSlitFactor * multiSlitFactor;
+  }, [slitSeparation, screenDistance, wavelength, slitWidth, numSlits]);
 
   // Single slit diffraction
   const getDiffractionIntensity = useCallback((theta: number) => {
@@ -1091,7 +1104,7 @@ export function ElectromagneticWaveSimulator() {
 
   }, [mode, time, charges, chargeMode, showEFieldLines, showBFieldLines, selectedChargeId, isDragging]);
 
-  // Draw Young's double slit
+  // Draw Young's N-slit interference
   useEffect(() => {
     if (mode !== 'young') return;
 
@@ -1110,11 +1123,31 @@ export function ElectromagneticWaveSimulator() {
     const screenX = width - 80;
     const centerY = height / 2;
 
+    // Calculate slit positions for N slits
+    const slitSpacing = Math.min(120 / numSlits, 40); // Visual spacing between slits
+    const slitPositions: number[] = [];
+    for (let i = 0; i < numSlits; i++) {
+      const offset = (i - (numSlits - 1) / 2) * slitSpacing;
+      slitPositions.push(centerY + offset);
+    }
+
     // Draw barrier with slits
     ctx.fillStyle = '#64748b';
-    ctx.fillRect(slitX - 5, 0, 10, centerY - 30);
-    ctx.fillRect(slitX - 5, centerY - 10, 10, 20);
-    ctx.fillRect(slitX - 5, centerY + 30, 10, height - centerY - 30);
+
+    // Top barrier
+    const topSlitY = slitPositions[0] - slitSpacing / 3;
+    ctx.fillRect(slitX - 5, 0, 10, topSlitY);
+
+    // Barriers between slits
+    for (let i = 0; i < numSlits - 1; i++) {
+      const y1 = slitPositions[i] + slitSpacing / 3;
+      const y2 = slitPositions[i + 1] - slitSpacing / 3;
+      ctx.fillRect(slitX - 5, y1, 10, y2 - y1);
+    }
+
+    // Bottom barrier
+    const bottomSlitY = slitPositions[numSlits - 1] + slitSpacing / 3;
+    ctx.fillRect(slitX - 5, bottomSlitY, 10, height - bottomSlitY);
 
     // Draw light source
     ctx.fillStyle = '#fbbf24';
@@ -1122,26 +1155,23 @@ export function ElectromagneticWaveSimulator() {
     ctx.arc(30, centerY, 15, 0, 2 * Math.PI);
     ctx.fill();
 
-    // Draw waves from slits
-    const numWaves = 8;
+    // Draw waves from all slits
+    const numWaves = 6;
     const maxRadius = screenX - slitX - 50;
 
-    ctx.globalAlpha = 0.3;
+    ctx.globalAlpha = Math.max(0.15, 0.4 / Math.sqrt(numSlits));
     for (let wave = 0; wave < numWaves; wave++) {
       const radius = ((time * 100 + wave * 40) % maxRadius);
 
       ctx.strokeStyle = '#fbbf24';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = numSlits <= 5 ? 2 : 1;
 
-      // Top slit waves
-      ctx.beginPath();
-      ctx.arc(slitX, centerY - 20, radius, -Math.PI / 2, Math.PI / 2);
-      ctx.stroke();
-
-      // Bottom slit waves
-      ctx.beginPath();
-      ctx.arc(slitX, centerY + 20, radius, -Math.PI / 2, Math.PI / 2);
-      ctx.stroke();
+      // Draw wave from each slit
+      for (const slitY of slitPositions) {
+        ctx.beginPath();
+        ctx.arc(slitX, slitY, radius, -Math.PI / 2, Math.PI / 2);
+        ctx.stroke();
+      }
     }
     ctx.globalAlpha = 1;
 
@@ -1149,7 +1179,7 @@ export function ElectromagneticWaveSimulator() {
     const patternHeight = height - 40;
     for (let y = 0; y < patternHeight; y++) {
       const yPos = (y - patternHeight / 2) / patternHeight * 0.02; // Scale to ±1cm
-      const intensity = mode === 'young' ? getYoungIntensity(yPos) : getYoungIntensity(yPos);
+      const intensity = getYoungIntensity(yPos);
 
       // Wavelength to color
       let color;
@@ -1164,6 +1194,23 @@ export function ElectromagneticWaveSimulator() {
       ctx.fillRect(screenX, 20 + y, 40, 1);
     }
 
+    // Draw intensity graph
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    for (let y = 0; y < patternHeight; y++) {
+      const yPos = (y - patternHeight / 2) / patternHeight * 0.02;
+      const intensity = getYoungIntensity(yPos);
+      const graphX = screenX + 50 + intensity * 60;
+
+      if (y === 0) {
+        ctx.moveTo(graphX, 20 + y);
+      } else {
+        ctx.lineTo(graphX, 20 + y);
+      }
+    }
+    ctx.stroke();
+
     // Draw screen border
     ctx.strokeStyle = '#94a3b8';
     ctx.lineWidth = 2;
@@ -1173,16 +1220,18 @@ export function ElectromagneticWaveSimulator() {
     ctx.fillStyle = '#ffffff';
     ctx.font = '12px system-ui';
     ctx.fillText('Source', 15, centerY - 25);
-    ctx.fillText('Fentes', slitX - 20, 20);
+    ctx.fillText(numSlits === 1 ? 'Fente' : numSlits === 2 ? 'Fentes de Young' : `${numSlits} fentes`, slitX - 20, 20);
     ctx.fillText('Écran', screenX, height - 5);
+    ctx.fillText('I(y)', screenX + 85, 20);
 
     // Parameters
-    ctx.fillText(`d = ${slitSeparation} mm`, slitX + 30, 30);
-    ctx.fillText(`a = ${slitWidth} mm`, slitX + 30, 50);
+    ctx.fillText(`N = ${numSlits} fente${numSlits > 1 ? 's' : ''}`, slitX + 30, 30);
+    ctx.fillText(`d = ${slitSeparation} mm`, slitX + 30, 48);
+    ctx.fillText(`a = ${slitWidth} mm`, slitX + 30, 66);
     ctx.fillText(`L = ${screenDistance} m`, (slitX + screenX) / 2, height - 10);
     ctx.fillText(`λ = ${wavelength} nm`, 20, 30);
 
-  }, [mode, time, wavelength, slitSeparation, slitWidth, screenDistance, getYoungIntensity]);
+  }, [mode, time, wavelength, slitSeparation, slitWidth, screenDistance, numSlits, getYoungIntensity]);
 
   // Draw diffraction pattern
   useEffect(() => {
@@ -2114,6 +2163,25 @@ export function ElectromagneticWaveSimulator() {
             <>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Nombre de fentes: {numSlits}
+                </label>
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  step="1"
+                  value={numSlits}
+                  onChange={(e) => setNumSlits(parseInt(e.target.value))}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <span>1 (diffraction)</span>
+                  <span>2 (Young)</span>
+                  <span>N (réseau)</span>
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   λ: {wavelength} nm
                 </label>
                 <input
@@ -2128,7 +2196,7 @@ export function ElectromagneticWaveSimulator() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Séparation fentes: {slitSeparation} mm
+                  Séparation fentes (d): {slitSeparation} mm
                 </label>
                 <input
                   type="range"
@@ -2142,7 +2210,7 @@ export function ElectromagneticWaveSimulator() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Largeur fente: {slitWidth} mm
+                  Largeur fente (a): {slitWidth} mm
                 </label>
                 <input
                   type="range"
@@ -2156,7 +2224,7 @@ export function ElectromagneticWaveSimulator() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Distance écran: {screenDistance} m
+                  Distance écran (L): {screenDistance} m
                 </label>
                 <input
                   type="range"
@@ -2496,10 +2564,28 @@ export function ElectromagneticWaveSimulator() {
           {mode === 'young' && (
             <div className="space-y-2">
               <div className="text-sm text-violet-800">
+                <p className="font-semibold mb-2">
+                  {numSlits === 1 ? 'Diffraction par une fente' :
+                   numSlits === 2 ? 'Interférence de Young (2 fentes)' :
+                   `Réseau de diffraction (${numSlits} fentes)`}
+                </p>
                 <BlockMath math="\Delta = d \sin\theta \approx \frac{dy}{L}" />
-                <BlockMath math="y_n = \frac{n \lambda L}{d} \quad \text{(Maxima)}" />
-                <BlockMath math="y_n = \frac{(n + \frac{1}{2}) \lambda L}{d} \quad \text{(Minima)}" />
-                <BlockMath math="I = I_0 \cos^2\left(\frac{\pi d y}{\lambda L}\right) \cdot \text{sinc}^2\left(\frac{\pi a y}{\lambda L}\right)" />
+                <BlockMath math="y_n = \frac{n \lambda L}{d} \quad \text{(Maxima principaux)}" />
+                {numSlits === 2 ? (
+                  <BlockMath math="I = I_0 \cos^2\left(\frac{\pi d y}{\lambda L}\right) \cdot \text{sinc}^2\left(\frac{\pi a y}{\lambda L}\right)" />
+                ) : numSlits > 2 ? (
+                  <>
+                    <BlockMath math={`I = I_0 \\left(\\frac{\\sin(N\\delta/2)}{\\sin(\\delta/2)}\\right)^2 \\cdot \\text{sinc}^2(\\beta)`} />
+                    <p className="text-xs text-violet-600 mt-1">
+                      où δ = 2πdy/(λL), β = πay/(λL), N = {numSlits}
+                    </p>
+                    <p className="text-xs text-violet-600 mt-2">
+                      <strong>N-1 = {numSlits - 1}</strong> minima secondaires entre chaque maximum principal
+                    </p>
+                  </>
+                ) : (
+                  <BlockMath math="I = I_0 \text{sinc}^2\left(\frac{\pi a y}{\lambda L}\right)" />
+                )}
               </div>
             </div>
           )}
