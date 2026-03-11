@@ -312,8 +312,8 @@ export function ProjectileMotionSimulator() {
         ctx.fillStyle = '#2563eb';
         ctx.beginPath();
         ctx.moveTo(vEndX, vEndY);
-        ctx.lineTo(vEndX - 10 * Math.cos(vAngle - 0.3), vEndY + 10 * Math.sin(vAngle - 0.3));
-        ctx.lineTo(vEndX - 10 * Math.cos(vAngle + 0.3), vEndY + 10 * Math.sin(vAngle + 0.3));
+        ctx.lineTo(vEndX - 10 * Math.cos(vAngle - 0.3), vEndY - 10 * Math.sin(vAngle - 0.3));
+        ctx.lineTo(vEndX - 10 * Math.cos(vAngle + 0.3), vEndY - 10 * Math.sin(vAngle + 0.3));
         ctx.closePath();
         ctx.fill();
       }
@@ -344,8 +344,8 @@ export function ProjectileMotionSimulator() {
         ctx.fillStyle = '#dc2626';
         ctx.beginPath();
         ctx.moveTo(aEndX, aEndY);
-        ctx.lineTo(aEndX - 8 * Math.cos(aAngle - 0.3), aEndY + 8 * Math.sin(aAngle - 0.3));
-        ctx.lineTo(aEndX - 8 * Math.cos(aAngle + 0.3), aEndY + 8 * Math.sin(aAngle + 0.3));
+        ctx.lineTo(aEndX - 8 * Math.cos(aAngle - 0.3), aEndY - 8 * Math.sin(aAngle - 0.3));
+        ctx.lineTo(aEndX - 8 * Math.cos(aAngle + 0.3), aEndY - 8 * Math.sin(aAngle + 0.3));
         ctx.closePath();
         ctx.fill();
       }

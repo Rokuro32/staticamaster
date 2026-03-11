@@ -634,8 +634,8 @@ export function ElectromagneticWaveSimulator() {
     const endY = centerY - currentE.Ey * maxRadius;
     ctx.beginPath();
     ctx.moveTo(endX, endY);
-    ctx.lineTo(endX - 10 * Math.cos(angle - 0.3), endY + 10 * Math.sin(angle - 0.3));
-    ctx.lineTo(endX - 10 * Math.cos(angle + 0.3), endY + 10 * Math.sin(angle + 0.3));
+    ctx.lineTo(endX - 10 * Math.cos(angle - 0.3), endY - 10 * Math.sin(angle - 0.3));
+    ctx.lineTo(endX - 10 * Math.cos(angle + 0.3), endY - 10 * Math.sin(angle + 0.3));
     ctx.closePath();
     ctx.fill();
 
@@ -1668,8 +1668,8 @@ export function ElectromagneticWaveSimulator() {
       const arrowPosY = centerY - (rayLength - 30) * Math.cos(theta1Rad);
       ctx.beginPath();
       ctx.moveTo(arrowPosX + 6 * Math.cos(arrowAngle2), arrowPosY - 6 * Math.sin(arrowAngle2));
-      ctx.lineTo(arrowPosX - 6 * Math.cos(arrowAngle2 + 0.4), arrowPosY + 6 * Math.sin(arrowAngle2 + 0.4));
-      ctx.lineTo(arrowPosX - 6 * Math.cos(arrowAngle2 - 0.4), arrowPosY + 6 * Math.sin(arrowAngle2 - 0.4));
+      ctx.lineTo(arrowPosX - 6 * Math.cos(arrowAngle2 + 0.4), arrowPosY - 6 * Math.sin(arrowAngle2 + 0.4));
+      ctx.lineTo(arrowPosX - 6 * Math.cos(arrowAngle2 - 0.4), arrowPosY - 6 * Math.sin(arrowAngle2 - 0.4));
       ctx.closePath();
       ctx.fill();
       ctx.globalAlpha = 1;
@@ -1691,7 +1691,7 @@ export function ElectromagneticWaveSimulator() {
         const arrowPos3X = centerX + (rayLength - 30) * Math.sin(theta2Rad);
         const arrowPos3Y = centerY + (rayLength - 30) * Math.cos(theta2Rad);
         ctx.beginPath();
-        ctx.moveTo(arrowPos3X + 6 * Math.cos(arrowAngle3), arrowPos3Y + 6 * Math.sin(arrowAngle3));
+        ctx.moveTo(arrowPos3X + 6 * Math.cos(arrowAngle3), arrowPos3Y - 6 * Math.sin(arrowAngle3));
         ctx.lineTo(arrowPos3X - 6 * Math.cos(arrowAngle3 + 0.4), arrowPos3Y - 6 * Math.sin(arrowAngle3 + 0.4));
         ctx.lineTo(arrowPos3X - 6 * Math.cos(arrowAngle3 - 0.4), arrowPos3Y - 6 * Math.sin(arrowAngle3 - 0.4));
         ctx.closePath();

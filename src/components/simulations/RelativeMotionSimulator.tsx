@@ -626,8 +626,8 @@ export function RelativeMotionSimulator() {
     if (Math.sqrt(vBx ** 2 + vBy ** 2) > 0.5) {
       ctx.beginPath();
       ctx.moveTo(bEndX, bEndY);
-      ctx.lineTo(bEndX - 8 * Math.cos(bAngle - 0.4), bEndY + 8 * Math.sin(bAngle - 0.4));
-      ctx.lineTo(bEndX - 8 * Math.cos(bAngle + 0.4), bEndY + 8 * Math.sin(bAngle + 0.4));
+      ctx.lineTo(bEndX - 8 * Math.cos(bAngle - 0.4), bEndY - 8 * Math.sin(bAngle - 0.4));
+      ctx.lineTo(bEndX - 8 * Math.cos(bAngle + 0.4), bEndY - 8 * Math.sin(bAngle + 0.4));
       ctx.closePath();
       ctx.fill();
     }
@@ -649,8 +649,8 @@ export function RelativeMotionSimulator() {
     if (Math.sqrt(vABx ** 2 + vABy ** 2) > 0.5) {
       ctx.beginPath();
       ctx.moveTo(abEndX, abEndY);
-      ctx.lineTo(abEndX - 8 * Math.cos(abAngle - 0.4), abEndY + 8 * Math.sin(abAngle - 0.4));
-      ctx.lineTo(abEndX - 8 * Math.cos(abAngle + 0.4), abEndY + 8 * Math.sin(abAngle + 0.4));
+      ctx.lineTo(abEndX - 8 * Math.cos(abAngle - 0.4), abEndY - 8 * Math.sin(abAngle - 0.4));
+      ctx.lineTo(abEndX - 8 * Math.cos(abAngle + 0.4), abEndY - 8 * Math.sin(abAngle + 0.4));
       ctx.closePath();
       ctx.fill();
     }
@@ -673,8 +673,8 @@ export function RelativeMotionSimulator() {
     if (Math.sqrt(vAx ** 2 + vAy ** 2) > 0.5) {
       ctx.beginPath();
       ctx.moveTo(aEndX, aEndY);
-      ctx.lineTo(aEndX - 8 * Math.cos(aAngle - 0.4), aEndY + 8 * Math.sin(aAngle - 0.4));
-      ctx.lineTo(aEndX - 8 * Math.cos(aAngle + 0.4), aEndY + 8 * Math.sin(aAngle + 0.4));
+      ctx.lineTo(aEndX - 8 * Math.cos(aAngle - 0.4), aEndY - 8 * Math.sin(aAngle - 0.4));
+      ctx.lineTo(aEndX - 8 * Math.cos(aAngle + 0.4), aEndY - 8 * Math.sin(aAngle + 0.4));
       ctx.closePath();
       ctx.fill();
     }
