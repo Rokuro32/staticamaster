@@ -1,0 +1,199 @@
+---
+title: Structures et treillis
+description: Analyse des treillis par la méthode des noeuds et des sections
+order: 8
+---
+
+## Types de structures
+
+### Structures planes
+
+<Definition>
+Une **structure plane** est un ensemble d'éléments dont tous les axes et toutes les forces sont contenus dans un même plan.
+</Definition>
+
+Types courants :
+- **Poutres** : éléments longs supportant des charges perpendiculaires
+- **Treillis** : assemblages de barres formant des triangles
+- **Portiques** : poutres et colonnes formant des cadres rigides
+
+### Structures tridimensionnelles
+
+Les structures 3D (tours, dômes, charpentes spatiales) nécessitent une analyse plus complexe avec 6 équations d'équilibre.
+
+## Treillis plans
+
+<Definition>
+Un **treillis** est une structure composée de barres droites assemblées à leurs extrémités par des **nœuds** considérés comme des articulations parfaites.
+</Definition>
+
+### Hypothèses simplificatrices
+
+1. Les barres sont reliées par des rotules parfaites (pas de moment transmis)
+2. Les charges sont appliquées uniquement aux nœuds
+3. Le poids propre des barres est négligé (ou réparti aux nœuds)
+4. Les axes des barres sont rectilignes et concourent aux nœuds
+
+<Note type="info">
+Sous ces hypothèses, chaque barre est une **membrure à deux forces** : elle ne subit que des efforts axiaux (traction ou compression).
+</Note>
+
+### Stabilité et déterminabilité
+
+<Formula title="Condition de stabilité">
+$$m + r \geq 2n$$
+
+où :
+- $m$ = nombre de barres
+- $r$ = nombre de réactions d'appui
+- $n$ = nombre de nœuds
+</Formula>
+
+| Condition | Type de structure |
+|-----------|-------------------|
+| $m + r < 2n$ | Instable (mécanisme) |
+| $m + r = 2n$ | Isostatique (déterminable) |
+| $m + r > 2n$ | Hyperstatique |
+
+<Example title="Vérification d'un treillis">
+Un treillis triangulaire simple :
+- 3 barres ($m = 3$)
+- 2 appuis : un articulé (2 réactions) + un simple (1 réaction), donc $r = 3$
+- 3 nœuds ($n = 3$)
+
+Vérification : $m + r = 3 + 3 = 6 = 2 \times 3 = 2n$ ✓
+
+Le treillis est isostatique.
+</Example>
+
+## Méthode des nœuds
+
+<Definition>
+La **méthode des nœuds** consiste à isoler chaque nœud et à écrire les équations d'équilibre des forces concourantes en ce nœud.
+</Definition>
+
+### Procédure
+
+1. Calculer les réactions d'appui (équilibre global)
+2. Identifier un nœud avec au plus 2 inconnues
+3. Isoler le nœud et représenter les forces
+4. Écrire $\sum F_x = 0$ et $\sum F_y = 0$
+5. Résoudre pour les efforts dans les barres
+6. Passer au nœud suivant et répéter
+
+### Convention de signe
+
+<Note type="warning" title="Convention importante">
+- **Traction (+)** : la barre tire sur le nœud (force dirigée vers l'extérieur)
+- **Compression (−)** : la barre pousse sur le nœud (force dirigée vers le nœud)
+
+Si le résultat est négatif, l'effort est de sens opposé à celui supposé.
+</Note>
+
+<Example title="Treillis simple - Méthode des nœuds">
+Treillis triangulaire ABC avec :
+- Appui articulé en A
+- Appui simple (vertical) en C
+- Charge verticale $P = 10$ kN en B
+- Barre AB horizontale de 4 m
+- Barre BC horizontale de 4 m
+- Barre AC diagonale (angle de 45°)
+
+**1. Réactions d'appui (équilibre global) :**
+$$\sum M_A = 0 : R_C \times 8 - P \times 4 = 0 \Rightarrow R_C = 5 \text{ kN}$$
+$$\sum F_y = 0 : R_{Ay} + R_C - P = 0 \Rightarrow R_{Ay} = 5 \text{ kN}$$
+$$\sum F_x = 0 : R_{Ax} = 0$$
+
+**2. Nœud C** (2 barres inconnues) :
+$$\sum F_y = 0 : R_C + F_{AC} \sin 45° = 0$$
+$$F_{AC} = -\frac{5}{\sin 45°} = -7,07 \text{ kN (compression)}$$
+
+$$\sum F_x = 0 : F_{BC} + F_{AC} \cos 45° = 0$$
+$$F_{BC} = 7,07 \times \cos 45° = 5 \text{ kN (traction)}$$
+
+**3. Nœud B :**
+$$\sum F_x = 0 : -F_{BC} + F_{AB} = 0$$
+$$F_{AB} = 5 \text{ kN (traction)}$$
+</Example>
+
+## Méthode des sections (Ritter)
+
+<Definition>
+La **méthode des sections** consiste à couper le treillis par un plan et à considérer l'équilibre d'une partie du treillis.
+</Definition>
+
+### Avantages
+
+- Permet de calculer directement l'effort dans une barre sans analyser tous les nœuds précédents
+- Utile quand on ne s'intéresse qu'à certaines barres
+- Plus efficace pour les grands treillis
+
+### Procédure
+
+1. Couper le treillis en deux parties en passant par les barres d'intérêt
+2. Choisir la partie la plus simple à analyser
+3. Remplacer les barres coupées par leurs efforts internes
+4. Écrire les 3 équations d'équilibre ($\sum F_x$, $\sum F_y$, $\sum M$)
+5. Résoudre (maximum 3 inconnues)
+
+<Note type="tip">
+Le choix judicieux du point pour le calcul des moments peut éliminer des inconnues. Prendre les moments par rapport à l'intersection de deux barres inconnues permet de résoudre directement pour la troisième.
+</Note>
+
+<Example title="Méthode des sections">
+Dans un treillis Warren symétrique, on cherche l'effort dans la membrure inférieure centrale.
+
+En coupant le treillis au milieu et en prenant les moments par rapport au nœud supérieur (où passent les deux diagonales coupées) :
+
+$$\sum M_{sommet} = 0 : R_A \times L/2 - F_{inf} \times h = 0$$
+
+On obtient directement $F_{inf}$ sans calculer les efforts dans les autres barres.
+</Example>
+
+## Barres à effort nul
+
+Certaines barres peuvent être identifiées comme ayant un effort nul par simple inspection :
+
+<Note type="info" title="Règles des barres à effort nul">
+1. **Nœud avec 2 barres non colinéaires sans charge externe** : les deux barres sont à effort nul
+
+2. **Nœud avec 3 barres dont 2 colinéaires sans charge externe** : la troisième barre est à effort nul
+
+3. **Nœud avec 2 barres colinéaires et une charge perpendiculaire** : les efforts des barres colinéaires sont égaux
+</Note>
+
+L'identification des barres à effort nul simplifie l'analyse en réduisant le nombre d'inconnues.
+
+## Types de treillis courants
+
+### Treillis Pratt
+
+- Diagonales inclinées vers le bas du centre vers les appuis
+- Diagonales en traction sous charges verticales vers le bas
+- Membrures verticales en compression
+
+### Treillis Howe
+
+- Diagonales inclinées vers le haut du centre vers les appuis
+- Diagonales en compression sous charges verticales
+- Membrures verticales en traction
+
+### Treillis Warren
+
+- Diagonales alternées formant des triangles équilatéraux
+- Pas de membrures verticales
+- Diagonales alternativement en traction et compression
+
+### Treillis en K
+
+- Diagonales se rejoignant au milieu des membrures verticales
+- Utilisé pour les grandes portées
+- Réduit la longueur de flambement des membrures verticales
+
+## Applications pratiques
+
+Les treillis sont utilisés dans :
+- **Ponts** : fermes de pont, tabliers
+- **Toitures** : charpentes métalliques
+- **Grues et pylônes** : structures légères et rigides
+- **Structures spatiales** : dômes, tours de transmission

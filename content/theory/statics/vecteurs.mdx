@@ -1,0 +1,165 @@
+---
+title: Vecteurs
+description: Opérations vectorielles et produit vectoriel
+order: 3
+---
+
+## Définition d'un vecteur
+
+<Definition>
+Un **vecteur** est une grandeur mathématique caractérisée par :
+- Une **direction** (droite d'action)
+- Un **sens** (orientation sur cette droite)
+- Une **norme** (module, grandeur, intensité)
+- Un **point d'application** (origine)
+</Definition>
+
+En mécanique, les grandeurs vectorielles comprennent :
+- Les forces
+- Les moments
+- Les déplacements
+- Les vitesses et accélérations
+
+Notation : $\vec{F}$ (flèche) ou $\mathbf{F}$ (gras). La norme se note $\|\vec{F}\|$, $|\vec{F}|$ ou simplement $F$.
+
+## Représentation graphique
+
+Un vecteur se représente par une flèche :
+- L'origine de la flèche indique le point d'application
+- La direction de la flèche indique la ligne d'action
+- Le sens est donné par la pointe
+- La longueur est proportionnelle à la norme (selon une échelle choisie)
+
+## Addition vectorielle
+
+### Méthode du parallélogramme
+
+Pour additionner deux vecteurs $\vec{A}$ et $\vec{B}$ partant du même point :
+1. Tracer les deux vecteurs avec la même origine
+2. Compléter le parallélogramme
+3. La diagonale partant de l'origine est le vecteur résultant $\vec{R} = \vec{A} + \vec{B}$
+
+### Méthode tête-à-queue (polygone des forces)
+
+Pour additionner plusieurs vecteurs :
+1. Placer le premier vecteur
+2. Placer le deuxième vecteur avec son origine à l'extrémité du premier
+3. Continuer pour tous les vecteurs
+4. La résultante va de l'origine du premier à l'extrémité du dernier
+
+## Addition analytique
+
+### Vecteurs en 2D
+
+Un vecteur en 2D s'exprime dans un repère orthonormé $(O, \vec{i}, \vec{j})$ :
+
+<Formula>
+$$\vec{F} = F_x \vec{i} + F_y \vec{j}$$
+</Formula>
+
+où $\vec{i}$ et $\vec{j}$ sont les vecteurs unitaires selon $x$ et $y$.
+
+L'addition se fait composante par composante :
+
+<Formula>
+$$\vec{A} + \vec{B} = (A_x + B_x)\vec{i} + (A_y + B_y)\vec{j}$$
+</Formula>
+
+### Vecteurs en 3D
+
+En trois dimensions, dans le repère $(O, \vec{i}, \vec{j}, \vec{k})$ :
+
+<Formula>
+$$\vec{F} = F_x \vec{i} + F_y \vec{j} + F_z \vec{k}$$
+</Formula>
+
+La norme se calcule par :
+
+<Formula>
+$$F = \sqrt{F_x^2 + F_y^2 + F_z^2}$$
+</Formula>
+
+### Vecteur unitaire
+
+<Definition>
+Le **vecteur unitaire** $\vec{u}$ dans la direction de $\vec{F}$ est :
+$$\vec{u} = \frac{\vec{F}}{F} = \frac{\vec{F}}{\|\vec{F}\|}$$
+</Definition>
+
+Le vecteur unitaire a une norme égale à 1 et pointe dans la même direction que $\vec{F}$.
+
+## Cosinus directeurs
+
+En 3D, les **cosinus directeurs** sont les cosinus des angles entre le vecteur et chaque axe :
+
+<Formula>
+$$\cos \alpha = \frac{F_x}{F} \qquad \cos \beta = \frac{F_y}{F} \qquad \cos \gamma = \frac{F_z}{F}$$
+</Formula>
+
+avec la propriété :
+
+<Formula>
+$$\cos^2 \alpha + \cos^2 \beta + \cos^2 \gamma = 1$$
+</Formula>
+
+## Produit vectoriel
+
+<Definition>
+Le **produit vectoriel** de deux vecteurs $\vec{A}$ et $\vec{B}$ est un vecteur $\vec{C} = \vec{A} \times \vec{B}$ tel que :
+- Sa norme est $\|\vec{C}\| = \|\vec{A}\| \cdot \|\vec{B}\| \cdot \sin \theta$
+- Sa direction est perpendiculaire au plan formé par $\vec{A}$ et $\vec{B}$
+- Son sens est donné par la règle de la main droite
+</Definition>
+
+### Calcul analytique
+
+En coordonnées cartésiennes :
+
+<Formula>
+$$\vec{A} \times \vec{B} = \begin{vmatrix} \vec{i} & \vec{j} & \vec{k} \\ A_x & A_y & A_z \\ B_x & B_y & B_z \end{vmatrix}$$
+</Formula>
+
+Ce qui donne :
+
+<Formula>
+$$\vec{A} \times \vec{B} = (A_y B_z - A_z B_y)\vec{i} + (A_z B_x - A_x B_z)\vec{j} + (A_x B_y - A_y B_x)\vec{k}$$
+</Formula>
+
+### Propriétés
+
+- **Anticommutativité** : $\vec{A} \times \vec{B} = -\vec{B} \times \vec{A}$
+- **Distributivité** : $\vec{A} \times (\vec{B} + \vec{C}) = \vec{A} \times \vec{B} + \vec{A} \times \vec{C}$
+- Si $\vec{A} \parallel \vec{B}$, alors $\vec{A} \times \vec{B} = \vec{0}$
+
+## Interprétation physique
+
+Le produit vectoriel est fondamental pour le calcul des moments de force.
+
+Le **moment** d'une force $\vec{F}$ par rapport à un point $O$ est :
+
+<Formula title="Moment de force">
+$$\vec{M}_O = \vec{r} \times \vec{F}$$
+</Formula>
+
+où $\vec{r}$ est le vecteur position du point d'application de $\vec{F}$ par rapport à $O$.
+
+La norme du moment est :
+
+<Formula>
+$$M_O = r \cdot F \cdot \sin \theta = F \cdot d$$
+</Formula>
+
+où $d = r \sin \theta$ est le **bras de levier**, c'est-à-dire la distance perpendiculaire entre la ligne d'action de la force et le point $O$.
+
+<Example title="Addition vectorielle">
+Deux forces agissent sur un point : $\vec{F}_1 = 30\vec{i} + 40\vec{j}$ N et $\vec{F}_2 = -20\vec{i} + 10\vec{j}$ N.
+
+**Résultante :**
+$$\vec{R} = \vec{F}_1 + \vec{F}_2 = (30-20)\vec{i} + (40+10)\vec{j} = 10\vec{i} + 50\vec{j} \text{ N}$$
+
+**Norme :**
+$$R = \sqrt{10^2 + 50^2} = \sqrt{2600} = 51 \text{ N}$$
+
+**Direction :**
+$$\theta = \arctan\left(\frac{50}{10}\right) = \arctan(5) = 78,7°$$
+</Example>

@@ -1,0 +1,136 @@
+---
+title: Ondes sonores
+description: Nature du son, effet Doppler et intensité
+order: 3
+---
+
+## Nature du son
+
+Le son est une **onde longitudinale** de pression qui se propage dans un milieu matériel (gaz, liquide ou solide).
+
+### Description en pression et en déplacement
+
+<Formula>
+$$s(x,t) = s_0 \sin(kx - \omega t) \quad \text{(déplacement)}$$
+$$\Delta P(x,t) = \Delta P_0 \cos(kx - \omega t) \quad \text{(surpression)}$$
+</Formula>
+
+<Note type="info">
+Le déplacement et la pression sont déphasés de $\pi/2$.
+</Note>
+
+## Vitesse du son
+
+<Formula title="Vitesse du son dans différents milieux">
+**Dans un gaz parfait :**
+$$v = \sqrt{\frac{\gamma R T}{M}} = \sqrt{\frac{\gamma k_B T}{m}}$$
+
+**Dans l'air à température $T$ (en °C) :**
+$$v \approx 331,4 + 0,6\,T \quad \text{[m/s]}$$
+
+**Dans un solide :**
+$$v = \sqrt{\frac{E}{\rho}}$$
+</Formula>
+
+où :
+- $\gamma$ : coefficient adiabatique ($\approx 1,4$ pour l'air)
+- $R$ : constante des gaz parfaits
+- $M$ : masse molaire
+- $E$ : module de Young (solide)
+- $\rho$ : masse volumique
+
+<Example title="Vitesse du son à 20°C">
+$$v = 331,4 + 0,6 \times 20 = 331,4 + 12 = 343,4 \text{ m/s}$$
+
+C'est la vitesse du son dans l'air à température ambiante.
+</Example>
+
+## Intensité sonore et niveau sonore
+
+### Intensité acoustique
+
+<Formula>
+$$I = \frac{(\Delta P_0)^2}{2\rho v}$$
+</Formula>
+
+### Niveau d'intensité sonore
+
+<Formula title="Niveau sonore en décibels">
+$$\beta = 10\log_{10}\left(\frac{I}{I_0}\right) \quad \text{[dB]}$$
+
+où $I_0 = 10^{-12}$ W/m² est le seuil d'audibilité.
+</Formula>
+
+| Source | Niveau (dB) |
+|--------|-------------|
+| Seuil d'audibilité | 0 |
+| Conversation normale | 60 |
+| Circulation routière | 80 |
+| Seuil de douleur | 120 |
+
+<Note type="info">
+Une augmentation de 10 dB correspond à une multiplication de l'intensité par 10. Une augmentation de 3 dB correspond approximativement à un doublement de l'intensité.
+</Note>
+
+## Effet Doppler
+
+<Definition>
+L'**effet Doppler** est le changement apparent de fréquence d'une onde perçue par un observateur lorsque la source et/ou l'observateur sont en mouvement relatif.
+</Definition>
+
+<Formula title="Formule générale de l'effet Doppler">
+$$f' = f \frac{v \pm v_o}{v \mp v_s}$$
+</Formula>
+
+Convention de signes :
+- $+v_o$ si l'observateur se rapproche de la source
+- $-v_o$ si l'observateur s'éloigne de la source
+- $-v_s$ si la source se rapproche de l'observateur
+- $+v_s$ si la source s'éloigne de l'observateur
+
+### Cas particuliers
+
+**Source immobile, observateur en mouvement :**
+$$f' = f\left(1 \pm \frac{v_o}{v}\right)$$
+
+**Observateur immobile, source en mouvement :**
+$$f' = \frac{f}{1 \mp v_s/v}$$
+
+<Example title="Ambulance qui s'approche">
+Une ambulance émet un son à 800 Hz et s'approche à 30 m/s. Quelle fréquence perçoit un observateur immobile ? ($v_{son} = 340$ m/s)
+
+$$f' = \frac{800}{1 - 30/340} = \frac{800}{1 - 0,088} = \frac{800}{0,912} = 877 \text{ Hz}$$
+
+Le son perçu est plus aigu quand la source s'approche.
+</Example>
+
+## Battements
+
+Lorsque deux ondes de fréquences voisines $f_1$ et $f_2$ se superposent :
+
+<Formula title="Fréquence de battement">
+$$f_{\text{battement}} = |f_1 - f_2|$$
+</Formula>
+
+L'amplitude résultante varie périodiquement, créant des variations d'intensité perceptibles.
+
+## Vitesse supersonique et ondes de choc
+
+<Definition title="Nombre de Mach">
+$$M = \frac{v_s}{v}$$
+où $v_s$ est la vitesse de la source et $v$ la vitesse du son.
+</Definition>
+
+- $M < 1$ : régime subsonique
+- $M = 1$ : régime transsonique
+- $M > 1$ : régime supersonique
+
+### Cône de Mach
+
+Lorsque $v_s > v$, les fronts d'onde forment un cône d'angle $\theta$ :
+
+<Formula>
+$$\sin\theta = \frac{v}{v_s} = \frac{1}{M}$$
+</Formula>
+
+Le passage de ce cône produit le **bang supersonique**.

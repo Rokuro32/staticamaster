@@ -1,0 +1,169 @@
+---
+title: Moments de force
+description: Moment par rapport à un point et à un axe
+order: 6
+---
+
+## Définition du moment
+
+<Definition>
+Le **moment d'une force** $\vec{F}$ par rapport à un point $O$ mesure la tendance de cette force à faire tourner un corps autour de ce point.
+</Definition>
+
+Le moment dépend de :
+- L'intensité de la force
+- La distance entre la ligne d'action et le point de rotation
+- L'orientation de la force
+
+## Moment en 2D (moment scalaire)
+
+En deux dimensions, le moment est un scalaire (positif ou négatif selon le sens de rotation).
+
+<Formula title="Moment en 2D">
+$$M_O = F \cdot d$$
+
+où $d$ est le **bras de levier** : la distance perpendiculaire entre la ligne d'action de la force et le point $O$.
+</Formula>
+
+### Convention de signe
+
+- **Positif** : rotation antihoraire (sens trigonométrique)
+- **Négatif** : rotation horaire
+
+<Formula title="Formule avec l'angle">
+$$M_O = F \cdot r \cdot \sin\theta$$
+
+où $r$ est la distance du point $O$ au point d'application et $\theta$ l'angle entre $\vec{r}$ et $\vec{F}$.
+</Formula>
+
+<Example title="Moment d'une force">
+Une force de 50 N est appliquée à l'extrémité d'un levier de 2 m. La force fait un angle de 60° avec le levier.
+
+$$M_O = F \cdot r \cdot \sin\theta = 50 \times 2 \times \sin 60° = 50 \times 2 \times 0,866 = 86,6 \text{ N·m}$$
+
+Le bras de levier est $d = r \sin\theta = 2 \times 0,866 = 1,73$ m.
+</Example>
+
+### Calcul par composantes
+
+Si la force a des composantes $F_x$ et $F_y$ et que son point d'application a des coordonnées $(x, y)$ par rapport à $O$ :
+
+<Formula>
+$$M_O = x F_y - y F_x$$
+</Formula>
+
+<Note type="tip" title="Principe de Varignon">
+Le moment de la résultante de plusieurs forces est égal à la somme des moments de chaque force :
+$$M_O(\vec{R}) = \sum M_O(\vec{F}_i)$$
+</Note>
+
+## Moment en 3D (moment vectoriel)
+
+<Definition>
+En trois dimensions, le **moment** est un vecteur défini par le produit vectoriel :
+$$\vec{M}_O = \vec{r} \times \vec{F}$$
+
+où $\vec{r}$ est le vecteur position du point d'application par rapport à $O$.
+</Definition>
+
+<Formula title="Calcul par déterminant">
+$$\vec{M}_O = \begin{vmatrix} \vec{i} & \vec{j} & \vec{k} \\ x & y & z \\ F_x & F_y & F_z \end{vmatrix}$$
+</Formula>
+
+Ce qui donne :
+$$\vec{M}_O = (yF_z - zF_y)\vec{i} + (zF_x - xF_z)\vec{j} + (xF_y - yF_x)\vec{k}$$
+
+<Example title="Moment en 3D">
+Une force $\vec{F} = 10\vec{i} + 20\vec{j} - 5\vec{k}$ N est appliquée au point $P(2, 3, 1)$ m. Calculer le moment par rapport à l'origine.
+
+$$\vec{M}_O = \vec{r} \times \vec{F} = \begin{vmatrix} \vec{i} & \vec{j} & \vec{k} \\ 2 & 3 & 1 \\ 10 & 20 & -5 \end{vmatrix}$$
+
+$$\vec{M}_O = [(3)(-5) - (1)(20)]\vec{i} + [(1)(10) - (2)(-5)]\vec{j} + [(2)(20) - (3)(10)]\vec{k}$$
+
+$$\vec{M}_O = (-15 - 20)\vec{i} + (10 + 10)\vec{j} + (40 - 30)\vec{k}$$
+
+$$\vec{M}_O = -35\vec{i} + 20\vec{j} + 10\vec{k} \text{ N·m}$$
+</Example>
+
+## Moment par rapport à un axe
+
+<Definition>
+Le **moment par rapport à un axe** est la composante du moment vectoriel selon cet axe. Il représente la tendance de la force à faire tourner le corps autour de cet axe.
+</Definition>
+
+<Formula title="Moment par rapport à un axe">
+$$M_{axe} = \vec{M}_O \cdot \vec{u}_{axe}$$
+
+où $\vec{u}_{axe}$ est le vecteur unitaire de l'axe et $O$ est un point quelconque de l'axe.
+</Formula>
+
+<Formula title="Formule du produit mixte">
+$$M_{axe} = (\vec{r} \times \vec{F}) \cdot \vec{u}_{axe} = \begin{vmatrix} u_x & u_y & u_z \\ x & y & z \\ F_x & F_y & F_z \end{vmatrix}$$
+</Formula>
+
+<Note type="info">
+Une force ne crée pas de moment autour d'un axe si :
+- La force est parallèle à l'axe
+- La ligne d'action de la force coupe l'axe
+</Note>
+
+## Théorème de Varignon
+
+<Definition>
+Le **théorème de Varignon** (ou principe des moments) stipule que le moment de la résultante d'un système de forces concourantes est égal à la somme des moments des forces composantes.
+</Definition>
+
+<Formula>
+$$\vec{M}_O(\vec{R}) = \vec{M}_O(\vec{F}_1) + \vec{M}_O(\vec{F}_2) + \cdots = \sum_i \vec{M}_O(\vec{F}_i)$$
+</Formula>
+
+Ce théorème permet de :
+- Simplifier les calculs en décomposant les forces
+- Déterminer les bras de levier équivalents
+- Vérifier les résultats
+
+<Example title="Application du théorème de Varignon">
+Une force de 100 N fait un angle de 40° avec l'horizontale et est appliquée à 3 m du point O.
+
+**Méthode directe :**
+$$M_O = 100 \times 3 \times \sin 40° = 193 \text{ N·m}$$
+
+**Avec Varignon :**
+- $F_x = 100 \cos 40° = 76,6$ N (bras de levier = 0 selon $x$)
+- $F_y = 100 \sin 40° = 64,3$ N (bras de levier = 3 m)
+
+$$M_O = 0 \times 76,6 + 3 \times 64,3 = 193 \text{ N·m}$$
+</Example>
+
+## Transport des moments
+
+Le moment d'une force dépend du point de référence. Pour transporter le moment du point $O$ au point $O'$ :
+
+<Formula title="Transport de moment">
+$$\vec{M}_{O'} = \vec{M}_O + \vec{OO'} \times \vec{F}$$
+</Formula>
+
+<Note type="warning">
+Le moment change avec le point de référence, sauf si la force résultante est nulle (comme pour un couple pur).
+</Note>
+
+## Applications
+
+### Équilibre de rotation
+
+Pour qu'un corps soit en équilibre de rotation, la somme des moments par rapport à tout point doit être nulle :
+
+<Formula>
+$$\sum \vec{M}_O = \vec{0}$$
+</Formula>
+
+### Choix stratégique du point
+
+En choisissant judicieusement le point pour calculer les moments, on peut :
+- Éliminer des inconnues de l'équation
+- Simplifier les calculs
+- Résoudre directement pour une inconnue
+
+<Note type="tip">
+Prendre les moments par rapport à un point où passent plusieurs forces inconnues permet de les éliminer de l'équation et de simplifier la résolution.
+</Note>

@@ -27,6 +27,9 @@ export const THEORY_CONFIG: Record<string, CourseTheory> = {
       { slug: 'ondes-electromagnetiques', title: 'Ondes électromagnétiques', description: 'Spectre EM, polarisation et énergie', order: 4 },
       { slug: 'interferences-diffraction', title: 'Interférences et diffraction', description: 'Expérience de Young, réseaux et Rayleigh', order: 5 },
       { slug: 'relativite', title: 'Relativité restreinte', description: 'Postulats d\'Einstein, dilatation du temps et contraction des longueurs', order: 6 },
+      { slug: 'physique-quantique', title: 'Physique quantique', description: 'Origines de la mécanique quantique et dualité onde-particule', order: 7 },
+      { slug: 'atome-spectres', title: 'Atome et spectres', description: 'Modèle de Bohr, spectres atomiques et LASER', order: 8 },
+      { slug: 'physique-nucleaire', title: 'Physique nucléaire', description: 'Structure du noyau, radioactivité, fission et fusion', order: 9 },
     ],
   },
   statics: {
@@ -37,6 +40,9 @@ export const THEORY_CONFIG: Record<string, CourseTheory> = {
       { slug: 'vecteurs', title: 'Vecteurs', description: 'Opérations vectorielles et produit vectoriel', order: 3 },
       { slug: 'forces', title: 'Forces et types de forces', description: 'Forces de contact, à distance et DCL', order: 4 },
       { slug: 'equilibre', title: 'Équilibre du point matériel', description: 'Conditions d\'équilibre et résolution', order: 5 },
+      { slug: 'moments', title: 'Moments de force', description: 'Moment par rapport à un point et à un axe', order: 6 },
+      { slug: 'couples', title: 'Couples de forces', description: 'Définition, propriétés et équivalence des couples', order: 7 },
+      { slug: 'structures-treillis', title: 'Structures et treillis', description: 'Analyse des treillis par la méthode des noeuds et des sections', order: 8 },
     ],
   },
   kinematics: {
@@ -47,6 +53,8 @@ export const THEORY_CONFIG: Record<string, CourseTheory> = {
       { slug: 'vitesse', title: 'Vitesse', description: 'Vitesse moyenne, instantanée et MRU', order: 3 },
       { slug: 'acceleration', title: 'Accélération', description: 'Accélération et MRUA', order: 4 },
       { slug: 'chute-libre', title: 'Chute libre', description: 'Mouvement vertical sous gravité', order: 5 },
+      { slug: 'mouvement-2d', title: 'Mouvement en 2D', description: 'Projectiles et mouvement dans le plan', order: 6 },
+      { slug: 'mouvement-relatif', title: 'Mouvement relatif', description: 'Référentiels et composition des vitesses', order: 7 },
     ],
   },
 };

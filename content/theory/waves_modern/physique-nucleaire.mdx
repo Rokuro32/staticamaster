@@ -1,0 +1,238 @@
+---
+title: Physique nucléaire
+description: Structure du noyau, radioactivité, fission et fusion
+order: 9
+---
+
+## Structure du noyau atomique
+
+### Composition du noyau
+
+<Definition>
+Le **noyau atomique** est constitué de **nucléons** : protons (charge +$e$) et neutrons (charge nulle). Les nucléons sont liés par l'**interaction forte**.
+</Definition>
+
+Notation symbolique : $^A_Z X$
+
+- $Z$ = nombre de protons (numéro atomique)
+- $N$ = nombre de neutrons
+- $A = Z + N$ = nombre de masse (nombre total de nucléons)
+
+<Example title="Notation nucléaire">
+- $^{12}_6\text{C}$ : carbone-12 (6 protons, 6 neutrons)
+- $^{235}_{92}\text{U}$ : uranium-235 (92 protons, 143 neutrons)
+- $^{1}_{1}\text{H}$ : hydrogène (1 proton, 0 neutron)
+</Example>
+
+### Isotopes
+
+<Definition>
+Les **isotopes** sont des atomes ayant le même nombre de protons $Z$ mais un nombre de neutrons $N$ différent. Ils ont les mêmes propriétés chimiques.
+</Definition>
+
+Exemples pour l'hydrogène :
+- $^1_1\text{H}$ : protium (stable)
+- $^2_1\text{H}$ : deutérium (stable)
+- $^3_1\text{H}$ : tritium (radioactif)
+
+### Dimensions et densité
+
+<Formula title="Rayon nucléaire">
+$$r = r_0 A^{1/3}$$
+
+où $r_0 \approx 1,2 \times 10^{-15}$ m = 1,2 fm (femtomètre)
+</Formula>
+
+La densité nucléaire est remarquablement constante :
+$$\rho_{nuc} \approx 2,3 \times 10^{17} \text{ kg/m}^3$$
+
+### Énergie de liaison
+
+<Definition>
+L'**énergie de liaison** $E_L$ est l'énergie nécessaire pour séparer complètement tous les nucléons du noyau. Elle traduit la stabilité du noyau.
+</Definition>
+
+<Formula title="Défaut de masse">
+$$\Delta m = [Z m_p + N m_n] - M_{noyau}$$
+$$E_L = \Delta m \cdot c^2$$
+</Formula>
+
+<Formula title="Énergie de liaison par nucléon">
+$$\frac{E_L}{A} = \frac{\Delta m \cdot c^2}{A}$$
+</Formula>
+
+<Note type="info">
+L'énergie de liaison par nucléon est maximale pour le fer-56 ($\approx 8,8$ MeV/nucléon). Les noyaux plus légers peuvent fusionner et les noyaux plus lourds peuvent fissionner pour atteindre cette région de stabilité.
+</Note>
+
+## Radioactivité
+
+<Definition>
+La **radioactivité** est la transformation spontanée d'un noyau instable en un autre noyau, avec émission de rayonnement.
+</Definition>
+
+### Types de rayonnements
+
+| Type | Nature | Charge | Pénétration | Arrêt par |
+|------|--------|--------|-------------|-----------|
+| $\alpha$ | Noyau $^4_2\text{He}$ | +2$e$ | Faible | Feuille de papier |
+| $\beta^-$ | Électron | $-e$ | Moyenne | Feuille d'aluminium |
+| $\beta^+$ | Positron | $+e$ | Moyenne | Feuille d'aluminium |
+| $\gamma$ | Photon | 0 | Forte | Béton, plomb |
+
+### Décroissance alpha
+
+<Formula>
+$$^A_Z X \to ^{A-4}_{Z-2} Y + ^4_2 \alpha$$
+</Formula>
+
+Le noyau parent émet un noyau d'hélium-4. Typique des noyaux lourds.
+
+<Example title="Décroissance alpha de l'uranium">
+$$^{238}_{92}\text{U} \to ^{234}_{90}\text{Th} + ^4_2\text{He}$$
+</Example>
+
+### Décroissance bêta moins
+
+<Formula>
+$$^A_Z X \to ^{A}_{Z+1} Y + e^- + \bar{\nu}_e$$
+</Formula>
+
+Un neutron se transforme en proton avec émission d'un électron et d'un antineutrino.
+
+### Décroissance bêta plus
+
+<Formula>
+$$^A_Z X \to ^{A}_{Z-1} Y + e^+ + \nu_e$$
+</Formula>
+
+Un proton se transforme en neutron avec émission d'un positron et d'un neutrino.
+
+### Rayonnement gamma
+
+<Formula>
+$$^A_Z X^* \to ^{A}_{Z} X + \gamma$$
+</Formula>
+
+Le noyau passe d'un état excité à un état de plus basse énergie en émettant un photon gamma. Aucun changement de $A$ ou $Z$.
+
+## Loi de décroissance radioactive
+
+<Definition>
+Le **temps de demi-vie** $t_{1/2}$ est le temps au bout duquel la moitié des noyaux radioactifs se sont désintégrés.
+</Definition>
+
+<Formula title="Loi de décroissance">
+$$N(t) = N_0 e^{-\lambda t} = N_0 \left(\frac{1}{2}\right)^{t/t_{1/2}}$$
+
+où $\lambda$ est la constante de désintégration.
+</Formula>
+
+<Formula title="Relation demi-vie / constante">
+$$t_{1/2} = \frac{\ln 2}{\lambda} \approx \frac{0,693}{\lambda}$$
+</Formula>
+
+### Activité
+
+<Definition>
+L'**activité** $A$ d'un échantillon est le nombre de désintégrations par unité de temps.
+</Definition>
+
+<Formula>
+$$A = \lambda N = A_0 e^{-\lambda t}$$
+
+Unité SI : becquerel (Bq) = 1 désintégration/seconde
+</Formula>
+
+<Example title="Datation au carbone-14">
+Le carbone-14 a une demi-vie de 5730 ans. Un échantillon archéologique contient 25% du $^{14}$C d'un organisme vivant.
+
+$$\frac{N}{N_0} = \left(\frac{1}{2}\right)^{t/t_{1/2}} = 0,25 = \frac{1}{4} = \left(\frac{1}{2}\right)^2$$
+
+Donc $t = 2 \times t_{1/2} = 2 \times 5730 = 11460$ ans.
+</Example>
+
+## Réactions nucléaires
+
+### Conservation
+
+Dans toute réaction nucléaire :
+- Conservation du nombre de masse $A$
+- Conservation du nombre de charge $Z$
+- Conservation de l'énergie totale (masse + énergie cinétique)
+- Conservation de la quantité de mouvement
+
+### Bilan énergétique
+
+<Formula title="Énergie libérée">
+$$Q = (m_{réactifs} - m_{produits}) \cdot c^2$$
+</Formula>
+
+- $Q > 0$ : réaction exoénergétique (libère de l'énergie)
+- $Q < 0$ : réaction endoénergétique (nécessite un apport d'énergie)
+
+## Fission nucléaire
+
+<Definition>
+La **fission** est la division d'un noyau lourd en deux noyaux plus légers, accompagnée de la libération de neutrons et d'une grande quantité d'énergie.
+</Definition>
+
+<Formula title="Exemple de fission">
+$$^{235}_{92}\text{U} + ^1_0 n \to ^{141}_{56}\text{Ba} + ^{92}_{36}\text{Kr} + 3 \, ^1_0 n + \text{énergie}$$
+
+Énergie libérée : environ 200 MeV par fission.
+</Formula>
+
+### Réaction en chaîne
+
+Les neutrons produits peuvent provoquer d'autres fissions :
+- **Masse sous-critique** : la réaction s'éteint
+- **Masse critique** : réaction auto-entretenue
+- **Masse sur-critique** : réaction explosive
+
+<Note type="warning">
+Dans un réacteur nucléaire, des modérateurs (eau, graphite) ralentissent les neutrons et des barres de contrôle (bore, cadmium) absorbent l'excès de neutrons pour maintenir une réaction contrôlée.
+</Note>
+
+### Applications
+
+- **Centrales nucléaires** : production d'électricité
+- **Propulsion navale** : sous-marins, porte-avions
+- **Armes nucléaires** : bombes à fission
+
+## Fusion nucléaire
+
+<Definition>
+La **fusion** est la combinaison de noyaux légers pour former un noyau plus lourd, avec libération d'énergie.
+</Definition>
+
+<Formula title="Réaction deutérium-tritium">
+$$^2_1\text{H} + ^3_1\text{H} \to ^4_2\text{He} + ^1_0 n + 17,6 \text{ MeV}$$
+</Formula>
+
+### Conditions de fusion
+
+La fusion nécessite de vaincre la répulsion électrostatique entre les noyaux :
+- **Température** : $\sim 10^8$ K (plasma)
+- **Confinement** : magnétique (tokamak) ou inertiel (laser)
+- **Densité** : suffisamment élevée
+
+### Fusion dans les étoiles
+
+Le Soleil fusionne l'hydrogène en hélium par la **chaîne proton-proton** :
+
+$$4 \, ^1_1\text{H} \to ^4_2\text{He} + 2e^+ + 2\nu_e + \gamma + 26,7 \text{ MeV}$$
+
+<Note type="tip">
+La fusion est la source d'énergie des étoiles et la réaction recherchée pour la production d'énergie sur Terre (projet ITER). Elle produirait une énergie quasi-illimitée avec peu de déchets radioactifs.
+</Note>
+
+### Comparaison fission / fusion
+
+| Critère | Fission | Fusion |
+|---------|---------|--------|
+| Combustible | U-235, Pu-239 | H-2, H-3 |
+| Produits | Déchets radioactifs | Hélium-4 |
+| Énergie/nucléon | ~0,9 MeV | ~3,5 MeV |
+| Conditions | Modérées | Extrêmes |
+| Contrôle | Maîtrisé | En développement |

@@ -1,0 +1,173 @@
+---
+title: Atome et spectres
+description: Modèle de Bohr, spectres atomiques et LASER
+order: 8
+---
+
+## Modèles atomiques historiques
+
+### Modèle de Thomson (1897)
+
+Thomson proposa un modèle de l'atome comme une sphère de charge positive dans laquelle les électrons sont distribués, comme des raisins dans un pudding.
+
+### Modèle de Rutherford (1911)
+
+L'expérience de diffusion des particules alpha a révélé que :
+- La masse de l'atome est concentrée dans un **noyau** très petit et positif
+- Les électrons orbitent autour du noyau à grande distance
+
+<Note type="warning">
+Le modèle de Rutherford est instable : selon l'électromagnétisme classique, un électron en orbite rayonne de l'énergie et devrait spiraler vers le noyau.
+</Note>
+
+## Modèle de Bohr
+
+<Definition>
+Le **modèle de Bohr** (1913) introduit la quantification des orbites électroniques. Les électrons ne peuvent occuper que certaines orbites stables, sans émettre de rayonnement.
+</Definition>
+
+### Postulats de Bohr
+
+1. Les électrons se déplacent sur des orbites circulaires stables autour du noyau
+2. Le moment cinétique orbital est quantifié : $L = n\hbar$
+3. L'électron émet ou absorbe un photon uniquement lors d'une transition entre deux orbites
+
+### Rayons des orbites
+
+<Formula title="Rayon de Bohr">
+$$r_n = n^2 a_0$$
+
+où $a_0 = \frac{\hbar^2}{m_e k e^2} = 5,29 \times 10^{-11}$ m est le rayon de Bohr.
+</Formula>
+
+Pour l'hydrogène ($Z = 1$) :
+- $r_1 = 0,053$ nm (état fondamental)
+- $r_2 = 0,212$ nm
+- $r_3 = 0,477$ nm
+
+### Niveaux d'énergie
+
+<Formula title="Énergie des niveaux">
+$$E_n = -\frac{13,6 \text{ eV}}{n^2}$$
+
+Pour un atome hydrogénoïde de charge nucléaire $Z$ :
+$$E_n = -\frac{13,6 \cdot Z^2}{n^2} \text{ eV}$$
+</Formula>
+
+<Note type="info">
+L'énergie est **négative** car l'électron est lié au noyau. $E = 0$ correspond à l'ionisation (électron libre au repos).
+</Note>
+
+### Énergie d'ionisation
+
+<Definition>
+L'**énergie d'ionisation** est l'énergie minimale nécessaire pour arracher un électron de l'état fondamental à l'infini.
+</Definition>
+
+Pour l'hydrogène : $E_i = |E_1| = 13,6$ eV
+
+## Spectres atomiques
+
+### Émission et absorption
+
+<Definition>
+Le **spectre d'émission** d'un élément est l'ensemble des longueurs d'onde qu'il émet lorsque ses atomes sont excités. Le **spectre d'absorption** correspond aux longueurs d'onde absorbées par l'élément.
+</Definition>
+
+<Formula title="Condition de Bohr">
+$$h\nu = E_f - E_i$$
+
+ou en termes de longueur d'onde :
+$$\frac{1}{\lambda} = R_H \left(\frac{1}{n_f^2} - \frac{1}{n_i^2}\right)$$
+
+où $R_H = 1,097 \times 10^7$ m$^{-1}$ est la constante de Rydberg.
+</Formula>
+
+### Séries spectrales de l'hydrogène
+
+| Série | Niveau final $n_f$ | Région du spectre |
+|-------|-------------------|-------------------|
+| Lyman | 1 | Ultraviolet |
+| Balmer | 2 | Visible |
+| Paschen | 3 | Infrarouge proche |
+| Brackett | 4 | Infrarouge |
+| Pfund | 5 | Infrarouge lointain |
+
+<Example title="Raie H-alpha de l'hydrogène">
+La raie H$\alpha$ correspond à la transition $n = 3 \to n = 2$ (série de Balmer).
+
+$$\frac{1}{\lambda} = R_H \left(\frac{1}{4} - \frac{1}{9}\right) = R_H \times \frac{5}{36}$$
+
+$$\lambda = \frac{36}{5 \times 1,097 \times 10^7} = 6,56 \times 10^{-7} \text{ m} = 656 \text{ nm}$$
+
+Cette raie rouge caractéristique est visible dans le spectre de l'hydrogène.
+</Example>
+
+### Spectroscopie
+
+La spectroscopie permet :
+- L'identification des éléments chimiques
+- La détermination de la composition stellaire
+- La mesure des vitesses radiales (effet Doppler)
+- L'analyse de la structure atomique
+
+## Le LASER
+
+<Definition>
+**LASER** = Light Amplification by Stimulated Emission of Radiation (amplification de lumière par émission stimulée de rayonnement).
+</Definition>
+
+### Processus fondamentaux
+
+1. **Absorption** : un photon excite un atome vers un niveau supérieur
+2. **Émission spontanée** : l'atome retombe spontanément, émettant un photon dans une direction aléatoire
+3. **Émission stimulée** : un photon incident provoque l'émission d'un photon identique (même fréquence, phase, direction et polarisation)
+
+### Inversion de population
+
+<Definition>
+L'**inversion de population** est la situation où il y a plus d'atomes dans l'état excité que dans l'état fondamental, condition nécessaire pour l'amplification laser.
+</Definition>
+
+<Note type="info">
+En équilibre thermique, les niveaux inférieurs sont plus peuplés (distribution de Boltzmann). L'inversion de population nécessite un mécanisme de pompage externe.
+</Note>
+
+### Caractéristiques du faisceau laser
+
+- **Monochromaticité** : une seule longueur d'onde (spectre très étroit)
+- **Cohérence** : les ondes sont en phase (spatial et temporel)
+- **Directivité** : faisceau très collimaté, faible divergence
+- **Intensité** : forte concentration d'énergie
+
+### Types de lasers
+
+| Type | Milieu actif | Longueur d'onde | Applications |
+|------|--------------|-----------------|--------------|
+| He-Ne | Gaz | 633 nm (rouge) | Alignement, holographie |
+| CO$_2$ | Gaz | 10,6 µm (IR) | Découpe industrielle, chirurgie |
+| Nd:YAG | Solide | 1064 nm (IR) | Usinage, médecine |
+| Diode | Semi-conducteur | Variable | Télécommunications, lecteurs |
+| Excimère | Gaz | UV | Chirurgie ophtalmique |
+
+### Applications des lasers
+
+<Note type="tip">
+Les lasers ont révolutionné de nombreux domaines :
+- **Médecine** : chirurgie, ophtalmologie, dermatologie
+- **Industrie** : découpe, soudure, gravure
+- **Communications** : fibres optiques
+- **Métrologie** : mesures de précision, LIDAR
+- **Recherche** : spectroscopie, fusion nucléaire
+</Note>
+
+## Limitations du modèle de Bohr
+
+Le modèle de Bohr réussit à expliquer le spectre de l'hydrogène mais présente des limitations :
+
+- Ne s'applique qu'aux atomes à un électron (hydrogénoïdes)
+- Ne prédit pas les intensités relatives des raies
+- Ne peut pas expliquer la structure fine du spectre
+- Incompatible avec le principe d'incertitude (orbites bien définies)
+
+La mécanique quantique moderne (équation de Schrödinger) résout ces problèmes en abandonnant la notion d'orbite au profit d'orbitales probabilistes.

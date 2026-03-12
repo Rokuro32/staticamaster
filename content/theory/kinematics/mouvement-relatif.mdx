@@ -1,0 +1,193 @@
+---
+title: Mouvement relatif
+description: Référentiels et composition des vitesses
+order: 7
+---
+
+## Notion de référentiel
+
+<Definition>
+Un **référentiel** est un système de référence par rapport auquel on décrit le mouvement d'un objet. Il comprend un solide de référence et un système de coordonnées.
+</Definition>
+
+Le mouvement d'un objet dépend du référentiel choisi :
+- Un passager assis dans un train est immobile par rapport au train
+- Mais il se déplace par rapport au sol
+
+### Référentiels courants
+
+| Référentiel | Solide de référence | Utilisation |
+|-------------|---------------------|-------------|
+| Terrestre | Surface de la Terre | Mouvements quotidiens |
+| Géocentrique | Centre de la Terre | Satellites, rotation terrestre |
+| Héliocentrique | Centre du Soleil | Mouvements planétaires |
+| Galactocentrique | Centre de la galaxie | Astronomie |
+
+## Mouvement relatif entre deux objets
+
+<Definition>
+La **vitesse relative** de B par rapport à A est la vitesse de B mesurée dans un référentiel attaché à A.
+</Definition>
+
+<Formula title="Vitesse relative">
+$$\vec{v}_{B/A} = \vec{v}_B - \vec{v}_A$$
+</Formula>
+
+<Example title="Deux voitures sur une autoroute">
+La voiture A roule à 100 km/h vers l'est.
+La voiture B roule à 120 km/h vers l'est.
+
+Vitesse de B relative à A :
+$$\vec{v}_{B/A} = 120 - 100 = 20 \text{ km/h vers l'est}$$
+
+Du point de vue de A, B s'éloigne à 20 km/h.
+
+Si B roule en sens inverse (vers l'ouest) :
+$$\vec{v}_{B/A} = -120 - 100 = -220 \text{ km/h}$$
+
+Les voitures se rapprochent à 220 km/h.
+</Example>
+
+## Composition des vitesses
+
+### Relation fondamentale
+
+<Formula title="Composition des vitesses">
+$$\vec{v}_{objet/sol} = \vec{v}_{objet/mobile} + \vec{v}_{mobile/sol}$$
+</Formula>
+
+Cette relation peut être écrite sous différentes formes :
+
+<Formula>
+$$\vec{v}_{A/C} = \vec{v}_{A/B} + \vec{v}_{B/C}$$
+</Formula>
+
+### Interprétation
+
+- $\vec{v}_{objet/mobile}$ : vitesse mesurée dans le référentiel mobile
+- $\vec{v}_{mobile/sol}$ : vitesse du référentiel mobile par rapport au sol
+- $\vec{v}_{objet/sol}$ : vitesse absolue (par rapport au sol)
+
+<Example title="Marcher dans un train">
+Une personne marche à 5 km/h vers l'avant dans un train qui roule à 80 km/h.
+
+Vitesse de la personne par rapport au sol :
+$$v_{personne/sol} = v_{personne/train} + v_{train/sol} = 5 + 80 = 85 \text{ km/h}$$
+
+Si elle marche vers l'arrière :
+$$v_{personne/sol} = -5 + 80 = 75 \text{ km/h}$$
+</Example>
+
+## Composition vectorielle
+
+En 2D, les vitesses se composent **vectoriellement** :
+
+<Formula title="Composition en 2D">
+$$\vec{v}_{résultante} = \vec{v}_1 + \vec{v}_2$$
+
+En composantes :
+$$v_{rx} = v_{1x} + v_{2x}$$
+$$v_{ry} = v_{1y} + v_{2y}$$
+</Formula>
+
+### Cas du bateau traversant une rivière
+
+<Example title="Traversée de rivière">
+Un bateau traverse une rivière de 200 m de large. Sa vitesse propre est de 5 m/s et le courant est de 3 m/s.
+
+**Cas 1 : Le bateau vise la rive opposée (perpendiculaire au courant)**
+
+La vitesse résultante :
+$$v_{résultante} = \sqrt{5^2 + 3^2} = \sqrt{34} = 5,83 \text{ m/s}$$
+
+Temps de traversée :
+$$t = \frac{200}{5} = 40 \text{ s}$$
+
+Dérive :
+$$d = 3 \times 40 = 120 \text{ m}$$
+
+**Cas 2 : Le bateau vise en amont pour arriver en face**
+
+Le bateau doit compenser le courant :
+$$\sin\theta = \frac{3}{5} = 0,6 \Rightarrow \theta = 36,9°$$
+
+Vitesse de traversée :
+$$v_\perp = \sqrt{5^2 - 3^2} = 4 \text{ m/s}$$
+
+Temps de traversée :
+$$t = \frac{200}{4} = 50 \text{ s}$$
+</Example>
+
+## Applications au vent relatif
+
+<Definition>
+Le **vent relatif** (ou vent apparent) est le vent ressenti par un observateur en mouvement. Il est la composition du vent réel et de l'opposé de la vitesse de l'observateur.
+</Definition>
+
+<Formula title="Vent relatif">
+$$\vec{v}_{vent/observateur} = \vec{v}_{vent/sol} - \vec{v}_{observateur/sol}$$
+</Formula>
+
+<Example title="Cycliste et vent">
+Un cycliste roule à 20 km/h vers le nord. Le vent souffle à 15 km/h de l'ouest vers l'est.
+
+Vent relatif :
+$$\vec{v}_{vent/cycliste} = (15, 0) - (0, 20) = (15, -20) \text{ km/h}$$
+
+Intensité : $\sqrt{15^2 + 20^2} = 25$ km/h
+
+Direction : $\arctan\left(\frac{-20}{15}\right) = -53,1°$ (du nord-est)
+
+Le cycliste ressent un vent de 25 km/h venant du nord-est.
+</Example>
+
+## Accélération relative
+
+<Formula title="Accélération relative">
+$$\vec{a}_{B/A} = \vec{a}_B - \vec{a}_A$$
+</Formula>
+
+<Note type="warning">
+Si le référentiel mobile est en accélération, des termes supplémentaires apparaissent (forces d'inertie). Dans un référentiel en translation uniforme, les lois de Newton s'appliquent directement.
+</Note>
+
+## Référentiels galiléens
+
+<Definition>
+Un **référentiel galiléen** (ou inertiel) est un référentiel dans lequel le principe d'inertie est vérifié : un corps isolé reste au repos ou en mouvement rectiligne uniforme.
+</Definition>
+
+Propriétés :
+- Les lois de Newton s'appliquent directement
+- Tout référentiel en translation uniforme par rapport à un référentiel galiléen est aussi galiléen
+- La surface terrestre est approximativement galiléenne pour les expériences courantes
+
+## Distance de plus proche approche
+
+<Example title="Collision potentielle">
+Deux navires A et B ont des positions initiales et des vitesses :
+- A : position (0, 0), vitesse (10, 5) m/s
+- B : position (100, 50), vitesse (0, -5) m/s
+
+Vitesse relative de B par rapport à A :
+$$\vec{v}_{B/A} = (0, -5) - (10, 5) = (-10, -10) \text{ m/s}$$
+
+Position relative initiale :
+$$\vec{r}_{B/A}(0) = (100, 50) \text{ m}$$
+
+Position relative en fonction du temps :
+$$\vec{r}_{B/A}(t) = (100 - 10t, 50 - 10t) \text{ m}$$
+
+Distance minimale quand $\frac{d(r^2)}{dt} = 0$ :
+$$r^2 = (100-10t)^2 + (50-10t)^2$$
+
+La distance minimale se produit à $t = 7,5$ s avec $r_{min} = 35,4$ m.
+</Example>
+
+## Applications pratiques
+
+- Navigation maritime et aérienne
+- Interception de mobiles
+- Rencontre et évitement
+- Sports (passes, tirs au but)
+- Conception de manèges et attractions

@@ -1,0 +1,184 @@
+---
+title: Mouvement en 2D
+description: Projectiles et mouvement dans le plan
+order: 6
+---
+
+## Vecteur position en 2D
+
+<Definition>
+En deux dimensions, le **vecteur position** d'un mobile est :
+$$\vec{r}(t) = x(t)\vec{i} + y(t)\vec{j}$$
+
+où $x(t)$ et $y(t)$ sont les coordonnées du mobile en fonction du temps.
+</Definition>
+
+## Vecteur vitesse en 2D
+
+<Formula title="Composantes de la vitesse">
+$$\vec{v}(t) = \frac{d\vec{r}}{dt} = v_x(t)\vec{i} + v_y(t)\vec{j}$$
+
+avec $v_x = \frac{dx}{dt}$ et $v_y = \frac{dy}{dt}$
+</Formula>
+
+La norme de la vitesse (vitesse scalaire) est :
+$$v = \sqrt{v_x^2 + v_y^2}$$
+
+L'angle de la vitesse avec l'horizontale :
+$$\theta = \arctan\left(\frac{v_y}{v_x}\right)$$
+
+## Vecteur accélération en 2D
+
+<Formula title="Composantes de l'accélération">
+$$\vec{a}(t) = \frac{d\vec{v}}{dt} = a_x(t)\vec{i} + a_y(t)\vec{j}$$
+
+avec $a_x = \frac{dv_x}{dt}$ et $a_y = \frac{dv_y}{dt}$
+</Formula>
+
+## Mouvement de projectile
+
+<Definition>
+Le **mouvement de projectile** est le mouvement d'un objet lancé dans le champ gravitationnel terrestre, en négligeant la résistance de l'air.
+</Definition>
+
+### Hypothèses
+
+1. La seule force est le poids : $\vec{F} = m\vec{g}$
+2. L'accélération est constante : $\vec{a} = \vec{g} = -g\vec{j}$
+3. La résistance de l'air est négligée
+4. La surface terrestre est plane (petites distances)
+
+### Équations du mouvement
+
+Avec les conditions initiales : position $(x_0, y_0)$ et vitesse $(v_{0x}, v_{0y})$ :
+
+<Formula title="Équations horaires du projectile">
+$$x(t) = x_0 + v_{0x} \cdot t$$
+$$y(t) = y_0 + v_{0y} \cdot t - \frac{1}{2}gt^2$$
+
+$$v_x(t) = v_{0x} = \text{constante}$$
+$$v_y(t) = v_{0y} - gt$$
+</Formula>
+
+### Lancement avec angle
+
+Si le projectile est lancé avec une vitesse initiale $v_0$ et un angle $\theta_0$ avec l'horizontale :
+
+<Formula title="Composantes initiales">
+$$v_{0x} = v_0 \cos\theta_0$$
+$$v_{0y} = v_0 \sin\theta_0$$
+</Formula>
+
+### Équation de la trajectoire
+
+En éliminant le temps entre les équations de $x$ et $y$ :
+
+<Formula title="Trajectoire parabolique">
+$$y = y_0 + (x - x_0)\tan\theta_0 - \frac{g(x-x_0)^2}{2v_0^2\cos^2\theta_0}$$
+</Formula>
+
+<Note type="info">
+La trajectoire d'un projectile est une **parabole** dont l'axe est vertical.
+</Note>
+
+## Caractéristiques du mouvement
+
+### Temps de vol
+
+<Formula title="Temps de vol (retour au même niveau)">
+$$t_{vol} = \frac{2v_{0y}}{g} = \frac{2v_0\sin\theta_0}{g}$$
+</Formula>
+
+### Hauteur maximale
+
+<Formula title="Hauteur maximale">
+$$h_{max} = y_0 + \frac{v_{0y}^2}{2g} = y_0 + \frac{v_0^2\sin^2\theta_0}{2g}$$
+
+atteinte à $t_{max} = \frac{v_{0y}}{g}$
+</Formula>
+
+### Portée horizontale
+
+<Formula title="Portée (même niveau initial)">
+$$R = \frac{v_0^2 \sin(2\theta_0)}{g}$$
+</Formula>
+
+<Note type="tip">
+La portée est maximale pour $\theta_0 = 45°$, avec $R_{max} = \frac{v_0^2}{g}$.
+
+Pour une même portée, deux angles complémentaires fonctionnent : $\theta$ et $(90° - \theta)$.
+</Note>
+
+<Example title="Tir de projectile">
+Un ballon est lancé avec une vitesse de 20 m/s à un angle de 30° depuis le sol.
+
+**Composantes initiales :**
+$$v_{0x} = 20\cos 30° = 17,3 \text{ m/s}$$
+$$v_{0y} = 20\sin 30° = 10 \text{ m/s}$$
+
+**Hauteur maximale :**
+$$h_{max} = \frac{v_{0y}^2}{2g} = \frac{10^2}{2 \times 9,81} = 5,1 \text{ m}$$
+
+**Temps de vol :**
+$$t_{vol} = \frac{2v_{0y}}{g} = \frac{2 \times 10}{9,81} = 2,04 \text{ s}$$
+
+**Portée :**
+$$R = v_{0x} \times t_{vol} = 17,3 \times 2,04 = 35,3 \text{ m}$$
+
+ou $R = \frac{v_0^2 \sin 60°}{g} = \frac{400 \times 0,866}{9,81} = 35,3$ m
+</Example>
+
+## Cas particuliers
+
+### Tir horizontal
+
+Lorsque $\theta_0 = 0$ (lancement horizontal depuis une hauteur $h$) :
+
+<Formula>
+$$x(t) = v_0 t$$
+$$y(t) = h - \frac{1}{2}gt^2$$
+
+Temps de chute : $t_{chute} = \sqrt{\frac{2h}{g}}$
+
+Portée : $R = v_0\sqrt{\frac{2h}{g}}$
+</Formula>
+
+### Tir vertical
+
+Lorsque $\theta_0 = 90°$ (lancement vertical) :
+
+<Formula>
+$$y(t) = y_0 + v_0 t - \frac{1}{2}gt^2$$
+$$v_y(t) = v_0 - gt$$
+
+La portée horizontale est nulle.
+</Formula>
+
+## Indépendance des mouvements
+
+<Note type="info" title="Principe d'indépendance">
+Les mouvements horizontal et vertical sont **indépendants**. Le mouvement horizontal est uniforme (MRU), le mouvement vertical est uniformément accéléré (MRUA avec $a = -g$).
+</Note>
+
+Cette indépendance permet de traiter séparément :
+- Le mouvement en $x$ : $x = x_0 + v_{0x}t$
+- Le mouvement en $y$ : $y = y_0 + v_{0y}t - \frac{1}{2}gt^2$
+
+## Vitesse à l'impact
+
+<Formula title="Vitesse finale">
+$$v_f = \sqrt{v_x^2 + v_y^2} = \sqrt{v_{0x}^2 + (v_{0y} - gt_f)^2}$$
+</Formula>
+
+Par conservation de l'énergie (si retour au même niveau) :
+$$v_f = v_0$$
+
+L'angle d'impact est l'opposé de l'angle de lancement.
+
+## Applications
+
+- Balistique (trajectoire des projectiles)
+- Sports (basketball, football, golf)
+- Physique des jeux vidéo
+- Fontaines et jets d'eau
+- Trajectoires de véhicules en saut

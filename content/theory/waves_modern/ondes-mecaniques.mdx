@@ -1,0 +1,190 @@
+---
+title: Ondes mécaniques
+description: Propagation, superposition et ondes stationnaires
+order: 2
+---
+
+## Définition et types d'ondes
+
+<Definition>
+Une **onde mécanique** est une perturbation qui se propage de proche en proche dans un milieu matériel, sans transport net de matière.
+</Definition>
+
+### Classification des ondes
+
+| Type | Direction de la perturbation | Exemple |
+|------|------------------------------|---------|
+| Transversale | $\perp$ à la propagation | Corde vibrante, onde EM |
+| Longitudinale | $\parallel$ à la propagation | Son, ressort comprimé |
+
+## Ondes progressives
+
+### Fonction d'onde
+
+Une onde progressive sinusoïdale se propageant dans la direction $+x$ est décrite par :
+
+<Formula title="Onde progressive">
+$$y(x,t) = A\sin(kx - \omega t + \phi)$$
+
+Pour une propagation dans la direction $-x$ :
+$$y(x,t) = A\sin(kx + \omega t + \phi)$$
+</Formula>
+
+### Paramètres de l'onde
+
+| Paramètre | Symbole | Relation |
+|-----------|---------|----------|
+| Longueur d'onde | $\lambda$ | Distance entre deux points en phase |
+| Nombre d'onde | $k$ | $k = 2\pi/\lambda$ |
+| Vitesse de phase | $v$ | $v = \lambda f = \omega/k$ |
+
+<Formula title="Relation fondamentale">
+$$v = \lambda f = \frac{\omega}{k}$$
+</Formula>
+
+## Vitesse de propagation
+
+La vitesse d'une onde mécanique dépend des propriétés du milieu.
+
+### Onde sur une corde tendue
+
+<Formula>
+$$v = \sqrt{\frac{T}{\mu}}$$
+</Formula>
+
+où $T$ est la tension et $\mu$ la masse linéique (kg/m).
+
+### Facteurs généraux
+
+La vitesse dépend généralement de :
+- Propriété élastique du milieu (force de rappel)
+- Propriété inertielle du milieu (densité)
+
+<Formula>
+$$v = \sqrt{\frac{\text{propriété élastique}}{\text{propriété inertielle}}}$$
+</Formula>
+
+## Superposition et interférences
+
+<Definition title="Principe de superposition">
+Lorsque plusieurs ondes traversent simultanément un même point, le déplacement résultant est la **somme algébrique** des déplacements individuels :
+$$y_{\text{tot}} = y_1 + y_2 + \cdots + y_n$$
+Ce principe n'est valable que pour les **milieux linéaires** (petites amplitudes).
+</Definition>
+
+### Interférence de deux ondes de même fréquence
+
+Pour deux ondes $y_1 = A\sin(kx - \omega t)$ et $y_2 = A\sin(kx - \omega t + \Delta\phi)$ :
+
+<Formula>
+$$y_{\text{tot}} = 2A\cos\left(\frac{\Delta\phi}{2}\right)\sin\left(kx - \omega t + \frac{\Delta\phi}{2}\right)$$
+</Formula>
+
+### Types d'interférences
+
+| Type | Différence de phase | Amplitude résultante |
+|------|--------------------|--------------------|
+| Constructive | $\Delta\phi = 2n\pi$ | $2A$ |
+| Destructive | $\Delta\phi = (2n+1)\pi$ | $0$ |
+
+### Relation phase - différence de marche
+
+<Formula>
+$$\Delta\phi = \frac{2\pi}{\lambda}\Delta r = k\Delta r$$
+</Formula>
+
+où $\Delta r$ est la différence de chemin parcouru.
+
+## Réflexion et transmission
+
+### Réflexion à une extrémité fixe
+
+L'onde réfléchie subit un **déphasage de $\pi$** (inversion).
+
+### Réflexion à une extrémité libre
+
+L'onde réfléchie n'a **pas de déphasage**.
+
+### Changement de milieu
+
+À l'interface entre deux milieux :
+- Vers un milieu plus dense : réflexion avec inversion
+- Vers un milieu moins dense : réflexion sans inversion
+- Une partie de l'onde est transmise dans tous les cas
+
+## Énergie transportée par une onde
+
+### Puissance d'une onde sur une corde
+
+La puissance moyenne transportée par une onde sinusoïdale :
+
+<Formula>
+$$P = \frac{1}{2}\mu v \omega^2 A^2$$
+</Formula>
+
+### Intensité
+
+<Definition>
+L'**intensité** $I$ d'une onde est la puissance transportée par unité de surface :
+$$I = \frac{P}{S} \quad \text{[W/m}^2\text{]}$$
+</Definition>
+
+Pour une onde sinusoïdale :
+$$I \propto A^2$$
+
+### Décroissance de l'intensité
+
+Pour une onde sphérique (source ponctuelle) :
+<Formula>
+$$I = \frac{P}{4\pi r^2}$$
+</Formula>
+
+L'intensité décroît comme $1/r^2$.
+
+## Ondes stationnaires
+
+<Definition>
+Une **onde stationnaire** résulte de la superposition de deux ondes progressives de même amplitude et fréquence se propageant en sens opposés.
+</Definition>
+
+### Équation de l'onde stationnaire
+
+<Formula>
+$$y(x,t) = 2A\sin(kx)\cos(\omega t)$$
+</Formula>
+
+### Caractéristiques
+
+- **Nœuds** : points où $y = 0$ en tout temps; $\sin(kx) = 0 \Rightarrow x = n\lambda/2$
+- **Ventres** : points d'amplitude maximale; $|\sin(kx)| = 1 \Rightarrow x = (2n+1)\lambda/4$
+- Distance entre deux nœuds consécutifs : $\lambda/2$
+
+## Modes normaux
+
+Pour une corde de longueur $L$ fixée aux deux extrémités, les fréquences propres sont :
+
+<Formula title="Modes propres (corde fixe-fixe)">
+$$f_n = \frac{n v}{2L} = \frac{n}{2L}\sqrt{\frac{T}{\mu}}, \quad n = 1, 2, 3, \ldots$$
+
+$$\lambda_n = \frac{2L}{n}$$
+</Formula>
+
+- $n = 1$ : fondamental (1er harmonique)
+- $n = 2, 3, \ldots$ : harmoniques supérieurs
+
+### Tuyau ouvert aux deux extrémités
+
+Ventres aux extrémités. Mêmes fréquences que la corde fixe-fixe :
+$$f_n = \frac{nv}{2L}, \quad n = 1, 2, 3, \ldots$$
+
+### Tuyau fermé à une extrémité
+
+Nœud à l'extrémité fermée, ventre à l'extrémité ouverte :
+
+<Formula>
+$$f_n = \frac{nv}{4L}, \quad n = 1, 3, 5, \ldots \text{ (impairs seulement)}$$
+</Formula>
+
+<Note type="warning">
+Pour un tuyau fermé à une extrémité, seuls les harmoniques **impairs** sont présents.
+</Note>

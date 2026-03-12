@@ -1,0 +1,170 @@
+---
+title: Interférences et diffraction
+description: Expérience de Young, réseaux et Rayleigh
+order: 5
+---
+
+## Principe de Huygens
+
+<Definition>
+Chaque point d'un front d'onde peut être considéré comme une source secondaire d'ondelettes sphériques. Le nouveau front d'onde est l'enveloppe de toutes ces ondelettes.
+</Definition>
+
+Ce principe permet d'expliquer la propagation, la réflexion, la réfraction et la diffraction.
+
+## Expérience de Young
+
+### Dispositif
+
+Deux fentes fines séparées d'une distance $d$ sont éclairées par une source cohérente. Sur un écran à distance $D$, on observe une figure d'interférence.
+
+### Positions des franges
+
+<Formula title="Interférences à deux fentes">
+**Différence de marche :**
+$$\delta = d\sin\theta \approx \frac{dy}{D}$$
+
+**Franges brillantes** (interférence constructive) :
+$$\delta = m\lambda \quad \Rightarrow \quad y_m = \frac{m\lambda D}{d}$$
+
+**Franges sombres** (interférence destructive) :
+$$\delta = \left(m + \frac{1}{2}\right)\lambda \quad \Rightarrow \quad y_m = \frac{(m + 1/2)\lambda D}{d}$$
+</Formula>
+
+### Interfrange
+
+<Formula>
+$$i = \frac{\lambda D}{d}$$
+</Formula>
+
+<Example title="Calcul d'interfrange">
+Deux fentes séparées de $d = 0,5$ mm sont éclairées par une lumière de longueur d'onde $\lambda = 600$ nm. L'écran est à $D = 2$ m.
+
+$$i = \frac{600 \times 10^{-9} \times 2}{0,5 \times 10^{-3}} = \frac{1,2 \times 10^{-6}}{5 \times 10^{-4}} = 2,4 \times 10^{-3} \text{ m} = 2,4 \text{ mm}$$
+</Example>
+
+## Interférences par pellicules minces
+
+Lorsque la lumière traverse une couche mince d'épaisseur $e$ et d'indice $n$ :
+
+### Différence de marche
+
+<Formula>
+$$\delta = 2ne\cos\theta_r$$
+</Formula>
+
+où $\theta_r$ est l'angle de réfraction dans la pellicule.
+
+### Déphasage à la réflexion
+
+- Réflexion sur un milieu plus réfringent : déphasage de $\pi$ (ou $\lambda/2$)
+- Réflexion sur un milieu moins réfringent : pas de déphasage
+
+### Conditions d'interférence
+
+**Pellicule dans l'air** (ex: bulle de savon) :
+
+<Formula>
+$$2ne = m\lambda \quad \text{(destructive)}$$
+$$2ne = \left(m + \frac{1}{2}\right)\lambda \quad \text{(constructive)}$$
+</Formula>
+
+<Note type="info">
+Les conditions sont inversées car il y a un déphasage de $\pi$ à la réflexion sur la face avant mais pas sur la face arrière.
+</Note>
+
+## Interférométrie
+
+### Interféromètre de Michelson
+
+Principe : division d'amplitude par une lame semi-réfléchissante. Les deux faisceaux parcourent des chemins différents puis sont recombinés.
+
+Applications :
+- Mesure précise de longueurs
+- Détection de faibles variations d'indice
+- Spectroscopie par transformée de Fourier
+
+## Diffraction
+
+<Definition>
+La **diffraction** est le phénomène de contournement des obstacles par les ondes et d'étalement du faisceau après passage par une ouverture.
+</Definition>
+
+La diffraction est significative lorsque les dimensions de l'obstacle ou de l'ouverture sont comparables à $\lambda$.
+
+### Diffraction par une fente simple
+
+<Formula title="Diffraction par une fente de largeur $a$">
+**Minima de diffraction :**
+$$a\sin\theta = m\lambda, \quad m = \pm 1, \pm 2, \ldots$$
+
+**Largeur du maximum central** (en angle) :
+$$\Delta\theta = \frac{2\lambda}{a}$$
+</Formula>
+
+### Distribution d'intensité
+
+<Formula>
+$$I(\theta) = I_0 \left(\frac{\sin\beta}{\beta}\right)^2, \quad \beta = \frac{\pi a \sin\theta}{\lambda}$$
+</Formula>
+
+### Diffraction par une ouverture circulaire
+
+Premier minimum (disque d'Airy) :
+
+<Formula>
+$$\sin\theta = 1,22\frac{\lambda}{D}$$
+</Formula>
+
+où $D$ est le diamètre de l'ouverture.
+
+### Critère de Rayleigh
+
+<Definition>
+Deux sources ponctuelles sont **juste résolues** si le maximum central de l'une coïncide avec le premier minimum de l'autre.
+</Definition>
+
+<Formula title="Pouvoir de résolution">
+$$\theta_{\min} = 1,22\frac{\lambda}{D}$$
+</Formula>
+
+<Note type="tip">
+Plus l'ouverture est grande, meilleur est le pouvoir de résolution. C'est pourquoi les grands télescopes permettent de voir plus de détails.
+</Note>
+
+## Réseaux de diffraction
+
+<Definition>
+Un **réseau** est constitué d'un grand nombre $N$ de fentes parallèles équidistantes (pas $d$).
+</Definition>
+
+### Positions des maxima principaux
+
+<Formula title="Équation des réseaux">
+$$d\sin\theta = m\lambda, \quad m = 0, \pm 1, \pm 2, \ldots$$
+où $m$ est l'ordre de diffraction.
+</Formula>
+
+### Pouvoir de résolution
+
+<Formula>
+$$R = \frac{\lambda}{\Delta\lambda} = mN$$
+</Formula>
+
+Un réseau permet de séparer des longueurs d'onde très proches.
+
+### Pouvoir dispersif
+
+<Formula>
+$$\frac{d\theta}{d\lambda} = \frac{m}{d\cos\theta}$$
+</Formula>
+
+<Example title="Réseau de diffraction">
+Un réseau possède 500 traits/mm. Quel est l'angle de diffraction au premier ordre pour une lumière de 600 nm ?
+
+Le pas du réseau est $d = 1/500 = 2 \times 10^{-3}$ mm $= 2 \times 10^{-6}$ m.
+
+$$\sin\theta = \frac{m\lambda}{d} = \frac{1 \times 600 \times 10^{-9}}{2 \times 10^{-6}} = 0,3$$
+
+$$\theta = \arcsin(0,3) = 17,5°$$
+</Example>

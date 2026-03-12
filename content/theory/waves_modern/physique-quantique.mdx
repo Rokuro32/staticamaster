@@ -1,0 +1,196 @@
+---
+title: Physique quantique
+description: Origines de la mécanique quantique et dualité onde-particule
+order: 7
+---
+
+## Origines de la physique quantique
+
+### Le rayonnement du corps noir
+
+<Definition>
+Le **corps noir** est un objet idéal qui absorbe toute la lumière incidente et émet un rayonnement thermique qui dépend uniquement de sa température.
+</Definition>
+
+La physique classique prédisait une "catastrophe ultraviolette" : l'énergie émise divergerait vers l'infini aux courtes longueurs d'onde.
+
+<Formula title="Loi de Planck">
+$$E = h\nu = \frac{hc}{\lambda}$$
+
+où $h = 6,626 \times 10^{-34}$ J·s est la constante de Planck.
+</Formula>
+
+Planck a postulé que l'énergie est **quantifiée** : elle ne peut prendre que des valeurs discrètes, multiples de $h\nu$.
+
+### L'effet photoélectrique
+
+<Definition>
+L'**effet photoélectrique** est l'émission d'électrons par un matériau lorsqu'il est éclairé par de la lumière de fréquence suffisante.
+</Definition>
+
+Observations expérimentales :
+- Existence d'une fréquence seuil $\nu_0$ en dessous de laquelle aucun électron n'est émis
+- L'énergie cinétique des électrons dépend de la fréquence, pas de l'intensité
+- L'émission est instantanée
+
+<Formula title="Équation d'Einstein pour l'effet photoélectrique">
+$$E_c = h\nu - W = h\nu - h\nu_0$$
+
+où $W = h\nu_0$ est le travail d'extraction (énergie nécessaire pour arracher un électron).
+</Formula>
+
+<Note type="info">
+Einstein a montré que la lumière se comporte comme des particules, les **photons**, chacun portant une énergie $E = h\nu$.
+</Note>
+
+## Le photon
+
+<Definition>
+Le **photon** est le quantum du champ électromagnétique. C'est une particule de masse nulle qui transporte l'énergie lumineuse.
+</Definition>
+
+<Formula title="Propriétés du photon">
+$$E = h\nu = \frac{hc}{\lambda}$$
+$$p = \frac{h}{\lambda} = \frac{E}{c}$$
+
+où $p$ est la quantité de mouvement du photon.
+</Formula>
+
+### L'effet Compton
+
+<Definition>
+L'**effet Compton** est la diffusion d'un photon par un électron, avec augmentation de la longueur d'onde du photon.
+</Definition>
+
+<Formula title="Décalage Compton">
+$$\Delta\lambda = \lambda' - \lambda = \lambda_C(1 - \cos\theta)$$
+
+où $\lambda_C = \frac{h}{m_e c} = 2,43 \times 10^{-12}$ m est la longueur d'onde Compton de l'électron.
+</Formula>
+
+Cet effet confirme que le photon possède une quantité de mouvement et que la collision photon-électron obéit aux lois de conservation.
+
+## Dualité onde-particule
+
+### Hypothèse de de Broglie
+
+<Definition>
+Selon **de Broglie**, toute particule de matière possède des propriétés ondulatoires. La longueur d'onde associée est inversement proportionnelle à sa quantité de mouvement.
+</Definition>
+
+<Formula title="Longueur d'onde de de Broglie">
+$$\lambda = \frac{h}{p} = \frac{h}{mv}$$
+
+Pour une particule non relativiste : $\lambda = \frac{h}{\sqrt{2mE_c}}$
+</Formula>
+
+<Example title="Longueur d'onde d'un électron">
+Un électron accéléré par une d.d.p. de 100 V acquiert une énergie cinétique $E_c = eV = 1,6 \times 10^{-17}$ J.
+
+Sa quantité de mouvement :
+$$p = \sqrt{2m_e E_c} = \sqrt{2 \times 9,11 \times 10^{-31} \times 1,6 \times 10^{-17}} = 5,4 \times 10^{-24} \text{ kg·m/s}$$
+
+Sa longueur d'onde de de Broglie :
+$$\lambda = \frac{h}{p} = \frac{6,626 \times 10^{-34}}{5,4 \times 10^{-24}} = 1,23 \times 10^{-10} \text{ m} = 0,123 \text{ nm}$$
+
+Cette longueur d'onde est comparable aux distances interatomiques, ce qui explique la diffraction des électrons par les cristaux.
+</Example>
+
+### Principe d'incertitude de Heisenberg
+
+<Definition>
+Le **principe d'incertitude de Heisenberg** stipule qu'il est impossible de connaître simultanément et avec une précision arbitraire la position et la quantité de mouvement d'une particule.
+</Definition>
+
+<Formula title="Relations d'incertitude">
+$$\Delta x \cdot \Delta p_x \geq \frac{\hbar}{2}$$
+$$\Delta E \cdot \Delta t \geq \frac{\hbar}{2}$$
+
+où $\hbar = \frac{h}{2\pi} = 1,055 \times 10^{-34}$ J·s
+</Formula>
+
+<Note type="warning">
+Ce principe n'est pas une limitation technologique mais une propriété fondamentale de la nature. Plus on connaît précisément la position, moins on peut connaître la quantité de mouvement, et vice versa.
+</Note>
+
+## Mécanique quantique
+
+### Fonction d'onde
+
+<Definition>
+La **fonction d'onde** $\Psi(x,t)$ décrit l'état quantique d'une particule. Le carré de son module, $|\Psi|^2$, donne la densité de probabilité de présence.
+</Definition>
+
+<Formula title="Interprétation probabiliste">
+$$P(x \text{ à } x+dx) = |\Psi(x,t)|^2 \, dx$$
+
+Normalisation : $\int_{-\infty}^{+\infty} |\Psi(x,t)|^2 \, dx = 1$
+</Formula>
+
+### Équation de Schrödinger
+
+<Formula title="Équation de Schrödinger indépendante du temps">
+$$-\frac{\hbar^2}{2m}\frac{d^2\Psi}{dx^2} + U(x)\Psi = E\Psi$$
+
+où $U(x)$ est l'énergie potentielle.
+</Formula>
+
+### Particule dans un puits de potentiel infini
+
+Pour une particule confinée dans un puits de largeur $L$ :
+
+<Formula title="Niveaux d'énergie quantifiés">
+$$E_n = \frac{n^2 h^2}{8mL^2} = \frac{n^2 \pi^2 \hbar^2}{2mL^2}$$
+
+où $n = 1, 2, 3, ...$ est le nombre quantique principal.
+</Formula>
+
+<Formula title="Fonctions d'onde">
+$$\Psi_n(x) = \sqrt{\frac{2}{L}} \sin\left(\frac{n\pi x}{L}\right)$$
+</Formula>
+
+<Note type="info">
+L'énergie minimale $E_1 \neq 0$ : la particule ne peut jamais être au repos. C'est l'**énergie du point zéro**, une conséquence du principe d'incertitude.
+</Note>
+
+### Effet tunnel
+
+<Definition>
+L'**effet tunnel** est le phénomène quantique par lequel une particule peut traverser une barrière de potentiel même si son énergie est inférieure à la hauteur de la barrière.
+</Definition>
+
+Le coefficient de transmission dépend exponentiellement de l'épaisseur de la barrière :
+
+<Formula>
+$$T \approx e^{-2\kappa L}$$
+
+où $\kappa = \frac{\sqrt{2m(U_0 - E)}}{\hbar}$
+</Formula>
+
+Applications : microscope à effet tunnel (STM), diodes tunnel, fusion dans les étoiles.
+
+## Nombres quantiques
+
+Les électrons dans l'atome sont décrits par quatre nombres quantiques :
+
+| Nombre | Symbole | Valeurs | Signification |
+|--------|---------|---------|---------------|
+| Principal | $n$ | 1, 2, 3, ... | Niveau d'énergie, taille de l'orbitale |
+| Azimutal | $\ell$ | 0 à $n-1$ | Forme de l'orbitale (s, p, d, f) |
+| Magnétique | $m_\ell$ | $-\ell$ à $+\ell$ | Orientation spatiale |
+| Spin | $m_s$ | $\pm 1/2$ | Moment angulaire intrinsèque |
+
+### Principe d'exclusion de Pauli
+
+<Definition>
+Le **principe d'exclusion de Pauli** stipule que deux électrons d'un même atome ne peuvent avoir les quatre mêmes nombres quantiques. Chaque orbitale peut contenir au maximum 2 électrons de spins opposés.
+</Definition>
+
+<Example title="Configuration électronique">
+L'atome de carbone ($Z = 6$) a 6 électrons :
+
+$$1s^2 \, 2s^2 \, 2p^2$$
+
+- Couche $n=1$ : 2 électrons dans l'orbitale $1s$
+- Couche $n=2$ : 2 électrons dans $2s$, 2 électrons dans $2p$
+</Example>

@@ -1,0 +1,126 @@
+---
+title: Géométrie et trigonométrie
+description: Angles, triangles et fonctions trigonométriques
+order: 2
+---
+
+## Angles
+
+### Mesure des angles
+
+Les angles peuvent être mesurés en **degrés** ou en **radians**.
+
+<Definition>
+Un **radian** est l'angle au centre qui intercepte un arc de longueur égale au rayon du cercle.
+</Definition>
+
+<Formula title="Conversion degrés ↔ radians">
+$$\theta_{\text{rad}} = \frac{\pi}{180°} \times \theta_{\text{deg}}$$
+</Formula>
+
+### Valeurs remarquables
+
+| Degrés | 0° | 30° | 45° | 60° | 90° | 180° |
+|--------|-----|------|------|------|------|-------|
+| Radians | 0 | $\pi/6$ | $\pi/4$ | $\pi/3$ | $\pi/2$ | $\pi$ |
+
+### Angles remarquables en mécanique
+
+En analyse des structures, certaines configurations angulaires reviennent fréquemment :
+- Angles droits (90°) : appuis, liaisons
+- Angles de 30°, 45°, 60° : treillis courants
+- Angles complémentaires : $\alpha + \beta = 90°$
+- Angles supplémentaires : $\alpha + \beta = 180°$
+
+## Triangles
+
+### Triangle rectangle
+
+Le triangle rectangle est fondamental pour la décomposition des forces.
+
+<Formula title="Théorème de Pythagore">
+$$h^2 = a^2 + o^2$$
+
+où $h$ est l'hypoténuse, $a$ le côté adjacent et $o$ le côté opposé.
+</Formula>
+
+### Triangle quelconque
+
+Pour un triangle de côtés $a$, $b$, $c$ et d'angles opposés $A$, $B$, $C$ :
+
+<Formula title="Loi des sinus">
+$$\frac{a}{\sin A} = \frac{b}{\sin B} = \frac{c}{\sin C}$$
+</Formula>
+
+<Formula title="Loi des cosinus">
+$$c^2 = a^2 + b^2 - 2ab\cos C$$
+</Formula>
+
+Ces relations sont essentielles pour l'analyse vectorielle des forces non perpendiculaires.
+
+## Fonctions trigonométriques
+
+### Définitions
+
+Dans un triangle rectangle, pour un angle $\theta$ :
+
+<Formula title="Fonctions trigonométriques">
+$$\sin \theta = \frac{\text{côté opposé}}{\text{hypoténuse}} = \frac{o}{h}$$
+
+$$\cos \theta = \frac{\text{côté adjacent}}{\text{hypoténuse}} = \frac{a}{h}$$
+
+$$\tan \theta = \frac{\text{côté opposé}}{\text{côté adjacent}} = \frac{o}{a} = \frac{\sin \theta}{\cos \theta}$$
+</Formula>
+
+### Valeurs remarquables
+
+| $\theta$ | 0° | 30° | 45° | 60° | 90° |
+|----------|-----|------|------|------|------|
+| $\sin \theta$ | 0 | 1/2 | $\sqrt{2}/2$ | $\sqrt{3}/2$ | 1 |
+| $\cos \theta$ | 1 | $\sqrt{3}/2$ | $\sqrt{2}/2$ | 1/2 | 0 |
+| $\tan \theta$ | 0 | $\sqrt{3}/3$ | 1 | $\sqrt{3}$ | $\infty$ |
+
+### Identités trigonométriques utiles
+
+<Formula>
+$$\sin^2 \theta + \cos^2 \theta = 1$$
+$$\sin(-\theta) = -\sin \theta$$
+$$\cos(-\theta) = \cos \theta$$
+$$\sin(90° - \theta) = \cos \theta$$
+$$\cos(90° - \theta) = \sin \theta$$
+</Formula>
+
+## Applications aux forces
+
+### Décomposition d'une force
+
+Une force $\vec{F}$ faisant un angle $\theta$ avec l'horizontale se décompose en :
+
+<Formula title="Composantes d'une force">
+$$F_x = F \cos \theta \quad \text{(composante horizontale)}$$
+$$F_y = F \sin \theta \quad \text{(composante verticale)}$$
+</Formula>
+
+où $F = \|\vec{F}\|$ est la norme (module) de la force.
+
+### Reconstruction d'une force
+
+À partir des composantes, on retrouve :
+
+<Formula>
+$$F = \sqrt{F_x^2 + F_y^2}$$
+$$\theta = \arctan\left(\frac{F_y}{F_x}\right)$$
+</Formula>
+
+<Note type="warning" title="Attention au quadrant">
+La fonction $\arctan$ retourne une valeur entre $-90°$ et $90°$. Il faut ajuster selon les signes de $F_x$ et $F_y$.
+</Note>
+
+<Example title="Décomposition d'une force">
+Une force de 100 N fait un angle de 30° avec l'horizontale. Trouver ses composantes.
+
+$$F_x = 100 \cos 30° = 100 \times 0,866 = 86,6 \text{ N}$$
+$$F_y = 100 \sin 30° = 100 \times 0,5 = 50 \text{ N}$$
+
+**Vérification :** $\sqrt{86,6^2 + 50^2} = \sqrt{7500 + 2500} = \sqrt{10000} = 100$ N ✓
+</Example>

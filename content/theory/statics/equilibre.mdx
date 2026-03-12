@@ -1,0 +1,171 @@
+---
+title: Équilibre du point matériel
+description: Conditions d'équilibre et résolution
+order: 5
+---
+
+## Conditions d'équilibre
+
+<Definition>
+Un **point matériel** est en équilibre de translation si et seulement si la somme vectorielle des forces qui lui sont appliquées est nulle :
+$$\sum \vec{F} = \vec{0}$$
+</Definition>
+
+Cette condition vectorielle se traduit par l'annulation de la résultante selon chaque direction de l'espace.
+
+## Équilibre en 2D
+
+En deux dimensions, la condition d'équilibre se décompose en deux équations scalaires :
+
+<Formula title="Équilibre 2D">
+$$\sum F_x = 0$$
+$$\sum F_y = 0$$
+</Formula>
+
+Ces deux équations permettent de déterminer au maximum **deux inconnues**.
+
+### Méthode de résolution
+
+1. Dessiner le diagramme de corps libre
+2. Choisir un système d'axes (souvent : $x$ horizontal, $y$ vertical)
+3. Décomposer chaque force selon les axes
+4. Écrire $\sum F_x = 0$
+5. Écrire $\sum F_y = 0$
+6. Résoudre le système d'équations
+7. Vérifier les résultats (signes, ordres de grandeur)
+
+<Example title="Équilibre sur plan incliné avec force horizontale">
+Un bloc de masse $m = 10$ kg est maintenu en équilibre sur un plan incliné à $30°$ par une force horizontale $\vec{F}$. Trouver $F$ et la réaction normale $N$.
+
+**Solution** : Avec les axes parallèle et perpendiculaire au plan :
+
+$$\sum F_\parallel = 0 : \quad F\cos 30° - mg\sin 30° = 0$$
+$$\sum F_\perp = 0 : \quad N - F\sin 30° - mg\cos 30° = 0$$
+
+De la première équation :
+$$F = mg\tan 30° = 10 \times 9,81 \times 0,577 = 56,6 \text{ N}$$
+
+De la seconde :
+$$N = F\sin 30° + mg\cos 30° = 56,6 \times 0,5 + 98,1 \times 0,866 = 113,2 \text{ N}$$
+</Example>
+
+## Équilibre en 3D
+
+En trois dimensions, la condition d'équilibre donne trois équations scalaires :
+
+<Formula title="Équilibre 3D">
+$$\sum F_x = 0$$
+$$\sum F_y = 0$$
+$$\sum F_z = 0$$
+</Formula>
+
+On peut donc déterminer au maximum **trois inconnues** pour l'équilibre d'un point matériel en 3D.
+
+## Membrures à deux forces
+
+<Definition>
+Une **membrure à deux forces** est un élément structural :
+- De poids négligeable
+- Soumis à exactement deux forces
+- Appliquées à ses deux extrémités uniquement
+</Definition>
+
+<Note type="warning">
+Pour qu'une membrure à deux forces soit en équilibre, les deux forces doivent :
+1. Être de même norme
+2. Être de sens opposés
+3. Être **colinéaires** (agir le long de la ligne joignant les deux points d'application)
+</Note>
+
+Les membrures à deux forces sont fondamentales dans l'analyse des treillis, où chaque barre est considérée comme une membrure à deux forces en tension ou en compression.
+
+## Types d'appuis
+
+Les appuis sont les liaisons entre une structure et son environnement. Chaque type d'appui permet certains mouvements et en bloque d'autres.
+
+### Appui simple (rotule sur rouleau)
+
+- **Mouvements permis** : Translation horizontale, rotation
+- **Mouvement bloqué** : Translation verticale
+- **Réaction** : 1 force perpendiculaire à la surface d'appui
+- **Inconnues** : 1
+
+### Appui articulé (rotule, charnière)
+
+- **Mouvement permis** : Rotation
+- **Mouvements bloqués** : Translations horizontale et verticale
+- **Réaction** : 1 force dans une direction quelconque (2 composantes)
+- **Inconnues** : 2
+
+### Encastrement
+
+- **Mouvements permis** : Aucun
+- **Mouvements bloqués** : Tous (translations et rotation)
+- **Réactions** : 1 force (2 composantes) + 1 moment
+- **Inconnues** : 3 (en 2D)
+
+### Tableau récapitulatif (2D)
+
+| Type d'appui | Réactions | Inconnues |
+|--------------|-----------|-----------|
+| Appui simple | $R_\perp$ | 1 |
+| Appui articulé | $R_x$, $R_y$ | 2 |
+| Encastrement | $R_x$, $R_y$, $M$ | 3 |
+
+## Isostaticité
+
+<Definition>
+Une structure est **isostatique** si le nombre d'inconnues de réaction est égal au nombre d'équations d'équilibre disponibles. Les réactions peuvent alors être déterminées uniquement par les équations de la statique.
+</Definition>
+
+| Cas | Situation |
+|-----|-----------|
+| Inconnues $<$ Équations | Structure instable (mécanisme) |
+| Inconnues $=$ Équations | Structure isostatique |
+| Inconnues $>$ Équations | Structure hyperstatique |
+
+## Méthodologie complète
+
+### Phase 1 – Analyse préliminaire
+- Identifier le(s) corps à étudier
+- Recenser les forces connues (charges, poids)
+- Identifier les types d'appuis et leurs réactions
+- Vérifier le degré de liberté (isostatique?)
+
+### Phase 2 – Diagramme de corps libre
+- Isoler le corps
+- Représenter toutes les forces et moments externes
+- Indiquer les dimensions, distances et angles
+- Choisir et indiquer le système d'axes
+- Choisir le sens positif des moments
+
+### Phase 3 – Équations d'équilibre
+- Écrire $\sum F_x = 0$
+- Écrire $\sum F_y = 0$
+- Écrire $\sum M_O = 0$ (choisir $O$ judicieusement)
+
+### Phase 4 – Résolution
+- Résoudre le système d'équations
+- Interpréter les signes des résultats
+- Vérifier les résultats (équilibre global, ordres de grandeur)
+
+<Note type="tip" title="Choix du point pour les moments">
+Choisir un point par lequel passent plusieurs forces inconnues permet de simplifier les calculs. Par exemple, prendre les moments par rapport à un appui articulé élimine les deux composantes de sa réaction de l'équation des moments.
+</Note>
+
+<Example title="Poutre sur deux appuis">
+Une poutre horizontale AB de 6 m supporte une charge ponctuelle de 12 kN à 2 m de A. L'appui en A est articulé, l'appui en B est simple (rouleau).
+
+**DCL** : Forces $R_{Ax}$, $R_{Ay}$ en A, force $R_B$ verticale en B, charge $P = 12$ kN à 2 m de A.
+
+**Équations :**
+$$\sum F_x = 0 : R_{Ax} = 0$$
+$$\sum F_y = 0 : R_{Ay} + R_B - 12 = 0$$
+$$\sum M_A = 0 : R_B \times 6 - 12 \times 2 = 0$$
+
+**Résolution :**
+$R_B = 24/6 = 4$ kN, puis $R_{Ay} = 12 - 4 = 8$ kN
+
+**Vérification :**
+$\sum M_B = -R_{Ay} \times 6 + 12 \times 4 = -48 + 48 = 0$ ✓
+</Example>

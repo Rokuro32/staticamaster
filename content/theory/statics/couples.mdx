@@ -1,0 +1,184 @@
+---
+title: Couples de forces
+description: Définition, propriétés et équivalence des couples
+order: 7
+---
+
+## Définition d'un couple
+
+<Definition>
+Un **couple** est un système de deux forces parallèles, de même intensité, de sens opposés, et n'ayant pas la même ligne d'action.
+</Definition>
+
+Un couple produit uniquement une rotation, sans translation. C'est le système de forces le plus simple pour créer une rotation pure.
+
+## Moment d'un couple
+
+<Definition>
+Le **moment d'un couple** est le produit de l'intensité d'une des forces par la distance perpendiculaire entre les deux lignes d'action (bras du couple).
+</Definition>
+
+<Formula title="Moment d'un couple">
+$$M = F \cdot d$$
+
+où $F$ est l'intensité de chaque force et $d$ est la distance entre les lignes d'action.
+</Formula>
+
+### Propriété fondamentale
+
+<Note type="info" title="Invariance du moment">
+Le moment d'un couple est **indépendant du point** par rapport auquel on le calcule. C'est une propriété fondamentale qui distingue les couples des autres systèmes de forces.
+</Note>
+
+<Example title="Démonstration de l'invariance">
+Soit un couple formé de forces $\vec{F}$ et $-\vec{F}$ appliquées en $A$ et $B$.
+
+Pour un point quelconque $O$ :
+$$\vec{M}_O = \vec{OA} \times \vec{F} + \vec{OB} \times (-\vec{F})$$
+$$\vec{M}_O = (\vec{OA} - \vec{OB}) \times \vec{F} = \vec{BA} \times \vec{F}$$
+
+Ce résultat ne dépend que de $\vec{BA}$ et $\vec{F}$, pas de la position de $O$.
+</Example>
+
+## Représentation vectorielle
+
+En 3D, le couple est représenté par un vecteur moment :
+
+<Formula title="Vecteur couple">
+$$\vec{M} = \vec{r} \times \vec{F}$$
+
+où $\vec{r}$ est le vecteur allant d'un point d'application à l'autre.
+</Formula>
+
+Le vecteur couple :
+- A pour direction l'axe de rotation
+- A pour sens celui donné par la règle de la main droite
+- A pour norme $M = F \cdot d$
+
+## Équivalence des couples
+
+<Definition>
+Deux couples sont **équivalents** s'ils ont le même moment (même vecteur couple). Ils produisent le même effet de rotation.
+</Definition>
+
+Conséquences :
+- On peut déplacer un couple dans son plan sans changer son effet
+- On peut modifier les forces et la distance tant que $F \cdot d$ reste constant
+- On peut remplacer un couple par n'importe quel couple équivalent
+
+<Example title="Couples équivalents">
+Les couples suivants sont équivalents :
+- Forces de 100 N séparées de 0,5 m : $M = 100 \times 0,5 = 50$ N·m
+- Forces de 50 N séparées de 1 m : $M = 50 \times 1 = 50$ N·m
+- Forces de 200 N séparées de 0,25 m : $M = 200 \times 0,25 = 50$ N·m
+
+Tous ces couples produisent le même effet de rotation.
+</Example>
+
+## Addition des couples
+
+<Formula title="Somme des couples">
+$$\vec{M}_{total} = \vec{M}_1 + \vec{M}_2 + \cdots = \sum_i \vec{M}_i$$
+</Formula>
+
+### En 2D (couples coplanaires)
+
+Les moments s'additionnent algébriquement :
+$$M_{total} = M_1 + M_2 + \cdots$$
+
+en respectant la convention de signe.
+
+### En 3D
+
+Les vecteurs couples s'additionnent vectoriellement :
+$$\vec{M}_{total} = \sum_i \vec{M}_i$$
+
+## Couple et force équivalents
+
+Tout système de forces peut être réduit à un point donné en :
+- Une **force résultante** $\vec{R}$ appliquée en ce point
+- Un **couple résultant** $\vec{M}$
+
+<Formula title="Réduction à un point O">
+$$\vec{R} = \sum_i \vec{F}_i$$
+$$\vec{M}_O = \sum_i \vec{M}_O(\vec{F}_i)$$
+</Formula>
+
+<Note type="tip">
+La force résultante est indépendante du point de réduction, mais le couple résultant dépend du point choisi.
+</Note>
+
+## Transport d'une force
+
+<Definition>
+Une force $\vec{F}$ appliquée en un point $A$ peut être transportée en un point $B$ en ajoutant un couple dont le moment est égal au moment de la force par rapport à $B$.
+</Definition>
+
+<Formula title="Transport de force">
+$$\vec{F} \text{ en } A \equiv \vec{F} \text{ en } B + \vec{M}$$
+
+où $\vec{M} = \vec{BA} \times \vec{F}$
+</Formula>
+
+<Example title="Transport d'une force">
+Une force $\vec{F} = 200$ N horizontale est appliquée à 0,3 m au-dessus d'un point $O$.
+
+Pour la transporter en $O$, on ajoute un couple :
+$$M = F \times d = 200 \times 0,3 = 60 \text{ N·m}$$
+
+Le système équivalent en $O$ est :
+- Force de 200 N horizontale
+- Couple de 60 N·m (sens horaire si la force pointe vers la droite et le point était au-dessus)
+</Example>
+
+## Applications des couples
+
+### Clé dynamométrique
+
+La clé dynamométrique mesure le couple appliqué pour serrer un boulon. Le couple de serrage recommandé assure un assemblage correct.
+
+### Direction d'un véhicule
+
+Le volant transmet un couple aux roues directrices. Plus le volant est grand, plus il est facile de tourner (bras de levier augmenté).
+
+### Moteurs électriques
+
+Le couple moteur est la grandeur qui caractérise la capacité du moteur à entraîner une charge en rotation.
+
+<Formula title="Puissance et couple">
+$$P = M \cdot \omega = \frac{M \cdot 2\pi n}{60}$$
+
+où $\omega$ est la vitesse angulaire (rad/s) et $n$ la vitesse de rotation (tr/min).
+</Formula>
+
+## Conditions d'équilibre avec couples
+
+Pour l'équilibre complet d'un corps rigide :
+
+<Formula title="Équilibre en 2D">
+$$\sum F_x = 0$$
+$$\sum F_y = 0$$
+$$\sum M_O = 0 \quad \text{(inclut les couples)}$$
+</Formula>
+
+<Note type="warning">
+Les couples purs doivent être inclus dans l'équation des moments mais n'apparaissent pas dans les équations de forces.
+</Note>
+
+<Example title="Équilibre avec couple">
+Une poutre horizontale de 4 m est soumise à :
+- Un appui articulé en A (réactions $R_{Ax}$, $R_{Ay}$)
+- Un appui simple en B
+- Un couple de 20 kN·m appliqué au milieu
+
+**Équations d'équilibre :**
+$$\sum F_x = 0 : R_{Ax} = 0$$
+$$\sum F_y = 0 : R_{Ay} + R_B = 0$$
+$$\sum M_A = 0 : R_B \times 4 + 20 = 0$$
+
+**Résolution :**
+$R_B = -5$ kN (vers le bas)
+$R_{Ay} = 5$ kN (vers le haut)
+
+Les réactions forment un couple qui équilibre le couple appliqué.
+</Example>

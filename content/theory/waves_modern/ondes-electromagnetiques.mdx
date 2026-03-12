@@ -1,0 +1,169 @@
+---
+title: Ondes électromagnétiques
+description: Spectre EM, polarisation et énergie
+order: 4
+---
+
+## Nature des ondes EM
+
+<Definition>
+Une **onde électromagnétique** est constituée de champs électrique $\vec{E}$ et magnétique $\vec{B}$ oscillants, perpendiculaires entre eux et à la direction de propagation.
+</Definition>
+
+Propriétés fondamentales :
+- Onde **transversale**
+- Se propage dans le vide (pas besoin de milieu matériel)
+- Vitesse dans le vide : $c = 299\,792\,458$ m/s $\approx 3 \times 10^8$ m/s
+
+### Relations entre les champs
+
+<Formula>
+$$c = \frac{E}{B} \qquad \vec{E} \perp \vec{B} \perp \vec{v}$$
+</Formula>
+
+La direction de propagation est donnée par $\vec{E} \times \vec{B}$.
+
+### Équations de l'onde EM plane
+
+<Formula>
+$$E_y(x,t) = E_0 \sin(kx - \omega t)$$
+$$B_z(x,t) = B_0 \sin(kx - \omega t)$$
+
+avec $E_0 = cB_0$.
+</Formula>
+
+## Spectre électromagnétique
+
+| Type | Longueur d'onde | Fréquence |
+|------|-----------------|-----------|
+| Ondes radio | $> 1$ mm | $< 300$ GHz |
+| Micro-ondes | 1 mm – 1 m | 300 MHz – 300 GHz |
+| Infrarouge | 700 nm – 1 mm | 300 GHz – 430 THz |
+| Visible | 400 nm – 700 nm | 430 THz – 750 THz |
+| Ultraviolet | 10 nm – 400 nm | 750 THz – 30 PHz |
+| Rayons X | 0,01 nm – 10 nm | 30 PHz – 30 EHz |
+| Rayons gamma | $< 0,01$ nm | $> 30$ EHz |
+
+<Note type="info">
+La lumière visible ne représente qu'une infime partie du spectre EM. Toutes les ondes EM voyagent à la même vitesse $c$ dans le vide.
+</Note>
+
+## Énergie transportée par la lumière
+
+### Vecteur de Poynting
+
+Le flux d'énergie est donné par le **vecteur de Poynting** :
+
+<Formula>
+$$\vec{S} = \frac{1}{\mu_0}\vec{E} \times \vec{B}$$
+</Formula>
+
+### Intensité
+
+<Formula title="Intensité d'une onde EM">
+$$I = \langle S \rangle = \frac{1}{2}\epsilon_0 c E_0^2 = \frac{E_0^2}{2\mu_0 c} = \frac{c B_0^2}{2\mu_0}$$
+</Formula>
+
+### Densité d'énergie
+
+<Formula>
+$$u = \frac{1}{2}\epsilon_0 E^2 + \frac{B^2}{2\mu_0} = \epsilon_0 E^2 = \frac{B^2}{\mu_0}$$
+</Formula>
+
+## Pression de radiation
+
+La lumière exerce une pression sur les surfaces :
+
+<Formula title="Pression de radiation">
+**Surface absorbante :**
+$$P = \frac{I}{c}$$
+
+**Surface réfléchissante :**
+$$P = \frac{2I}{c}$$
+</Formula>
+
+<Note type="tip">
+Cette pression, bien que faible, est à la base de concepts comme les voiles solaires.
+</Note>
+
+## Polarisation
+
+<Definition>
+La **polarisation** d'une onde EM désigne l'orientation du champ électrique $\vec{E}$.
+</Definition>
+
+### Types de polarisation
+
+- **Linéaire** : $\vec{E}$ oscille dans un plan fixe
+- **Circulaire** : l'extrémité de $\vec{E}$ décrit un cercle
+- **Elliptique** : l'extrémité de $\vec{E}$ décrit une ellipse
+- **Non polarisée** : orientation aléatoire de $\vec{E}$
+
+### Polarisation par filtrage
+
+Un polariseur ne laisse passer que la composante du champ $\vec{E}$ parallèle à son axe de transmission.
+
+## Loi de Malus
+
+<Formula title="Loi de Malus">
+Lorsque de la lumière polarisée traverse un polariseur (analyseur) dont l'axe fait un angle $\theta$ avec la polarisation incidente :
+$$I = I_0 \cos^2\theta$$
+</Formula>
+
+- $\theta = 0°$ : transmission maximale
+- $\theta = 90°$ : extinction totale (polariseurs croisés)
+
+## Réflexion et réfraction
+
+### Lois de Snell-Descartes
+
+<Formula title="Lois de la réflexion et de la réfraction">
+**Réflexion :**
+$$\theta_r = \theta_i$$
+
+**Réfraction :**
+$$n_1 \sin\theta_1 = n_2 \sin\theta_2$$
+</Formula>
+
+où $n$ est l'indice de réfraction : $n = c/v$.
+
+### Réflexion totale interne
+
+Lorsque la lumière passe d'un milieu plus réfringent vers un milieu moins réfringent ($n_1 > n_2$), il existe un angle critique :
+
+<Formula>
+$$\sin\theta_c = \frac{n_2}{n_1}$$
+</Formula>
+
+Pour $\theta > \theta_c$, toute la lumière est réfléchie.
+
+### Angle de Brewster
+
+Angle d'incidence pour lequel la lumière réfléchie est totalement polarisée :
+
+<Formula>
+$$\tan\theta_B = \frac{n_2}{n_1}$$
+</Formula>
+
+## Dispersion
+
+<Definition>
+La **dispersion** est le phénomène par lequel l'indice de réfraction dépend de la longueur d'onde.
+</Definition>
+
+Dans la plupart des matériaux transparents (dispersion normale) :
+$$n(\lambda_{\text{bleu}}) > n(\lambda_{\text{rouge}})$$
+
+C'est la cause de la décomposition de la lumière blanche par un prisme.
+
+## Diffusion de Rayleigh
+
+Diffusion de la lumière par des particules beaucoup plus petites que $\lambda$.
+
+<Formula title="Intensité diffusée (Rayleigh)">
+$$I \propto \frac{1}{\lambda^4}$$
+</Formula>
+
+La lumière bleue ($\lambda$ court) est beaucoup plus diffusée que la rouge. Cela explique :
+- Le ciel bleu (diffusion de la lumière solaire)
+- Le soleil rouge au coucher (lumière bleue diffusée hors du trajet direct)

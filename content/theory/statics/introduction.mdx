@@ -1,0 +1,95 @@
+---
+title: Introduction à la statique
+description: Rôle de la statique et hypothèses fondamentales
+order: 1
+---
+
+## Rôle de la statique en physique
+
+<Definition>
+La **statique** est la branche de la mécanique qui étudie les corps au repos ou en mouvement rectiligne uniforme. Elle s'intéresse aux conditions d'équilibre des systèmes mécaniques sous l'action de forces.
+</Definition>
+
+En physique, la statique constitue le fondement de l'analyse des structures. Elle permet de :
+- Déterminer les forces internes et externes agissant sur un système
+- Calculer les réactions aux appuis
+- Vérifier la stabilité d'une structure
+- Dimensionner les éléments structuraux
+
+La statique repose sur les lois de Newton, en particulier la première et la troisième loi :
+
+- **Première loi** : Un corps reste au repos ou en mouvement rectiligne uniforme si la somme des forces qui lui sont appliquées est nulle.
+- **Troisième loi** : À toute action correspond une réaction égale et opposée.
+
+## Hypothèses fondamentales
+
+<Definition title="Corps rigide">
+Un **corps rigide** est un corps indéformable dont les distances entre les points restent constantes, quelle que soit la charge appliquée.
+</Definition>
+
+Cette hypothèse est centrale en statique. Elle permet de :
+- Négliger les déformations pour le calcul des forces
+- Appliquer le principe de transmissibilité des forces
+- Simplifier considérablement les calculs
+
+<Note type="warning">
+L'hypothèse du corps rigide n'est valide que si les déformations sont suffisamment petites pour ne pas modifier la géométrie du problème. En résistance des matériaux, on lèvera partiellement cette hypothèse pour calculer les contraintes et déformations.
+</Note>
+
+### Autres hypothèses courantes
+
+- **Forces concentrées** : Les forces sont appliquées en des points précis
+- **Petits déplacements** : Les déplacements sont négligeables par rapport aux dimensions
+- **Comportement linéaire** : Les effets sont proportionnels aux causes
+- **Principe de superposition** : Les effets de plusieurs forces peuvent être additionnés
+
+## Différence entre statique et dynamique
+
+| Statique | Dynamique |
+|----------|-----------|
+| Étude des corps au repos ou en MRU | Étude des corps en mouvement accéléré |
+| Accélération nulle : $\vec{a} = \vec{0}$ | Accélération non nulle : $\vec{a} \neq \vec{0}$ |
+| $\sum \vec{F} = \vec{0}$ | $\sum \vec{F} = m\vec{a}$ |
+| Indépendant du temps | Dépendant du temps |
+| Calcul des forces d'équilibre | Calcul des trajectoires et accélérations |
+
+## Conditions d'équilibre
+
+En statique, les conditions d'équilibre se réduisent à :
+
+<Formula title="Conditions d'équilibre">
+$$\sum \vec{F} = \vec{0} \quad \text{(équilibre de translation)}$$
+$$\sum \vec{M} = \vec{0} \quad \text{(équilibre de rotation)}$$
+</Formula>
+
+Ces deux conditions vectorielles constituent le fondement de toute l'analyse statique.
+
+### En 2D (3 équations)
+
+<Formula>
+$$\sum F_x = 0$$
+$$\sum F_y = 0$$
+$$\sum M_O = 0$$
+</Formula>
+
+On peut donc déterminer au maximum **3 inconnues**.
+
+### En 3D (6 équations)
+
+<Formula>
+$$\sum F_x = 0 \qquad \sum M_x = 0$$
+$$\sum F_y = 0 \qquad \sum M_y = 0$$
+$$\sum F_z = 0 \qquad \sum M_z = 0$$
+</Formula>
+
+On peut donc déterminer au maximum **6 inconnues**.
+
+## Applications pratiques
+
+La maîtrise de la statique est essentielle pour :
+
+1. **Conception de structures** : Bâtiments, ponts, pylônes
+2. **Analyse de machines** : Grues, presses, systèmes de levage
+3. **Dimensionnement mécanique** : Arbres, engrenages, châssis
+4. **Vérification de stabilité** : Équilibre des structures sous charge
+5. **Calcul des réactions** : Forces aux appuis et dans les liaisons

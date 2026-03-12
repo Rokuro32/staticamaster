@@ -1,0 +1,158 @@
+---
+title: Forces et types de forces
+description: Forces de contact, à distance et DCL
+order: 4
+---
+
+## Forces de contact
+
+Les forces de contact nécessitent un contact physique entre les corps.
+
+### Force normale
+
+<Definition>
+La **force normale** $\vec{N}$ est la composante de la force de contact perpendiculaire à la surface de contact. Elle empêche la pénétration d'un corps dans un autre.
+</Definition>
+
+Caractéristiques :
+- Toujours perpendiculaire à la surface
+- Dirigée vers l'extérieur de la surface
+- Réaction à la compression
+
+### Force de frottement
+
+<Definition>
+La **force de frottement** $\vec{f}$ est la composante de la force de contact parallèle à la surface. Elle s'oppose au glissement relatif des surfaces.
+</Definition>
+
+<Formula title="Frottement statique (corps immobile)">
+$$f_s \leq \mu_s N$$
+</Formula>
+
+<Formula title="Frottement cinétique (corps en mouvement)">
+$$f_k = \mu_k N$$
+</Formula>
+
+où $\mu_s$ et $\mu_k$ sont les coefficients de frottement statique et cinétique, avec généralement $\mu_s > \mu_k$.
+
+### Tension
+
+<Definition>
+La **tension** $\vec{T}$ est la force transmise par un câble, une corde ou un fil. Elle est toujours dirigée le long de l'élément, vers l'extérieur du système considéré.
+</Definition>
+
+Hypothèses courantes :
+- Câble inextensible (longueur constante)
+- Câble de masse négligeable
+- Tension uniforme le long du câble (sans frottement sur poulie)
+
+### Force de ressort
+
+La force exercée par un ressort linéaire suit la **loi de Hooke** :
+
+<Formula title="Loi de Hooke">
+$$F = k \cdot \Delta x$$
+</Formula>
+
+où :
+- $k$ est la constante de raideur du ressort (N/m)
+- $\Delta x$ est l'allongement ou la compression par rapport à la position d'équilibre
+
+## Forces à distance
+
+Les forces à distance agissent sans contact physique.
+
+### Force gravitationnelle (poids)
+
+<Definition>
+Le **poids** $\vec{W}$ est la force d'attraction gravitationnelle exercée par la Terre sur un corps.
+</Definition>
+
+<Formula>
+$$\vec{W} = m\vec{g}$$
+</Formula>
+
+où :
+- $m$ est la masse du corps (kg)
+- $\vec{g}$ est l'accélération gravitationnelle ($g \approx 9,81$ m/s² vers le bas)
+
+<Note type="info">
+Le poids s'applique au **centre de gravité** du corps.
+</Note>
+
+## Diagramme de corps libre (DCL)
+
+<Definition>
+Le **diagramme de corps libre** (DCL) est une représentation schématique d'un corps isolé montrant toutes les forces extérieures qui lui sont appliquées.
+</Definition>
+
+### Construction d'un DCL
+
+1. **Isoler** le corps du reste du système
+2. **Dessiner** le contour du corps simplifié
+3. **Identifier** tous les points de contact et d'application des forces
+4. **Représenter** chaque force externe par un vecteur :
+   - Forces connues (poids, forces appliquées)
+   - Forces de réaction aux appuis
+   - Forces de liaison avec les corps retirés
+5. **Indiquer** les dimensions pertinentes
+6. **Choisir** un système d'axes
+
+<Note type="warning">
+Le DCL est l'outil fondamental de toute analyse statique. Un DCL incomplet ou erroné conduit inévitablement à des résultats faux. Prenez le temps de le construire soigneusement.
+</Note>
+
+## Force résultante
+
+<Definition>
+La **force résultante** $\vec{R}$ est la somme vectorielle de toutes les forces agissant sur un corps :
+$$\vec{R} = \sum_{i=1}^{n} \vec{F}_i = \vec{F}_1 + \vec{F}_2 + \cdots + \vec{F}_n$$
+</Definition>
+
+En composantes :
+
+<Formula>
+$$R_x = \sum F_{ix}$$
+$$R_y = \sum F_{iy}$$
+$$R_z = \sum F_{iz}$$
+</Formula>
+
+La norme de la résultante :
+
+<Formula>
+$$R = \sqrt{R_x^2 + R_y^2 + R_z^2}$$
+</Formula>
+
+## Force équilibrante
+
+<Definition>
+La **force équilibrante** $\vec{E}$ est la force unique qui, ajoutée à un système de forces, produit l'équilibre. Elle est égale et opposée à la résultante :
+$$\vec{E} = -\vec{R}$$
+</Definition>
+
+Ainsi, l'ajout de la force équilibrante donne :
+$$\vec{R} + \vec{E} = \vec{0}$$
+
+Cette notion est utile pour déterminer la force nécessaire pour maintenir un système en équilibre.
+
+<Example title="Équilibre sur un plan incliné">
+Un bloc de masse $m = 10$ kg est au repos sur un plan incliné à $30°$. Le coefficient de frottement statique est $\mu_s = 0,5$.
+
+**DCL du bloc :**
+- Poids : $W = mg = 98,1$ N (vertical vers le bas)
+- Normale : $N$ (perpendiculaire au plan, vers le haut)
+- Frottement : $f$ (parallèle au plan, vers le haut)
+
+**Axes :** parallèle et perpendiculaire au plan
+
+**Équilibre perpendiculaire :**
+$$N - W\cos 30° = 0 \Rightarrow N = 98,1 \times 0,866 = 85 \text{ N}$$
+
+**Équilibre parallèle :**
+$$f - W\sin 30° = 0 \Rightarrow f = 98,1 \times 0,5 = 49 \text{ N}$$
+
+**Vérification du non-glissement :**
+$$f_{\max} = \mu_s N = 0,5 \times 85 = 42,5 \text{ N}$$
+
+Comme $f = 49$ N $> f_{\max} = 42,5$ N, le bloc **glisserait** sans force supplémentaire.
+</Example>
