@@ -1,0 +1,123 @@
+---
+title: Mouvement en 1D
+description: Position, déplacement et représentation graphique
+order: 2
+---
+
+## Position
+
+### Définition
+
+<Definition>
+La **position** d'un objet est sa localisation dans l'espace à un instant donné, repérée par rapport à une origine choisie.
+</Definition>
+
+En une dimension, la position est caractérisée par une seule coordonnée $x(t)$, qui est une fonction du temps.
+
+<Formula title="Position en 1D">
+$$x = x(t)$$
+
+L'unité SI de la position est le **mètre** (m).
+</Formula>
+
+### Notation
+
+- $x_0$ ou $x_i$ : position initiale (à $t = 0$ ou $t = t_i$)
+- $x_f$ ou $x$ : position finale
+- $x(t)$ : position à l'instant $t$
+
+### Remarques importantes
+
+<Note type="info">
+- La position est une grandeur **algébrique** : elle peut être positive ou négative selon le repère choisi.
+- Elle dépend du choix de l'origine.
+- Elle caractérise un état instantané, non un processus.
+</Note>
+
+## Déplacement
+
+### Définition
+
+<Definition>
+Le **déplacement** est la variation de position entre deux instants. C'est une grandeur vectorielle qui indique « de combien et dans quelle direction » l'objet s'est déplacé.
+</Definition>
+
+<Formula title="Déplacement">
+$$\Delta x = x_f - x_i$$
+</Formula>
+
+### Propriétés
+
+- Le déplacement est une grandeur **algébrique**.
+- $\Delta x > 0$ : déplacement dans le sens positif de l'axe.
+- $\Delta x < 0$ : déplacement dans le sens négatif de l'axe.
+- $\Delta x = 0$ : retour au point de départ (pas nécessairement immobilité).
+
+### Différence avec la distance
+
+| Caractéristique | Déplacement $\Delta x$ | Distance $d$ |
+|-----------------|------------------------|--------------|
+| Nature | Algébrique (vectorielle) | Scalaire positive |
+| Dépend du chemin | Non | Oui |
+| Peut être nul avec mouvement | Oui | Non |
+| Unité SI | m | m |
+
+## Distance parcourue
+
+### Définition
+
+<Definition>
+La **distance parcourue** $d$ est la longueur totale du trajet effectué par l'objet. C'est une grandeur scalaire toujours positive ou nulle.
+</Definition>
+
+<Formula title="Distance parcourue">
+$$d = \int_{t_i}^{t_f} |v(t)| \, \mathrm{d}t$$
+</Formula>
+
+<Example title="Différence entre déplacement et distance">
+Un objet part de $x = 0$, va jusqu'à $x = +5\,\text{m}$, puis revient à $x = +2\,\text{m}$.
+
+**Solution :**
+- Déplacement : $\Delta x = 2 - 0 = +2\,\text{m}$
+- Distance parcourue : $d = 5 + 3 = 8\,\text{m}$
+
+Le déplacement ne tient compte que des positions initiale et finale, tandis que la distance compte tout le chemin parcouru.
+</Example>
+
+## Représentation graphique
+
+### Graphique position-temps
+
+Le graphique $x(t)$ représente l'évolution de la position en fonction du temps.
+
+### Lecture du graphique
+
+- La **pente** de la courbe donne la vitesse instantanée.
+- Une pente positive indique un mouvement dans le sens positif.
+- Une pente négative indique un mouvement dans le sens négatif.
+- Une pente nulle (segment horizontal) indique l'immobilité.
+- Un point d'inflexion correspond à un changement d'accélération.
+
+<Note type="tip" title="Astuce de lecture">
+Sur un graphique position-temps :
+- **Pente = Vitesse** : Plus la courbe monte (ou descend) rapidement, plus la vitesse est grande.
+- **Courbure = Accélération** : Une courbe vers le haut indique une accélération positive, vers le bas une accélération négative.
+</Note>
+
+## Notation mathématique
+
+### Notation différentielle
+
+Pour un intervalle de temps infinitésimal $\mathrm{d}t$, la variation de position est notée $\mathrm{d}x$.
+
+<Formula>
+$$\mathrm{d}x = x(t + \mathrm{d}t) - x(t)$$
+</Formula>
+
+### Notation aux limites
+
+Pour un intervalle fini $[t_1, t_2]$ :
+
+<Formula>
+$$\Delta x = x(t_2) - x(t_1) = \left[ x(t) \right]_{t_1}^{t_2}$$
+</Formula>

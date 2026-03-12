@@ -53,25 +53,26 @@ export default function CourseHomePage() {
           {course.description}
         </p>
         <div className="flex justify-center gap-4 flex-wrap">
-          <Link href={`/course/${courseId}/modules`}>
+          <Link href={`/course/${courseId}/theorie`}>
             <Button size="lg" className={`${colors?.bg} text-white hover:opacity-90`}>
-              Voir les modules
+              📖 Théorie
+            </Button>
+          </Link>
+          <Link href={`/course/${courseId}/modules`}>
+            <Button size="lg" variant="outline" className="border-2">
+              📚 Modules
             </Button>
           </Link>
           {['waves_modern', 'statics', 'kinematics'].includes(courseId) && (
             <Link href={`/course/${courseId}/simulations`}>
-              <Button size="lg" className={`${
-                courseId === 'waves_modern' ? 'bg-violet-600 hover:bg-violet-700' :
-                courseId === 'kinematics' ? 'bg-green-600 hover:bg-green-700' :
-                'bg-blue-600 hover:bg-blue-700'
-              } text-white`}>
+              <Button size="lg" variant="outline" className="border-2">
                 🔬 Simulations
               </Button>
             </Link>
           )}
           <Link href={`/course/${courseId}/progress`}>
             <Button variant="outline" size="lg">
-              Ma progression
+              📊 Progression
             </Button>
           </Link>
         </div>
@@ -116,7 +117,16 @@ export default function CourseHomePage() {
         <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
           Fonctionnalités
         </h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
+          <FeatureCard
+            icon={
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            }
+            title="Théorie complète"
+            description="Notes de cours avec formules mathématiques et définitions"
+          />
           <FeatureCard
             icon={
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -124,7 +134,7 @@ export default function CourseHomePage() {
               </svg>
             }
             title="Quiz interactifs"
-            description="QCM et réponses numériques avec validation instantanée"
+            description="QCM et réponses numériques avec validation"
           />
           <FeatureCard
             icon={

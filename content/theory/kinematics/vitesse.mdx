@@ -1,0 +1,147 @@
+---
+title: Vitesse
+description: Vitesse moyenne, instantanée et MRU
+order: 3
+---
+
+## Vitesse moyenne
+
+### Définition
+
+<Definition>
+La **vitesse moyenne** $\bar{v}$ est le rapport du déplacement sur l'intervalle de temps correspondant.
+</Definition>
+
+<Formula title="Vitesse moyenne">
+$$\bar{v} = \frac{\Delta x}{\Delta t} = \frac{x_f - x_i}{t_f - t_i}$$
+
+L'unité SI est le **mètre par seconde** (m/s).
+</Formula>
+
+### Conversions usuelles
+
+<Formula title="Conversion km/h ↔ m/s">
+$$1\,\text{km/h} = \frac{1000\,\text{m}}{3600\,\text{s}} = \frac{1}{3,6}\,\text{m/s} \approx 0,278\,\text{m/s}$$
+
+$$1\,\text{m/s} = 3,6\,\text{km/h}$$
+</Formula>
+
+<Note type="tip" title="Astuce de conversion">
+Pour convertir rapidement :
+- **km/h → m/s** : diviser par 3,6
+- **m/s → km/h** : multiplier par 3,6
+</Note>
+
+### Propriétés
+
+- La vitesse moyenne est une grandeur algébrique.
+- Elle ne dépend que des positions initiale et finale, pas du chemin.
+- Elle peut être nulle même si l'objet s'est déplacé (retour au point de départ).
+
+### Vitesse scalaire moyenne
+
+<Definition>
+La **vitesse scalaire moyenne** est le rapport de la distance parcourue sur le temps.
+</Definition>
+
+<Formula>
+$$\bar{v}_{\text{scal}} = \frac{d}{\Delta t}$$
+</Formula>
+
+Cette grandeur est toujours positive et correspond à ce qu'on appelle communément « vitesse » dans le langage courant.
+
+## Vitesse instantanée
+
+### Définition
+
+<Definition>
+La **vitesse instantanée** $v(t)$ est la limite de la vitesse moyenne lorsque l'intervalle de temps tend vers zéro.
+</Definition>
+
+<Formula title="Vitesse instantanée">
+$$v(t) = \lim_{\Delta t \to 0} \frac{\Delta x}{\Delta t} = \frac{\mathrm{d}x}{\mathrm{d}t}$$
+
+La vitesse instantanée est donc la **dérivée** de la position par rapport au temps.
+</Formula>
+
+### Interprétation
+
+- $v > 0$ : mouvement dans le sens positif de l'axe
+- $v < 0$ : mouvement dans le sens négatif de l'axe
+- $v = 0$ : immobilité instantanée (possible point de rebroussement)
+
+### Opération inverse
+
+Si la vitesse $v(t)$ est connue, la position s'obtient par intégration :
+
+<Formula title="Position à partir de la vitesse">
+$$x(t) = x_0 + \int_{0}^{t} v(t') \, \mathrm{d}t'$$
+
+Le déplacement entre $t_1$ et $t_2$ est :
+$$\Delta x = \int_{t_1}^{t_2} v(t) \, \mathrm{d}t$$
+</Formula>
+
+## Interprétation graphique
+
+### Sur le graphique $x(t)$
+
+La vitesse instantanée correspond à la **pente de la tangente** à la courbe $x(t)$ au point considéré.
+
+### Sur le graphique $v(t)$
+
+<Note type="info">
+- Le déplacement entre $t_1$ et $t_2$ correspond à l'**aire algébrique** sous la courbe $v(t)$.
+- Les aires au-dessus de l'axe du temps sont comptées positivement.
+- Les aires au-dessous de l'axe du temps sont comptées négativement.
+</Note>
+
+<Formula>
+$$\Delta x = \int_{t_1}^{t_2} v(t) \, \mathrm{d}t = \text{aire algébrique sous } v(t)$$
+</Formula>
+
+## Mouvement rectiligne uniforme (MRU)
+
+### Définition
+
+<Definition>
+Un **mouvement rectiligne uniforme** (MRU) est un mouvement en ligne droite à vitesse constante.
+</Definition>
+
+Caractéristiques :
+- Trajectoire : droite
+- Vitesse : $v = \text{constante}$
+- Accélération : $a = 0$
+
+### Équation du mouvement
+
+<Formula title="Équation horaire du MRU">
+$$x(t) = x_0 + v \cdot t$$
+
+où :
+- $x(t)$ : position à l'instant $t$ (m)
+- $x_0$ : position initiale (m)
+- $v$ : vitesse constante (m/s)
+- $t$ : temps (s)
+</Formula>
+
+### Représentations graphiques du MRU
+
+| Graphique | Forme |
+|-----------|-------|
+| $x(t)$ | Droite (pente = $v$) |
+| $v(t)$ | Droite horizontale |
+| $a(t)$ | Droite horizontale à $a = 0$ |
+
+<Example title="Calcul MRU">
+Une voiture roule à vitesse constante de 90 km/h. Elle part d'une position $x_0 = 50$ m à $t = 0$.
+
+**Données :**
+- $v = 90$ km/h $= 25$ m/s
+- $x_0 = 50$ m
+
+**Équation du mouvement :**
+$$x(t) = 50 + 25t$$
+
+**Position à $t = 10$ s :**
+$$x(10) = 50 + 25 \times 10 = 300 \text{ m}$$
+</Example>

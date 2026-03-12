@@ -1,0 +1,95 @@
+---
+title: Introduction à la cinématique
+description: Définitions fondamentales et notions de référentiel
+order: 1
+---
+
+## Définition de la cinématique
+
+<Definition>
+La **cinématique** est la branche de la mécanique qui étudie le mouvement des corps sans considérer les causes qui le produisent. Elle se concentre exclusivement sur la description géométrique et temporelle du mouvement.
+</Definition>
+
+En cinématique, on cherche à répondre aux questions suivantes :
+- Où se trouve un objet à un instant donné ?
+- À quelle vitesse se déplace-t-il ?
+- Comment cette vitesse varie-t-elle dans le temps ?
+- Quelle trajectoire suit-il ?
+
+Les grandeurs fondamentales de la cinématique sont :
+- La **position** $\vec{r}(t)$
+- La **vitesse** $\vec{v}(t)$
+- L'**accélération** $\vec{a}(t)$
+
+## Différence entre cinématique et dynamique
+
+La mécanique classique se divise en deux branches principales :
+
+| Branche | Objet d'étude | Grandeurs clés |
+|---------|--------------|----------------|
+| Cinématique | Description du mouvement | Position, vitesse, accélération |
+| Dynamique | Causes du mouvement | Forces, masses, moments |
+
+La cinématique répond à la question « *comment* l'objet bouge-t-il ? », tandis que la dynamique répond à « *pourquoi* bouge-t-il ainsi ? ».
+
+## Importance en génie mécanique
+
+La maîtrise de la cinématique est essentielle pour le technologue en génie mécanique :
+
+1. **Conception de machines** : Calcul des vitesses de coupe, d'avance, des trajectoires d'outils.
+2. **Analyse de mécanismes** : Étude des systèmes d'engrenages, de courroies, de bielles-manivelles.
+3. **Sécurité** : Évaluation des distances d'arrêt, des forces d'impact.
+4. **Automatisation** : Programmation de trajectoires pour robots et CNC.
+5. **Maintenance** : Diagnostic de vibrations, d'usure par analyse du mouvement.
+
+## Notions de référentiel et de repère
+
+### Référentiel
+
+<Definition>
+Un **référentiel** est un système de référence par rapport auquel on décrit le mouvement. Il comprend :
+- Un corps de référence (considéré comme immobile)
+- Une horloge pour mesurer le temps
+</Definition>
+
+Un référentiel est dit **inertiel** (ou galiléen) si un objet isolé y conserve un mouvement rectiligne uniforme. Dans la pratique, on considère souvent la Terre comme un référentiel inertiel (approximation valide pour les mouvements de courte durée et de faible étendue).
+
+### Repère
+
+Un **repère** est un système de coordonnées attaché au référentiel. Les repères couramment utilisés sont :
+
+1. **Repère cartésien** $(O, \vec{i}, \vec{j}, \vec{k})$ :
+   - Trois axes orthogonaux $x$, $y$, $z$
+   - Vecteurs unitaires $\vec{i}$, $\vec{j}$, $\vec{k}$
+   - Position : $\vec{r} = x\vec{i} + y\vec{j} + z\vec{k}$
+
+2. **Repère polaire/cylindrique** $(O, \vec{e}_r, \vec{e}_\theta)$ :
+   - Coordonnées : $(r, \theta)$ ou $(r, \theta, z)$
+   - Utile pour les mouvements circulaires
+
+### Convention de signes
+
+<Note type="warning">
+Le choix du repère détermine les conventions de signes :
+- L'axe positif est généralement orienté dans le sens du mouvement initial ou vers le haut.
+- Les grandeurs sont algébriques : leur signe indique le sens.
+- Il est **impératif** de définir clairement le repère avant tout calcul.
+</Note>
+
+## Hypothèses usuelles
+
+En cinématique élémentaire, on adopte généralement les hypothèses suivantes :
+
+1. **Corps ponctuels** : Les objets sont réduits à des points matériels (leur dimension est négligeable devant les distances parcourues).
+
+2. **Référentiel terrestre inertiel** : La Terre est considérée comme un référentiel galiléen.
+
+3. **Temps absolu** : Le temps s'écoule de la même façon pour tous les observateurs (approximation classique, non relativiste).
+
+4. **Mouvement dans un plan** : Pour simplifier, on se limite souvent à un mouvement bidimensionnel.
+
+5. **Continuité** : La position, la vitesse et l'accélération sont des fonctions continues du temps.
+
+<Note type="tip">
+Ces hypothèses sont valides pour les applications courantes en génie mécanique, où les vitesses restent très inférieures à celle de la lumière et où les effets relativistes sont négligeables.
+</Note>

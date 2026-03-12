@@ -1,0 +1,159 @@
+---
+title: Chute libre
+description: Mouvement vertical sous gravité
+order: 5
+---
+
+## Hypothèses
+
+<Definition>
+La **chute libre** est le mouvement d'un objet soumis uniquement à son poids, sans résistance de l'air.
+</Definition>
+
+Hypothèses du modèle :
+1. Résistance de l'air négligée
+2. Champ gravitationnel uniforme (valable près de la surface terrestre)
+3. Objet ponctuel (rotation négligée)
+4. Altitude faible (variation de $g$ négligée)
+
+## Accélération gravitationnelle
+
+<Definition>
+L'accélération gravitationnelle $g$ est la valeur de l'accélération en chute libre.
+</Definition>
+
+<Formula title="Valeur de g">
+$$g \approx 9,8\,\text{m/s}^2 \quad \text{(valeur standard)}$$
+</Formula>
+
+Valeurs selon le contexte :
+- Calculs précis : $g = 9,81\,\text{m/s}^2$
+- Calculs simplifiés : $g = 10\,\text{m/s}^2$
+- À Montréal : $g \approx 9,807\,\text{m/s}^2$
+
+<Note type="warning">
+$g$ est une grandeur **positive**. Le signe de l'accélération dépend du choix de l'axe.
+</Note>
+
+## Équations du mouvement
+
+### Convention d'axe
+
+Deux conventions courantes :
+
+**1. Axe vertical vers le haut** (convention usuelle) :
+- $a = -g$ (accélération négative)
+- Position positive vers le haut
+
+**2. Axe vertical vers le bas** :
+- $a = +g$ (accélération positive)
+- Position positive vers le bas
+
+### Équations avec axe vers le haut
+
+<Formula title="Équations de la chute libre (axe vers le haut)">
+**Vitesse :**
+$$v(t) = v_0 - g \cdot t$$
+
+**Position :**
+$$y(t) = y_0 + v_0 \cdot t - \frac{1}{2} g \cdot t^2$$
+
+**Vitesse en fonction de la position :**
+$$v^2 = v_0^2 - 2g(y - y_0)$$
+</Formula>
+
+## Cas particuliers
+
+### Objet lâché sans vitesse initiale
+
+<Formula title="Chute libre depuis le repos">
+Si $v_0 = 0$ (objet lâché) :
+
+$$v(t) = -g \cdot t$$
+
+$$y(t) = y_0 - \frac{1}{2} g \cdot t^2$$
+
+$$v^2 = -2g(y - y_0) = 2g(y_0 - y)$$
+</Formula>
+
+<Example title="Objet lâché d'une hauteur">
+Un objet est lâché d'une hauteur de 45 m. Calculer le temps de chute et la vitesse d'impact.
+
+**Données :**
+- $y_0 = 45$ m, $y_f = 0$ m
+- $v_0 = 0$ m/s
+- $g = 10$ m/s² (simplifié)
+
+**Temps de chute :**
+$$y = y_0 - \frac{1}{2}gt^2$$
+$$0 = 45 - \frac{1}{2}(10)t^2$$
+$$t^2 = 9 \Rightarrow t = 3 \text{ s}$$
+
+**Vitesse d'impact :**
+$$v = -gt = -10 \times 3 = -30 \text{ m/s}$$
+
+Le signe négatif indique que la vitesse est dirigée vers le bas. La vitesse d'impact est de 30 m/s (108 km/h).
+</Example>
+
+### Lancer vertical vers le haut
+
+Pour un objet lancé vers le haut avec une vitesse $v_0 > 0$ :
+
+<Formula title="Lancer vertical">
+**Hauteur maximale** (quand $v = 0$) :
+$$h_{max} = y_0 + \frac{v_0^2}{2g}$$
+
+**Temps pour atteindre la hauteur maximale :**
+$$t_{max} = \frac{v_0}{g}$$
+
+**Temps total de vol** (retour au point de départ) :
+$$t_{total} = \frac{2v_0}{g}$$
+</Formula>
+
+<Example title="Lancer vertical">
+Une balle est lancée verticalement vers le haut à 20 m/s depuis le sol.
+
+**Données :**
+- $y_0 = 0$ m
+- $v_0 = 20$ m/s
+- $g = 10$ m/s²
+
+**Hauteur maximale :**
+$$h_{max} = \frac{v_0^2}{2g} = \frac{20^2}{2 \times 10} = 20 \text{ m}$$
+
+**Temps pour atteindre le sommet :**
+$$t_{max} = \frac{v_0}{g} = \frac{20}{10} = 2 \text{ s}$$
+
+**Temps total de vol :**
+$$t_{total} = 2 \times t_{max} = 4 \text{ s}$$
+
+La balle atteint 20 m de hauteur après 2 s, puis retombe et touche le sol après 4 s au total.
+</Example>
+
+## Symétrie du mouvement
+
+<Note type="info" title="Propriétés de symétrie">
+Pour un lancer vertical avec retour au point de départ :
+
+1. **Symétrie temporelle** : Le temps de montée égale le temps de descente.
+
+2. **Symétrie des vitesses** : La vitesse à une hauteur donnée a la même valeur absolue à la montée et à la descente (sens opposé).
+
+3. **Vitesse finale** : Un objet lancé vers le haut retombe avec la même vitesse qu'il avait au départ (en valeur absolue).
+</Note>
+
+## Mouvement de projectile (aperçu)
+
+Lorsqu'un objet est lancé avec une vitesse initiale faisant un angle avec l'horizontale, le mouvement se décompose en :
+- **Mouvement horizontal** : MRU (vitesse constante $v_x = v_0 \cos\theta$)
+- **Mouvement vertical** : Chute libre (accélération $-g$)
+
+<Formula title="Composantes du mouvement de projectile">
+$$x(t) = x_0 + v_0 \cos\theta \cdot t$$
+
+$$y(t) = y_0 + v_0 \sin\theta \cdot t - \frac{1}{2}g t^2$$
+</Formula>
+
+<Note type="tip">
+Ces équations combinent le MRU horizontal et la chute libre verticale. C'est le principe d'indépendance des mouvements de Galilée.
+</Note>

@@ -1,0 +1,152 @@
+---
+title: Accélération
+description: Accélération et MRUA
+order: 4
+---
+
+## Accélération moyenne
+
+### Définition
+
+<Definition>
+L'**accélération moyenne** $\bar{a}$ est le taux de variation de la vitesse sur un intervalle de temps.
+</Definition>
+
+<Formula title="Accélération moyenne">
+$$\bar{a} = \frac{\Delta v}{\Delta t} = \frac{v_f - v_i}{t_f - t_i}$$
+
+L'unité SI est le **mètre par seconde carrée** (m/s²).
+</Formula>
+
+### Interprétation physique
+
+L'accélération mesure la rapidité avec laquelle la vitesse change :
+- $\bar{a} > 0$ : la vitesse augmente algébriquement
+- $\bar{a} < 0$ : la vitesse diminue algébriquement
+- $\bar{a} = 0$ : la vitesse est constante (MRU)
+
+<Note type="warning" title="Attention">
+Une accélération positive ne signifie pas nécessairement que l'objet accélère au sens usuel. Si $v < 0$ et $a > 0$, l'objet **ralentit** (en valeur absolue).
+</Note>
+
+## Accélération instantanée
+
+### Définition
+
+<Definition>
+L'**accélération instantanée** $a(t)$ est la limite de l'accélération moyenne lorsque l'intervalle de temps tend vers zéro.
+</Definition>
+
+<Formula title="Accélération instantanée">
+$$a(t) = \lim_{\Delta t \to 0} \frac{\Delta v}{\Delta t} = \frac{\mathrm{d}v}{\mathrm{d}t} = \frac{\mathrm{d}^2 x}{\mathrm{d}t^2}$$
+</Formula>
+
+L'accélération est donc :
+- La dérivée première de la vitesse par rapport au temps
+- La dérivée seconde de la position par rapport au temps
+
+### Opération inverse
+
+La vitesse s'obtient par intégration de l'accélération :
+
+<Formula>
+$$v(t) = v_0 + \int_{0}^{t} a(t') \, \mathrm{d}t'$$
+</Formula>
+
+## Interprétation graphique
+
+### Sur le graphique $v(t)$
+
+L'accélération instantanée correspond à la **pente de la tangente** à la courbe $v(t)$.
+
+### Sur le graphique $a(t)$
+
+La variation de vitesse entre $t_1$ et $t_2$ correspond à l'**aire algébrique** sous la courbe $a(t)$ :
+
+<Formula>
+$$\Delta v = \int_{t_1}^{t_2} a(t) \, \mathrm{d}t$$
+</Formula>
+
+### Tableau récapitulatif
+
+| Graphique | Pente | Aire sous la courbe |
+|-----------|-------|---------------------|
+| $x(t)$ | Vitesse $v$ | — |
+| $v(t)$ | Accélération $a$ | Déplacement $\Delta x$ |
+| $a(t)$ | — | Variation de vitesse $\Delta v$ |
+
+## Mouvement rectiligne uniformément accéléré (MRUA)
+
+### Définition
+
+<Definition>
+Un **mouvement rectiligne uniformément accéléré** (MRUA) est un mouvement en ligne droite avec une accélération constante.
+</Definition>
+
+Caractéristiques :
+- Trajectoire : droite
+- Accélération : $a = \text{constante} \neq 0$
+- Vitesse : varie linéairement avec le temps
+- Position : varie de façon quadratique avec le temps
+
+### Équations du MRUA
+
+<Formula title="Équations fondamentales du MRUA">
+**Équation 1 : Vitesse en fonction du temps**
+$$v(t) = v_0 + a \cdot t$$
+
+**Équation 2 : Position en fonction du temps**
+$$x(t) = x_0 + v_0 \cdot t + \frac{1}{2} a \cdot t^2$$
+
+**Équation 3 : Vitesse en fonction de la position (indépendante du temps)**
+$$v^2 = v_0^2 + 2a(x - x_0)$$
+
+**Équation 4 : Position avec vitesse moyenne**
+$$x - x_0 = \frac{v + v_0}{2} \cdot t$$
+</Formula>
+
+### Tableau des équations
+
+| Équation | $x$ | $v$ | $a$ | $t$ |
+|----------|-----|-----|-----|-----|
+| 1 | — | ✓ | ✓ | ✓ |
+| 2 | ✓ | — | ✓ | ✓ |
+| 3 | ✓ | ✓ | ✓ | — |
+| 4 | ✓ | ✓ | — | ✓ |
+
+<Note type="tip" title="Choix de l'équation">
+Choisissez l'équation qui contient l'inconnue recherchée et utilise uniquement les données connues du problème.
+</Note>
+
+### Méthode de résolution
+
+1. Définir le repère (origine, axe positif).
+2. Identifier les données connues et l'inconnue.
+3. Choisir l'équation qui contient l'inconnue et les données connues.
+4. Résoudre algébriquement.
+5. Vérifier la cohérence des unités et du signe du résultat.
+
+### Représentations graphiques du MRUA
+
+| Graphique | Forme | Caractéristique |
+|-----------|-------|-----------------|
+| $x(t)$ | Parabole | Courbure selon signe de $a$ |
+| $v(t)$ | Droite | Pente = $a$ |
+| $a(t)$ | Droite horizontale | Constante = $a$ |
+
+<Example title="Freinage d'une voiture">
+Une voiture roule à 100 km/h et freine uniformément. Elle s'arrête en 5 secondes.
+
+**Données :**
+- $v_0 = 100$ km/h $= 27,8$ m/s
+- $v_f = 0$ m/s
+- $t = 5$ s
+
+**Calcul de l'accélération :**
+$$a = \frac{v_f - v_0}{t} = \frac{0 - 27,8}{5} = -5,56 \text{ m/s}^2$$
+
+**Calcul de la distance de freinage :**
+$$\Delta x = \frac{v_0 + v_f}{2} \cdot t = \frac{27,8 + 0}{2} \times 5 = 69,4 \text{ m}$$
+
+L'accélération est négative (décélération) et la voiture parcourt environ 70 m avant de s'arrêter.
+</Example>
