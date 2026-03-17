@@ -19,6 +19,8 @@ import { TrigCircleSimulator } from '@/components/simulations/TrigCircleSimulato
 import { ElectromagneticWaveSimulator } from '@/components/simulations/ElectromagneticWaveSimulator';
 import { ProjectileMotionSimulator } from '@/components/simulations/ProjectileMotionSimulator';
 import { RelativeMotionSimulator } from '@/components/simulations/RelativeMotionSimulator';
+import { GreenhouseEffectSimulator } from '@/components/simulations/GreenhouseEffectSimulator';
+import { ThermalRadiationSimulator } from '@/components/simulations/ThermalRadiationSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -180,6 +182,38 @@ export default function SimulationsPage() {
                 </h2>
               </div>
               <RelativitySimulator />
+            </section>
+
+            {/* Thermal Radiation Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">🌡️</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Rayonnement thermique
+                </h2>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Explorez les lois du rayonnement des corps noirs : loi de Planck,
+                déplacement de Wien et loi de Stefan-Boltzmann. Comprenez comment
+                la température détermine le spectre et la puissance du rayonnement électromagnétique.
+              </p>
+              <ThermalRadiationSimulator />
+            </section>
+
+            {/* Greenhouse Effect Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">🌍</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Effet de serre
+                </h2>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Visualisez le mécanisme de l'effet de serre : absorption du rayonnement
+                solaire, émission infrarouge par la surface terrestre, et piégeage de
+                l'énergie par les gaz à effet de serre (CO₂, H₂O, CH₄).
+              </p>
+              <GreenhouseEffectSimulator />
             </section>
 
             {/* More simulations can be added here */}
