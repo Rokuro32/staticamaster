@@ -10,80 +10,98 @@ interface Photon {
   vx: number;
   vy: number;
   type: 'solar' | 'infrared';
-  absorbed: boolean;
+  trail: { x: number; y: number }[];
+  justEmitted?: boolean;
+  flashTimer?: number;
 }
 
-interface GasParticle {
-  x: number;
-  y: number;
-  type: 'co2' | 'h2o' | 'ch4' | 'n2o';
+interface Stats {
+  solarAbsorbed: number;
+  irEmittedUp: number;
+  irAbsorbed: number;
+  irEscaped: number;
+  irReturnedToGround: number;
 }
 
 export function GreenhouseEffectSimulator() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
   const photonsRef = useRef<Photon[]>([]);
+  const statsRef = useRef<Stats>({ solarAbsorbed: 0, irEmittedUp: 0, irAbsorbed: 0, irEscaped: 0, irReturnedToGround: 0 });
   const nextIdRef = useRef(0);
+  const frameCountRef = useRef(0);
 
   // Simulation parameters
   const [isPlaying, setIsPlaying] = useState(true);
-  const [co2Level, setCo2Level] = useState(400); // ppm (pre-industrial ~280, current ~420)
+  const [co2Level, setCo2Level] = useState(400);
   const [showLabels, setShowLabels] = useState(true);
-  const [emissionRate, setEmissionRate] = useState(0.5);
-  const [temperature, setTemperature] = useState(15); // Ground temperature in °C
-  const [absorptionCount, setAbsorptionCount] = useState({ solar: 0, ir: 0, escaped: 0, reemitted: 0 });
+  const [speed, setSpeed] = useState(1);
+  const [stats, setStats] = useState<Stats>({ solarAbsorbed: 0, irEmittedUp: 0, irAbsorbed: 0, irEscaped: 0, irReturnedToGround: 0 });
+  const [groundTemp, setGroundTemp] = useState(15);
+  const [energyBalance, setEnergyBalance] = useState(0);
 
-  // Gas particles based on CO2 level
-  const [gasParticles, setGasParticles] = useState<GasParticle[]>([]);
+  // Flash effects for absorption/emission
+  const [flashEffects, setFlashEffects] = useState<{ x: number; y: number; type: 'absorb' | 'emit'; timer: number }[]>([]);
 
-  // Update gas particles when CO2 level changes
+  // Calculate temperature
   useEffect(() => {
-    const numParticles = Math.floor((co2Level - 200) / 10);
-    const particles: GasParticle[] = [];
-    for (let i = 0; i < Math.max(0, numParticles); i++) {
-      particles.push({
-        x: 50 + Math.random() * 700,
-        y: 100 + Math.random() * 200,
-        type: Math.random() < 0.7 ? 'co2' : Math.random() < 0.5 ? 'h2o' : Math.random() < 0.5 ? 'ch4' : 'n2o'
-      });
-    }
-    setGasParticles(particles);
+    const baseTemp = 14;
+    const warming = (co2Level - 280) * 0.006;
+    setGroundTemp(Math.round((baseTemp + warming) * 10) / 10);
   }, [co2Level]);
 
-  // Calculate equilibrium temperature based on greenhouse effect
+  // Update displayed stats periodically
   useEffect(() => {
-    // Simple model: each 100ppm CO2 adds ~0.5°C
-    const baseTemp = 14; // °C without greenhouse effect would be -18°C, with natural is ~15°C
-    const additionalWarming = (co2Level - 280) * 0.005;
-    setTemperature(Math.round((baseTemp + additionalWarming) * 10) / 10);
-  }, [co2Level]);
+    const interval = setInterval(() => {
+      setStats({ ...statsRef.current });
+      // Energy balance: incoming vs outgoing
+      const incoming = statsRef.current.solarAbsorbed;
+      const outgoing = statsRef.current.irEscaped;
+      if (incoming > 0) {
+        setEnergyBalance(Math.round((1 - outgoing / incoming) * 100));
+      }
+    }, 200);
+    return () => clearInterval(interval);
+  }, []);
 
-  const createPhoton = useCallback((type: 'solar' | 'infrared', x?: number, y?: number) => {
+  const createPhoton = useCallback((type: 'solar' | 'infrared', x?: number, y?: number, goingDown?: boolean): Photon => {
     const id = nextIdRef.current++;
+    const speed = 3;
+
     if (type === 'solar') {
+      const startX = x ?? 80 + Math.random() * 200;
       return {
         id,
-        x: x ?? 50 + Math.random() * 700,
-        y: y ?? 0,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: 2 + Math.random(),
+        x: startX,
+        y: y ?? -5,
+        vx: 0.3,
+        vy: speed,
         type,
-        absorbed: false
+        trail: [],
+        justEmitted: true,
+        flashTimer: 10
       };
     } else {
+      const startX = x ?? 50 + Math.random() * 700;
+      const startY = y ?? 440;
+      const angle = goingDown
+        ? Math.PI / 2 + (Math.random() - 0.5) * Math.PI * 0.8  // Going down
+        : -Math.PI / 2 + (Math.random() - 0.5) * Math.PI * 0.3; // Going up
       return {
         id,
-        x: x ?? 50 + Math.random() * 700,
-        y: y ?? 450,
-        vx: (Math.random() - 0.5) * 2,
-        vy: -2 - Math.random(),
+        x: startX,
+        y: startY,
+        vx: Math.cos(angle) * speed * 0.5,
+        vy: Math.sin(angle) * speed,
         type,
-        absorbed: false
+        trail: [],
+        justEmitted: true,
+        flashTimer: 10
       };
     }
   }, []);
 
-  // Animation loop
+  // Main animation loop
   useEffect(() => {
     if (!isPlaying) return;
 
@@ -95,208 +113,340 @@ export function GreenhouseEffectSimulator() {
     const width = canvas.width;
     const height = canvas.height;
 
-    // Atmosphere layer boundaries
-    const spaceY = 50;
-    const atmosphereTop = 100;
-    const atmosphereBottom = 350;
-    const groundY = 450;
+    // Layer positions
+    const spaceY = 60;
+    const atmosphereTop = 120;
+    const greenhouseTop = 180;
+    const greenhouseBottom = 320;
+    const groundY = 440;
 
-    let frameCount = 0;
+    // Gas molecule positions (for visualization)
+    const gasMolecules: { x: number; y: number }[] = [];
+    const numMolecules = Math.floor((co2Level - 150) / 8);
+    for (let i = 0; i < numMolecules; i++) {
+      gasMolecules.push({
+        x: 30 + (i % 25) * 30 + Math.random() * 10,
+        y: greenhouseTop + 20 + Math.floor(i / 25) * 35 + Math.random() * 10
+      });
+    }
 
     const animate = () => {
-      frameCount++;
+      frameCountRef.current++;
+      const frame = frameCountRef.current;
 
-      // Clear canvas
+      // Clear
       ctx.clearRect(0, 0, width, height);
 
-      // Draw space (dark)
-      const spaceGradient = ctx.createLinearGradient(0, 0, 0, spaceY);
-      spaceGradient.addColorStop(0, '#0a0a20');
-      spaceGradient.addColorStop(1, '#1a1a40');
-      ctx.fillStyle = spaceGradient;
+      // Draw space
+      ctx.fillStyle = '#0c0c24';
       ctx.fillRect(0, 0, width, spaceY);
 
-      // Draw atmosphere layers
-      const atmosGradient = ctx.createLinearGradient(0, spaceY, 0, groundY);
-      atmosGradient.addColorStop(0, '#87CEEB');
-      atmosGradient.addColorStop(0.3, '#add8e6');
-      atmosGradient.addColorStop(0.7, '#b0d4e8');
-      atmosGradient.addColorStop(1, '#cce7f5');
-      ctx.fillStyle = atmosGradient;
-      ctx.fillRect(0, spaceY, width, groundY - spaceY);
+      // Stars
+      ctx.fillStyle = '#ffffff';
+      for (let i = 0; i < 20; i++) {
+        const sx = (i * 47 + frame * 0.01) % width;
+        const sy = (i * 23) % spaceY;
+        ctx.beginPath();
+        ctx.arc(sx, sy, 1, 0, Math.PI * 2);
+        ctx.fill();
+      }
 
-      // Draw greenhouse gas layer (more opaque with higher CO2)
-      const opacity = Math.min(0.4, (co2Level - 200) / 800);
-      ctx.fillStyle = `rgba(200, 150, 100, ${opacity})`;
-      ctx.fillRect(0, atmosphereTop, width, atmosphereBottom - atmosphereTop);
-
-      // Draw ground
-      const groundGradient = ctx.createLinearGradient(0, groundY, 0, height);
-      groundGradient.addColorStop(0, '#228B22');
-      groundGradient.addColorStop(0.3, '#1a6b1a');
-      groundGradient.addColorStop(1, '#0d3d0d');
-      ctx.fillStyle = groundGradient;
-      ctx.fillRect(0, groundY, width, height - groundY);
-
-      // Draw sun
+      // Draw Sun
+      const sunX = 100;
+      const sunY = 35;
       ctx.beginPath();
-      ctx.arc(100, 30, 25, 0, Math.PI * 2);
-      const sunGradient = ctx.createRadialGradient(100, 30, 0, 100, 30, 25);
-      sunGradient.addColorStop(0, '#ffff80');
-      sunGradient.addColorStop(0.5, '#ffdd00');
-      sunGradient.addColorStop(1, '#ff8800');
-      ctx.fillStyle = sunGradient;
+      const sunGrad = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, 35);
+      sunGrad.addColorStop(0, '#ffff99');
+      sunGrad.addColorStop(0.5, '#ffcc00');
+      sunGrad.addColorStop(1, '#ff880040');
+      ctx.fillStyle = sunGrad;
+      ctx.arc(sunX, sunY, 35, 0, Math.PI * 2);
       ctx.fill();
 
-      // Sun rays
-      ctx.strokeStyle = '#ffdd0040';
-      ctx.lineWidth = 2;
-      for (let i = 0; i < 8; i++) {
-        const angle = (i / 8) * Math.PI * 2;
+      // Sun rays animation
+      ctx.strokeStyle = '#ffdd0060';
+      ctx.lineWidth = 3;
+      for (let i = 0; i < 12; i++) {
+        const angle = (i / 12) * Math.PI * 2 + frame * 0.02;
+        const r1 = 38 + Math.sin(frame * 0.1 + i) * 3;
+        const r2 = 50 + Math.sin(frame * 0.1 + i) * 5;
         ctx.beginPath();
-        ctx.moveTo(100 + Math.cos(angle) * 30, 30 + Math.sin(angle) * 30);
-        ctx.lineTo(100 + Math.cos(angle) * 45, 30 + Math.sin(angle) * 45);
+        ctx.moveTo(sunX + Math.cos(angle) * r1, sunY + Math.sin(angle) * r1);
+        ctx.lineTo(sunX + Math.cos(angle) * r2, sunY + Math.sin(angle) * r2);
         ctx.stroke();
       }
 
-      // Draw gas particles
-      gasParticles.forEach(particle => {
+      // Upper atmosphere (transparent to visible light)
+      const upperAtmosGrad = ctx.createLinearGradient(0, spaceY, 0, atmosphereTop);
+      upperAtmosGrad.addColorStop(0, '#1a1a50');
+      upperAtmosGrad.addColorStop(1, '#4a90c2');
+      ctx.fillStyle = upperAtmosGrad;
+      ctx.fillRect(0, spaceY, width, atmosphereTop - spaceY);
+
+      // Main atmosphere
+      const atmosGrad = ctx.createLinearGradient(0, atmosphereTop, 0, groundY);
+      atmosGrad.addColorStop(0, '#87CEEB');
+      atmosGrad.addColorStop(0.5, '#a8d8ea');
+      atmosGrad.addColorStop(1, '#cce5f0');
+      ctx.fillStyle = atmosGrad;
+      ctx.fillRect(0, atmosphereTop, width, groundY - atmosphereTop);
+
+      // Greenhouse gas layer (more visible with more CO2)
+      const ghgOpacity = Math.min(0.5, (co2Level - 150) / 600);
+      const ghgGrad = ctx.createLinearGradient(0, greenhouseTop, 0, greenhouseBottom);
+      ghgGrad.addColorStop(0, `rgba(255, 150, 100, ${ghgOpacity * 0.3})`);
+      ghgGrad.addColorStop(0.5, `rgba(255, 120, 80, ${ghgOpacity})`);
+      ghgGrad.addColorStop(1, `rgba(255, 150, 100, ${ghgOpacity * 0.3})`);
+      ctx.fillStyle = ghgGrad;
+      ctx.fillRect(0, greenhouseTop, width, greenhouseBottom - greenhouseTop);
+
+      // Draw gas molecules
+      gasMolecules.forEach((mol, i) => {
+        const wobble = Math.sin(frame * 0.05 + i) * 2;
         ctx.beginPath();
-        ctx.arc(particle.x, particle.y, 4, 0, Math.PI * 2);
-        switch (particle.type) {
-          case 'co2':
-            ctx.fillStyle = '#ff6b6b80';
-            break;
-          case 'h2o':
-            ctx.fillStyle = '#6bb3ff80';
-            break;
-          case 'ch4':
-            ctx.fillStyle = '#6bff6b80';
-            break;
-          case 'n2o':
-            ctx.fillStyle = '#ffbb6b80';
-            break;
-        }
+        ctx.arc(mol.x + wobble, mol.y, 6, 0, Math.PI * 2);
+        ctx.fillStyle = '#ff6b6b90';
         ctx.fill();
+        ctx.strokeStyle = '#ff4444';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // CO2 label on some molecules
+        if (i % 8 === 0) {
+          ctx.font = '8px system-ui';
+          ctx.fillStyle = '#cc3333';
+          ctx.fillText('CO₂', mol.x - 8, mol.y + 3);
+        }
       });
 
-      // Emit new photons
-      if (frameCount % Math.floor(30 / emissionRate) === 0) {
-        // Solar photon from sun
+      // Draw ground
+      const groundGrad = ctx.createLinearGradient(0, groundY, 0, height);
+      groundGrad.addColorStop(0, '#3d8b40');
+      groundGrad.addColorStop(0.3, '#2d6b30');
+      groundGrad.addColorStop(1, '#1d4b20');
+      ctx.fillStyle = groundGrad;
+      ctx.fillRect(0, groundY, width, height - groundY);
+
+      // Ground heat glow based on temperature
+      const heatIntensity = Math.min(1, (groundTemp - 10) / 20);
+      ctx.fillStyle = `rgba(255, 100, 50, ${heatIntensity * 0.3})`;
+      ctx.fillRect(0, groundY, width, 15);
+
+      // Emit photons
+      if (frame % Math.floor(40 / speed) === 0) {
         photonsRef.current.push(createPhoton('solar'));
       }
 
-      // Emit IR from ground based on temperature
-      if (frameCount % Math.floor(20 / emissionRate) === 0) {
-        photonsRef.current.push(createPhoton('infrared'));
+      // Emit IR from ground
+      if (frame % Math.floor(25 / speed) === 0) {
+        const irPhoton = createPhoton('infrared');
+        photonsRef.current.push(irPhoton);
+        statsRef.current.irEmittedUp++;
       }
 
       // Update and draw photons
-      const newAbsorptionCount = { ...absorptionCount };
-      const photonsToKeep: Photon[] = [];
+      const newPhotons: Photon[] = [];
 
       photonsRef.current.forEach(photon => {
-        if (photon.absorbed) return;
+        // Update trail
+        photon.trail.push({ x: photon.x, y: photon.y });
+        if (photon.trail.length > 8) photon.trail.shift();
 
-        // Move photon
-        photon.x += photon.vx;
-        photon.y += photon.vy;
+        // Move
+        photon.x += photon.vx * speed;
+        photon.y += photon.vy * speed;
+
+        // Decrease flash timer
+        if (photon.flashTimer && photon.flashTimer > 0) {
+          photon.flashTimer--;
+        }
 
         // Check boundaries
-        if (photon.y < -10 || photon.y > height + 10 || photon.x < -10 || photon.x > width + 10) {
+        if (photon.x < -20 || photon.x > width + 20 || photon.y < -20 || photon.y > height + 20) {
           if (photon.type === 'infrared' && photon.y < 0) {
-            newAbsorptionCount.escaped++;
+            statsRef.current.irEscaped++;
           }
-          return; // Remove photon
+          return;
         }
 
-        // Solar photon hitting ground
-        if (photon.type === 'solar' && photon.y > groundY) {
-          newAbsorptionCount.solar++;
-          // Absorb and emit IR
+        // Solar photon reaching ground
+        if (photon.type === 'solar' && photon.y > groundY - 5) {
+          statsRef.current.solarAbsorbed++;
+          // Ground absorbs and emits IR
           setTimeout(() => {
             if (isPlaying) {
-              photonsRef.current.push(createPhoton('infrared', photon.x, groundY));
+              const newIR = createPhoton('infrared', photon.x, groundY - 5, false);
+              photonsRef.current.push(newIR);
+              statsRef.current.irEmittedUp++;
             }
-          }, 100);
-          return; // Remove solar photon
+          }, 50);
+          return;
         }
 
-        // IR photon absorption by greenhouse gases
-        if (photon.type === 'infrared' &&
-            photon.y > atmosphereTop &&
-            photon.y < atmosphereBottom) {
-          const absorptionProbability = (co2Level / 1000) * 0.02;
-          if (Math.random() < absorptionProbability) {
-            newAbsorptionCount.ir++;
-            // Re-emit in random direction
+        // IR photon in greenhouse layer
+        if (photon.type === 'infrared' && photon.y > greenhouseTop && photon.y < greenhouseBottom) {
+          const absorptionChance = (co2Level / 400) * 0.035 * speed;
+          if (Math.random() < absorptionChance) {
+            statsRef.current.irAbsorbed++;
+
+            // Re-emit in random direction (50% up, 50% down)
             setTimeout(() => {
               if (isPlaying) {
-                const reemitted = createPhoton('infrared', photon.x, photon.y);
-                reemitted.vy = (Math.random() - 0.5) * 4;
+                const goingDown = Math.random() < 0.5;
+                const reemitted = createPhoton('infrared', photon.x, photon.y, goingDown);
                 reemitted.vx = (Math.random() - 0.5) * 2;
                 photonsRef.current.push(reemitted);
-                newAbsorptionCount.reemitted++;
+                if (goingDown) {
+                  statsRef.current.irReturnedToGround++;
+                }
               }
-            }, 50);
-            return; // Remove absorbed photon
+            }, 30);
+            return;
           }
         }
 
-        // Draw photon
-        ctx.beginPath();
-        if (photon.type === 'solar') {
-          ctx.arc(photon.x, photon.y, 3, 0, Math.PI * 2);
-          ctx.fillStyle = '#ffdd00';
-        } else {
-          ctx.arc(photon.x, photon.y, 3, 0, Math.PI * 2);
-          ctx.fillStyle = '#ff4444';
+        // IR returning to ground
+        if (photon.type === 'infrared' && photon.vy > 0 && photon.y > groundY - 5) {
+          // Absorbed by ground - increases temperature
+          return;
         }
-        ctx.fill();
 
-        // Add glow effect
+        // Draw photon trail
+        if (photon.trail.length > 1) {
+          ctx.beginPath();
+          ctx.moveTo(photon.trail[0].x, photon.trail[0].y);
+          for (let i = 1; i < photon.trail.length; i++) {
+            ctx.lineTo(photon.trail[i].x, photon.trail[i].y);
+          }
+          ctx.strokeStyle = photon.type === 'solar'
+            ? 'rgba(255, 220, 0, 0.4)'
+            : 'rgba(255, 80, 80, 0.4)';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
+
+        // Draw photon as wave
+        const waveLength = photon.type === 'solar' ? 12 : 20;
+        const amplitude = photon.type === 'solar' ? 4 : 6;
+
         ctx.beginPath();
-        ctx.arc(photon.x, photon.y, 6, 0, Math.PI * 2);
-        ctx.fillStyle = photon.type === 'solar' ? '#ffdd0030' : '#ff444430';
+        ctx.strokeStyle = photon.type === 'solar' ? '#ffdd00' : '#ff4444';
+        ctx.lineWidth = photon.type === 'solar' ? 2 : 3;
+
+        const angle = Math.atan2(photon.vy, photon.vx);
+        const perpX = -Math.sin(angle);
+        const perpY = Math.cos(angle);
+
+        for (let i = -2; i <= 2; i++) {
+          const t = i / 2;
+          const wave = Math.sin((photon.x + photon.y) * 0.3 + frame * 0.3) * amplitude;
+          const px = photon.x + perpX * wave * Math.cos(t * Math.PI);
+          const py = photon.y + perpY * wave * Math.cos(t * Math.PI);
+          if (i === -2) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+
+        // Glow effect
+        ctx.beginPath();
+        ctx.arc(photon.x, photon.y, photon.type === 'solar' ? 8 : 10, 0, Math.PI * 2);
+        const glowColor = photon.type === 'solar' ? 'rgba(255, 220, 0, 0.3)' : 'rgba(255, 80, 80, 0.3)';
+        ctx.fillStyle = glowColor;
         ctx.fill();
 
-        photonsToKeep.push(photon);
+        // Arrow head showing direction
+        const arrowSize = 6;
+        ctx.beginPath();
+        ctx.fillStyle = photon.type === 'solar' ? '#ffdd00' : '#ff4444';
+        const headX = photon.x + Math.cos(angle) * 8;
+        const headY = photon.y + Math.sin(angle) * 8;
+        ctx.moveTo(headX, headY);
+        ctx.lineTo(headX - arrowSize * Math.cos(angle - 0.5), headY - arrowSize * Math.sin(angle - 0.5));
+        ctx.lineTo(headX - arrowSize * Math.cos(angle + 0.5), headY - arrowSize * Math.sin(angle + 0.5));
+        ctx.closePath();
+        ctx.fill();
+
+        newPhotons.push(photon);
       });
 
-      photonsRef.current = photonsToKeep;
-      setAbsorptionCount(newAbsorptionCount);
+      photonsRef.current = newPhotons;
 
       // Draw labels
       if (showLabels) {
-        ctx.font = '14px system-ui';
+        ctx.font = 'bold 13px system-ui';
+        ctx.textAlign = 'left';
+
         ctx.fillStyle = '#ffffff';
-        ctx.fillText('Espace', 10, 35);
+        ctx.fillText('ESPACE', 10, 45);
+
+        ctx.fillStyle = '#1a4a70';
+        ctx.fillText('Haute atmosphère', 10, spaceY + 30);
+
+        ctx.fillStyle = '#8b4513';
+        ctx.fillText('COUCHE DE GAZ À EFFET DE SERRE', 10, greenhouseTop + 25);
+        ctx.font = '11px system-ui';
+        ctx.fillText(`(CO₂, H₂O, CH₄, N₂O)`, 10, greenhouseTop + 42);
+
+        ctx.font = 'bold 13px system-ui';
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText('SURFACE TERRESTRE', 10, groundY + 25);
+
+        // Legend box
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.fillRect(width - 200, 75, 190, 90);
+        ctx.strokeStyle = '#ccc';
+        ctx.strokeRect(width - 200, 75, 190, 90);
 
         ctx.fillStyle = '#333';
-        ctx.fillText('Atmosphère', 10, atmosphereTop + 20);
-        ctx.fillText('Couche de gaz à effet de serre', 10, (atmosphereTop + atmosphereBottom) / 2);
+        ctx.font = 'bold 12px system-ui';
+        ctx.fillText('Légende', width - 190, 95);
 
-        ctx.fillStyle = '#fff';
-        ctx.fillText('Surface terrestre', 10, groundY + 20);
-
-        // Legend
-        ctx.fillStyle = '#333';
-        ctx.fillText('Légende:', width - 150, 80);
-
+        // Solar
         ctx.beginPath();
-        ctx.arc(width - 140, 100, 5, 0, Math.PI * 2);
+        ctx.arc(width - 180, 115, 6, 0, Math.PI * 2);
         ctx.fillStyle = '#ffdd00';
         ctx.fill();
         ctx.fillStyle = '#333';
-        ctx.fillText('Rayonnement solaire', width - 130, 105);
+        ctx.font = '11px system-ui';
+        ctx.fillText('Lumière visible (solaire)', width - 168, 119);
 
+        // IR
         ctx.beginPath();
-        ctx.arc(width - 140, 125, 5, 0, Math.PI * 2);
+        ctx.arc(width - 180, 140, 6, 0, Math.PI * 2);
         ctx.fillStyle = '#ff4444';
         ctx.fill();
         ctx.fillStyle = '#333';
-        ctx.fillText('Rayonnement infrarouge', width - 130, 130);
+        ctx.fillText('Rayonnement infrarouge', width - 168, 144);
       }
+
+      // Energy flow arrows
+      ctx.globalAlpha = 0.6;
+
+      // Incoming solar arrow
+      ctx.beginPath();
+      ctx.moveTo(150, 20);
+      ctx.lineTo(250, 100);
+      ctx.strokeStyle = '#ffdd00';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(250, 100);
+      ctx.lineTo(240, 85);
+      ctx.lineTo(235, 100);
+      ctx.closePath();
+      ctx.fillStyle = '#ffdd00';
+      ctx.fill();
+
+      // Outgoing IR arrow (size based on escape rate)
+      const escapeRate = statsRef.current.irEscaped / Math.max(1, statsRef.current.irEmittedUp);
+      ctx.beginPath();
+      ctx.moveTo(width - 150, 100);
+      ctx.lineTo(width - 100, 20);
+      ctx.strokeStyle = '#ff4444';
+      ctx.lineWidth = 2 + escapeRate * 3;
+      ctx.stroke();
+
+      ctx.globalAlpha = 1;
 
       animationRef.current = requestAnimationFrame(animate);
     };
@@ -308,13 +458,28 @@ export function GreenhouseEffectSimulator() {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isPlaying, co2Level, gasParticles, showLabels, emissionRate, createPhoton, absorptionCount]);
+  }, [isPlaying, co2Level, showLabels, speed, createPhoton, groundTemp]);
 
   const resetSimulation = () => {
     photonsRef.current = [];
     nextIdRef.current = 0;
-    setAbsorptionCount({ solar: 0, ir: 0, escaped: 0, reemitted: 0 });
+    frameCountRef.current = 0;
+    statsRef.current = { solarAbsorbed: 0, irEmittedUp: 0, irAbsorbed: 0, irEscaped: 0, irReturnedToGround: 0 };
+    setStats({ solarAbsorbed: 0, irEmittedUp: 0, irAbsorbed: 0, irEscaped: 0, irReturnedToGround: 0 });
+    setEnergyBalance(0);
   };
+
+  // Presets
+  const presets = [
+    { name: 'Pré-industriel', co2: 280, emoji: '🏭' },
+    { name: 'Actuel (2024)', co2: 420, emoji: '🌍' },
+    { name: 'Scénario +2°C', co2: 550, emoji: '🌡️' },
+    { name: 'Scénario extrême', co2: 800, emoji: '🔥' },
+  ];
+
+  const trappingRate = stats.irEmittedUp > 0
+    ? Math.round((stats.irAbsorbed / stats.irEmittedUp) * 100)
+    : 0;
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -322,7 +487,7 @@ export function GreenhouseEffectSimulator() {
       <div className="bg-gradient-to-r from-orange-500 to-red-500 p-4">
         <h3 className="text-lg font-semibold text-white">Effet de serre</h3>
         <p className="text-orange-100 text-sm">
-          Visualisez comment les gaz à effet de serre piègent la chaleur
+          Visualisez comment les gaz à effet de serre piègent le rayonnement infrarouge
         </p>
       </div>
 
@@ -334,12 +499,11 @@ export function GreenhouseEffectSimulator() {
               ref={canvasRef}
               width={800}
               height={500}
-              className="w-full rounded-lg border border-gray-200"
-              style={{ backgroundColor: '#0a0a20' }}
+              className="w-full rounded-lg border border-gray-300 shadow-inner"
             />
 
             {/* Controls */}
-            <div className="flex gap-2 mt-4">
+            <div className="flex flex-wrap gap-2 mt-4">
               <button
                 onClick={() => setIsPlaying(!isPlaying)}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
@@ -356,23 +520,36 @@ export function GreenhouseEffectSimulator() {
               >
                 🔄 Réinitialiser
               </button>
-              <label className="flex items-center gap-2 ml-4">
+              <label className="flex items-center gap-2 ml-2">
                 <input
                   type="checkbox"
                   checked={showLabels}
                   onChange={(e) => setShowLabels(e.target.checked)}
                   className="rounded"
                 />
-                <span className="text-sm text-gray-600">Afficher les labels</span>
+                <span className="text-sm text-gray-600">Labels</span>
               </label>
+              <div className="flex items-center gap-2 ml-auto">
+                <span className="text-sm text-gray-500">Vitesse:</span>
+                <input
+                  type="range"
+                  min="0.5"
+                  max="3"
+                  step="0.5"
+                  value={speed}
+                  onChange={(e) => setSpeed(Number(e.target.value))}
+                  className="w-20 accent-orange-500"
+                />
+                <span className="text-sm text-gray-700">{speed}x</span>
+              </div>
             </div>
           </div>
 
-          {/* Parameters */}
-          <div className="space-y-6">
+          {/* Parameters & Stats */}
+          <div className="space-y-4">
             {/* CO2 Level */}
-            <div className="bg-orange-50 rounded-lg p-4">
-              <label className="block text-sm font-medium text-orange-900 mb-2">
+            <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-lg p-4 border border-orange-200">
+              <label className="block text-sm font-semibold text-orange-900 mb-3">
                 Concentration de CO₂
               </label>
               <input
@@ -381,67 +558,113 @@ export function GreenhouseEffectSimulator() {
                 max="800"
                 value={co2Level}
                 onChange={(e) => setCo2Level(Number(e.target.value))}
-                className="w-full accent-orange-500"
+                className="w-full accent-orange-500 h-2"
               />
-              <div className="flex justify-between text-sm text-orange-700 mt-1">
-                <span>200 ppm</span>
-                <span className="font-semibold">{co2Level} ppm</span>
-                <span>800 ppm</span>
+              <div className="flex justify-between items-center mt-2">
+                <span className="text-xs text-orange-600">200 ppm</span>
+                <span className="text-xl font-bold text-orange-700">{co2Level} ppm</span>
+                <span className="text-xs text-orange-600">800 ppm</span>
               </div>
-              <div className="mt-2 text-xs text-orange-600">
-                Pré-industriel: ~280 ppm | Actuel: ~420 ppm
+
+              {/* Presets */}
+              <div className="flex flex-wrap gap-1 mt-3">
+                {presets.map((preset) => (
+                  <button
+                    key={preset.name}
+                    onClick={() => setCo2Level(preset.co2)}
+                    className={`px-2 py-1 text-xs rounded-full transition-colors ${
+                      co2Level === preset.co2
+                        ? 'bg-orange-500 text-white'
+                        : 'bg-white text-orange-700 hover:bg-orange-100 border border-orange-200'
+                    }`}
+                  >
+                    {preset.emoji} {preset.name}
+                  </button>
+                ))}
               </div>
             </div>
 
-            {/* Temperature display */}
-            <div className="bg-red-50 rounded-lg p-4">
-              <div className="text-sm font-medium text-red-900 mb-2">
-                Température moyenne de surface
+            {/* Temperature */}
+            <div className="bg-gradient-to-br from-red-100 to-orange-100 rounded-lg p-4 border border-red-200">
+              <div className="text-sm font-semibold text-red-900 mb-1">
+                Température de surface
               </div>
-              <div className="text-3xl font-bold text-red-600">
-                {temperature}°C
+              <div className="flex items-baseline gap-2">
+                <span className="text-4xl font-bold text-red-600">{groundTemp}</span>
+                <span className="text-xl text-red-500">°C</span>
               </div>
-              <div className="text-xs text-red-500 mt-1">
-                (Sans effet de serre: -18°C)
+              <div className="mt-2 h-3 bg-gradient-to-r from-blue-400 via-green-400 via-yellow-400 to-red-500 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-white/50 transition-all duration-300"
+                  style={{ marginLeft: `${((groundTemp + 20) / 50) * 100}%`, width: '3px' }}
+                />
+              </div>
+              <div className="flex justify-between text-xs text-gray-500 mt-1">
+                <span>-20°C</span>
+                <span>+30°C</span>
               </div>
             </div>
 
-            {/* Emission rate */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Taux d'émission
-              </label>
-              <input
-                type="range"
-                min="0.1"
-                max="2"
-                step="0.1"
-                value={emissionRate}
-                onChange={(e) => setEmissionRate(Number(e.target.value))}
-                className="w-full accent-orange-500"
-              />
-              <div className="text-sm text-gray-500 text-center">{emissionRate.toFixed(1)}x</div>
-            </div>
+            {/* Stats */}
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <div className="text-sm font-semibold text-gray-700 mb-3 flex items-center justify-between">
+                Statistiques en temps réel
+                <span className={`w-2 h-2 rounded-full ${isPlaying ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`} />
+              </div>
 
-            {/* Statistics */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <div className="text-sm font-medium text-gray-700 mb-3">Statistiques</div>
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-yellow-600">☀️ Solaire absorbé:</span>
-                  <span>{absorptionCount.solar}</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-yellow-600 flex items-center gap-1">
+                    <span className="w-3 h-3 rounded-full bg-yellow-400" />
+                    Solaire absorbé
+                  </span>
+                  <span className="font-mono font-bold">{stats.solarAbsorbed}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-red-600">🔥 IR absorbé:</span>
-                  <span>{absorptionCount.ir}</span>
+
+                <div className="flex justify-between items-center">
+                  <span className="text-red-600 flex items-center gap-1">
+                    <span className="w-3 h-3 rounded-full bg-red-400" />
+                    IR émis (sol)
+                  </span>
+                  <span className="font-mono font-bold">{stats.irEmittedUp}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-blue-600">🚀 IR échappé:</span>
-                  <span>{absorptionCount.escaped}</span>
+
+                <div className="flex justify-between items-center">
+                  <span className="text-orange-600 flex items-center gap-1">
+                    <span className="w-3 h-3 rounded-full bg-orange-400" />
+                    IR absorbé (GES)
+                  </span>
+                  <span className="font-mono font-bold">{stats.irAbsorbed}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-orange-600">↩️ IR réémis:</span>
-                  <span>{absorptionCount.reemitted}</span>
+
+                <div className="flex justify-between items-center">
+                  <span className="text-purple-600 flex items-center gap-1">
+                    <span className="w-3 h-3 rounded-full bg-purple-400" />
+                    IR renvoyé au sol
+                  </span>
+                  <span className="font-mono font-bold">{stats.irReturnedToGround}</span>
+                </div>
+
+                <div className="flex justify-between items-center">
+                  <span className="text-blue-600 flex items-center gap-1">
+                    <span className="w-3 h-3 rounded-full bg-blue-400" />
+                    IR échappé (espace)
+                  </span>
+                  <span className="font-mono font-bold">{stats.irEscaped}</span>
+                </div>
+              </div>
+
+              {/* Trapping indicator */}
+              <div className="mt-4 pt-3 border-t border-gray-200">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-xs text-gray-500">Taux de piégeage IR</span>
+                  <span className="font-bold text-orange-600">{trappingRate}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-orange-400 to-red-500 transition-all duration-300"
+                    style={{ width: `${trappingRate}%` }}
+                  />
                 </div>
               </div>
             </div>
@@ -449,30 +672,42 @@ export function GreenhouseEffectSimulator() {
         </div>
 
         {/* Explanation */}
-        <div className="mt-6 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-6">
-          <h4 className="font-semibold text-gray-900 mb-3">Comment fonctionne l'effet de serre?</h4>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <ol className="list-decimal list-inside space-y-2 text-sm text-gray-700">
-                <li><strong>Rayonnement solaire</strong> (lumière visible, ondes courtes) traverse l'atmosphère et atteint la surface</li>
-                <li><strong>La Terre absorbe</strong> l'énergie et se réchauffe</li>
-                <li><strong>Rayonnement infrarouge</strong> (ondes longues) est émis par la surface chaude</li>
-                <li><strong>Les gaz à effet de serre</strong> (CO₂, H₂O, CH₄) absorbent et réémettent l'IR</li>
-                <li>Une partie de l'IR est <strong>renvoyée vers la surface</strong>, la réchauffant davantage</li>
-              </ol>
+        <div className="mt-6 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-6 border border-orange-100">
+          <h4 className="font-semibold text-gray-900 mb-4">Mécanisme de l'effet de serre</h4>
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="bg-white rounded-lg p-4 border border-orange-200">
+              <div className="text-2xl mb-2">☀️ → 🌍</div>
+              <div className="font-medium text-gray-800">1. Entrée d'énergie</div>
+              <p className="text-sm text-gray-600 mt-1">
+                Le rayonnement solaire (lumière visible) traverse l'atmosphère
+                et est absorbé par la surface terrestre.
+              </p>
             </div>
-            <div className="space-y-3">
-              <div className="text-sm">
-                <span className="font-medium">Bilan radiatif :</span>
-                <BlockMath math="P_{in} = P_{out} \text{ à l'équilibre}" />
-              </div>
-              <div className="text-sm">
-                <span className="font-medium">Loi de Stefan-Boltzmann :</span>
-                <BlockMath math="P = \sigma T^4" />
-              </div>
-              <div className="text-xs text-gray-500">
-                où <InlineMath math="\sigma = 5.67 \times 10^{-8}" /> W/(m²·K⁴)
-              </div>
+            <div className="bg-white rounded-lg p-4 border border-orange-200">
+              <div className="text-2xl mb-2">🌍 → 🔴</div>
+              <div className="font-medium text-gray-800">2. Émission IR</div>
+              <p className="text-sm text-gray-600 mt-1">
+                La Terre chauffée émet un rayonnement infrarouge
+                (chaleur) vers l'atmosphère.
+              </p>
+            </div>
+            <div className="bg-white rounded-lg p-4 border border-orange-200">
+              <div className="text-2xl mb-2">🔴 ↔️ CO₂</div>
+              <div className="font-medium text-gray-800">3. Piégeage</div>
+              <p className="text-sm text-gray-600 mt-1">
+                Les GES absorbent l'IR et le réémettent dans toutes les directions,
+                dont vers le sol = réchauffement.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-4 grid md:grid-cols-2 gap-4">
+            <div className="text-sm">
+              <span className="font-medium">Bilan radiatif à l'équilibre :</span>
+              <BlockMath math="P_{solaire} = P_{IR \, échappé}" />
+            </div>
+            <div className="text-sm">
+              <span className="font-medium">Plus de CO₂ → moins d'IR s'échappe → réchauffement pour rétablir l'équilibre</span>
             </div>
           </div>
         </div>
