@@ -159,6 +159,14 @@ export const COURSES: Course[] = [
         competencies: ['concept-matching', 'shm', 'standing-waves', 'doppler', 'interference', 'diffraction', 'polarization', 'photoelectric', 'relativity'],
         icon: '🎯',
       },
+      {
+        id: 5,
+        title: 'EM Waves Comprehension',
+        titleFr: 'Compréhension - Ondes EM',
+        description: 'Questions conceptuelles sur les ondes électromagnétiques : nature, propriétés, spectre, applications.',
+        competencies: ['em-nature', 'em-spectrum', 'em-properties', 'em-applications', 'light', 'radiation'],
+        icon: '💡',
+      },
     ],
   },
 ];

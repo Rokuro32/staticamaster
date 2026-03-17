@@ -1,0 +1,422 @@
+[
+  {
+    "id": "wm-m5-q1-nature-em",
+    "module": 5,
+    "tags": ["em-nature", "em-properties"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Nature des ondes électromagnétiques",
+    "statement": "Quelle affirmation décrit le mieux la nature des ondes électromagnétiques?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Ce sont des oscillations couplées des champs électrique et magnétique qui se propagent dans l'espace",
+        "isCorrect": true,
+        "feedback": "Correct! Les ondes EM sont constituées de champs E et B perpendiculaires entre eux et à la direction de propagation, oscillant en phase."
+      },
+      {
+        "id": "b",
+        "text": "Ce sont des vibrations de particules matérielles comme les ondes sonores",
+        "isCorrect": false,
+        "feedback": "Non, contrairement aux ondes mécaniques, les ondes EM n'ont pas besoin de matière pour se propager."
+      },
+      {
+        "id": "c",
+        "text": "Ce sont des flux de photons qui ne peuvent se propager que dans un milieu matériel",
+        "isCorrect": false,
+        "feedback": "Non, les ondes EM peuvent se propager dans le vide. C'est d'ailleurs dans le vide qu'elles vont le plus vite (c)."
+      },
+      {
+        "id": "d",
+        "text": "Ce sont uniquement des ondes visibles par l'œil humain",
+        "isCorrect": false,
+        "feedback": "Non, la lumière visible n'est qu'une petite partie du spectre EM. Les ondes radio, micro-ondes, UV, rayons X sont aussi des ondes EM."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Les ondes EM impliquent deux types de champs", "Elles peuvent voyager dans le vide"],
+    "commonMistakes": [],
+    "explanation": "Les ondes électromagnétiques sont des perturbations des champs électrique (E) et magnétique (B). Ces champs sont perpendiculaires entre eux et à la direction de propagation. Contrairement aux ondes mécaniques, elles n'ont pas besoin de milieu matériel."
+  },
+  {
+    "id": "wm-m5-q2-vitesse-lumiere",
+    "module": 5,
+    "tags": ["em-properties", "light"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Vitesse de la lumière dans différents milieux",
+    "statement": "Comment la vitesse de la lumière change-t-elle quand elle passe du vide à un milieu transparent comme le verre?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Elle diminue car l'indice de réfraction du verre est supérieur à 1",
+        "isCorrect": true,
+        "feedback": "Correct! Dans un milieu d'indice n, la vitesse est v = c/n. Comme n > 1 pour le verre, v < c."
+      },
+      {
+        "id": "b",
+        "text": "Elle augmente car le verre est plus dense que le vide",
+        "isCorrect": false,
+        "feedback": "Non, c'est l'inverse! La lumière ralentit dans les milieux plus denses optiquement."
+      },
+      {
+        "id": "c",
+        "text": "Elle reste constante car c est une constante universelle",
+        "isCorrect": false,
+        "feedback": "Non, c est la vitesse dans le vide uniquement. Dans un milieu, la lumière voyage à v = c/n < c."
+      },
+      {
+        "id": "d",
+        "text": "Elle devient nulle car le verre absorbe toute la lumière",
+        "isCorrect": false,
+        "feedback": "Non, le verre transparent laisse passer la lumière, elle est simplement ralentie."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["L'indice de réfraction n indique combien la lumière est ralentie", "n = c/v"],
+    "commonMistakes": [],
+    "explanation": "La vitesse de la lumière dans un milieu est v = c/n, où n est l'indice de réfraction. Pour le verre (n ≈ 1.5), la lumière voyage à environ 200 000 km/s au lieu de 300 000 km/s dans le vide."
+  },
+  {
+    "id": "wm-m5-q3-spectre-em",
+    "module": 5,
+    "tags": ["em-spectrum"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Ordre du spectre électromagnétique",
+    "statement": "En classant les ondes EM par longueur d'onde croissante (de la plus courte à la plus longue), quel est le bon ordre?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Rayons gamma → Rayons X → UV → Visible → Infrarouge → Micro-ondes → Ondes radio",
+        "isCorrect": true,
+        "feedback": "Correct! Les rayons gamma ont les plus courtes longueurs d'onde (< 0.01 nm) et les ondes radio les plus longues (> 1 m)."
+      },
+      {
+        "id": "b",
+        "text": "Ondes radio → Micro-ondes → Infrarouge → Visible → UV → Rayons X → Rayons gamma",
+        "isCorrect": false,
+        "feedback": "Non, c'est l'ordre inverse (longueur d'onde décroissante). La question demande l'ordre croissant."
+      },
+      {
+        "id": "c",
+        "text": "UV → Visible → Infrarouge → Rayons X → Rayons gamma → Ondes radio → Micro-ondes",
+        "isCorrect": false,
+        "feedback": "Non, cet ordre mélange les différentes régions du spectre."
+      },
+      {
+        "id": "d",
+        "text": "Visible → UV → Infrarouge → Rayons X → Ondes radio → Micro-ondes → Rayons gamma",
+        "isCorrect": false,
+        "feedback": "Non, cet ordre n'est pas correct. Le visible est au milieu du spectre."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Plus la longueur d'onde est courte, plus l'énergie est élevée", "Les rayons gamma sont les plus énergétiques"],
+    "commonMistakes": [],
+    "explanation": "Le spectre EM s'étend des rayons gamma (λ < 0.01 nm, très énergétiques) aux ondes radio (λ > 1 m, peu énergétiques). La relation E = hf = hc/λ montre que l'énergie est inversement proportionnelle à la longueur d'onde."
+  },
+  {
+    "id": "wm-m5-q4-polarisation",
+    "module": 5,
+    "tags": ["em-properties", "polarization"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Polarisation de la lumière",
+    "statement": "La lumière du Soleil est dite « non polarisée ». Qu'est-ce que cela signifie?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Le champ électrique oscille dans toutes les directions perpendiculaires à la propagation, de façon aléatoire",
+        "isCorrect": true,
+        "feedback": "Correct! La lumière naturelle contient des ondes dont le champ E oscille dans toutes les directions transversales, sans orientation privilégiée."
+      },
+      {
+        "id": "b",
+        "text": "La lumière ne possède pas de champ électrique",
+        "isCorrect": false,
+        "feedback": "Non, toute onde EM possède un champ E. 'Non polarisée' signifie que l'orientation de E varie aléatoirement."
+      },
+      {
+        "id": "c",
+        "text": "La lumière voyage dans toutes les directions depuis le Soleil",
+        "isCorrect": false,
+        "feedback": "Non, cela décrit l'émission omnidirectionnelle, pas la polarisation. La polarisation concerne l'orientation du champ E."
+      },
+      {
+        "id": "d",
+        "text": "La lumière a une fréquence constante",
+        "isCorrect": false,
+        "feedback": "Non, la lumière solaire contient de nombreuses fréquences (spectre continu). Cela n'a pas de rapport avec la polarisation."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["La polarisation concerne l'orientation du champ électrique", "Une lumière polarisée a une direction d'oscillation privilégiée"],
+    "commonMistakes": [],
+    "explanation": "La polarisation décrit l'orientation du champ E dans le plan perpendiculaire à la propagation. La lumière naturelle est non polarisée car elle provient de nombreux atomes émettant avec des orientations aléatoires. Un polariseur sélectionne une seule direction d'oscillation."
+  },
+  {
+    "id": "wm-m5-q5-energie-photon",
+    "module": 5,
+    "tags": ["em-properties", "radiation"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Énergie des photons",
+    "statement": "Pourquoi les rayons UV sont-ils plus dangereux pour la peau que la lumière visible?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Les photons UV ont une énergie plus élevée car leur fréquence est plus grande",
+        "isCorrect": true,
+        "feedback": "Correct! E = hf, donc une fréquence plus élevée (longueur d'onde plus courte) signifie des photons plus énergétiques, capables d'endommager l'ADN."
+      },
+      {
+        "id": "b",
+        "text": "Les UV voyagent plus vite que la lumière visible",
+        "isCorrect": false,
+        "feedback": "Non, toutes les ondes EM voyagent à la même vitesse c dans le vide."
+      },
+      {
+        "id": "c",
+        "text": "Les UV sont plus intenses que la lumière visible",
+        "isCorrect": false,
+        "feedback": "Non, l'intensité dépend de la source, pas du type d'onde. C'est l'énergie par photon qui compte pour les dommages cellulaires."
+      },
+      {
+        "id": "d",
+        "text": "Les UV sont absorbés plus facilement car ils sont invisibles",
+        "isCorrect": false,
+        "feedback": "Non, la visibilité n'a rien à voir avec la dangerosité. C'est l'énergie des photons qui détermine leur capacité à causer des dommages."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["L'énergie d'un photon est E = hf", "Les UV ont une longueur d'onde plus courte que le visible"],
+    "commonMistakes": [],
+    "explanation": "L'énergie d'un photon est E = hf = hc/λ. Les UV (λ ~ 100-400 nm) ont des photons plus énergétiques que la lumière visible (λ ~ 400-700 nm). Ces photons peuvent briser des liaisons chimiques dans l'ADN, causant des mutations."
+  },
+  {
+    "id": "wm-m5-q6-effet-serre",
+    "module": 5,
+    "tags": ["em-applications", "radiation"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Effet de serre et rayonnement",
+    "statement": "Dans l'effet de serre, pourquoi les gaz comme le CO₂ piègent-ils la chaleur mais laissent passer la lumière du Soleil?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Le CO₂ absorbe le rayonnement infrarouge (émis par la Terre) mais est transparent à la lumière visible (du Soleil)",
+        "isCorrect": true,
+        "feedback": "Correct! Les molécules de CO₂ ont des modes de vibration qui résonnent avec les fréquences IR mais pas avec le visible."
+      },
+      {
+        "id": "b",
+        "text": "Le CO₂ réfléchit toutes les ondes EM vers la Terre",
+        "isCorrect": false,
+        "feedback": "Non, le CO₂ n'agit pas comme un miroir. Il absorbe sélectivement certaines longueurs d'onde."
+      },
+      {
+        "id": "c",
+        "text": "La lumière du Soleil est plus intense donc elle passe à travers",
+        "isCorrect": false,
+        "feedback": "Non, l'absorption dépend de la longueur d'onde, pas de l'intensité."
+      },
+      {
+        "id": "d",
+        "text": "Le CO₂ chauffe l'air directement par conduction thermique",
+        "isCorrect": false,
+        "feedback": "Non, le mécanisme principal est l'absorption et la réémission de rayonnement IR, pas la conduction."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Le Soleil émet surtout dans le visible, la Terre émet dans l'infrarouge", "Les molécules absorbent à des fréquences spécifiques"],
+    "commonMistakes": [],
+    "explanation": "Le Soleil (5778 K) émet principalement dans le visible (pic à ~500 nm). La Terre (288 K) émet dans l'IR (pic à ~10 µm). Le CO₂ a des bandes d'absorption dans l'IR mais pas dans le visible, d'où l'asymétrie qui cause l'effet de serre."
+  },
+  {
+    "id": "wm-m5-q7-interference",
+    "module": 5,
+    "tags": ["em-properties", "interference"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Interférence destructive",
+    "statement": "Dans l'expérience de Young avec deux fentes, qu'observe-t-on aux positions où il y a interférence destructive?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Des franges sombres car les ondes arrivent en opposition de phase et s'annulent",
+        "isCorrect": true,
+        "feedback": "Correct! Quand la différence de chemin est un nombre impair de demi-longueurs d'onde, les ondes sont en opposition de phase et s'annulent."
+      },
+      {
+        "id": "b",
+        "text": "Des franges brillantes car l'énergie est maximale",
+        "isCorrect": false,
+        "feedback": "Non, les franges brillantes correspondent à l'interférence constructive, pas destructive."
+      },
+      {
+        "id": "c",
+        "text": "Des couleurs arc-en-ciel dues à la dispersion",
+        "isCorrect": false,
+        "feedback": "Non, avec une lumière monochromatique, on observe des franges claires et sombres, pas des couleurs."
+      },
+      {
+        "id": "d",
+        "text": "Rien, car la lumière passe entre les deux fentes",
+        "isCorrect": false,
+        "feedback": "Non, l'interférence produit un motif de franges alternativement brillantes et sombres sur l'écran."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["L'interférence destructive se produit quand les ondes sont en opposition de phase", "La différence de chemin est (n + 1/2)λ"],
+    "commonMistakes": [],
+    "explanation": "L'interférence destructive se produit quand Δr = (n + 1/2)λ. Les crêtes d'une onde coïncident avec les creux de l'autre, résultant en une amplitude nulle et donc une frange sombre."
+  },
+  {
+    "id": "wm-m5-q8-diffraction",
+    "module": 5,
+    "tags": ["em-properties", "diffraction"],
+    "difficulty": "intermediate",
+    "type": "mcq",
+    "active": true,
+    "title": "Condition pour observer la diffraction",
+    "statement": "Pour observer une diffraction significative de la lumière par une fente, quelle condition doit être satisfaite?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "La largeur de la fente doit être comparable à la longueur d'onde de la lumière",
+        "isCorrect": true,
+        "feedback": "Correct! La diffraction est maximale quand l'ouverture a une taille proche de λ. Pour la lumière visible (λ ~ 500 nm), il faut des fentes très fines."
+      },
+      {
+        "id": "b",
+        "text": "La fente doit être beaucoup plus grande que la longueur d'onde",
+        "isCorrect": false,
+        "feedback": "Non, si la fente est trop grande, la lumière passe sans diffraction significative (optique géométrique)."
+      },
+      {
+        "id": "c",
+        "text": "La lumière doit être blanche et non monochromatique",
+        "isCorrect": false,
+        "feedback": "Non, la diffraction se produit avec tout type de lumière. La lumière monochromatique donne des motifs plus nets."
+      },
+      {
+        "id": "d",
+        "text": "La fente doit être parfaitement circulaire",
+        "isCorrect": false,
+        "feedback": "Non, la forme de l'ouverture affecte le motif de diffraction mais pas l'existence du phénomène."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["La diffraction est un phénomène qui dépend du rapport entre la taille de l'obstacle et la longueur d'onde", "Pour la lumière visible, λ est de l'ordre de quelques centaines de nm"],
+    "commonMistakes": [],
+    "explanation": "La diffraction est significative quand la taille de l'ouverture est comparable à λ. C'est pourquoi on observe facilement la diffraction des ondes sonores (λ ~ 1 m) autour des obstacles quotidiens, mais il faut des fentes très fines pour la lumière (λ ~ 500 nm)."
+  },
+  {
+    "id": "wm-m5-q9-micro-ondes",
+    "module": 5,
+    "tags": ["em-applications", "em-spectrum"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Fonctionnement d'un four à micro-ondes",
+    "statement": "Comment un four à micro-ondes chauffe-t-il les aliments?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Les micro-ondes font vibrer les molécules d'eau, ce qui produit de la chaleur par friction moléculaire",
+        "isCorrect": true,
+        "feedback": "Correct! Les micro-ondes à 2.45 GHz font osciller les molécules d'eau polaires, convertissant l'énergie EM en chaleur."
+      },
+      {
+        "id": "b",
+        "text": "Les micro-ondes chauffent l'air à l'intérieur du four qui chauffe ensuite les aliments",
+        "isCorrect": false,
+        "feedback": "Non, les micro-ondes chauffent directement les aliments contenant de l'eau. L'air reste relativement froid."
+      },
+      {
+        "id": "c",
+        "text": "Les micro-ondes sont des ondes de chaleur comme l'infrarouge",
+        "isCorrect": false,
+        "feedback": "Non, les micro-ondes (λ ~ cm) et l'infrarouge (λ ~ µm) sont des régions différentes du spectre avec des mécanismes de chauffage différents."
+      },
+      {
+        "id": "d",
+        "text": "Les micro-ondes créent des courants électriques dans les aliments",
+        "isCorrect": false,
+        "feedback": "Non, ce mécanisme (chauffage par induction) est différent et nécessite des matériaux conducteurs."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["Les molécules d'eau sont polaires", "La fréquence des micro-ondes correspond à une résonance des molécules d'eau"],
+    "commonMistakes": [],
+    "explanation": "Les molécules d'eau sont des dipôles électriques. Le champ électrique oscillant des micro-ondes (2.45 GHz) fait tourner ces dipôles très rapidement. Cette agitation moléculaire se traduit par de la chaleur (énergie cinétique thermique)."
+  },
+  {
+    "id": "wm-m5-q10-communication",
+    "module": 5,
+    "tags": ["em-applications", "em-spectrum"],
+    "difficulty": "beginner",
+    "type": "mcq",
+    "active": true,
+    "title": "Ondes radio vs lumière visible",
+    "statement": "Pourquoi utilise-t-on des ondes radio plutôt que la lumière visible pour les communications sans fil longue distance?",
+    "givens": {},
+    "unknowns": [],
+    "options": [
+      {
+        "id": "a",
+        "text": "Les ondes radio peuvent contourner les obstacles et traverser les murs grâce à leur grande longueur d'onde",
+        "isCorrect": true,
+        "feedback": "Correct! La diffraction permet aux ondes radio (λ ~ mètres) de contourner les bâtiments et de traverser certains matériaux."
+      },
+      {
+        "id": "b",
+        "text": "Les ondes radio voyagent plus vite que la lumière",
+        "isCorrect": false,
+        "feedback": "Non, toutes les ondes EM voyagent à la même vitesse c dans le vide."
+      },
+      {
+        "id": "c",
+        "text": "Les ondes radio transportent plus d'énergie que la lumière",
+        "isCorrect": false,
+        "feedback": "Non, c'est l'inverse! Les photons radio ont moins d'énergie que les photons visibles (E = hf)."
+      },
+      {
+        "id": "d",
+        "text": "Les ondes radio sont invisibles donc plus sécurisées",
+        "isCorrect": false,
+        "feedback": "Non, l'invisibilité n'a rien à voir avec la capacité de communication. Les ondes radio sont utilisées pour leurs propriétés de propagation."
+      }
+    ],
+    "answer": { "variable": "concept", "value": 1, "unit": "", "tolerance": 0, "toleranceType": "absolute" },
+    "hints": ["La diffraction dépend du rapport entre λ et la taille des obstacles", "Les ondes radio ont des longueurs d'onde de l'ordre du mètre"],
+    "commonMistakes": [],
+    "explanation": "Les ondes radio (λ ~ cm à km) peuvent diffracter autour des obstacles dont la taille est comparable à leur longueur d'onde. La lumière visible (λ ~ 500 nm) ne peut pas contourner les objets macroscopiques car ils sont gigantesques comparés à λ."
+  }
+]
