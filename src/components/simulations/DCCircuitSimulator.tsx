@@ -206,45 +206,33 @@ function SeriesMode() {
     drawBattery(ctx, xLeft, (yTop + yBot) / 2, emf, true);
     drawWire(ctx, [[xLeft, (yTop + yBot) / 2 + 20], [xLeft, yBot]]);
 
-    // Top wire
-    drawWire(ctx, [[xLeft, yTop], [xRight, yTop]]);
-    // Bottom wire
+    // Bottom return wire
     drawWire(ctx, [[xLeft, yBot], [xRight, yBot]]);
 
-    // Current arrow on top
-    drawCurrentArrow(ctx, (xLeft + xRight) / 2, yTop - 2, 'right', current);
+    // Right vertical wire
+    drawWire(ctx, [[xRight, yTop], [xRight, yBot]]);
 
-    // Resistors on the right side (vertical path)
+    // Resistors along the top wire (horizontal, in series)
     const n = resistors.length;
-    const totalSpan = yBot - yTop;
-    const resLen = totalSpan / n;
+    const totalWireLen = xRight - xLeft;
+    const resWidth = totalWireLen * 0.22; // width of each resistor zigzag
+    const wireGap = (totalWireLen - n * resWidth) / (n + 1);
+
+    let xCursor = xLeft;
 
     for (let i = 0; i < n; i++) {
-      const yStart = yTop + i * resLen;
-      const yEnd = yTop + (i + 1) * resLen;
-      // Draw vertical wire segments then horizontal resistor
-      const yMid = (yStart + yEnd) / 2;
-      const rWidth = 100;
-      const rxLeft = xRight - rWidth / 2;
-      const rxRight = xRight + rWidth / 2;
+      const wireEnd = xCursor + wireGap;
+      drawWire(ctx, [[xCursor, yTop], [wireEnd, yTop]]);
+      xCursor = wireEnd;
 
-      // Wire down to resistor level
-      if (i === 0) {
-        drawWire(ctx, [[xRight, yStart], [xRight, yMid]]);
-      }
-
-      // Horizontal resistor
-      drawWire(ctx, [[xRight, yMid], [rxLeft, yMid]]);
-      drawResistor(ctx, rxLeft - rWidth + 20, yMid, rxLeft + 20, `R${i + 1}`, resistors[i], voltages[i]);
-      drawWire(ctx, [[rxRight, yMid], [xRight, yMid]]);
-
-      // Wire down
-      if (i < n - 1) {
-        drawWire(ctx, [[xRight, yMid], [xRight, yMid + resLen]]);
-      } else {
-        drawWire(ctx, [[xRight, yMid], [xRight, yBot]]);
-      }
+      drawResistor(ctx, xCursor, yTop, xCursor + resWidth, `R${i + 1}`, resistors[i], voltages[i]);
+      xCursor += resWidth;
     }
+    // Final wire segment to xRight
+    drawWire(ctx, [[xCursor, yTop], [xRight, yTop]]);
+
+    // Current arrow on top (between first gap)
+    drawCurrentArrow(ctx, xLeft + wireGap / 2, yTop - 2, 'right', current);
   }, [emf, resistors, current, voltages]);
 
   useEffect(() => { draw(); }, [draw]);
