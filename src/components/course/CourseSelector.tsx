@@ -38,7 +38,7 @@ export function CourseSelector({ onSelect }: CourseSelectorProps) {
         </div>
 
         {/* Course Cards */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {COURSES.map((course) => {
             const colors = COURSE_COLORS[course.id];
             return (

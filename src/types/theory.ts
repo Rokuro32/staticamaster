@@ -57,6 +57,12 @@ export const THEORY_CONFIG: Record<string, CourseTheory> = {
       { slug: 'mouvement-relatif', title: 'Mouvement relatif', description: 'Référentiels et composition des vitesses', order: 7 },
     ],
   },
+  electricity: {
+    courseId: 'electricity',
+    topics: [
+      { slug: 'circuits-dc', title: 'Circuits DC', description: 'Loi d\'Ohm, résistances série et parallèle, pile réelle', order: 1 },
+    ],
+  },
 };
 
 /**

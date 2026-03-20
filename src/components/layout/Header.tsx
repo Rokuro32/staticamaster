@@ -26,7 +26,7 @@ export function Header() {
     router.push('/');
   };
 
-  const coursesWithSimulations = ['waves_modern', 'statics', 'kinematics'];
+  const coursesWithSimulations = ['waves_modern', 'statics', 'kinematics', 'electricity'];
 
   const navItems = selectedCourse ? [
     { href: `/course/${selectedCourse}`, label: 'Accueil', icon: '🏠' },

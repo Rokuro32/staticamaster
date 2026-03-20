@@ -1,6 +1,6 @@
 // Types pour le support multi-cours
 
-export type CourseId = 'statics' | 'kinematics' | 'waves_modern';
+export type CourseId = 'statics' | 'kinematics' | 'waves_modern' | 'electricity';
 
 export interface Course {
   id: CourseId;
@@ -22,7 +22,7 @@ export interface CourseModule {
   icon: string;
 }
 
-// Définition des 3 cours
+// Définition des 4 cours
 export const COURSES: Course[] = [
   {
     id: 'statics',
@@ -169,6 +169,25 @@ export const COURSES: Course[] = [
       },
     ],
   },
+  {
+    id: 'electricity',
+    code: '203-NYC-05',
+    title: 'Électricité et Magnétisme',
+    shortTitle: 'Électricité',
+    description: 'Circuits DC, lois de Kirchhoff, résistances en série et parallèle, piles réelles et résistance interne.',
+    icon: '⚡',
+    color: 'amber',
+    modules: [
+      {
+        id: 1,
+        title: 'DC Circuits',
+        titleFr: 'Circuits DC',
+        description: 'Loi d\'Ohm, résistances en série et parallèle, circuits mixtes, pile réelle',
+        competencies: ['ohms-law', 'series-resistance', 'parallel-resistance', 'mixed-circuits', 'internal-resistance'],
+        icon: '🔋',
+      },
+    ],
+  },
 ];
 
 // Helper functions
@@ -205,5 +224,11 @@ export const COURSE_COLORS: Record<CourseId, { bg: string; text: string; border:
     text: 'text-violet-600',
     border: 'border-violet-500',
     hover: 'hover:bg-violet-50',
+  },
+  electricity: {
+    bg: 'bg-amber-500',
+    text: 'text-amber-600',
+    border: 'border-amber-500',
+    hover: 'hover:bg-amber-50',
   },
 };
