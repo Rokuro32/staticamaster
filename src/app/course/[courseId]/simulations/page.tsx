@@ -22,6 +22,7 @@ import { RelativeMotionSimulator } from '@/components/simulations/RelativeMotion
 import { GreenhouseEffectSimulator } from '@/components/simulations/GreenhouseEffectSimulator';
 import { ThermalRadiationSimulator } from '@/components/simulations/ThermalRadiationSimulator';
 import { DCCircuitSimulator } from '@/components/simulations/DCCircuitSimulator';
+import { ECGSimulator } from '@/components/simulations/ECGSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -336,6 +337,22 @@ export default function SimulationsPage() {
                 Ajustez les paramètres et observez les calculs se mettre à jour en temps réel.
               </p>
               <DCCircuitSimulator />
+            </section>
+
+            {/* ECG Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">💓</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Électrocardiogramme (ECG)
+                </h2>
+              </div>
+              <p className="text-gray-600 mb-4">
+                L'ECG est une application biomédicale fondamentale de l'électricité : le cœur génère
+                des différences de potentiel mesurables à la surface de la peau. Explorez le signal ECG,
+                le modèle du dipôle cardiaque, le triangle d'Einthoven et les pathologies courantes.
+              </p>
+              <ECGSimulator />
             </section>
           </>
         )}
