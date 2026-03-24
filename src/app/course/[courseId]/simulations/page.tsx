@@ -22,6 +22,7 @@ import { RelativeMotionSimulator } from '@/components/simulations/RelativeMotion
 import { GreenhouseEffectSimulator } from '@/components/simulations/GreenhouseEffectSimulator';
 import { ThermalRadiationSimulator } from '@/components/simulations/ThermalRadiationSimulator';
 import { DCCircuitSimulator } from '@/components/simulations/DCCircuitSimulator';
+import { TwinParadoxSimulator } from '@/components/simulations/TwinParadoxSimulator';
 import { ECGSimulator } from '@/components/simulations/ECGSimulator';
 
 export default function SimulationsPage() {
@@ -189,6 +190,22 @@ export default function SimulationsPage() {
                 </h2>
               </div>
               <RelativitySimulator />
+            </section>
+
+            {/* Twin Paradox Simulator Section */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">👥</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Paradoxe des jumeaux
+                </h2>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Un jumeau voyage à vitesse relativiste vers une étoile lointaine puis revient.
+                Explorez la dilatation du temps, le diagramme d'espace-temps de Minkowski et
+                comparez les horloges pour comprendre pourquoi le voyageur revient plus jeune.
+              </p>
+              <TwinParadoxSimulator />
             </section>
 
             {/* Thermal Radiation Simulator Section */}
