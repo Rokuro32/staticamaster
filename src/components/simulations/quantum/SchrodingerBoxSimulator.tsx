@@ -616,7 +616,7 @@ export function SchrodingerBoxSimulator() {
             permises. Le spectre d&rsquo;&eacute;nergie est quantifi&eacute; :
           </p>
           <div className="bg-gray-100 rounded p-3">
-            <BlockMath math="E_n = \frac{n^2 \pi^2 \hbar^2}{2 m L^2}, \quad n = 1, 2, 3, \ldots" />
+            <BlockMath math="E_n = \\frac{n^2 \\pi^2 \\hbar^2}{2 m L^2}, \\quad n = 1, 2, 3, \\ldots" />
           </div>
           <p>
             La particule <strong className="text-green-700">ne peut pas avoir une &eacute;nergie nulle</strong>.
@@ -628,7 +628,7 @@ export function SchrodingerBoxSimulator() {
             Cette quantification d&eacute;coule des <strong className="text-green-700">conditions aux limites</strong> :
           </p>
           <div className="bg-gray-100 rounded p-3">
-            <BlockMath math="\psi(0) = \psi(L) = 0" />
+            <BlockMath math="\\psi(0) = \\psi(L) = 0" />
           </div>
           <p>
             La fonction d&rsquo;onde doit s&rsquo;annuler aux bords du puits, ce qui impose
@@ -647,11 +647,11 @@ export function SchrodingerBoxSimulator() {
             L&rsquo;&eacute;quation de Schr&ouml;dinger <strong className="text-blue-700">d&eacute;pendante du temps</strong> :
           </p>
           <div className="bg-gray-100 rounded p-3">
-            <BlockMath math="i\hbar \frac{\partial \Psi}{\partial t} = \hat{H} \Psi" />
+            <BlockMath math="i\\hbar \\frac{\\partial \\Psi}{\\partial t} = \\hat{H} \\Psi" />
           </div>
           <p className="text-gray-600 text-xs">
-            <InlineMath math="i\hbar \partial\Psi/\partial t" /> : &eacute;volution temporelle &bull;{' '}
-            <InlineMath math="\hat{H}" /> : op&eacute;rateur hamiltonien (&eacute;nergie totale)
+            <InlineMath math="i\\hbar \\partial\\Psi/\\partial t" /> : &eacute;volution temporelle &bull;{' '}
+            <InlineMath math="\\hat{H}" /> : op&eacute;rateur hamiltonien (&eacute;nergie totale)
           </p>
 
           <p>
@@ -660,19 +660,19 @@ export function SchrodingerBoxSimulator() {
             <strong>ind&eacute;pendante du temps</strong> :
           </p>
           <div className="bg-gray-100 rounded p-3">
-            <BlockMath math="\hat{H}\psi = E\psi" />
+            <BlockMath math="\\hat{H}\\psi = E\\psi" />
           </div>
 
           <p>L&rsquo;op&eacute;rateur hamiltonien s&rsquo;&eacute;crit :</p>
           <div className="bg-gray-100 rounded p-3">
-            <BlockMath math="\hat{H} = \underbrace{-\frac{\hbar^2}{2m}\frac{d^2}{dx^2}}_{\text{énergie cinétique}} + \underbrace{V(x)}_{\text{énergie potentielle}}" />
+            <BlockMath math="\\hat{H} = \\underbrace{-\\frac{\\hbar^2}{2m}\\frac{d^2}{dx^2}}_{\\text{énergie cinétique}} + \\underbrace{V(x)}_{\\text{énergie potentielle}}" />
           </div>
           <p className="text-gray-600 text-xs">
             Le premier terme repr&eacute;sente l&rsquo;&eacute;nergie cin&eacute;tique quantique
-            (li&eacute;e &agrave; la courbure de <InlineMath math="\psi" />).
+            (li&eacute;e &agrave; la courbure de <InlineMath math="\\psi" />).
             Le second est le potentiel dans lequel se trouve la particule
             (<InlineMath math="V=0" /> &agrave; l&rsquo;int&eacute;rieur du puits,{' '}
-            <InlineMath math="V=\infty" /> &agrave; l&rsquo;ext&eacute;rieur).
+            <InlineMath math="V=\\infty" /> &agrave; l&rsquo;ext&eacute;rieur).
           </p>
         </CollapsiblePanel>
 
@@ -688,14 +688,14 @@ export function SchrodingerBoxSimulator() {
             int&eacute;rieurs) de la fonction d&rsquo;onde est :
           </p>
           <div className="bg-gray-100 rounded p-3">
-            <BlockMath math="\text{nombre de noeuds} = n - 1" />
+            <BlockMath math="\\text{nombre de noeuds} = n - 1" />
           </div>
           <p>
             Pour <InlineMath math={`n = ${n}`} />, il y a{' '}
             <strong className="text-purple-700">{n - 1} nœud{n - 1 !== 1 ? 's' : ''}</strong>.
           </p>
           <p>
-            &Agrave; chaque nœud, <InlineMath math="|\psi(x)|^2 = 0" /> : la particule a une{' '}
+            &Agrave; chaque nœud, <InlineMath math="|\\psi(x)|^2 = 0" /> : la particule a une{' '}
             <strong className="text-purple-700">probabilit&eacute; nulle</strong> d&rsquo;&ecirc;tre
             trouv&eacute;e &agrave; cette position. C&rsquo;est un ph&eacute;nom&egrave;ne purement quantique
             qui <em>n&rsquo;a aucun analogue classique</em>.
@@ -719,7 +719,7 @@ export function SchrodingerBoxSimulator() {
             <strong className="text-gray-900">Schr&ouml;dinger</strong> publie une s&eacute;rie
             d&rsquo;articles fondateurs introduisant la <em>m&eacute;canique ondulatoire</em>.
             Il propose que les particules soient d&eacute;crites par une fonction d&rsquo;onde{' '}
-            <InlineMath math="\Psi" /> ob&eacute;issant &agrave; une &eacute;quation aux
+            <InlineMath math="\\Psi" /> ob&eacute;issant &agrave; une &eacute;quation aux
             d&eacute;riv&eacute;es partielles.
           </p>
           <p>

@@ -574,7 +574,7 @@ export function PhotoelectricSimulator() {
         {/* Metal selector */}
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2">
           <label className="text-sm font-medium text-gray-700 block">
-            Métal (travail de sortie <InlineMath math="\phi" />)
+            Métal (travail de sortie <InlineMath math="\\phi" />)
           </label>
           <select
             value={metalIdx}
@@ -669,7 +669,7 @@ export function PhotoelectricSimulator() {
           L&apos;équation photoélectrique s&apos;écrit :
         </p>
         <div className="my-3 text-center">
-          <BlockMath math="E_k = hf - \phi" />
+          <BlockMath math="E_k = hf - \\phi" />
         </div>
         <div className="flex flex-wrap gap-4 justify-center text-xs">
           <HoverTerm tooltip="Énergie cinétique maximale de l'électron éjecté">
@@ -679,7 +679,7 @@ export function PhotoelectricSimulator() {
             <InlineMath math="hf" /> = énergie du photon
           </HoverTerm>
           <HoverTerm tooltip="Travail de sortie : énergie minimale pour arracher un électron du métal">
-            <InlineMath math="\phi" /> = travail de sortie
+            <InlineMath math="\\phi" /> = travail de sortie
           </HoverTerm>
         </div>
         <div className="mt-3 bg-green-100 border border-green-300 rounded p-3 text-xs space-y-1">

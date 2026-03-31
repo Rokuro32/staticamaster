@@ -703,7 +703,7 @@ export function BohrModelSimulator() {
             <BlockMath math="\\frac{1}{\\lambda} = R_H \\left( \\frac{1}{n_f^2} - \\frac{1}{n_i^2} \\right)" />
           </div>
           <p className="text-sm text-gray-600">
-            avec <InlineMath math="R_H = 1{,}097 \times 10^7 \text{ m}^{-1}" /> (constante de Rydberg)
+            avec <InlineMath math="R_H = 1{,}097 \\times 10^7 \\text{ m}^{-1}" /> (constante de Rydberg)
           </p>
         </div>
       </div>
@@ -744,10 +744,10 @@ export function BohrModelSimulator() {
                 <th className="px-3 py-2 border-b">Transition</th>
                 <th className="px-3 py-2 border-b">Série</th>
                 <th className="px-3 py-2 border-b">
-                  <InlineMath math="\lambda" /> (nm)
+                  <InlineMath math="\\lambda" /> (nm)
                 </th>
                 <th className="px-3 py-2 border-b">
-                  <InlineMath math="\Delta E" /> (eV)
+                  <InlineMath math="\\Delta E" /> (eV)
                 </th>
                 <th className="px-3 py-2 border-b">Couleur</th>
               </tr>
@@ -796,11 +796,11 @@ export function BohrModelSimulator() {
             </li>
             <li>
               Le <strong>moment cinétique orbital</strong> est quantifié :
-              <InlineMath math="L = n\hbar" /> avec <InlineMath math="n = 1, 2, 3, \ldots" />
+              <InlineMath math="L = n\\hbar" /> avec <InlineMath math="n = 1, 2, 3, \\ldots" />
             </li>
             <li>
               L&apos;émission ou l&apos;absorption de lumière se produit lors d&apos;une <strong>transition</strong> entre
-              deux niveaux, avec un photon d&apos;énergie <InlineMath math="h\nu = |E_i - E_f|" />.
+              deux niveaux, avec un photon d&apos;énergie <InlineMath math={"h\\nu = |E_i - E_f|"} />.
             </li>
           </ol>
           <p>
