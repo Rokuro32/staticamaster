@@ -560,29 +560,27 @@ export function BohrModelSimulator() {
           ref={mainCanvasRef}
           width={W}
           height={H}
-          className="rounded-lg border border-gray-700 max-w-full"
-          style={{ background: '#0a0a1a' }}
+          className="rounded-lg border border-gray-300 bg-gray-900 max-w-full"
         />
       </div>
 
       {/* Spectrum bar */}
       <div className="flex justify-center">
         <div className="relative">
-          <p className="text-center text-sm text-gray-400 mb-1">
+          <p className="text-center text-sm text-gray-600 mb-1">
             Spectre d&apos;emission accumule
           </p>
           <canvas
             ref={spectrumCanvasRef}
             width={W}
             height={SPEC_H}
-            className="rounded border border-gray-700 max-w-full"
-            style={{ background: '#111' }}
+            className="rounded border border-gray-300 bg-gray-900 max-w-full"
           />
         </div>
       </div>
 
       {/* Controls */}
-      <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-4">
+      <div className="bg-gray-50 rounded-lg p-4 space-y-4 border border-gray-200">
         <h3 className="font-semibold text-lg">Controles</h3>
 
         <div className="flex flex-wrap gap-4 items-end">
@@ -596,7 +594,7 @@ export function BohrModelSimulator() {
                 setNi(val);
                 if (val <= nf) setNf(val - 1);
               }}
-              className="border rounded px-3 py-1.5 bg-white dark:bg-gray-700 dark:border-gray-600"
+              className="border border-gray-300 rounded px-3 py-1.5 bg-white"
             >
               {[2, 3, 4, 5].map((n) => (
                 <option key={n} value={n}>
@@ -612,7 +610,7 @@ export function BohrModelSimulator() {
             <select
               value={nf}
               onChange={(e) => setNf(Number(e.target.value))}
-              className="border rounded px-3 py-1.5 bg-white dark:bg-gray-700 dark:border-gray-600"
+              className="border border-gray-300 rounded px-3 py-1.5 bg-white"
             >
               {[1, 2, 3, 4]
                 .filter((n) => n < ni)
@@ -671,7 +669,7 @@ export function BohrModelSimulator() {
 
         {/* Current transition info */}
         {lastTransition && (
-          <div className="bg-white dark:bg-gray-700 rounded p-3 text-sm space-y-1">
+          <div className="bg-white border border-gray-200 rounded p-3 text-sm space-y-1">
             <p className="font-medium">
               Transition : n = {lastTransition.ni} &rarr; n = {lastTransition.nf} &nbsp;
               <span className="text-gray-500">({seriesLabel(lastTransition.nf)})</span>
@@ -689,7 +687,7 @@ export function BohrModelSimulator() {
       </div>
 
       {/* Equations panel */}
-      <div className="bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-500 rounded-lg p-4">
+      <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
         <h3 className="font-semibold mb-3">Equations du modele de Bohr</h3>
         <div className="space-y-3">
           <div>
@@ -704,7 +702,7 @@ export function BohrModelSimulator() {
           <div>
             <BlockMath math="\\frac{1}{\\lambda} = R_H \\left( \\frac{1}{n_f^2} - \\frac{1}{n_i^2} \\right)" />
           </div>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <p className="text-sm text-gray-600">
             avec <InlineMath math="R_H = 1{,}097 \times 10^7 \text{ m}^{-1}" /> (constante de Rydberg)
           </p>
         </div>
@@ -712,9 +710,9 @@ export function BohrModelSimulator() {
 
       {/* Energy levels table */}
       <div className="overflow-x-auto">
-        <table className="min-w-full text-sm border border-gray-300 dark:border-gray-600 rounded">
+        <table className="min-w-full text-sm border border-gray-300 rounded">
           <thead>
-            <tr className="bg-gray-100 dark:bg-gray-700">
+            <tr className="bg-gray-100">
               <th className="px-3 py-2 border-b">n</th>
               <th className="px-3 py-2 border-b">
                 <InlineMath math="E_n" /> (eV)
@@ -726,7 +724,7 @@ export function BohrModelSimulator() {
           </thead>
           <tbody>
             {[1, 2, 3, 4, 5].map((n) => (
-              <tr key={n} className="text-center border-b border-gray-200 dark:border-gray-600">
+              <tr key={n} className="text-center border-b border-gray-200">
                 <td className="px-3 py-1 font-medium">{n}</td>
                 <td className="px-3 py-1">{energyLevel(n).toFixed(4)}</td>
                 <td className="px-3 py-1">{(n * n * 52.9).toFixed(1)}</td>
@@ -740,9 +738,9 @@ export function BohrModelSimulator() {
       {spectralLines.length > 0 && (
         <div className="overflow-x-auto">
           <h4 className="font-semibold mb-2">Raies observees</h4>
-          <table className="min-w-full text-sm border border-gray-300 dark:border-gray-600 rounded">
+          <table className="min-w-full text-sm border border-gray-300 rounded">
             <thead>
-              <tr className="bg-gray-100 dark:bg-gray-700">
+              <tr className="bg-gray-100">
                 <th className="px-3 py-2 border-b">Transition</th>
                 <th className="px-3 py-2 border-b">Serie</th>
                 <th className="px-3 py-2 border-b">
@@ -758,7 +756,7 @@ export function BohrModelSimulator() {
               {spectralLines
                 .sort((a, b) => a.wavelengthNm - b.wavelengthNm)
                 .map((line, i) => (
-                  <tr key={i} className="text-center border-b border-gray-200 dark:border-gray-600">
+                  <tr key={i} className="text-center border-b border-gray-200">
                     <td className="px-3 py-1">
                       {line.ni} &rarr; {line.nf}
                     </td>
@@ -782,10 +780,10 @@ export function BohrModelSimulator() {
       <CollapsiblePanel
         title="Contexte historique"
         borderColor="border-gray-400"
-        bgColor="bg-gray-100 dark:bg-gray-700"
-        textColor="text-gray-800 dark:text-gray-200"
+        bgColor="bg-gray-50"
+        textColor="text-gray-800"
       >
-        <div className="text-sm text-gray-700 dark:text-gray-300 space-y-2">
+        <div className="text-sm text-gray-700 space-y-2">
           <p>
             En <strong>1913</strong>, le physicien danois <strong>Niels Bohr</strong> propose un modele
             planetaire de l&apos;atome d&apos;hydrogene qui integre la quantification. Ce modele repose sur

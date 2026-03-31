@@ -507,10 +507,10 @@ export function PhotoelectricSimulator() {
     <div className="max-w-4xl mx-auto p-4 space-y-6">
       {/* Title */}
       <div className="text-center space-y-1">
-        <h2 className="text-2xl font-bold text-white">
+        <h2 className="text-2xl font-bold text-gray-900">
           Effet photo\u00E9lectrique
         </h2>
-        <p className="text-gray-400 text-sm">
+        <p className="text-gray-600 text-sm">
           Simulation de l&apos;effet photo\u00E9lectrique d&apos;Einstein (1905)
         </p>
       </div>
@@ -521,7 +521,7 @@ export function PhotoelectricSimulator() {
           ref={canvasRef}
           width={700}
           height={400}
-          className="rounded-lg border border-gray-700 max-w-full"
+          className="rounded-lg border border-gray-300 max-w-full"
           style={{ background: '#111827' }}
         />
       </div>
@@ -529,8 +529,8 @@ export function PhotoelectricSimulator() {
       {/* Controls */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Frequency slider */}
-        <div className="bg-gray-800 rounded-lg p-4 space-y-2">
-          <label className="text-sm font-medium text-gray-300 block">
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2">
+          <label className="text-sm font-medium text-gray-700 block">
             Fr\u00E9quence <InlineMath math="f" />
           </label>
           <input
@@ -542,7 +542,7 @@ export function PhotoelectricSimulator() {
             onChange={(e) => setFreq(Number(e.target.value))}
             className="w-full accent-indigo-500"
           />
-          <div className="text-xs text-gray-400 space-y-0.5">
+          <div className="text-xs text-gray-600 space-y-0.5">
             <p>
               <InlineMath math={`f = ${(freq / 1e15).toFixed(2)} \\times 10^{15}\\,\\text{Hz}`} />
             </p>
@@ -553,8 +553,8 @@ export function PhotoelectricSimulator() {
         </div>
 
         {/* Intensity slider */}
-        <div className="bg-gray-800 rounded-lg p-4 space-y-2">
-          <label className="text-sm font-medium text-gray-300 block">
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2">
+          <label className="text-sm font-medium text-gray-700 block">
             Intensit\u00E9 <InlineMath math="I" />
           </label>
           <input
@@ -566,20 +566,20 @@ export function PhotoelectricSimulator() {
             onChange={(e) => setIntensity(Number(e.target.value))}
             className="w-full accent-indigo-500"
           />
-          <p className="text-xs text-gray-400">
-            Nombre de photons/\u00E9lectrons : <strong className="text-gray-200">{intensity}</strong>
+          <p className="text-xs text-gray-600">
+            Nombre de photons/\u00E9lectrons : <strong className="text-gray-900">{intensity}</strong>
           </p>
         </div>
 
         {/* Metal selector */}
-        <div className="bg-gray-800 rounded-lg p-4 space-y-2">
-          <label className="text-sm font-medium text-gray-300 block">
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2">
+          <label className="text-sm font-medium text-gray-700 block">
             M\u00E9tal (travail de sortie <InlineMath math="\phi" />)
           </label>
           <select
             value={metalIdx}
             onChange={(e) => setMetalIdx(Number(e.target.value))}
-            className="w-full bg-gray-700 text-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full bg-white border border-gray-300 text-gray-900 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             {METALS.map((m, i) => (
               <option key={m.name} value={i}>
@@ -587,7 +587,7 @@ export function PhotoelectricSimulator() {
               </option>
             ))}
           </select>
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-gray-600">
             <InlineMath math={`f_{\\text{seuil}} = ${(fSeuil / 1e15).toFixed(2)} \\times 10^{15}\\,\\text{Hz}`} />
           </p>
         </div>
@@ -597,8 +597,8 @@ export function PhotoelectricSimulator() {
       <div
         className={`rounded-lg px-4 py-3 text-center font-semibold text-sm ${
           aboveThreshold
-            ? 'bg-green-900/50 text-green-300 border border-green-700'
-            : 'bg-red-900/50 text-red-300 border border-red-700'
+            ? 'bg-green-50 text-green-900 border border-green-300'
+            : 'bg-red-50 text-red-900 border border-red-300'
         }`}
       >
         {aboveThreshold ? (
@@ -622,8 +622,8 @@ export function PhotoelectricSimulator() {
       <CollapsiblePanel
         title="Pr\u00E9diction classique"
         borderColor="border-orange-500"
-        bgColor="bg-orange-950/40"
-        textColor="text-orange-200"
+        bgColor="bg-orange-50"
+        textColor="text-orange-900"
         defaultOpen={false}
       >
         <p>
@@ -644,12 +644,12 @@ export function PhotoelectricSimulator() {
             l&apos;\u00E9nergie s&apos;accumule dans l&apos;\u00E9lectron.
           </li>
         </ul>
-        <div className="mt-2 bg-orange-900/30 border border-orange-800 rounded p-3 text-center">
-          <p className="text-orange-300 font-mono text-xs">
+        <div className="mt-2 bg-orange-100 border border-orange-300 rounded p-3 text-center">
+          <p className="text-orange-800 font-mono text-xs">
             Temps d&apos;accumulation classique : &infin; (l&apos;\u00E9lectron ne re\u00E7oit jamais assez
             d&apos;\u00E9nergie d&apos;un seul coup)
           </p>
-          <p className="text-orange-400 mt-1 font-semibold text-xs">
+          <p className="text-orange-700 mt-1 font-semibold text-xs">
             &rarr; En contradiction avec l&apos;exp\u00E9rience !
           </p>
         </div>
@@ -659,8 +659,8 @@ export function PhotoelectricSimulator() {
       <CollapsiblePanel
         title="R\u00E9sultat quantique (Einstein)"
         borderColor="border-green-500"
-        bgColor="bg-green-950/40"
-        textColor="text-green-200"
+        bgColor="bg-green-50"
+        textColor="text-green-900"
         defaultOpen={true}
       >
         <p>
@@ -682,7 +682,7 @@ export function PhotoelectricSimulator() {
             <InlineMath math="\phi" /> = travail de sortie
           </HoverTerm>
         </div>
-        <div className="mt-3 bg-green-900/30 border border-green-800 rounded p-3 text-xs space-y-1">
+        <div className="mt-3 bg-green-100 border border-green-300 rounded p-3 text-xs space-y-1">
           <p>
             <strong>Cons\u00E9quences :</strong>
           </p>
@@ -703,8 +703,8 @@ export function PhotoelectricSimulator() {
       </CollapsiblePanel>
 
       {/* 3. Graph Ek vs f */}
-      <div className="bg-gray-800 rounded-lg p-4 space-y-3">
-        <h3 className="font-semibold text-gray-200 text-sm">
+      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3">
+        <h3 className="font-semibold text-gray-900 text-sm">
           Graphique{' '}
           <InlineMath math="E_k" /> vs <InlineMath math="f" />
         </h3>
@@ -713,10 +713,10 @@ export function PhotoelectricSimulator() {
             ref={graphCanvasRef}
             width={400}
             height={200}
-            className="rounded border border-gray-700 max-w-full"
+            className="rounded border border-gray-300 max-w-full"
           />
         </div>
-        <p className="text-xs text-gray-400 text-center">
+        <p className="text-xs text-gray-600 text-center">
           Droite de pente <InlineMath math="h" />, d\u00E9butant \u00E0{' '}
           <InlineMath math={`f_{\\text{seuil}} = ${(fSeuil / 1e15).toFixed(2)} \\times 10^{15}\\,\\text{Hz}`} />.
           Le point jaune indique le point de fonctionnement actuel.
@@ -727,8 +727,8 @@ export function PhotoelectricSimulator() {
       <CollapsiblePanel
         title="Contexte historique"
         borderColor="border-gray-500"
-        bgColor="bg-gray-800/60"
-        textColor="text-gray-200"
+        bgColor="bg-gray-50"
+        textColor="text-gray-900"
         defaultOpen={false}
       >
         <p>

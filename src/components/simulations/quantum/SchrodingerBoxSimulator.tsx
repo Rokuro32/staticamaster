@@ -64,7 +64,7 @@ function CollapsiblePanel({
         <span className="text-lg">{open ? '\u25B2' : '\u25BC'}</span>
       </button>
       {open && (
-        <div className={`px-4 py-4 ${bgColor} bg-opacity-30 text-sm leading-relaxed space-y-3`}>
+        <div className={`px-4 py-4 ${bgColor} bg-opacity-30 text-sm leading-relaxed space-y-3 text-gray-700`}>
           {children}
         </div>
       )}
@@ -469,16 +469,16 @@ export function SchrodingerBoxSimulator() {
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
       <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold text-white">
+        <h2 className="text-2xl font-bold text-gray-900">
           Particule dans un puits de potentiel infini
         </h2>
-        <p className="text-gray-400 text-sm">
+        <p className="text-gray-600 text-sm">
           Schr&ouml;dinger, 1926 &mdash; M&eacute;canique ondulatoire
         </p>
       </div>
 
       {/* Canvas */}
-      <div className="bg-slate-900 rounded-xl p-4 border border-slate-700">
+      <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
         <canvas
           ref={canvasRef}
           className="w-full rounded-lg"
@@ -489,10 +489,10 @@ export function SchrodingerBoxSimulator() {
       {/* Controls */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Quantum number slider */}
-        <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
-          <label className="flex items-center justify-between text-sm text-gray-300 mb-2">
+        <div className="bg-white rounded-lg p-4 border border-gray-200">
+          <label className="flex items-center justify-between text-sm text-gray-700 mb-2">
             <span>Nombre quantique <InlineMath math="n" /></span>
-            <span className="font-mono text-blue-400 font-bold text-lg">{n}</span>
+            <span className="font-mono text-blue-600 font-bold text-lg">{n}</span>
           </label>
           <input
             type="range"
@@ -514,10 +514,10 @@ export function SchrodingerBoxSimulator() {
         </div>
 
         {/* Well width slider */}
-        <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
-          <label className="flex items-center justify-between text-sm text-gray-300 mb-2">
+        <div className="bg-white rounded-lg p-4 border border-gray-200">
+          <label className="flex items-center justify-between text-sm text-gray-700 mb-2">
             <span>Largeur du puits <InlineMath math="L" /></span>
-            <span className="font-mono text-teal-400 font-bold text-lg">{L_nm.toFixed(1)} nm</span>
+            <span className="font-mono text-teal-600 font-bold text-lg">{L_nm.toFixed(1)} nm</span>
           </label>
           <input
             type="range"
@@ -542,8 +542,8 @@ export function SchrodingerBoxSimulator() {
           onClick={() => setShowClassical(!showClassical)}
           className={`px-5 py-2.5 rounded-lg font-medium text-sm transition-all border ${
             showClassical
-              ? 'bg-amber-500/20 border-amber-500 text-amber-300'
-              : 'bg-slate-800 border-slate-600 text-gray-400 hover:border-amber-500/50 hover:text-amber-400'
+              ? 'bg-amber-50 border-amber-500 text-amber-700'
+              : 'bg-white border-gray-300 text-gray-600 hover:border-amber-500/50 hover:text-amber-600'
           }`}
         >
           {showClassical ? '\u2713 ' : ''}Comparaison classique
@@ -551,37 +551,37 @@ export function SchrodingerBoxSimulator() {
       </div>
 
       {/* Energy display */}
-      <div className="bg-slate-800 rounded-xl p-5 border border-slate-700 space-y-4">
-        <h3 className="text-lg font-semibold text-white">
+      <div className="bg-white rounded-xl p-5 border border-gray-200 space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">
           &Eacute;nergie du niveau <InlineMath math={`n = ${n}`} />
         </h3>
 
-        <div className="bg-slate-900 rounded-lg p-4">
+        <div className="bg-gray-100 rounded-lg p-4">
           <BlockMath math={`E_n = \\frac{n^2 \\pi^2 \\hbar^2}{2 m_e L^2}`} />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
-          <div className="bg-slate-900 rounded-lg p-3">
+          <div className="bg-gray-50 rounded-lg p-3">
             <p className="text-xs text-gray-500 mb-1">
               <InlineMath math={`E_{${n}}`} />
             </p>
-            <p className="text-xl font-bold text-yellow-400">
+            <p className="text-xl font-bold text-yellow-600">
               {formatEV(En)} eV
             </p>
           </div>
-          <div className="bg-slate-900 rounded-lg p-3">
+          <div className="bg-gray-50 rounded-lg p-3">
             <p className="text-xs text-gray-500 mb-1">
               <InlineMath math="E_1" /> (fondamental)
             </p>
-            <p className="text-xl font-bold text-green-400">
+            <p className="text-xl font-bold text-green-600">
               {formatEV(E1)} eV
             </p>
           </div>
-          <div className="bg-slate-900 rounded-lg p-3">
+          <div className="bg-gray-50 rounded-lg p-3">
             <p className="text-xs text-gray-500 mb-1">
               <InlineMath math={`E_{${n}} / E_1`} />
             </p>
-            <p className="text-xl font-bold text-purple-400">
+            <p className="text-xl font-bold text-purple-600">
               {n * n}
             </p>
             <p className="text-xs text-gray-500">
@@ -607,27 +607,27 @@ export function SchrodingerBoxSimulator() {
         <CollapsiblePanel
           title="Quantification de l'&eacute;nergie"
           borderColor="border-green-500"
-          bgColor="bg-green-900/20"
-          textColor="text-green-300"
+          bgColor="bg-green-50"
+          textColor="text-green-900"
           defaultOpen
         >
           <p>
-            Dans un puits de potentiel infini, seules des <strong className="text-green-300">&eacute;nergies discr&egrave;tes</strong> sont
+            Dans un puits de potentiel infini, seules des <strong className="text-green-700">&eacute;nergies discr&egrave;tes</strong> sont
             permises. Le spectre d&rsquo;&eacute;nergie est quantifi&eacute; :
           </p>
-          <div className="bg-slate-900 rounded p-3">
+          <div className="bg-gray-100 rounded p-3">
             <BlockMath math="E_n = \frac{n^2 \pi^2 \hbar^2}{2 m L^2}, \quad n = 1, 2, 3, \ldots" />
           </div>
           <p>
-            La particule <strong className="text-green-300">ne peut pas avoir une &eacute;nergie nulle</strong>.
+            La particule <strong className="text-green-700">ne peut pas avoir une &eacute;nergie nulle</strong>.
             Le niveau fondamental <InlineMath math="E_1 > 0" /> est appel&eacute;{' '}
             <em>&eacute;nergie de point z&eacute;ro</em> (zero-point energy). C&rsquo;est une
             cons&eacute;quence directe du principe d&rsquo;incertitude de Heisenberg.
           </p>
           <p>
-            Cette quantification d&eacute;coule des <strong className="text-green-300">conditions aux limites</strong> :
+            Cette quantification d&eacute;coule des <strong className="text-green-700">conditions aux limites</strong> :
           </p>
-          <div className="bg-slate-900 rounded p-3">
+          <div className="bg-gray-100 rounded p-3">
             <BlockMath math="\psi(0) = \psi(L) = 0" />
           </div>
           <p>
@@ -640,34 +640,34 @@ export function SchrodingerBoxSimulator() {
         <CollapsiblePanel
           title="&Eacute;quation de Schr&ouml;dinger"
           borderColor="border-blue-500"
-          bgColor="bg-blue-900/20"
-          textColor="text-blue-300"
+          bgColor="bg-blue-50"
+          textColor="text-blue-900"
         >
           <p>
-            L&rsquo;&eacute;quation de Schr&ouml;dinger <strong className="text-blue-300">d&eacute;pendante du temps</strong> :
+            L&rsquo;&eacute;quation de Schr&ouml;dinger <strong className="text-blue-700">d&eacute;pendante du temps</strong> :
           </p>
-          <div className="bg-slate-900 rounded p-3">
+          <div className="bg-gray-100 rounded p-3">
             <BlockMath math="i\hbar \frac{\partial \Psi}{\partial t} = \hat{H} \Psi" />
           </div>
-          <p className="text-gray-400 text-xs">
+          <p className="text-gray-600 text-xs">
             <InlineMath math="i\hbar \partial\Psi/\partial t" /> : &eacute;volution temporelle &bull;{' '}
             <InlineMath math="\hat{H}" /> : op&eacute;rateur hamiltonien (&eacute;nergie totale)
           </p>
 
           <p>
-            Pour les <strong className="text-blue-300">&eacute;tats stationnaires</strong>,
+            Pour les <strong className="text-blue-700">&eacute;tats stationnaires</strong>,
             on s&eacute;pare les variables et on obtient l&rsquo;&eacute;quation{' '}
             <strong>ind&eacute;pendante du temps</strong> :
           </p>
-          <div className="bg-slate-900 rounded p-3">
+          <div className="bg-gray-100 rounded p-3">
             <BlockMath math="\hat{H}\psi = E\psi" />
           </div>
 
           <p>L&rsquo;op&eacute;rateur hamiltonien s&rsquo;&eacute;crit :</p>
-          <div className="bg-slate-900 rounded p-3">
+          <div className="bg-gray-100 rounded p-3">
             <BlockMath math="\hat{H} = \underbrace{-\frac{\hbar^2}{2m}\frac{d^2}{dx^2}}_{\text{énergie cinétique}} + \underbrace{V(x)}_{\text{énergie potentielle}}" />
           </div>
-          <p className="text-gray-400 text-xs">
+          <p className="text-gray-600 text-xs">
             Le premier terme repr&eacute;sente l&rsquo;&eacute;nergie cin&eacute;tique quantique
             (li&eacute;e &agrave; la courbure de <InlineMath math="\psi" />).
             Le second est le potentiel dans lequel se trouve la particule
@@ -680,23 +680,23 @@ export function SchrodingerBoxSimulator() {
         <CollapsiblePanel
           title="Noeuds et probabilit&eacute;"
           borderColor="border-purple-500"
-          bgColor="bg-purple-900/20"
-          textColor="text-purple-300"
+          bgColor="bg-purple-50"
+          textColor="text-purple-900"
         >
           <p>
-            Le nombre de <strong className="text-purple-300">noeuds</strong> (z&eacute;ros
+            Le nombre de <strong className="text-purple-700">noeuds</strong> (z&eacute;ros
             int&eacute;rieurs) de la fonction d&rsquo;onde est :
           </p>
-          <div className="bg-slate-900 rounded p-3">
+          <div className="bg-gray-100 rounded p-3">
             <BlockMath math="\text{nombre de noeuds} = n - 1" />
           </div>
           <p>
             Pour <InlineMath math={`n = ${n}`} />, il y a{' '}
-            <strong className="text-purple-300">{n - 1} noeud{n - 1 !== 1 ? 's' : ''}</strong>.
+            <strong className="text-purple-700">{n - 1} noeud{n - 1 !== 1 ? 's' : ''}</strong>.
           </p>
           <p>
             &Agrave; chaque noeud, <InlineMath math="|\psi(x)|^2 = 0" /> : la particule a une{' '}
-            <strong className="text-purple-300">probabilit&eacute; nulle</strong> d&rsquo;&ecirc;tre
+            <strong className="text-purple-700">probabilit&eacute; nulle</strong> d&rsquo;&ecirc;tre
             trouv&eacute;e &agrave; cette position. C&rsquo;est un ph&eacute;nom&egrave;ne purement quantique
             qui <em>n&rsquo;a aucun analogue classique</em>.
           </p>
@@ -711,23 +711,23 @@ export function SchrodingerBoxSimulator() {
         <CollapsiblePanel
           title="Contexte historique"
           borderColor="border-gray-500"
-          bgColor="bg-gray-800/40"
-          textColor="text-gray-300"
+          bgColor="bg-gray-50"
+          textColor="text-gray-900"
         >
           <p>
-            En <strong className="text-gray-200">1926</strong>, Erwin{' '}
-            <strong className="text-gray-200">Schr&ouml;dinger</strong> publie une s&eacute;rie
+            En <strong className="text-gray-900">1926</strong>, Erwin{' '}
+            <strong className="text-gray-900">Schr&ouml;dinger</strong> publie une s&eacute;rie
             d&rsquo;articles fondateurs introduisant la <em>m&eacute;canique ondulatoire</em>.
             Il propose que les particules soient d&eacute;crites par une fonction d&rsquo;onde{' '}
             <InlineMath math="\Psi" /> ob&eacute;issant &agrave; une &eacute;quation aux
             d&eacute;riv&eacute;es partielles.
           </p>
           <p>
-            Ind&eacute;pendamment, Werner <strong className="text-gray-200">Heisenberg</strong> avait
+            Ind&eacute;pendamment, Werner <strong className="text-gray-900">Heisenberg</strong> avait
             d&eacute;velopp&eacute; en 1925 la <em>m&eacute;canique matricielle</em>, une
             formulation &eacute;quivalente mais math&eacute;matiquement tr&egrave;s diff&eacute;rente.
             Schr&ouml;dinger d&eacute;montra lui-m&ecirc;me l&rsquo;
-            <strong className="text-gray-200">&eacute;quivalence</strong> des deux approches.
+            <strong className="text-gray-900">&eacute;quivalence</strong> des deux approches.
           </p>
           <p>
             Le mod&egrave;le de la particule dans une bo&icirc;te, bien que simplifi&eacute;,

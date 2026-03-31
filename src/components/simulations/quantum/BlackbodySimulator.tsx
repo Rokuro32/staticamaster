@@ -295,10 +295,10 @@ export function BlackbodySimulator() {
     <section className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       {/* Title */}
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-white">
+        <h2 className="text-3xl font-bold text-gray-900">
           Rayonnement du corps noir
         </h2>
-        <p className="text-gray-400">
+        <p className="text-gray-600">
           Naissance de la physique quantique &mdash; Planck, 1900
         </p>
       </div>
@@ -309,12 +309,12 @@ export function BlackbodySimulator() {
           ref={canvasRef}
           width={700}
           height={400}
-          className="w-full max-w-[700px] mx-auto rounded-lg border border-gray-700"
+          className="w-full max-w-[700px] mx-auto rounded-lg border border-gray-300"
         />
 
         {/* Temperature slider */}
         <div className="w-full max-w-[700px] flex items-center gap-4">
-          <label className="text-sm text-gray-300 whitespace-nowrap font-medium">
+          <label className="text-sm text-gray-700 whitespace-nowrap font-medium">
             Temperature <InlineMath math="T" />
           </label>
           <input
@@ -326,13 +326,13 @@ export function BlackbodySimulator() {
             onChange={(e) => setTemperature(Number(e.target.value))}
             className="flex-1 accent-green-500"
           />
-          <span className="text-sm font-mono text-white w-20 text-right">
+          <span className="text-sm font-mono text-gray-900 w-20 text-right">
             {temperature} K
           </span>
         </div>
 
         {/* Constant tooltips */}
-        <div className="flex gap-6 text-gray-300 text-sm">
+        <div className="flex gap-6 text-gray-600 text-sm">
           <span>
             Constantes : <ConstantTooltip symbol="h" />,{' '}
             <ConstantTooltip symbol="k" />,{' '}
@@ -347,11 +347,11 @@ export function BlackbodySimulator() {
         <CollapsiblePanel
           title="1. Catastrophe ultraviolette"
           borderColor="border-red-500"
-          bgColor="bg-red-950/40"
-          textColor="text-red-300"
+          bgColor="bg-red-50"
+          textColor="text-red-800"
           defaultOpen
         >
-          <p className="text-gray-300">
+          <p className="text-gray-700">
             La physique classique attribue une energie moyenne{' '}
             <InlineMath math="k_B T" /> a chaque mode de vibration du champ
             electromagnetique (theoreme d&apos;equipartition). Le nombre de modes
@@ -360,14 +360,14 @@ export function BlackbodySimulator() {
             <InlineMath math="\frac{8\pi f^2}{c^3}" />, ce qui conduit a la
             loi de <strong>Rayleigh-Jeans</strong> :
           </p>
-          <div className="bg-black/30 rounded p-3 overflow-x-auto">
+          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
             <BlockMath math="u(f) = \frac{8\pi f^2}{c^3}\, k_B T" />
           </div>
-          <p className="text-gray-300">
+          <p className="text-gray-700">
             Cette formule diverge lorsque{' '}
             <InlineMath math="f \to \infty" /> : l&apos;energie totale du
             rayonnement serait <em>infinie</em>. C&apos;est la{' '}
-            <strong className="text-red-400">catastrophe ultraviolette</strong>,
+            <strong className="text-red-600">catastrophe ultraviolette</strong>,
             un echec spectaculaire de la physique classique.
           </p>
         </CollapsiblePanel>
@@ -376,26 +376,26 @@ export function BlackbodySimulator() {
         <CollapsiblePanel
           title="2. Hypothese de Planck"
           borderColor="border-green-500"
-          bgColor="bg-green-950/40"
-          textColor="text-green-300"
+          bgColor="bg-green-50"
+          textColor="text-green-800"
         >
-          <p className="text-gray-300">
+          <p className="text-gray-700">
             En decembre 1900, <strong>Max Planck</strong> propose que
             l&apos;energie des oscillateurs de frequence{' '}
             <InlineMath math="f" /> ne peut prendre que des valeurs{' '}
             <em>discretes</em>, multiples d&apos;un quantum elementaire :
           </p>
-          <div className="bg-black/30 rounded p-3 overflow-x-auto">
+          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
             <BlockMath math="E_n = n\,h\,f \qquad (n = 0, 1, 2, \ldots)" />
           </div>
-          <p className="text-gray-300">
+          <p className="text-gray-700">
             En calculant la valeur moyenne de l&apos;energie avec cette
             quantification, Planck obtient la distribution :
           </p>
-          <div className="bg-black/30 rounded p-3 overflow-x-auto">
+          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
             <BlockMath math="u(f) = \frac{8\pi h f^3}{c^3} \; \frac{1}{e^{hf/k_BT} - 1}" />
           </div>
-          <p className="text-gray-300">
+          <p className="text-gray-700">
             Cette loi reproduit parfaitement les donnees experimentales a toutes
             les frequences. Le facteur cle est le denominateur de Bose-Einstein
             qui &laquo; eteint &raquo; les hautes frequences.
@@ -406,43 +406,43 @@ export function BlackbodySimulator() {
         <CollapsiblePanel
           title="3. Regimes limites"
           borderColor="border-blue-500"
-          bgColor="bg-blue-950/40"
-          textColor="text-blue-300"
+          bgColor="bg-blue-50"
+          textColor="text-blue-800"
         >
-          <p className="text-gray-300">
+          <p className="text-gray-700">
             La formule de Planck contient les deux approximations classiques
             comme cas limites :
           </p>
 
           <div className="space-y-4">
             <div>
-              <p className="font-semibold text-blue-300 mb-1">
+              <p className="font-semibold text-blue-800 mb-1">
                 Basses frequences (<InlineMath math="hf \ll k_BT" />) :
               </p>
-              <p className="text-gray-300 mb-2">
+              <p className="text-gray-700 mb-2">
                 On developpe l&apos;exponentielle{' '}
                 <InlineMath math="e^{hf/k_BT} \approx 1 + hf/k_BT" />, d&apos;ou :
               </p>
-              <div className="bg-black/30 rounded p-3 overflow-x-auto">
+              <div className="bg-gray-100 rounded p-3 overflow-x-auto">
                 <BlockMath math="u(f) \approx \frac{8\pi h f^3}{c^3} \cdot \frac{k_BT}{hf} = \frac{8\pi f^2}{c^3}\,k_BT" />
               </div>
-              <p className="text-gray-300">
+              <p className="text-gray-700">
                 On retrouve la loi de <strong>Rayleigh-Jeans</strong> : continuite avec la physique classique.
               </p>
             </div>
 
             <div>
-              <p className="font-semibold text-blue-300 mb-1">
+              <p className="font-semibold text-blue-800 mb-1">
                 Hautes frequences (<InlineMath math="hf \gg k_BT" />) :
               </p>
-              <p className="text-gray-300 mb-2">
+              <p className="text-gray-700 mb-2">
                 L&apos;exponentielle domine :{' '}
                 <InlineMath math="e^{hf/k_BT} - 1 \approx e^{hf/k_BT}" />, d&apos;ou :
               </p>
-              <div className="bg-black/30 rounded p-3 overflow-x-auto">
+              <div className="bg-gray-100 rounded p-3 overflow-x-auto">
                 <BlockMath math="u(f) \approx \frac{8\pi h f^3}{c^3}\,e^{-hf/k_BT}" />
               </div>
-              <p className="text-gray-300">
+              <p className="text-gray-700">
                 On retrouve la loi de <strong>Wien</strong> : extinction exponentielle
                 aux hautes frequences, pas de catastrophe.
               </p>
@@ -454,17 +454,17 @@ export function BlackbodySimulator() {
         <CollapsiblePanel
           title="4. Contexte historique"
           borderColor="border-gray-500"
-          bgColor="bg-gray-800/40"
-          textColor="text-gray-300"
+          bgColor="bg-gray-50"
+          textColor="text-gray-700"
         >
-          <p className="text-gray-300">
+          <p className="text-gray-700">
             A la fin du XIX<sup>e</sup> siecle, la physique classique semblait
             presque complete. Lord Kelvin evoquait cependant &laquo; deux petits
             nuages &raquo; a l&apos;horizon : le resultat negatif de
             l&apos;experience de Michelson-Morley et le probleme du rayonnement
             du corps noir.
           </p>
-          <p className="text-gray-300">
+          <p className="text-gray-700">
             Le 14 decembre 1900, Max Planck presente a la{' '}
             <em>Deutsche Physikalische Gesellschaft</em> sa derivation de la loi
             du rayonnement, introduisant la constante{' '}
@@ -472,7 +472,7 @@ export function BlackbodySimulator() {
             Il considerait lui-meme cette quantification comme un &laquo; acte
             de desespoir &raquo; (<em>Verzweiflungstat</em>).
           </p>
-          <p className="text-gray-300">
+          <p className="text-gray-700">
             Cette hypothese audacieuse ouvre la voie a Einstein (effet
             photoelectrique, 1905), Bohr (modele atomique, 1913) et finalement a
             la mecanique quantique complete de Heisenberg et Schrodinger

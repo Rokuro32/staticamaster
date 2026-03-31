@@ -392,29 +392,29 @@ export function UncertaintyPrincipleSimulator() {
     <section className="max-w-4xl mx-auto space-y-8 py-8 px-4">
       {/* Title */}
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-white">
+        <h2 className="text-3xl font-bold text-gray-900">
           Principe d&apos;incertitude de Heisenberg
         </h2>
-        <p className="text-gray-400 text-sm">
+        <p className="text-gray-600 text-sm">
           Heisenberg, 1927 &mdash; Une propriété fondamentale de la nature quantique
         </p>
       </div>
 
       {/* Main equation */}
       <div className="flex justify-center">
-        <div className="bg-gray-800/60 border border-gray-700 rounded-xl px-8 py-4">
+        <div className="bg-gray-50 border border-gray-200 rounded-xl px-8 py-4">
           <BlockMath math={String.raw`\Delta x \cdot \Delta p \;\geq\; \frac{\hbar}{2}`} />
         </div>
       </div>
 
       {/* Slider */}
-      <div className="bg-gray-800/40 rounded-xl p-5 border border-gray-700 space-y-3">
+      <div className="bg-gray-50 rounded-xl p-5 border border-gray-200 space-y-3">
         <div className="flex items-center justify-between">
-          <label className="text-sm text-gray-300 font-medium">
+          <label className="text-sm text-gray-700 font-medium">
             Incertitude en position{' '}
             <InlineMath math={String.raw`\Delta x`} />
           </label>
-          <span className="font-mono text-blue-400 text-sm">
+          <span className="font-mono text-gray-900 text-sm">
             {deltaX.toFixed(2)} (u.a.)
           </span>
         </div>
@@ -434,14 +434,14 @@ export function UncertaintyPrincipleSimulator() {
       </div>
 
       {/* Product display */}
-      <div className="bg-gray-800/40 rounded-xl p-5 border border-gray-700 space-y-4">
+      <div className="bg-gray-50 rounded-xl p-5 border border-gray-200 space-y-4">
         <div className="text-center space-y-1">
-          <p className="text-lg text-gray-200">
+          <p className="text-lg text-gray-900">
             <InlineMath math={String.raw`\Delta x \cdot \Delta p`} />{' '}
-            <span className="font-mono text-green-400 text-xl font-bold">
+            <span className="font-mono text-green-600 text-xl font-bold">
               = {product.toFixed(3)}
             </span>{' '}
-            <span className="text-gray-400">
+            <span className="text-gray-600">
               <InlineMath math={String.raw`\geq \;\tfrac{\hbar}{2} = 0.500`} />
             </span>
           </p>
@@ -451,36 +451,36 @@ export function UncertaintyPrincipleSimulator() {
         </div>
 
         {/* Bar indicator */}
-        <div className="relative w-full h-6 bg-gray-900 rounded-full overflow-hidden border border-gray-700">
+        <div className="relative w-full h-6 bg-gray-200 rounded-full overflow-hidden border border-gray-300">
           <div
             className="h-full rounded-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all duration-150"
             style={{ width: `${barFraction * 100}%` }}
           />
-          <div className="absolute inset-0 flex items-center justify-center text-xs font-mono text-white">
+          <div className="absolute inset-0 flex items-center justify-center text-xs font-mono text-gray-900">
             {product.toFixed(3)} &ge; 0.500 (= <ConstantTooltip symbol="hbar" />/2)
           </div>
         </div>
 
         {/* Individual values */}
         <div className="grid grid-cols-2 gap-4 text-center">
-          <div className="bg-blue-950/40 rounded-lg p-3 border border-blue-900/50">
-            <p className="text-xs text-blue-300 mb-1">
+          <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+            <p className="text-xs text-blue-700 mb-1">
               <InlineMath math={String.raw`\Delta x`} />
             </p>
-            <p className="font-mono text-blue-400 text-lg">{deltaX.toFixed(3)}</p>
+            <p className="font-mono text-blue-600 text-lg">{deltaX.toFixed(3)}</p>
           </div>
-          <div className="bg-orange-950/40 rounded-lg p-3 border border-orange-900/50">
-            <p className="text-xs text-orange-300 mb-1">
+          <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+            <p className="text-xs text-orange-700 mb-1">
               <InlineMath math={String.raw`\Delta p = \hbar / (2\Delta x)`} />
             </p>
-            <p className="font-mono text-orange-400 text-lg">{deltaP.toFixed(3)}</p>
+            <p className="font-mono text-orange-600 text-lg">{deltaP.toFixed(3)}</p>
           </div>
         </div>
       </div>
 
       {/* Main Canvas — Two linked Gaussians */}
-      <div className="bg-gray-800/40 rounded-xl p-4 border border-gray-700">
-        <h3 className="text-sm font-semibold text-gray-300 mb-3">
+      <div className="bg-white rounded-xl p-4 border border-gray-200">
+        <h3 className="text-sm font-semibold text-gray-700 mb-3">
           Distributions de probabilité liées
         </h3>
         <div className="flex justify-center overflow-x-auto">
@@ -493,8 +493,8 @@ export function UncertaintyPrincipleSimulator() {
       </div>
 
       {/* Wave packet Canvas */}
-      <div className="bg-gray-800/40 rounded-xl p-4 border border-gray-700">
-        <h3 className="text-sm font-semibold text-gray-300 mb-3">
+      <div className="bg-white rounded-xl p-4 border border-gray-200">
+        <h3 className="text-sm font-semibold text-gray-700 mb-3">
           Paquet d&apos;onde dans l&apos;espace réel
         </h3>
         <p className="text-xs text-gray-500 mb-3">
@@ -518,14 +518,14 @@ export function UncertaintyPrincipleSimulator() {
         <CollapsiblePanel
           title="⚠ Ce n'est PAS une limite instrumentale"
           borderColor="border-purple-500"
-          bgColor="bg-purple-950/40"
-          textColor="text-purple-200"
+          bgColor="bg-purple-50"
+          textColor="text-purple-900"
           defaultOpen
         >
           <p>
-            Le principe d&apos;incertitude n&apos;est <strong className="text-purple-300">pas</strong> une
+            Le principe d&apos;incertitude n&apos;est <strong className="text-purple-700">pas</strong> une
             limitation de nos instruments de mesure. C&apos;est une{' '}
-            <strong className="text-purple-300">propriété fondamentale de la nature</strong>.
+            <strong className="text-purple-700">propriété fondamentale de la nature</strong>.
           </p>
           <p>
             Une particule quantique ne possède tout simplement pas une position définie et une
@@ -543,8 +543,8 @@ export function UncertaintyPrincipleSimulator() {
         <CollapsiblePanel
           title="Lien avec la transformée de Fourier"
           borderColor="border-blue-500"
-          bgColor="bg-blue-950/40"
-          textColor="text-blue-200"
+          bgColor="bg-blue-50"
+          textColor="text-blue-900"
         >
           <p>
             Un paquet d&apos;onde localisé dans l&apos;espace des positions nécessite de
@@ -574,8 +574,8 @@ export function UncertaintyPrincipleSimulator() {
         <CollapsiblePanel
           title="Contexte historique"
           borderColor="border-gray-500"
-          bgColor="bg-gray-800/40"
-          textColor="text-gray-200"
+          bgColor="bg-gray-50"
+          textColor="text-gray-700"
         >
           <p>
             En <strong>1927</strong>, Werner Heisenberg formula le principe d&apos;incertitude
@@ -596,7 +596,7 @@ export function UncertaintyPrincipleSimulator() {
       </div>
 
       {/* Footer with real ℏ value */}
-      <div className="text-center text-xs text-gray-600 pt-4 border-t border-gray-800">
+      <div className="text-center text-xs text-gray-600 pt-4 border-t border-gray-200">
         <p>
           Simulation en unités arbitraires (<InlineMath math={String.raw`\hbar_{\text{vis}} = 1`} />).
           En unités SI :{' '}
