@@ -308,7 +308,7 @@ export function PhotoelectricSimulator() {
       ctx.fillStyle = '#FCA5A5';
       ctx.font = 'bold 14px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('Aucun \u00E9lectron \u00E9ject\u00E9', W / 2 + 60, H / 2);
+      ctx.fillText('Aucun électron éjecté', W / 2 + 60, H / 2);
 
       // Draw a few "vibrating" electrons stuck on the surface
       const vibAmp = 3;
@@ -476,7 +476,7 @@ export function PhotoelectricSimulator() {
     ctx.fillStyle = '#D1D5DB';
     ctx.font = '12px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('Fr\u00E9quence f (Hz)', pad.left + plotW / 2, H - 4);
+    ctx.fillText('Fréquence f (Hz)', pad.left + plotW / 2, H - 4);
 
     ctx.save();
     ctx.translate(14, pad.top + plotH / 2);
@@ -508,10 +508,10 @@ export function PhotoelectricSimulator() {
       {/* Title */}
       <div className="text-center space-y-1">
         <h2 className="text-2xl font-bold text-gray-900">
-          Effet photo\u00E9lectrique
+          Effet photoélectrique
         </h2>
         <p className="text-gray-600 text-sm">
-          Simulation de l&apos;effet photo\u00E9lectrique d&apos;Einstein (1905)
+          Simulation de l&apos;effet photoélectrique d&apos;Einstein (1905)
         </p>
       </div>
 
@@ -531,7 +531,7 @@ export function PhotoelectricSimulator() {
         {/* Frequency slider */}
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2">
           <label className="text-sm font-medium text-gray-700 block">
-            Fr\u00E9quence <InlineMath math="f" />
+            Fréquence <InlineMath math="f" />
           </label>
           <input
             type="range"
@@ -555,7 +555,7 @@ export function PhotoelectricSimulator() {
         {/* Intensity slider */}
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2">
           <label className="text-sm font-medium text-gray-700 block">
-            Intensit\u00E9 <InlineMath math="I" />
+            Intensité <InlineMath math="I" />
           </label>
           <input
             type="range"
@@ -567,14 +567,14 @@ export function PhotoelectricSimulator() {
             className="w-full accent-indigo-500"
           />
           <p className="text-xs text-gray-600">
-            Nombre de photons/\u00E9lectrons : <strong className="text-gray-900">{intensity}</strong>
+            Nombre de photons/électrons : <strong className="text-gray-900">{intensity}</strong>
           </p>
         </div>
 
         {/* Metal selector */}
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2">
           <label className="text-sm font-medium text-gray-700 block">
-            M\u00E9tal (travail de sortie <InlineMath math="\phi" />)
+            Métal (travail de sortie <InlineMath math="\phi" />)
           </label>
           <select
             value={metalIdx}
@@ -603,12 +603,12 @@ export function PhotoelectricSimulator() {
       >
         {aboveThreshold ? (
           <>
-            \u00C9lectrons \u00E9ject\u00E9s &mdash;{' '}
+            Électrons éjectés &mdash;{' '}
             <InlineMath math={`E_k = ${ekEv.toFixed(3)}\\,\\text{eV}`} />
           </>
         ) : (
           <>
-            Aucun \u00E9lectron \u00E9ject\u00E9 &mdash;{' '}
+            Aucun électron éjecté &mdash;{' '}
             <InlineMath
               math={`f < f_{\\text{seuil}} = ${(fSeuil / 1e15).toFixed(2)} \\times 10^{15}\\,\\text{Hz}`}
             />
@@ -620,83 +620,83 @@ export function PhotoelectricSimulator() {
 
       {/* 1. Classical prediction */}
       <CollapsiblePanel
-        title="Pr\u00E9diction classique"
+        title="Prédiction classique"
         borderColor="border-orange-500"
         bgColor="bg-orange-50"
         textColor="text-orange-900"
         defaultOpen={false}
       >
         <p>
-          Selon la th\u00E9orie ondulatoire classique de Maxwell, l&apos;\u00E9nergie de la lumi\u00E8re
-          d\u00E9pend de l&apos;<strong>intensit\u00E9</strong> (amplitude de l&apos;onde).
-          On s&apos;attendrait donc \u00E0 ce que :
+          Selon la théorie ondulatoire classique de Maxwell, l&apos;énergie de la lumière
+          dépend de l&apos;<strong>intensité</strong> (amplitude de l&apos;onde).
+          On s&apos;attendrait donc à ce que :
         </p>
         <ul className="list-disc list-inside space-y-1">
           <li>
-            L&apos;\u00E9nergie cin\u00E9tique des \u00E9lectrons augmente avec l&apos;intensit\u00E9 lumineuse.
+            L&apos;énergie cinétique des électrons augmente avec l&apos;intensité lumineuse.
           </li>
           <li>
-            Il n&apos;existe pas de fr\u00E9quence seuil : m\u00EAme la lumi\u00E8re rouge (basse fr\u00E9quence)
-            devrait \u00E9jecter des \u00E9lectrons si l&apos;on attend assez longtemps.
+            Il n&apos;existe pas de fréquence seuil : même la lumière rouge (basse fréquence)
+            devrait éjecter des électrons si l&apos;on attend assez longtemps.
           </li>
           <li>
-            Un <em>&laquo; temps d&apos;accumulation &raquo;</em> serait n\u00E9cessaire pour que
-            l&apos;\u00E9nergie s&apos;accumule dans l&apos;\u00E9lectron.
+            Un <em>«&nbsp;temps d&apos;accumulation&nbsp;»</em> serait nécessaire pour que
+            l&apos;énergie s&apos;accumule dans l&apos;électron.
           </li>
         </ul>
         <div className="mt-2 bg-orange-100 border border-orange-300 rounded p-3 text-center">
           <p className="text-orange-800 font-mono text-xs">
-            Temps d&apos;accumulation classique : &infin; (l&apos;\u00E9lectron ne re\u00E7oit jamais assez
-            d&apos;\u00E9nergie d&apos;un seul coup)
+            Temps d&apos;accumulation classique : &infin; (l&apos;électron ne reçoit jamais assez
+            d&apos;énergie d&apos;un seul coup)
           </p>
           <p className="text-orange-700 mt-1 font-semibold text-xs">
-            &rarr; En contradiction avec l&apos;exp\u00E9rience !
+            &rarr; En contradiction avec l&apos;expérience !
           </p>
         </div>
       </CollapsiblePanel>
 
       {/* 2. Quantum result */}
       <CollapsiblePanel
-        title="R\u00E9sultat quantique (Einstein)"
+        title="Résultat quantique (Einstein)"
         borderColor="border-green-500"
         bgColor="bg-green-50"
         textColor="text-green-900"
         defaultOpen={true}
       >
         <p>
-          Einstein propose en 1905 que la lumi\u00E8re est compos\u00E9e de <strong>quanta</strong>{' '}
-          (photons), chacun portant une \u00E9nergie <InlineMath math="E = hf" />.
-          L&apos;\u00E9quation photo\u00E9lectrique s&apos;\u00E9crit :
+          Einstein propose en 1905 que la lumière est composée de <strong>quanta</strong>{' '}
+          (photons), chacun portant une énergie <InlineMath math="E = hf" />.
+          L&apos;équation photoélectrique s&apos;écrit :
         </p>
         <div className="my-3 text-center">
           <BlockMath math="E_k = hf - \phi" />
         </div>
         <div className="flex flex-wrap gap-4 justify-center text-xs">
-          <HoverTerm tooltip="\u00C9nergie cin\u00E9tique maximale de l'\u00E9lectron \u00E9ject\u00E9">
-            <InlineMath math="E_k" /> = \u00E9nergie cin\u00E9tique
+          <HoverTerm tooltip="Énergie cinétique maximale de l'électron éjecté">
+            <InlineMath math="E_k" /> = énergie cinétique
           </HoverTerm>
-          <HoverTerm tooltip="\u00C9nergie d'un photon incident (h = constante de Planck, f = fr\u00E9quence)">
-            <InlineMath math="hf" /> = \u00E9nergie du photon
+          <HoverTerm tooltip="Énergie d'un photon incident (h = constante de Planck, f = fréquence)">
+            <InlineMath math="hf" /> = énergie du photon
           </HoverTerm>
-          <HoverTerm tooltip="Travail de sortie : \u00E9nergie minimale pour arracher un \u00E9lectron du m\u00E9tal">
+          <HoverTerm tooltip="Travail de sortie : énergie minimale pour arracher un électron du métal">
             <InlineMath math="\phi" /> = travail de sortie
           </HoverTerm>
         </div>
         <div className="mt-3 bg-green-100 border border-green-300 rounded p-3 text-xs space-y-1">
           <p>
-            <strong>Cons\u00E9quences :</strong>
+            <strong>Conséquences :</strong>
           </p>
           <ul className="list-disc list-inside space-y-1">
             <li>
-              Seule la <em>fr\u00E9quence</em> (pas l&apos;intensit\u00E9) d\u00E9termine si les \u00E9lectrons
-              sont \u00E9ject\u00E9s.
+              Seule la <em>fréquence</em> (pas l&apos;intensité) détermine si les électrons
+              sont éjectés.
             </li>
             <li>
-              L&apos;intensit\u00E9 contr\u00F4le le <em>nombre</em> d&apos;\u00E9lectrons, pas leur
-              \u00E9nergie.
+              L&apos;intensité contrôle le <em>nombre</em> d&apos;électrons, pas leur
+              énergie.
             </li>
             <li>
-              L&apos;effet est <em>instantan\u00E9</em> : pas de temps d&apos;accumulation.
+              L&apos;effet est <em>instantané</em> : pas de temps d&apos;accumulation.
             </li>
           </ul>
         </div>
@@ -717,7 +717,7 @@ export function PhotoelectricSimulator() {
           />
         </div>
         <p className="text-xs text-gray-600 text-center">
-          Droite de pente <InlineMath math="h" />, d\u00E9butant \u00E0{' '}
+          Droite de pente <InlineMath math="h" />, débutant à{' '}
           <InlineMath math={`f_{\\text{seuil}} = ${(fSeuil / 1e15).toFixed(2)} \\times 10^{15}\\,\\text{Hz}`} />.
           Le point jaune indique le point de fonctionnement actuel.
         </p>
@@ -732,24 +732,24 @@ export function PhotoelectricSimulator() {
         defaultOpen={false}
       >
         <p>
-          L&apos;effet photo\u00E9lectrique a \u00E9t\u00E9 observ\u00E9 exp\u00E9rimentalement par{' '}
-          <strong>Heinrich Hertz</strong> en 1887, puis \u00E9tudi\u00E9 en d\u00E9tail par{' '}
+          L&apos;effet photoélectrique a été observé expérimentalement par{' '}
+          <strong>Heinrich Hertz</strong> en 1887, puis étudié en détail par{' '}
           <strong>Philipp Lenard</strong> en 1902.
         </p>
         <p>
           En <strong>1905</strong>, <strong>Albert Einstein</strong> publie son article
-          r\u00E9volutionnaire{' '}
-          <em>&laquo; Sur un point de vue heuristique concernant la production et la
-          transformation de la lumi\u00E8re &raquo;</em>, dans lequel il propose
-          l&apos;hypoth\u00E8se des quanta de lumi\u00E8re pour expliquer l&apos;effet
-          photo\u00E9lectrique.
+          révolutionnaire{' '}
+          <em>«&nbsp;Sur un point de vue heuristique concernant la production et la
+          transformation de la lumière&nbsp;»</em>, dans lequel il propose
+          l&apos;hypothèse des quanta de lumière pour expliquer l&apos;effet
+          photoélectrique.
         </p>
         <p>
           Cette contribution lui vaudra le{' '}
           <strong>prix Nobel de physique en 1921</strong>.
-          L&apos;explication quantique a \u00E9t\u00E9 confirm\u00E9e exp\u00E9rimentalement par{' '}
-          <strong>Robert Millikan</strong> en 1916, qui a mesur\u00E9 la valeur de la
-          constante de Planck <InlineMath math="h" /> avec pr\u00E9cision.
+          L&apos;explication quantique a été confirmée expérimentalement par{' '}
+          <strong>Robert Millikan</strong> en 1916, qui a mesuré la valeur de la
+          constante de Planck <InlineMath math="h" /> avec précision.
         </p>
       </CollapsiblePanel>
     </div>

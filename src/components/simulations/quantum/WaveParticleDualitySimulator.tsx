@@ -314,9 +314,9 @@ export function WaveParticleDualitySimulator() {
     // Label detector
     ctx.fillStyle = '#888899';
     ctx.font = '12px sans-serif';
-    ctx.fillText('Detecteur', detectorCenterX + 60, detectorCenterY + detectorRadius + 20);
+    ctx.fillText('Détecteur', detectorCenterX + 60, detectorCenterY + detectorRadius + 20);
     ctx.fillStyle = '#ffcc00';
-    ctx.fillText('Intensite(\u03B8)', detectorCenterX - 40, 25);
+    ctx.fillText('Intensité(\u03B8)', detectorCenterX - 40, 25);
 
     // Draw angle arc legend
     if (angles.length > 0) {
@@ -410,7 +410,7 @@ export function WaveParticleDualitySimulator() {
   }, [drawMainCanvas]);
 
   useEffect(() => {
-    drawComparisonCanvas(electronPatternRef.current, 'Diffraction electronique', lambda, '#00ccff');
+    drawComparisonCanvas(electronPatternRef.current, 'Diffraction électronique', lambda, '#00ccff');
     drawComparisonCanvas(xrayPatternRef.current, 'Diffraction rayons X', lambda, '#ff6644');
   }, [lambda, drawComparisonCanvas]);
 
@@ -425,10 +425,10 @@ export function WaveParticleDualitySimulator() {
       {/* Title */}
       <div className="text-center">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-          Dualite onde-corpuscule
+          Dualité onde-corpuscule
         </h2>
         <p className="text-gray-600 dark:text-gray-400 mt-1">
-          Hypothese de De Broglie et experience de Davisson-Germer
+          Hypothèse de De Broglie et expérience de Davisson-Germer
         </p>
       </div>
 
@@ -447,7 +447,7 @@ export function WaveParticleDualitySimulator() {
         {/* Slider */}
         <div className="flex flex-col sm:flex-row items-center gap-4 px-2">
           <label className="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
-            Energie cinetique <InlineMath math="E_k" />
+            Énergie cinétique <InlineMath math="E_k" />
           </label>
           <input
             type="range"
@@ -474,7 +474,7 @@ export function WaveParticleDualitySimulator() {
             color: 'text-cyan-600 dark:text-cyan-400',
           },
           {
-            label: 'Quantite de mouvement p',
+            label: 'Quantité de mouvement p',
             value: pStr,
             sub: 'kg\u00B7m/s',
             color: 'text-purple-600 dark:text-purple-400',
@@ -508,7 +508,7 @@ export function WaveParticleDualitySimulator() {
       {/* Side-by-side comparison */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-3">
         <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 text-center">
-          Comparaison : electrons vs rayons X
+          Comparaison : électrons vs rayons X
         </h3>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <canvas
@@ -525,14 +525,14 @@ export function WaveParticleDualitySimulator() {
           />
         </div>
         <p className="text-center text-sm font-medium text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20 rounded-lg px-3 py-2">
-          Les figures sont identiques ! Les electrons se comportent comme des ondes.
+          Les figures sont identiques ! Les électrons se comportent comme des ondes.
         </p>
       </div>
 
       {/* Equations */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-4">
         <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-          Equations fondamentales
+          Équations fondamentales
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
@@ -552,22 +552,22 @@ export function WaveParticleDualitySimulator() {
 
       {/* Collapsible panels */}
       <div className="space-y-3">
-        <CollapsibleSection title="Hypothese de De Broglie" color="green">
+        <CollapsibleSection title="Hypothèse de De Broglie" color="green">
           <div className="space-y-2">
             <p>
-              En 1924, Louis de Broglie propose dans sa these que{' '}
-              <strong>toute particule materielle possede une longueur d&apos;onde associee</strong>{' '}
-              donnee par <InlineMath math="\lambda = h/p" />.
+              En 1924, Louis de Broglie propose dans sa thèse que{' '}
+              <strong>toute particule matérielle possède une longueur d&apos;onde associée</strong>{' '}
+              donnée par <InlineMath math="\lambda = h/p" />.
             </p>
             <p>
-              Plus la particule est rapide (grande quantite de mouvement{' '}
+              Plus la particule est rapide (grande quantité de mouvement{' '}
               <InlineMath math="p" />
               ), plus sa longueur d&apos;onde est courte. Inversement, une particule lente a une
-              longueur d&apos;onde plus grande et ses proprietes ondulatoires deviennent plus
+              longueur d&apos;onde plus grande et ses propriétés ondulatoires deviennent plus
               facilement observables.
             </p>
             <p>
-              Pour un electron accelere a <InlineMath math="E_k = 54\,\text{eV}" />, on
+              Pour un électron accéléré à <InlineMath math="E_k = 54\,\text{eV}" />, on
               obtient{' '}
               <InlineMath math="\lambda \approx 0.167\,\text{nm}" />, comparable aux distances
               interatomiques dans un cristal.
@@ -575,24 +575,24 @@ export function WaveParticleDualitySimulator() {
           </div>
         </CollapsibleSection>
 
-        <CollapsibleSection title="Experience de Davisson-Germer" color="blue">
+        <CollapsibleSection title="Expérience de Davisson-Germer" color="blue">
           <div className="space-y-2">
             <p>
               En <strong>1927</strong>, Clinton Davisson et Lester Germer bombardent un cristal
-              de nickel avec un faisceau d&apos;electrons. Ils observent un{' '}
-              <strong>pic d&apos;intensite</strong> a un angle precis qui correspond exactement a
-              la condition de Bragg pour la longueur d&apos;onde predite par de Broglie.
+              de nickel avec un faisceau d&apos;électrons. Ils observent un{' '}
+              <strong>pic d&apos;intensité</strong> à un angle précis qui correspond exactement à
+              la condition de Bragg pour la longueur d&apos;onde prédite par de Broglie.
             </p>
             <p>
-              Le pic principal apparait pour une energie de{' '}
-              <InlineMath math="54\,\text{eV}" /> a un angle de diffusion de{' '}
+              Le pic principal apparaît pour une énergie de{' '}
+              <InlineMath math="54\,\text{eV}" /> à un angle de diffusion de{' '}
               <InlineMath math="50°" /> par rapport au faisceau incident, en parfait accord avec{' '}
               <InlineMath math="\lambda = 0.167\,\text{nm}" /> et l&apos;espacement cristallin du
               nickel <InlineMath math="d = 0.215\,\text{nm}" />.
             </p>
             <p>
-              Cette experience constitue la premiere <strong>confirmation experimentale</strong>{' '}
-              directe de la nature ondulatoire des electrons.
+              Cette expérience constitue la première <strong>confirmation expérimentale</strong>{' '}
+              directe de la nature ondulatoire des électrons.
             </p>
           </div>
         </CollapsibleSection>
@@ -600,21 +600,21 @@ export function WaveParticleDualitySimulator() {
         <CollapsibleSection title="Contexte historique" color="gray">
           <div className="space-y-2">
             <p>
-              <strong>1924</strong> : Louis de Broglie soutient sa these &laquo; Recherches sur
-              la theorie des quanta &raquo; a la Sorbonne, proposant l&apos;hypothese de la
-              dualite onde-corpuscule pour la matiere.
+              <strong>1924</strong> : Louis de Broglie soutient sa thèse «&nbsp;Recherches sur
+              la théorie des quanta&nbsp;» à la Sorbonne, proposant l&apos;hypothèse de la
+              dualité onde-corpuscule pour la matière.
             </p>
             <p>
               <strong>1927</strong> : Davisson et Germer (Bell Labs) observent la diffraction
-              d&apos;electrons sur un cristal de nickel. La meme annee, G.P. Thomson realise
-              independamment une experience similaire avec des electrons traversant une feuille
+              d&apos;électrons sur un cristal de nickel. La même année, G.P. Thomson réalise
+              indépendamment une expérience similaire avec des électrons traversant une feuille
               mince.
             </p>
             <p>
-              <strong>1929</strong> : De Broglie recoit le prix Nobel de physique pour sa
-              decouverte de la nature ondulatoire des electrons.{' '}
+              <strong>1929</strong> : De Broglie reçoit le prix Nobel de physique pour sa
+              découverte de la nature ondulatoire des électrons.{' '}
               <strong>1937</strong> : Davisson et Thomson partagent le prix Nobel pour la
-              confirmation experimentale.
+              confirmation expérimentale.
             </p>
           </div>
         </CollapsibleSection>

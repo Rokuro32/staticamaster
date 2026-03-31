@@ -271,7 +271,7 @@ export function SchrodingerBoxSimulator() {
       ctx.fillStyle = '#f59e0b';
       ctx.font = '11px sans-serif';
       ctx.textAlign = 'left';
-      ctx.fillText('Classique: probabilit\u00E9 uniforme', wellLeft + 5, classicalY - 6);
+      ctx.fillText('Classique: probabilité uniforme', wellLeft + 5, classicalY - 6);
     }
 
     // --- Mark nodes ---
@@ -291,7 +291,7 @@ export function SchrodingerBoxSimulator() {
       ctx.fillStyle = '#f87171';
       ctx.font = '10px sans-serif';
       ctx.textAlign = 'right';
-      ctx.fillText(`${numNodes} noeud${numNodes > 1 ? 's' : ''}`, wellRight - 5, wellTop + 12);
+      ctx.fillText(`${numNodes} nœud${numNodes > 1 ? 's' : ''}`, wellRight - 5, wellTop + 12);
     }
 
     // --- Legend ---
@@ -678,13 +678,13 @@ export function SchrodingerBoxSimulator() {
 
         {/* 3. Noeuds et probabilite */}
         <CollapsiblePanel
-          title="Noeuds et probabilit&eacute;"
+          title="Nœuds et probabilit&eacute;"
           borderColor="border-purple-500"
           bgColor="bg-purple-50"
           textColor="text-purple-900"
         >
           <p>
-            Le nombre de <strong className="text-purple-700">noeuds</strong> (z&eacute;ros
+            Le nombre de <strong className="text-purple-700">nœuds</strong> (z&eacute;ros
             int&eacute;rieurs) de la fonction d&rsquo;onde est :
           </p>
           <div className="bg-gray-100 rounded p-3">
@@ -692,10 +692,10 @@ export function SchrodingerBoxSimulator() {
           </div>
           <p>
             Pour <InlineMath math={`n = ${n}`} />, il y a{' '}
-            <strong className="text-purple-700">{n - 1} noeud{n - 1 !== 1 ? 's' : ''}</strong>.
+            <strong className="text-purple-700">{n - 1} nœud{n - 1 !== 1 ? 's' : ''}</strong>.
           </p>
           <p>
-            &Agrave; chaque noeud, <InlineMath math="|\psi(x)|^2 = 0" /> : la particule a une{' '}
+            &Agrave; chaque nœud, <InlineMath math="|\psi(x)|^2 = 0" /> : la particule a une{' '}
             <strong className="text-purple-700">probabilit&eacute; nulle</strong> d&rsquo;&ecirc;tre
             trouv&eacute;e &agrave; cette position. C&rsquo;est un ph&eacute;nom&egrave;ne purement quantique
             qui <em>n&rsquo;a aucun analogue classique</em>.

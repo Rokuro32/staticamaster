@@ -22,6 +22,7 @@ function wien(f: number, T: number): number {
 
 /** Planck distribution u(f) */
 function planck(f: number, T: number): number {
+  if (f <= 0) return 0;
   const prefactor = (8 * Math.PI * h * f * f * f) / (c * c * c);
   const x = (h * f) / (k * T);
   if (x > 500) return 0; // avoid overflow
@@ -352,12 +353,12 @@ export function BlackbodySimulator() {
           defaultOpen
         >
           <p className="text-gray-700">
-            La physique classique attribue une energie moyenne{' '}
-            <InlineMath math="k_B T" /> a chaque mode de vibration du champ
-            electromagnetique (theoreme d&apos;equipartition). Le nombre de modes
-            par unite de volume dans l&apos;intervalle{' '}
-            <InlineMath math="[f, f+df]" /> croit comme{' '}
-            <InlineMath math="\frac{8\pi f^2}{c^3}" />, ce qui conduit a la
+            La physique classique attribue une énergie moyenne{' '}
+            <InlineMath math="k_B T" /> à chaque mode de vibration du champ
+            électromagnétique (théorème d&apos;équipartition). Le nombre de modes
+            par unité de volume dans l&apos;intervalle{' '}
+            <InlineMath math="[f, f+df]" /> croît comme{' '}
+            <InlineMath math="\frac{8\pi f^2}{c^3}" />, ce qui conduit à la
             loi de <strong>Rayleigh-Jeans</strong> :
           </p>
           <div className="bg-gray-100 rounded p-3 overflow-x-auto">
@@ -365,46 +366,46 @@ export function BlackbodySimulator() {
           </div>
           <p className="text-gray-700">
             Cette formule diverge lorsque{' '}
-            <InlineMath math="f \to \infty" /> : l&apos;energie totale du
+            <InlineMath math="f \to \infty" /> : l&apos;énergie totale du
             rayonnement serait <em>infinie</em>. C&apos;est la{' '}
             <strong className="text-red-600">catastrophe ultraviolette</strong>,
-            un echec spectaculaire de la physique classique.
+            un échec spectaculaire de la physique classique.
           </p>
         </CollapsiblePanel>
 
         {/* 2. Hypothese de Planck */}
         <CollapsiblePanel
-          title="2. Hypothese de Planck"
+          title="2. Hypothèse de Planck"
           borderColor="border-green-500"
           bgColor="bg-green-50"
           textColor="text-green-800"
         >
           <p className="text-gray-700">
-            En decembre 1900, <strong>Max Planck</strong> propose que
-            l&apos;energie des oscillateurs de frequence{' '}
+            En décembre 1900, <strong>Max Planck</strong> propose que
+            l&apos;énergie des oscillateurs de fréquence{' '}
             <InlineMath math="f" /> ne peut prendre que des valeurs{' '}
-            <em>discretes</em>, multiples d&apos;un quantum elementaire :
+            <em>discrètes</em>, multiples d&apos;un quantum élémentaire :
           </p>
           <div className="bg-gray-100 rounded p-3 overflow-x-auto">
             <BlockMath math="E_n = n\,h\,f \qquad (n = 0, 1, 2, \ldots)" />
           </div>
           <p className="text-gray-700">
-            En calculant la valeur moyenne de l&apos;energie avec cette
+            En calculant la valeur moyenne de l&apos;énergie avec cette
             quantification, Planck obtient la distribution :
           </p>
           <div className="bg-gray-100 rounded p-3 overflow-x-auto">
             <BlockMath math="u(f) = \frac{8\pi h f^3}{c^3} \; \frac{1}{e^{hf/k_BT} - 1}" />
           </div>
           <p className="text-gray-700">
-            Cette loi reproduit parfaitement les donnees experimentales a toutes
-            les frequences. Le facteur cle est le denominateur de Bose-Einstein
-            qui &laquo; eteint &raquo; les hautes frequences.
+            Cette loi reproduit parfaitement les données expérimentales à toutes
+            les fréquences. Le facteur clé est le dénominateur de Bose-Einstein
+            qui « éteint » les hautes fréquences.
           </p>
         </CollapsiblePanel>
 
         {/* 3. Regimes limites */}
         <CollapsiblePanel
-          title="3. Regimes limites"
+          title="3. Régimes limites"
           borderColor="border-blue-500"
           bgColor="bg-blue-50"
           textColor="text-blue-800"
@@ -417,34 +418,34 @@ export function BlackbodySimulator() {
           <div className="space-y-4">
             <div>
               <p className="font-semibold text-blue-800 mb-1">
-                Basses frequences (<InlineMath math="hf \ll k_BT" />) :
+                Basses fréquences (<InlineMath math="hf \ll k_BT" />) :
               </p>
               <p className="text-gray-700 mb-2">
-                On developpe l&apos;exponentielle{' '}
-                <InlineMath math="e^{hf/k_BT} \approx 1 + hf/k_BT" />, d&apos;ou :
+                On développe l&apos;exponentielle{' '}
+                <InlineMath math="e^{hf/k_BT} \approx 1 + hf/k_BT" />, d&apos;où :
               </p>
               <div className="bg-gray-100 rounded p-3 overflow-x-auto">
                 <BlockMath math="u(f) \approx \frac{8\pi h f^3}{c^3} \cdot \frac{k_BT}{hf} = \frac{8\pi f^2}{c^3}\,k_BT" />
               </div>
               <p className="text-gray-700">
-                On retrouve la loi de <strong>Rayleigh-Jeans</strong> : continuite avec la physique classique.
+                On retrouve la loi de <strong>Rayleigh-Jeans</strong> : continuité avec la physique classique.
               </p>
             </div>
 
             <div>
               <p className="font-semibold text-blue-800 mb-1">
-                Hautes frequences (<InlineMath math="hf \gg k_BT" />) :
+                Hautes fréquences (<InlineMath math="hf \gg k_BT" />) :
               </p>
               <p className="text-gray-700 mb-2">
                 L&apos;exponentielle domine :{' '}
-                <InlineMath math="e^{hf/k_BT} - 1 \approx e^{hf/k_BT}" />, d&apos;ou :
+                <InlineMath math="e^{hf/k_BT} - 1 \approx e^{hf/k_BT}" />, d&apos;où :
               </p>
               <div className="bg-gray-100 rounded p-3 overflow-x-auto">
                 <BlockMath math="u(f) \approx \frac{8\pi h f^3}{c^3}\,e^{-hf/k_BT}" />
               </div>
               <p className="text-gray-700">
                 On retrouve la loi de <strong>Wien</strong> : extinction exponentielle
-                aux hautes frequences, pas de catastrophe.
+                aux hautes fréquences, pas de catastrophe.
               </p>
             </div>
           </div>
@@ -458,24 +459,24 @@ export function BlackbodySimulator() {
           textColor="text-gray-700"
         >
           <p className="text-gray-700">
-            A la fin du XIX<sup>e</sup> siecle, la physique classique semblait
-            presque complete. Lord Kelvin evoquait cependant &laquo; deux petits
-            nuages &raquo; a l&apos;horizon : le resultat negatif de
-            l&apos;experience de Michelson-Morley et le probleme du rayonnement
+            À la fin du XIX<sup>e</sup> siècle, la physique classique semblait
+            presque complète. Lord Kelvin évoquait cependant « deux petits
+            nuages » à l&apos;horizon : le résultat négatif de
+            l&apos;expérience de Michelson-Morley et le problème du rayonnement
             du corps noir.
           </p>
           <p className="text-gray-700">
-            Le 14 decembre 1900, Max Planck presente a la{' '}
-            <em>Deutsche Physikalische Gesellschaft</em> sa derivation de la loi
+            Le 14 décembre 1900, Max Planck présente à la{' '}
+            <em>Deutsche Physikalische Gesellschaft</em> sa dérivation de la loi
             du rayonnement, introduisant la constante{' '}
-            <InlineMath math="h = 6{,}626 \times 10^{-34}" /> J&middot;s.
-            Il considerait lui-meme cette quantification comme un &laquo; acte
-            de desespoir &raquo; (<em>Verzweiflungstat</em>).
+            <InlineMath math="h = 6{,}626 \times 10^{-34}" /> J·s.
+            Il considérait lui-même cette quantification comme un « acte
+            de désespoir » (<em>Verzweiflungstat</em>).
           </p>
           <p className="text-gray-700">
-            Cette hypothese audacieuse ouvre la voie a Einstein (effet
-            photoelectrique, 1905), Bohr (modele atomique, 1913) et finalement a
-            la mecanique quantique complete de Heisenberg et Schrodinger
+            Cette hypothèse audacieuse ouvre la voie à Einstein (effet
+            photoélectrique, 1905), Bohr (modèle atomique, 1913) et finalement à
+            la mécanique quantique complète de Heisenberg et Schrödinger
             (1925-1926).
           </p>
         </CollapsiblePanel>

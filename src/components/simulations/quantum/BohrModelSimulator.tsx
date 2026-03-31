@@ -369,7 +369,7 @@ export function BohrModelSimulator() {
       ctx.fillStyle = '#aab';
       ctx.font = '12px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('Energie (eV)', 0, 0);
+      ctx.fillText('Énergie (eV)', 0, 0);
       ctx.restore();
 
       // Tick marks for energy
@@ -568,7 +568,7 @@ export function BohrModelSimulator() {
       <div className="flex justify-center">
         <div className="relative">
           <p className="text-center text-sm text-gray-600 mb-1">
-            Spectre d&apos;emission accumule
+            Spectre d&apos;émission accumulé
           </p>
           <canvas
             ref={spectrumCanvasRef}
@@ -581,7 +581,7 @@ export function BohrModelSimulator() {
 
       {/* Controls */}
       <div className="bg-gray-50 rounded-lg p-4 space-y-4 border border-gray-200">
-        <h3 className="font-semibold text-lg">Controles</h3>
+        <h3 className="font-semibold text-lg">Contrôles</h3>
 
         <div className="flex flex-wrap gap-4 items-end">
           {/* Niveau initial */}
@@ -628,7 +628,7 @@ export function BohrModelSimulator() {
             disabled={transitioning || ni <= nf}
             className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded font-medium transition-colors"
           >
-            Declencher la transition
+            Déclencher la transition
           </button>
 
           {/* Reset */}
@@ -640,30 +640,30 @@ export function BohrModelSimulator() {
             }}
             className="px-4 py-1.5 bg-gray-500 hover:bg-gray-600 text-white rounded font-medium transition-colors"
           >
-            Reinitialiser le spectre
+            Réinitialiser le spectre
           </button>
         </div>
 
         {/* Series presets */}
         <div className="flex flex-wrap gap-2">
-          <span className="text-sm font-medium self-center mr-2">Series :</span>
+          <span className="text-sm font-medium self-center mr-2">Séries :</span>
           <button
             onClick={() => triggerSeries(1)}
             className="px-3 py-1 text-sm bg-violet-600 hover:bg-violet-700 text-white rounded transition-colors"
           >
-            Serie de Lyman (&rarr;n=1)
+            Série de Lyman (&rarr;n=1)
           </button>
           <button
             onClick={() => triggerSeries(2)}
             className="px-3 py-1 text-sm bg-cyan-600 hover:bg-cyan-700 text-white rounded transition-colors"
           >
-            Serie de Balmer (&rarr;n=2)
+            Série de Balmer (&rarr;n=2)
           </button>
           <button
             onClick={() => triggerSeries(3)}
             className="px-3 py-1 text-sm bg-red-600 hover:bg-red-700 text-white rounded transition-colors"
           >
-            Serie de Paschen (&rarr;n=3)
+            Série de Paschen (&rarr;n=3)
           </button>
         </div>
 
@@ -688,7 +688,7 @@ export function BohrModelSimulator() {
 
       {/* Equations panel */}
       <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
-        <h3 className="font-semibold mb-3">Equations du modele de Bohr</h3>
+        <h3 className="font-semibold mb-3">Équations du modèle de Bohr</h3>
         <div className="space-y-3">
           <div>
             <BlockMath math="E_n = -\\frac{13{,}6}{n^2} \\text{ eV}" />
@@ -737,12 +737,12 @@ export function BohrModelSimulator() {
       {/* Accumulated spectral lines table */}
       {spectralLines.length > 0 && (
         <div className="overflow-x-auto">
-          <h4 className="font-semibold mb-2">Raies observees</h4>
+          <h4 className="font-semibold mb-2">Raies observées</h4>
           <table className="min-w-full text-sm border border-gray-300 rounded">
             <thead>
               <tr className="bg-gray-100">
                 <th className="px-3 py-2 border-b">Transition</th>
-                <th className="px-3 py-2 border-b">Serie</th>
+                <th className="px-3 py-2 border-b">Série</th>
                 <th className="px-3 py-2 border-b">
                   <InlineMath math="\lambda" /> (nm)
                 </th>
@@ -785,28 +785,28 @@ export function BohrModelSimulator() {
       >
         <div className="text-sm text-gray-700 space-y-2">
           <p>
-            En <strong>1913</strong>, le physicien danois <strong>Niels Bohr</strong> propose un modele
-            planetaire de l&apos;atome d&apos;hydrogene qui integre la quantification. Ce modele repose sur
+            En <strong>1913</strong>, le physicien danois <strong>Niels Bohr</strong> propose un modèle
+            planétaire de l&apos;atome d&apos;hydrogène qui intègre la quantification. Ce modèle repose sur
             trois postulats fondamentaux :
           </p>
           <ol className="list-decimal list-inside space-y-1 ml-2">
             <li>
-              L&apos;electron se deplace sur des <strong>orbites circulaires stables</strong> (etats stationnaires)
-              sans emettre de rayonnement.
+              L&apos;électron se déplace sur des <strong>orbites circulaires stables</strong> (états stationnaires)
+              sans émettre de rayonnement.
             </li>
             <li>
-              Le <strong>moment cinetique orbital</strong> est quantifie :
+              Le <strong>moment cinétique orbital</strong> est quantifié :
               <InlineMath math="L = n\hbar" /> avec <InlineMath math="n = 1, 2, 3, \ldots" />
             </li>
             <li>
-              L&apos;emission ou l&apos;absorption de lumiere se produit lors d&apos;une <strong>transition</strong> entre
-              deux niveaux, avec un photon d&apos;energie <InlineMath math="h\nu = |E_i - E_f|" />.
+              L&apos;émission ou l&apos;absorption de lumière se produit lors d&apos;une <strong>transition</strong> entre
+              deux niveaux, avec un photon d&apos;énergie <InlineMath math="h\nu = |E_i - E_f|" />.
             </li>
           </ol>
           <p>
-            Ce modele explique avec succes les series spectrales de l&apos;hydrogene (Lyman, Balmer, Paschen, etc.)
-            et la constante de Rydberg. Cependant, il ne s&apos;applique qu&apos;aux atomes hydrogenoides et sera
-            remplace par la mecanique quantique ondulatoire de Schrodinger en 1926.
+            Ce modèle explique avec succès les séries spectrales de l&apos;hydrogène (Lyman, Balmer, Paschen, etc.)
+            et la constante de Rydberg. Cependant, il ne s&apos;applique qu&apos;aux atomes hydrogénoïdes et sera
+            remplacé par la mécanique quantique ondulatoire de Schrödinger en 1926.
           </p>
         </div>
       </CollapsiblePanel>
