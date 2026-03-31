@@ -24,12 +24,7 @@ import { ThermalRadiationSimulator } from '@/components/simulations/ThermalRadia
 import { DCCircuitSimulator } from '@/components/simulations/DCCircuitSimulator';
 import { TwinParadoxSimulator } from '@/components/simulations/TwinParadoxSimulator';
 import { ECGSimulator } from '@/components/simulations/ECGSimulator';
-import { BlackbodySimulator } from '@/components/simulations/quantum/BlackbodySimulator';
-import { PhotoelectricSimulator } from '@/components/simulations/quantum/PhotoelectricSimulator';
-import { BohrModelSimulator } from '@/components/simulations/quantum/BohrModelSimulator';
-import { WaveParticleDualitySimulator } from '@/components/simulations/quantum/WaveParticleDualitySimulator';
-import { UncertaintyPrincipleSimulator } from '@/components/simulations/quantum/UncertaintyPrincipleSimulator';
-import { SchrodingerBoxSimulator } from '@/components/simulations/quantum/SchrodingerBoxSimulator';
+import { QuantumPhysicsSimulator } from '@/components/simulations/quantum/QuantumPhysicsSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -246,107 +241,19 @@ export default function SimulationsPage() {
               <GreenhouseEffectSimulator />
             </section>
 
-            {/* ═══ Naissance de la physique quantique ═══ */}
-            <div className="mt-12 mb-6 border-t-2 border-violet-300 pt-8">
-              <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                  ⚛️ Naissance de la physique quantique
-                </h2>
-                <p className="text-gray-600 max-w-2xl mx-auto">
-                  Six expériences fondatrices qui ont bouleversé la physique classique.
-                  Chaque simulation suit le même fil : hypothèse classique → anomalie expérimentale → rupture quantique.
-                </p>
-              </div>
-            </div>
-
-            {/* Section 1 — Corps noir (Planck, 1900) */}
-            <section>
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-2xl">🔥</span>
-                <h2 className="text-xl font-bold text-gray-900">
-                  1. Le rayonnement du corps noir (Planck, 1900)
-                </h2>
-              </div>
-              <p className="text-gray-600 mb-4">
-                La catastrophe ultraviolette : la physique classique prédit une énergie infinie pour le rayonnement
-                à haute fréquence. Planck résout le problème en quantifiant l'énergie : E = nhf.
-              </p>
-              <BlackbodySimulator />
-            </section>
-
-            {/* Section 2 — Effet photoélectrique (Einstein, 1905) */}
-            <section>
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-2xl">💡</span>
-                <h2 className="text-xl font-bold text-gray-900">
-                  2. L'effet photoélectrique (Einstein, 1905)
-                </h2>
-              </div>
-              <p className="text-gray-600 mb-4">
-                La lumière n'est pas qu'une onde : elle est constituée de photons. L'énergie de chaque
-                photon dépend de la fréquence, pas de l'intensité. Einstein reçoit le Nobel pour cette découverte.
-              </p>
-              <PhotoelectricSimulator />
-            </section>
-
-            {/* Section 3 — Modèle de Bohr (1913) */}
+            {/* Naissance de la physique quantique */}
             <section>
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-2xl">⚛️</span>
                 <h2 className="text-xl font-bold text-gray-900">
-                  3. Le modèle de Bohr (1913)
+                  Naissance de la physique quantique
                 </h2>
               </div>
               <p className="text-gray-600 mb-4">
-                L'électron ne peut occuper que des orbites discrètes autour du noyau.
-                Les transitions entre niveaux produisent des raies spectrales caractéristiques.
+                Six expériences fondatrices qui ont bouleversé la physique classique.
+                Chaque simulation suit le même fil : hypothèse classique → anomalie expérimentale → rupture quantique.
               </p>
-              <BohrModelSimulator />
-            </section>
-
-            {/* Section 4 — Dualité onde-corpuscule (De Broglie, 1924) */}
-            <section>
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-2xl">🌊</span>
-                <h2 className="text-xl font-bold text-gray-900">
-                  4. La dualité onde-corpuscule (De Broglie, 1924)
-                </h2>
-              </div>
-              <p className="text-gray-600 mb-4">
-                Toute particule possède une longueur d'onde associée : λ = h/p.
-                L'expérience de Davisson-Germer confirme la diffraction des électrons.
-              </p>
-              <WaveParticleDualitySimulator />
-            </section>
-
-            {/* Section 5 — Principe d'incertitude (Heisenberg, 1927) */}
-            <section>
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-2xl">🎯</span>
-                <h2 className="text-xl font-bold text-gray-900">
-                  5. Le principe d'incertitude (Heisenberg, 1927)
-                </h2>
-              </div>
-              <p className="text-gray-600 mb-4">
-                Il est fondamentalement impossible de connaître simultanément la position et la quantité
-                de mouvement d'une particule avec une précision arbitraire. Δx·Δp ≥ ℏ/2.
-              </p>
-              <UncertaintyPrincipleSimulator />
-            </section>
-
-            {/* Section 6 — Équation de Schrödinger (1926) */}
-            <section>
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-2xl">📐</span>
-                <h2 className="text-xl font-bold text-gray-900">
-                  6. La particule dans une boîte (Schrödinger, 1926)
-                </h2>
-              </div>
-              <p className="text-gray-600 mb-4">
-                L'équation de Schrödinger décrit l'évolution de la fonction d'onde. La particule confinée
-                dans un puits de potentiel ne peut prendre que des niveaux d'énergie discrets.
-              </p>
-              <SchrodingerBoxSimulator />
+              <QuantumPhysicsSimulator />
             </section>
           </>
         )}
