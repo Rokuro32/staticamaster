@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { InlineMath, BlockMath } from '@/components/ui/LaTeX';
+import { InlineMath, BlockMath } from 'react-katex';
 import { hbar, CONSTANTS_INFO } from '@/lib/physics-constants';
 
 // ---------------------------------------------------------------------------
