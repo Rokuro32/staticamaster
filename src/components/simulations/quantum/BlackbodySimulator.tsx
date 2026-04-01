@@ -316,7 +316,7 @@ export function BlackbodySimulator() {
         {/* Temperature slider */}
         <div className="w-full max-w-[700px] flex items-center gap-4">
           <label className="text-sm text-gray-700 whitespace-nowrap font-medium">
-            Temperature <InlineMath math="T" />
+            Temperature <InlineMath math={`T`} />
           </label>
           <input
             type="range"
@@ -354,19 +354,19 @@ export function BlackbodySimulator() {
         >
           <p className="text-gray-700">
             La physique classique attribue une énergie moyenne{' '}
-            <InlineMath math="k_B T" /> à chaque mode de vibration du champ
+            <InlineMath math={`k_B T`} /> à chaque mode de vibration du champ
             électromagnétique (théorème d&apos;équipartition). Le nombre de modes
             par unité de volume dans l&apos;intervalle{' '}
-            <InlineMath math="[f, f+df]" /> croît comme{' '}
-            <InlineMath math="\\frac{8\\pi f^2}{c^3}" />, ce qui conduit à la
+            <InlineMath math={`[f, f+df]`} /> croît comme{' '}
+            <InlineMath math={`\\frac{8\\pi f^2}{c^3}`} />, ce qui conduit à la
             loi de <strong>Rayleigh-Jeans</strong> :
           </p>
           <div className="bg-gray-100 rounded p-3 overflow-x-auto">
-            <BlockMath math="u(f) = \\frac{8\\pi f^2}{c^3}\\, k_B T" />
+            <BlockMath math={`u(f) = \\frac{8\\pi f^2}{c^3}\\, k_B T`} />
           </div>
           <p className="text-gray-700">
             Cette formule diverge lorsque{' '}
-            <InlineMath math="f \\to \\infty" /> : l&apos;énergie totale du
+            <InlineMath math={`f \\to \\infty`} /> : l&apos;énergie totale du
             rayonnement serait <em>infinie</em>. C&apos;est la{' '}
             <strong className="text-red-600">catastrophe ultraviolette</strong>,
             un échec spectaculaire de la physique classique.
@@ -383,18 +383,18 @@ export function BlackbodySimulator() {
           <p className="text-gray-700">
             En décembre 1900, <strong>Max Planck</strong> propose que
             l&apos;énergie des oscillateurs de fréquence{' '}
-            <InlineMath math="f" /> ne peut prendre que des valeurs{' '}
+            <InlineMath math={`f`} /> ne peut prendre que des valeurs{' '}
             <em>discrètes</em>, multiples d&apos;un quantum élémentaire :
           </p>
           <div className="bg-gray-100 rounded p-3 overflow-x-auto">
-            <BlockMath math="E_n = n\\,h\\,f \\qquad (n = 0, 1, 2, \\ldots)" />
+            <BlockMath math={`E_n = n\\,h\\,f \\qquad (n = 0, 1, 2, \\ldots)`} />
           </div>
           <p className="text-gray-700">
             En calculant la valeur moyenne de l&apos;énergie avec cette
             quantification, Planck obtient la distribution :
           </p>
           <div className="bg-gray-100 rounded p-3 overflow-x-auto">
-            <BlockMath math="u(f) = \\frac{8\\pi h f^3}{c^3} \\; \\frac{1}{e^{hf/k_BT} - 1}" />
+            <BlockMath math={`u(f) = \\frac{8\\pi h f^3}{c^3} \\; \\frac{1}{e^{hf/k_BT} - 1}`} />
           </div>
           <p className="text-gray-700">
             Cette loi reproduit parfaitement les données expérimentales à toutes
@@ -418,14 +418,14 @@ export function BlackbodySimulator() {
           <div className="space-y-4">
             <div>
               <p className="font-semibold text-blue-800 mb-1">
-                Basses fréquences (<InlineMath math="hf \\ll k_BT" />) :
+                Basses fréquences (<InlineMath math={`hf \\ll k_BT`} />) :
               </p>
               <p className="text-gray-700 mb-2">
                 On développe l&apos;exponentielle{' '}
-                <InlineMath math="e^{hf/k_BT} \\approx 1 + hf/k_BT" />, d&apos;où :
+                <InlineMath math={`e^{hf/k_BT} \\approx 1 + hf/k_BT`} />, d&apos;où :
               </p>
               <div className="bg-gray-100 rounded p-3 overflow-x-auto">
-                <BlockMath math="u(f) \\approx \\frac{8\\pi h f^3}{c^3} \\cdot \\frac{k_BT}{hf} = \\frac{8\\pi f^2}{c^3}\\,k_BT" />
+                <BlockMath math={`u(f) \\approx \\frac{8\\pi h f^3}{c^3} \\cdot \\frac{k_BT}{hf} = \\frac{8\\pi f^2}{c^3}\\,k_BT`} />
               </div>
               <p className="text-gray-700">
                 On retrouve la loi de <strong>Rayleigh-Jeans</strong> : continuité avec la physique classique.
@@ -434,14 +434,14 @@ export function BlackbodySimulator() {
 
             <div>
               <p className="font-semibold text-blue-800 mb-1">
-                Hautes fréquences (<InlineMath math="hf \\gg k_BT" />) :
+                Hautes fréquences (<InlineMath math={`hf \\gg k_BT`} />) :
               </p>
               <p className="text-gray-700 mb-2">
                 L&apos;exponentielle domine :{' '}
-                <InlineMath math="e^{hf/k_BT} - 1 \\approx e^{hf/k_BT}" />, d&apos;où :
+                <InlineMath math={`e^{hf/k_BT} - 1 \\approx e^{hf/k_BT}`} />, d&apos;où :
               </p>
               <div className="bg-gray-100 rounded p-3 overflow-x-auto">
-                <BlockMath math="u(f) \\approx \\frac{8\\pi h f^3}{c^3}\\,e^{-hf/k_BT}" />
+                <BlockMath math={`u(f) \\approx \\frac{8\\pi h f^3}{c^3}\\,e^{-hf/k_BT}`} />
               </div>
               <p className="text-gray-700">
                 On retrouve la loi de <strong>Wien</strong> : extinction exponentielle
@@ -469,7 +469,7 @@ export function BlackbodySimulator() {
             Le 14 décembre 1900, Max Planck présente à la{' '}
             <em>Deutsche Physikalische Gesellschaft</em> sa dérivation de la loi
             du rayonnement, introduisant la constante{' '}
-            <InlineMath math="h = 6{,}626 \\times 10^{-34}" /> J·s.
+            <InlineMath math={`h = 6{,}626 \\times 10^{-34}`} /> J·s.
             Il considérait lui-même cette quantification comme un « acte
             de désespoir » (<em>Verzweiflungstat</em>).
           </p>

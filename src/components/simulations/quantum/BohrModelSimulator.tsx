@@ -691,19 +691,19 @@ export function BohrModelSimulator() {
         <h3 className="font-semibold mb-3">Équations du modèle de Bohr</h3>
         <div className="space-y-3">
           <div>
-            <BlockMath math="E_n = -\\frac{13{,}6}{n^2} \\text{ eV}" />
+            <BlockMath math={`E_n = -\\frac{13{,}6}{n^2} \\text{ eV}`} />
           </div>
           <div>
-            <BlockMath math="\\Delta E = E_i - E_f = h\\nu" />
+            <BlockMath math={`\\Delta E = E_i - E_f = h\\nu`} />
           </div>
           <div>
-            <BlockMath math="\\lambda = \\frac{hc}{\\Delta E}" />
+            <BlockMath math={`\\lambda = \\frac{hc}{\\Delta E}`} />
           </div>
           <div>
-            <BlockMath math="\\frac{1}{\\lambda} = R_H \\left( \\frac{1}{n_f^2} - \\frac{1}{n_i^2} \\right)" />
+            <BlockMath math={`\\frac{1}{\\lambda} = R_H \\left( \\frac{1}{n_f^2} - \\frac{1}{n_i^2} \\right)`} />
           </div>
           <p className="text-sm text-gray-600">
-            avec <InlineMath math="R_H = 1{,}097 \\times 10^7 \\text{ m}^{-1}" /> (constante de Rydberg)
+            avec <InlineMath math={`R_H = 1{,}097 \\times 10^7 \\text{ m}^{-1}`} /> (constante de Rydberg)
           </p>
         </div>
       </div>
@@ -715,10 +715,10 @@ export function BohrModelSimulator() {
             <tr className="bg-gray-100">
               <th className="px-3 py-2 border-b">n</th>
               <th className="px-3 py-2 border-b">
-                <InlineMath math="E_n" /> (eV)
+                <InlineMath math={`E_n`} /> (eV)
               </th>
               <th className="px-3 py-2 border-b">
-                <InlineMath math="r_n = n^2 a_0" /> (pm)
+                <InlineMath math={`r_n = n^2 a_0`} /> (pm)
               </th>
             </tr>
           </thead>
@@ -744,10 +744,10 @@ export function BohrModelSimulator() {
                 <th className="px-3 py-2 border-b">Transition</th>
                 <th className="px-3 py-2 border-b">Série</th>
                 <th className="px-3 py-2 border-b">
-                  <InlineMath math="\\lambda" /> (nm)
+                  <InlineMath math={`\\lambda`} /> (nm)
                 </th>
                 <th className="px-3 py-2 border-b">
-                  <InlineMath math="\\Delta E" /> (eV)
+                  <InlineMath math={`\\Delta E`} /> (eV)
                 </th>
                 <th className="px-3 py-2 border-b">Couleur</th>
               </tr>
@@ -796,7 +796,7 @@ export function BohrModelSimulator() {
             </li>
             <li>
               Le <strong>moment cinétique orbital</strong> est quantifié :
-              <InlineMath math="L = n\\hbar" /> avec <InlineMath math="n = 1, 2, 3, \\ldots" />
+              <InlineMath math={`L = n\\hbar`} /> avec <InlineMath math={`n = 1, 2, 3, \\ldots`} />
             </li>
             <li>
               L&apos;émission ou l&apos;absorption de lumière se produit lors d&apos;une <strong>transition</strong> entre

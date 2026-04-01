@@ -447,7 +447,7 @@ export function WaveParticleDualitySimulator() {
         {/* Slider */}
         <div className="flex flex-col sm:flex-row items-center gap-4 px-2">
           <label className="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
-            Énergie cinétique <InlineMath math="E_k" />
+            Énergie cinétique <InlineMath math={`E_k`} />
           </label>
           <input
             type="range"
@@ -539,13 +539,13 @@ export function WaveParticleDualitySimulator() {
             <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
               Longueur d&apos;onde de De Broglie
             </p>
-            <BlockMath math="\\lambda = \\frac{h}{p} = \\frac{h}{\\sqrt{2 m_e E_k}}" />
+            <BlockMath math={`\\lambda = \\frac{h}{p} = \\frac{h}{\\sqrt{2 m_e E_k}}`} />
           </div>
           <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
             <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
               Condition de Bragg
             </p>
-            <BlockMath math="2d \\sin\\theta = n\\lambda" />
+            <BlockMath math={`2d \\sin\\theta = n\\lambda`} />
           </div>
         </div>
       </div>
@@ -557,19 +557,19 @@ export function WaveParticleDualitySimulator() {
             <p>
               En 1924, Louis de Broglie propose dans sa thèse que{' '}
               <strong>toute particule matérielle possède une longueur d&apos;onde associée</strong>{' '}
-              donnée par <InlineMath math="\\lambda = h/p" />.
+              donnée par <InlineMath math={`\\lambda = h/p`} />.
             </p>
             <p>
               Plus la particule est rapide (grande quantité de mouvement{' '}
-              <InlineMath math="p" />
+              <InlineMath math={`p`} />
               ), plus sa longueur d&apos;onde est courte. Inversement, une particule lente a une
               longueur d&apos;onde plus grande et ses propriétés ondulatoires deviennent plus
               facilement observables.
             </p>
             <p>
-              Pour un électron accéléré à <InlineMath math="E_k = 54\\,\\text{eV}" />, on
+              Pour un électron accéléré à <InlineMath math={`E_k = 54\\,\\text{eV}`} />, on
               obtient{' '}
-              <InlineMath math="\\lambda \\approx 0.167\\,\\text{nm}" />, comparable aux distances
+              <InlineMath math={`\\lambda \\approx 0.167\\,\\text{nm}`} />, comparable aux distances
               interatomiques dans un cristal.
             </p>
           </div>
@@ -585,10 +585,10 @@ export function WaveParticleDualitySimulator() {
             </p>
             <p>
               Le pic principal apparaît pour une énergie de{' '}
-              <InlineMath math="54\\,\\text{eV}" /> à un angle de diffusion de{' '}
-              <InlineMath math="50°" /> par rapport au faisceau incident, en parfait accord avec{' '}
-              <InlineMath math="\\lambda = 0.167\\,\\text{nm}" /> et l&apos;espacement cristallin du
-              nickel <InlineMath math="d = 0.215\\,\\text{nm}" />.
+              <InlineMath math={`54\\,\\text{eV}`} /> à un angle de diffusion de{' '}
+              <InlineMath math={`50°`} /> par rapport au faisceau incident, en parfait accord avec{' '}
+              <InlineMath math={`\\lambda = 0.167\\,\\text{nm}`} /> et l&apos;espacement cristallin du
+              nickel <InlineMath math={`d = 0.215\\,\\text{nm}`} />.
             </p>
             <p>
               Cette expérience constitue la première <strong>confirmation expérimentale</strong>{' '}

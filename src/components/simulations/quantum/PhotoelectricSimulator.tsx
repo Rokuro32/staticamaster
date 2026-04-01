@@ -531,7 +531,7 @@ export function PhotoelectricSimulator() {
         {/* Frequency slider */}
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2">
           <label className="text-sm font-medium text-gray-700 block">
-            Fréquence <InlineMath math="f" />
+            Fréquence <InlineMath math={`f`} />
           </label>
           <input
             type="range"
@@ -555,7 +555,7 @@ export function PhotoelectricSimulator() {
         {/* Intensity slider */}
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2">
           <label className="text-sm font-medium text-gray-700 block">
-            Intensité <InlineMath math="I" />
+            Intensité <InlineMath math={`I`} />
           </label>
           <input
             type="range"
@@ -574,7 +574,7 @@ export function PhotoelectricSimulator() {
         {/* Metal selector */}
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2">
           <label className="text-sm font-medium text-gray-700 block">
-            Métal (travail de sortie <InlineMath math="\\phi" />)
+            Métal (travail de sortie <InlineMath math={`\\phi`} />)
           </label>
           <select
             value={metalIdx}
@@ -665,21 +665,21 @@ export function PhotoelectricSimulator() {
       >
         <p>
           Einstein propose en 1905 que la lumière est composée de <strong>quanta</strong>{' '}
-          (photons), chacun portant une énergie <InlineMath math="E = hf" />.
+          (photons), chacun portant une énergie <InlineMath math={`E = hf`} />.
           L&apos;équation photoélectrique s&apos;écrit :
         </p>
         <div className="my-3 text-center">
-          <BlockMath math="E_k = hf - \\phi" />
+          <BlockMath math={`E_k = hf - \\phi`} />
         </div>
         <div className="flex flex-wrap gap-4 justify-center text-xs">
           <HoverTerm tooltip="Énergie cinétique maximale de l'électron éjecté">
-            <InlineMath math="E_k" /> = énergie cinétique
+            <InlineMath math={`E_k`} /> = énergie cinétique
           </HoverTerm>
           <HoverTerm tooltip="Énergie d'un photon incident (h = constante de Planck, f = fréquence)">
-            <InlineMath math="hf" /> = énergie du photon
+            <InlineMath math={`hf`} /> = énergie du photon
           </HoverTerm>
           <HoverTerm tooltip="Travail de sortie : énergie minimale pour arracher un électron du métal">
-            <InlineMath math="\\phi" /> = travail de sortie
+            <InlineMath math={`\\phi`} /> = travail de sortie
           </HoverTerm>
         </div>
         <div className="mt-3 bg-green-100 border border-green-300 rounded p-3 text-xs space-y-1">
@@ -706,7 +706,7 @@ export function PhotoelectricSimulator() {
       <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3">
         <h3 className="font-semibold text-gray-900 text-sm">
           Graphique{' '}
-          <InlineMath math="E_k" /> vs <InlineMath math="f" />
+          <InlineMath math={`E_k`} /> vs <InlineMath math={`f`} />
         </h3>
         <div className="flex justify-center">
           <canvas
@@ -717,7 +717,7 @@ export function PhotoelectricSimulator() {
           />
         </div>
         <p className="text-xs text-gray-600 text-center">
-          Droite de pente <InlineMath math="h" />, débutant à{' '}
+          Droite de pente <InlineMath math={`h`} />, débutant à{' '}
           <InlineMath math={`f_{\\text{seuil}} = ${(fSeuil / 1e15).toFixed(2)} \\times 10^{15}\\,\\text{Hz}`} />.
           Le point jaune indique le point de fonctionnement actuel.
         </p>
@@ -749,7 +749,7 @@ export function PhotoelectricSimulator() {
           <strong>prix Nobel de physique en 1921</strong>.
           L&apos;explication quantique a été confirmée expérimentalement par{' '}
           <strong>Robert Millikan</strong> en 1916, qui a mesuré la valeur de la
-          constante de Planck <InlineMath math="h" /> avec précision.
+          constante de Planck <InlineMath math={`h`} /> avec précision.
         </p>
       </CollapsiblePanel>
     </div>
