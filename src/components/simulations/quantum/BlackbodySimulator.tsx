@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { InlineMath, BlockMath } from 'react-katex';
+import { InlineMath, BlockMath } from '@/components/ui/LaTeX';
 import { h, k, c, CONSTANTS_INFO } from '@/lib/physics-constants';
 
 // ---------------------------------------------------------------------------
@@ -76,7 +76,7 @@ function ConstantTooltip({ symbol }: { symbol: 'h' | 'k' | 'c' }) {
   const info = CONSTANTS_INFO[symbol];
   return (
     <span className="relative group inline-block cursor-help border-b border-dashed border-gray-500">
-      <InlineMath math={symbol} />
+      <InlineMath math={info.latex} />
       <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block whitespace-nowrap bg-gray-900 text-white text-xs rounded px-2 py-1 shadow-lg z-50">
         {info.name}: {info.value} {info.unit}
       </span>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { InlineMath, BlockMath } from 'react-katex';
+import { InlineMath, BlockMath } from '@/components/ui/LaTeX';
 import { h, me, eV } from '@/lib/physics-constants';
 
 // Crystal lattice spacing for nickel (meters)
