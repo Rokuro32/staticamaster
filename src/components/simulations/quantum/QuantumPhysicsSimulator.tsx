@@ -7,10 +7,12 @@ import { BohrModelSimulator } from './BohrModelSimulator';
 import { WaveParticleDualitySimulator } from './WaveParticleDualitySimulator';
 import { UncertaintyPrincipleSimulator } from './UncertaintyPrincipleSimulator';
 import { SchrodingerBoxSimulator } from './SchrodingerBoxSimulator';
+import { ComptonEffectSimulator } from './ComptonEffectSimulator';
 
 type Section =
   | 'blackbody'
   | 'photoelectric'
+  | 'compton'
   | 'bohr'
   | 'duality'
   | 'uncertainty'
@@ -19,6 +21,7 @@ type Section =
 const SECTIONS: { id: Section; label: string; year: string; icon: string }[] = [
   { id: 'blackbody',    label: 'Corps noir',       year: '1900', icon: '🔥' },
   { id: 'photoelectric', label: 'Photoélectrique', year: '1905', icon: '💡' },
+  { id: 'compton',      label: 'Effet Compton',    year: '1923', icon: '💥' },
   { id: 'bohr',         label: 'Modèle de Bohr',   year: '1913', icon: '⚛️' },
   { id: 'duality',      label: 'Onde-corpuscule',   year: '1924', icon: '🌊' },
   { id: 'uncertainty',   label: 'Incertitude',      year: '1927', icon: '🎯' },
@@ -53,6 +56,7 @@ export function QuantumPhysicsSimulator() {
       <div className="p-0">
         {activeSection === 'blackbody' && <BlackbodySimulator />}
         {activeSection === 'photoelectric' && <PhotoelectricSimulator />}
+        {activeSection === 'compton' && <ComptonEffectSimulator />}
         {activeSection === 'bohr' && <BohrModelSimulator />}
         {activeSection === 'duality' && <WaveParticleDualitySimulator />}
         {activeSection === 'uncertainty' && <UncertaintyPrincipleSimulator />}
