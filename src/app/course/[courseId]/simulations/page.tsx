@@ -25,6 +25,7 @@ import { DCCircuitSimulator } from '@/components/simulations/DCCircuitSimulator'
 import { TwinParadoxSimulator } from '@/components/simulations/TwinParadoxSimulator';
 import { ECGSimulator } from '@/components/simulations/ECGSimulator';
 import { QuantumPhysicsSimulator } from '@/components/simulations/quantum/QuantumPhysicsSimulator';
+import { AtomicPhysicsSimulator } from '@/components/simulations/atomic/AtomicPhysicsSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -254,6 +255,21 @@ export default function SimulationsPage() {
                 Chaque simulation suit le même fil : hypothèse classique → anomalie expérimentale → rupture quantique.
               </p>
               <QuantumPhysicsSimulator />
+            </section>
+
+            {/* Physique atomique */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">🧪</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Physique atomique
+                </h2>
+              </div>
+              <p className="text-gray-600 mb-4">
+                De l&apos;atome isolé à la matière condensée : principe d&apos;exclusion
+                de Pauli et formation des bandes d&apos;énergie dans les solides.
+              </p>
+              <AtomicPhysicsSimulator />
             </section>
           </>
         )}
