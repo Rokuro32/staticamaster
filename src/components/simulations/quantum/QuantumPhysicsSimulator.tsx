@@ -8,6 +8,7 @@ import { WaveParticleDualitySimulator } from './WaveParticleDualitySimulator';
 import { UncertaintyPrincipleSimulator } from './UncertaintyPrincipleSimulator';
 import { SchrodingerBoxSimulator } from './SchrodingerBoxSimulator';
 import { ComptonEffectSimulator } from './ComptonEffectSimulator';
+import { SpinSimulator } from './SpinSimulator';
 
 type Section =
   | 'blackbody'
@@ -16,7 +17,8 @@ type Section =
   | 'bohr'
   | 'duality'
   | 'uncertainty'
-  | 'schrodinger';
+  | 'schrodinger'
+  | 'spin';
 
 const SECTIONS: { id: Section; label: string; year: string; icon: string }[] = [
   { id: 'blackbody',    label: 'Corps noir',       year: '1900', icon: '🔥' },
@@ -26,6 +28,7 @@ const SECTIONS: { id: Section; label: string; year: string; icon: string }[] = [
   { id: 'duality',      label: 'Onde-corpuscule',   year: '1924', icon: '🌊' },
   { id: 'uncertainty',   label: 'Incertitude',      year: '1927', icon: '🎯' },
   { id: 'schrodinger',  label: 'Schrödinger',      year: '1926', icon: '📐' },
+  { id: 'spin',         label: 'Spin',             year: '1922', icon: '🧭' },
 ];
 
 export function QuantumPhysicsSimulator() {
@@ -61,6 +64,7 @@ export function QuantumPhysicsSimulator() {
         {activeSection === 'duality' && <WaveParticleDualitySimulator />}
         {activeSection === 'uncertainty' && <UncertaintyPrincipleSimulator />}
         {activeSection === 'schrodinger' && <SchrodingerBoxSimulator />}
+        {activeSection === 'spin' && <SpinSimulator />}
       </div>
     </div>
   );
