@@ -3,16 +3,18 @@
 import { useState } from 'react';
 import { PauliExclusionSimulator } from './PauliExclusionSimulator';
 import { EnergyBandsSimulator } from './EnergyBandsSimulator';
+import { IsotopeNotationSimulator } from './IsotopeNotationSimulator';
 
-type Section = 'pauli' | 'bands';
+type Section = 'isotopes' | 'pauli' | 'bands';
 
 const SECTIONS: { id: Section; label: string; year: string; icon: string }[] = [
-  { id: 'pauli', label: 'Principe d\'exclusion', year: '1925', icon: '🚫' },
-  { id: 'bands', label: 'Bandes d\'énergie',     year: '1928', icon: '📊' },
+  { id: 'isotopes', label: 'Isotopes',            year: 'A,Z',  icon: '⚛️' },
+  { id: 'pauli',    label: 'Principe d\'exclusion', year: '1925', icon: '🚫' },
+  { id: 'bands',    label: 'Bandes d\'énergie',     year: '1928', icon: '📊' },
 ];
 
 export function AtomicPhysicsSimulator() {
-  const [activeSection, setActiveSection] = useState<Section>('pauli');
+  const [activeSection, setActiveSection] = useState<Section>('isotopes');
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
@@ -37,6 +39,7 @@ export function AtomicPhysicsSimulator() {
 
       {/* Content */}
       <div className="p-0">
+        {activeSection === 'isotopes' && <IsotopeNotationSimulator />}
         {activeSection === 'pauli' && <PauliExclusionSimulator />}
         {activeSection === 'bands' && <EnergyBandsSimulator />}
       </div>
