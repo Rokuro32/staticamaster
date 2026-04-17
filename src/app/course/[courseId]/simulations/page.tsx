@@ -13,6 +13,7 @@ import { VectorSimulator } from '@/components/simulations/VectorSimulator';
 import { ForceAdditionSimulator } from '@/components/simulations/ForceAdditionSimulator';
 import { RotationDynamicsSimulator } from '@/components/simulations/RotationDynamicsSimulator';
 import { TrussSimulator } from '@/components/simulations/TrussSimulator';
+import { TrussAnalysisSimulator } from '@/components/simulations/truss/TrussAnalysisSimulator';
 import { KinematicsGraphSimulator } from '@/components/simulations/KinematicsGraphSimulator';
 import { GuitarStringSimulator } from '@/components/simulations/GuitarStringSimulator';
 import { TrigCircleSimulator } from '@/components/simulations/TrigCircleSimulator';
@@ -321,7 +322,7 @@ export default function SimulationsPage() {
               <RotationDynamicsSimulator />
             </section>
 
-            {/* Truss Simulator Section */}
+            {/* Truss Analysis Group */}
             <section>
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-2xl">🏗️</span>
@@ -329,7 +330,11 @@ export default function SimulationsPage() {
                   Analyse de Treillis
                 </h2>
               </div>
-              <TrussSimulator />
+              <p className="text-gray-600 mb-4">
+                Calcul des forces aux jonctions d&apos;un treillis : méthode des noeuds
+                (équilibre noeud par noeud) et méthode des sections (coupe de Ritter).
+              </p>
+              <TrussAnalysisSimulator />
             </section>
 
             {/* More simulations can be added here */}
