@@ -4,13 +4,17 @@ import { useState } from 'react';
 import { DecayLawSimulator } from './DecayLawSimulator';
 import { RadiationTypesSimulator } from './RadiationTypesSimulator';
 import { DecayChainSimulator } from './DecayChainSimulator';
+import { FissionSimulator } from './FissionSimulator';
+import { FusionSimulator } from './FusionSimulator';
 
-type Section = 'decay' | 'radiation' | 'chain';
+type Section = 'decay' | 'radiation' | 'chain' | 'fission' | 'fusion';
 
 const SECTIONS: { id: Section; label: string; icon: string }[] = [
-  { id: 'decay',     label: 'Décroissance',     icon: '📉' },
-  { id: 'radiation',  label: 'Rayonnements α β γ', icon: '☢️' },
-  { id: 'chain',     label: 'Chaînes de filiation', icon: '🔗' },
+  { id: 'decay',     label: 'Décroissance',       icon: '📉' },
+  { id: 'radiation', label: 'Rayonnements α β γ', icon: '☢️' },
+  { id: 'chain',     label: 'Chaînes',            icon: '🔗' },
+  { id: 'fission',   label: 'Fission',            icon: '💥' },
+  { id: 'fusion',    label: 'Fusion',             icon: '☀️' },
 ];
 
 export function RadioactivitySimulator() {
@@ -41,6 +45,8 @@ export function RadioactivitySimulator() {
         {activeSection === 'decay' && <DecayLawSimulator />}
         {activeSection === 'radiation' && <RadiationTypesSimulator />}
         {activeSection === 'chain' && <DecayChainSimulator />}
+        {activeSection === 'fission' && <FissionSimulator />}
+        {activeSection === 'fusion' && <FusionSimulator />}
       </div>
     </div>
   );
