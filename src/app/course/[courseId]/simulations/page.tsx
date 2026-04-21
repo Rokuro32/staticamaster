@@ -27,6 +27,7 @@ import { TwinParadoxSimulator } from '@/components/simulations/TwinParadoxSimula
 import { ECGSimulator } from '@/components/simulations/ECGSimulator';
 import { QuantumPhysicsSimulator } from '@/components/simulations/quantum/QuantumPhysicsSimulator';
 import { AtomicPhysicsSimulator } from '@/components/simulations/atomic/AtomicPhysicsSimulator';
+import { RadioactivitySimulator } from '@/components/simulations/radioactivity/RadioactivitySimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -271,6 +272,21 @@ export default function SimulationsPage() {
                 de Pauli et formation des bandes d&apos;énergie dans les solides.
               </p>
               <AtomicPhysicsSimulator />
+            </section>
+
+            {/* Radioactivité */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">☢️</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Radioactivité
+                </h2>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Loi de décroissance, types de rayonnements et chaînes de
+                désintégration des noyaux instables.
+              </p>
+              <RadioactivitySimulator />
             </section>
           </>
         )}
