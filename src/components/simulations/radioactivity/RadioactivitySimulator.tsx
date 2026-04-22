@@ -6,8 +6,9 @@ import { RadiationTypesSimulator } from './RadiationTypesSimulator';
 import { DecayChainSimulator } from './DecayChainSimulator';
 import { FissionSimulator } from './FissionSimulator';
 import { FusionSimulator } from './FusionSimulator';
+import { CyclotronSimulator } from './CyclotronSimulator';
 
-type Section = 'decay' | 'radiation' | 'chain' | 'fission' | 'fusion';
+type Section = 'decay' | 'radiation' | 'chain' | 'fission' | 'fusion' | 'cyclotron';
 
 const SECTIONS: { id: Section; label: string; icon: string }[] = [
   { id: 'decay',     label: 'Décroissance',       icon: '📉' },
@@ -15,6 +16,7 @@ const SECTIONS: { id: Section; label: string; icon: string }[] = [
   { id: 'chain',     label: 'Chaînes',            icon: '🔗' },
   { id: 'fission',   label: 'Fission',            icon: '💥' },
   { id: 'fusion',    label: 'Fusion',             icon: '☀️' },
+  { id: 'cyclotron', label: 'Cyclotron',          icon: '🌀' },
 ];
 
 export function RadioactivitySimulator() {
@@ -47,6 +49,7 @@ export function RadioactivitySimulator() {
         {activeSection === 'chain' && <DecayChainSimulator />}
         {activeSection === 'fission' && <FissionSimulator />}
         {activeSection === 'fusion' && <FusionSimulator />}
+        {activeSection === 'cyclotron' && <CyclotronSimulator />}
       </div>
     </div>
   );
