@@ -73,22 +73,16 @@ export function CyclotronSimulator() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animIdRef = useRef<number | null>(null);
 
-  // État de la particule
-  // On modélise des demi-cercles analytiques : la particule décrit un arc
-  // de centre (arcCx, cy) dans chaque Dee, puis reçoit un boost au gap.
+  // État de la particule — on utilise une rotation exacte du vecteur
+  // vitesse à chaque frame (matrice de rotation). Cela produit des
+  // cercles parfaits sans dérive numérique.
   const stateRef = useRef({
-    // Position & vitesse courantes
     x: 0,
     y: 0,
     vx: 0,
     vy: 0,
+    prevY: 0,     // y au frame précédent, pour détecter le gap
     speed: 0,
-    // Centre de l'arc en cours (toujours sur la ligne du gap y = cy)
-    arcCx: 0,
-    arcCy: 0,
-    // Angle courant dans l'arc (rad), augmente de ω par frame
-    theta: 0,
-    arcRadius: 0,
     turns: 0,
     ejected: false,
     trail: [] as { x: number; y: number }[],
@@ -102,33 +96,22 @@ export function CyclotronSimulator() {
 
   const particle = PARTICLES[particleIdx];
 
-  // Vitesse angulaire (constante, indépendante de v en non-relativiste)
-  // On la ralentit pour la visualisation
+  // ω = qB/m, ralenti par un facteur pour la visualisation
   const omega = (particle.charge * B) / (particle.mass * 8);
 
   const resetSim = useCallback(() => {
     const s = stateRef.current;
-    // Vitesse initiale petite : la particule part du centre vers le bas (+y)
     const v0 = 1.5;
-    const r0 = v0 / omega; // rayon du 1er arc
-
-    // Premier arc : particule à (cx, cy) allant vers +y → rotation horaire
-    // Centre du premier arc est à (cx + r0, cy) pour que le point (cx, cy)
-    // soit le point le plus à gauche du cercle.
-    // Position angulaire initiale : π (la particule est à 180° du centre)
+    s.x = cx;
+    s.y = cy;
+    s.vx = v0;
+    s.vy = 0;
+    s.prevY = cy;
     s.speed = v0;
-    s.arcRadius = r0;
-    s.arcCx = cx + r0;
-    s.arcCy = cy;
-    s.theta = Math.PI; // angle initial : particule à gauche du centre
-    s.x = s.arcCx + s.arcRadius * Math.cos(s.theta);
-    s.y = s.arcCy + s.arcRadius * Math.sin(s.theta);
-    s.vx = 0;
-    s.vy = v0; // vers le bas
     s.turns = 0;
     s.ejected = false;
     s.trail = [];
-  }, [cx, cy, omega]);
+  }, [cx, cy]);
 
   useEffect(() => {
     resetSim();
@@ -143,61 +126,43 @@ export function CyclotronSimulator() {
     const s = stateRef.current;
 
     if (!s.ejected && running) {
-      // Avancer l'angle (rotation horaire → theta diminue)
-      s.theta -= omega;
+      s.prevY = s.y;
 
-      // Position exacte sur le cercle
-      s.x = s.arcCx + s.arcRadius * Math.cos(s.theta);
-      s.y = s.arcCy + s.arcRadius * Math.sin(s.theta);
+      // Rotation exacte du vecteur vitesse d'un angle ω (horaire pour B ⊗)
+      // [vx']   [cos ω   sin ω] [vx]
+      // [vy'] = [-sin ω  cos ω] [vy]
+      const cosW = Math.cos(omega);
+      const sinW = Math.sin(omega);
+      const newVx = s.vx * cosW + s.vy * sinW;
+      const newVy = -s.vx * sinW + s.vy * cosW;
+      s.vx = newVx;
+      s.vy = newVy;
 
-      // Vitesse tangente (dérivée de la position)
-      s.vx = s.arcRadius * omega * Math.sin(s.theta);
-      s.vy = -s.arcRadius * omega * Math.cos(s.theta);
+      // Mise à jour de la position (vitesse moyenne pour meilleure précision)
+      s.x += s.vx;
+      s.y += s.vy;
 
-      // Détecter le passage par le gap (y ≈ cy, venant du haut ou du bas)
-      // Le gap est franchi quand theta passe par un multiple de π
-      // theta = 0 ou ±2π → particule en haut du gap (y = cy, côté +x)
-      // theta = ±π → particule en bas (y = cy, côté -x)
-      // On détecte le croisement de y = cy
-      const normalizedTheta = ((s.theta % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
-      const crossedGap =
-        (normalizedTheta < omega * 1.5 && normalizedTheta > 0) || // passage par 0 (2π)
-        (Math.abs(normalizedTheta - Math.PI) < omega * 1.5);      // passage par π
-
-      if (crossedGap) {
-        // Boost de vitesse au gap
+      // Détection du passage par le gap (y croise cy)
+      if ((s.prevY - cy) * (s.y - cy) < 0) {
+        // Boost de vitesse (tension accélératrice dans le gap)
         const boost = 1 + (voltage / 500) * (1 / particle.mass);
-        s.speed *= boost;
+        s.vx *= boost;
+        s.vy *= boost;
         s.turns += 0.5;
-
-        // Nouveau rayon r = mv / (qB) ∝ speed / omega
-        const newRadius = s.speed / omega;
-        s.arcRadius = newRadius;
-
-        // Le nouveau centre d'arc est sur y = cy, décalé du rayon
-        // par rapport au point d'entrée dans le gap.
-        // La particule est à (s.x, cy). Si elle va vers le bas (+vy > 0),
-        // le centre est à (s.x + r, cy). Si vers le haut (-vy), centre à (s.x - r, cy).
-        const goingDown = s.vy > 0;
-        s.arcCx = s.x + (goingDown ? newRadius : -newRadius);
-        s.arcCy = cy;
-
-        // Réinitialiser theta pour le nouvel arc
-        // Particule à (s.x, cy), centre à (s.arcCx, cy)
-        s.theta = Math.atan2(cy - s.arcCy, s.x - s.arcCx);
+        // Recentrer la particule sur le gap pour éviter la dérive verticale
+        s.y = cy;
       }
+
+      s.speed = Math.sqrt(s.vx * s.vx + s.vy * s.vy);
 
       // Trail
       s.trail.push({ x: s.x, y: s.y });
       if (s.trail.length > 4000) s.trail.shift();
 
-      // Éjection
-      const distFromCenter = Math.sqrt((s.x - cx) ** 2 + (s.y - cy) ** 2);
-      if (distFromCenter > deeRadius + 10) {
+      // Éjection si sort des Dees
+      const dist = Math.sqrt((s.x - cx) ** 2 + (s.y - cy) ** 2);
+      if (dist > deeRadius + 10) {
         s.ejected = true;
-        // Fixer la vitesse de sortie pour la ligne droite
-        s.vx = s.arcRadius * omega * Math.sin(s.theta);
-        s.vy = -s.arcRadius * omega * Math.cos(s.theta);
       }
     }
 
@@ -319,7 +284,8 @@ export function CyclotronSimulator() {
     ctx.font = '12px sans-serif';
     ctx.textAlign = 'right';
     const Ek = 0.5 * particle.mass * s.speed * s.speed;
-    ctx.fillText(`Rayon : ${s.arcRadius.toFixed(0)} px`, W - 14, 20);
+    const currentRadius = s.speed / omega;
+    ctx.fillText(`Rayon : ${currentRadius.toFixed(0)} px`, W - 14, 20);
     ctx.fillText(`Vitesse : ${s.speed.toFixed(1)}`, W - 14, 38);
     ctx.fillText(`Tours : ${Math.floor(s.turns)}`, W - 14, 56);
     ctx.fillText(`Énergie ∝ ${Ek.toFixed(0)}`, W - 14, 74);
