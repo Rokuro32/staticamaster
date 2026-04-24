@@ -14,6 +14,7 @@ import { ForceAdditionSimulator } from '@/components/simulations/ForceAdditionSi
 import { RotationDynamicsSimulator } from '@/components/simulations/RotationDynamicsSimulator';
 import { TrussSimulator } from '@/components/simulations/TrussSimulator';
 import { TrussAnalysisSimulator } from '@/components/simulations/truss/TrussAnalysisSimulator';
+import { MaterialStrengthSimulator } from '@/components/simulations/rdm/MaterialStrengthSimulator';
 import { KinematicsGraphSimulator } from '@/components/simulations/KinematicsGraphSimulator';
 import { GuitarStringSimulator } from '@/components/simulations/GuitarStringSimulator';
 import { TrigCircleSimulator } from '@/components/simulations/TrigCircleSimulator';
@@ -353,20 +354,32 @@ export default function SimulationsPage() {
               <TrussAnalysisSimulator />
             </section>
 
+            {/* Résistance des matériaux */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">🔩</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Résistance des matériaux
+                </h2>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Contraintes normales et de cisaillement, déformations,
+                et interprétation d&apos;une courbe d&apos;essai de traction.
+              </p>
+              <MaterialStrengthSimulator />
+            </section>
+
             {/* More simulations can be added here */}
             <section className="bg-gray-50 rounded-xl p-8 text-center">
               <h3 className="text-lg font-semibold text-gray-700 mb-2">
                 Plus de simulations à venir
               </h3>
               <p className="text-gray-500 mb-4">
-                D'autres simulations interactives seront ajoutées prochainement :
+                D&apos;autres simulations interactives seront ajoutées prochainement :
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
                   📊 Diagrammes de contraintes
-                </span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 border border-gray-200">
-                  🔩 Résistance des matériaux
                 </span>
               </div>
             </section>
