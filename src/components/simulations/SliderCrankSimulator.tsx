@@ -55,6 +55,7 @@ export function SliderCrankSimulator() {
   const [showTraceP, setShowTraceP] = useState(false);
   const [animate, setAnimate] = useState(false);
   const [animSpeed, setAnimSpeed] = useState(1.0);
+  const [viewMode, setViewMode] = useState<'global' | 'refA'>('global');
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animIdRef = useRef<number | null>(null);
@@ -102,7 +103,7 @@ export function SliderCrankSimulator() {
     }
 
     animIdRef.current = requestAnimationFrame(draw);
-  }, [animate, animSpeed, xA, yB, rodLength, showRefA, showRefB, showRefO, showTraceP]);
+  }, [animate, animSpeed, xA, yB, rodLength, showRefA, showRefB, showRefO, showTraceP, viewMode]);
 
   const drawFrame = useCallback((ctx: CanvasRenderingContext2D, curXA: number, curYB: number) => {
     // Ajuster pour respecter la contrainte de longueur
@@ -134,58 +135,87 @@ export function SliderCrankSimulator() {
     ctx.fillStyle = '#0f172a';
     ctx.fillRect(0, 0, W, H);
 
-    // Grille de fond
+    // ---- Transformation de vue ----
+    // En mode refA, on translate le canvas pour que A soit au centre
+    const isRefA = viewMode === 'refA';
+    const viewCx = isRefA ? W / 2 : 0; // centre de la vue
+    const viewCy = isRefA ? H / 2 : 0;
+    const offsetX = isRefA ? viewCx - Ax : 0;
+    const offsetY = isRefA ? viewCy - Ay : 0;
+
+    ctx.save();
+    if (isRefA) {
+      ctx.translate(offsetX, offsetY);
+    }
+
+    // Grille de fond (décalée pour donner un effet de mouvement en mode refA)
     ctx.strokeStyle = '#1e293b';
     ctx.lineWidth = 0.5;
-    for (let gx = 0; gx < W; gx += 40) {
-      ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke();
+    const gridOx = isRefA ? (Math.round(offsetX / 40) * 40) - offsetX - 400 : 0;
+    const gridOy = isRefA ? (Math.round(offsetY / 40) * 40) - offsetY - 400 : 0;
+    for (let gx = gridOx; gx < gridOx + W + 800; gx += 40) {
+      ctx.beginPath(); ctx.moveTo(gx, gridOy); ctx.lineTo(gx, gridOy + H + 800); ctx.stroke();
     }
-    for (let gy = 0; gy < H; gy += 40) {
-      ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke();
+    for (let gy = gridOy; gy < gridOy + H + 800; gy += 40) {
+      ctx.beginPath(); ctx.moveTo(gridOx, gy); ctx.lineTo(gridOx + W + 800, gy); ctx.stroke();
     }
 
     // ---- Glissières ----
     // Glissière horizontale (A se déplace en x)
+    const slideExtend = isRefA ? 800 : 0;
     ctx.strokeStyle = '#475569';
     ctx.lineWidth = 4;
     ctx.beginPath();
-    ctx.moveTo(ox - 10, oy);
-    ctx.lineTo(W - 30, oy);
+    ctx.moveTo(ox - 10 - slideExtend, oy);
+    ctx.lineTo(W - 30 + slideExtend, oy);
     ctx.stroke();
-    // Rails
     ctx.strokeStyle = '#334155';
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(ox - 10, oy - 12);
-    ctx.lineTo(W - 30, oy - 12);
+    ctx.moveTo(ox - 10 - slideExtend, oy - 12);
+    ctx.lineTo(W - 30 + slideExtend, oy - 12);
     ctx.stroke();
     ctx.beginPath();
-    ctx.moveTo(ox - 10, oy + 12);
-    ctx.lineTo(W - 30, oy + 12);
+    ctx.moveTo(ox - 10 - slideExtend, oy + 12);
+    ctx.lineTo(W - 30 + slideExtend, oy + 12);
     ctx.stroke();
 
     // Glissière verticale (B se déplace en y)
     ctx.strokeStyle = '#475569';
     ctx.lineWidth = 4;
     ctx.beginPath();
-    ctx.moveTo(ox, oy + 10);
-    ctx.lineTo(ox, 30);
+    ctx.moveTo(ox, oy + 10 + slideExtend);
+    ctx.lineTo(ox, 30 - slideExtend);
     ctx.stroke();
-    // Rails
     ctx.strokeStyle = '#334155';
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(ox - 12, oy + 10);
-    ctx.lineTo(ox - 12, 30);
+    ctx.moveTo(ox - 12, oy + 10 + slideExtend);
+    ctx.lineTo(ox - 12, 30 - slideExtend);
     ctx.stroke();
     ctx.beginPath();
-    ctx.moveTo(ox + 12, oy + 10);
-    ctx.lineTo(ox + 12, 30);
+    ctx.moveTo(ox + 12, oy + 10 + slideExtend);
+    ctx.lineTo(ox + 12, 30 - slideExtend);
     ctx.stroke();
 
     // ---- Repère global O ----
     if (showRefO) {
       drawFrame2(ctx, ox, oy, 0, '#94a3b8', 'O', 50);
+    }
+
+    // ---- Cercle trajectoire de B vu depuis A (en mode refA) ----
+    if (isRefA) {
+      ctx.strokeStyle = 'rgba(239, 68, 68, 0.25)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([6, 4]);
+      ctx.beginPath();
+      ctx.arc(Ax, Ay, rodLength, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(239, 68, 68, 0.3)';
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Trajectoire de B vue depuis A (cercle r = L)', Ax - rodLength, Ay - rodLength - 8);
     }
 
     // ---- Bielle AB ----
@@ -210,21 +240,19 @@ export function SliderCrankSimulator() {
     ctx.strokeStyle = '#1d4ed8';
     ctx.lineWidth = 2;
     ctx.strokeRect(Ax - 16, Ay - 12, 32, 24);
-    // Articulation
     ctx.fillStyle = '#fff';
     ctx.beginPath();
     ctx.arc(Ax, Ay, 5, 0, Math.PI * 2);
     ctx.fill();
     ctx.strokeStyle = '#3b82f6';
     ctx.stroke();
-    // Label
     ctx.fillStyle = '#93c5fd';
     ctx.font = 'bold 13px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('A', Ax, Ay + 30);
 
-    // Repère A
-    if (showRefA) {
+    // Repère A (toujours affiché en mode refA)
+    if (showRefA || isRefA) {
       drawFrame2(ctx, Ax, Ay, 0, '#3b82f6', 'R_A', 40);
     }
 
@@ -234,20 +262,17 @@ export function SliderCrankSimulator() {
     ctx.strokeStyle = '#b91c1c';
     ctx.lineWidth = 2;
     ctx.strokeRect(Bx - 12, By - 16, 24, 32);
-    // Articulation
     ctx.fillStyle = '#fff';
     ctx.beginPath();
     ctx.arc(Bx, By, 5, 0, Math.PI * 2);
     ctx.fill();
     ctx.strokeStyle = '#ef4444';
     ctx.stroke();
-    // Label
     ctx.fillStyle = '#fca5a5';
     ctx.font = 'bold 13px sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText('B', Bx - 30, By + 5);
 
-    // Repère B
     if (showRefB) {
       drawFrame2(ctx, Bx, By, 0, '#ef4444', 'R_B', 40);
     }
@@ -278,61 +303,106 @@ export function SliderCrankSimulator() {
     }
 
     // ---- Vecteurs vitesse ----
-    // Vitesse de A : purement horizontale (translation x)
-    // Vitesse de B : purement verticale (translation y)
     if (animate) {
       const theta = tRef.current;
       const omegaVis = 30 * animSpeed;
 
-      // vA = -L sin θ * dθ/dt → vers la gauche quand θ croît dans [0, π/2]
-      const vAx = -rodLength * Math.sin(theta) * 0.015 * animSpeed * omegaVis;
-      if (Math.abs(vAx) > 2) {
-        ctx.strokeStyle = '#60a5fa';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(Ax, Ay - 20);
-        ctx.lineTo(Ax + vAx, Ay - 20);
-        ctx.stroke();
-        // Tête de flèche
-        const dir = vAx > 0 ? 1 : -1;
-        ctx.fillStyle = '#60a5fa';
-        ctx.beginPath();
-        ctx.moveTo(Ax + vAx, Ay - 20);
-        ctx.lineTo(Ax + vAx - dir * 8, Ay - 26);
-        ctx.lineTo(Ax + vAx - dir * 8, Ay - 14);
-        ctx.closePath();
-        ctx.fill();
-        ctx.fillStyle = '#93c5fd';
-        ctx.font = '10px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('v_A', Ax + vAx / 2, Ay - 28);
-      }
+      if (!isRefA) {
+        // Vue globale : vA horizontal, vB vertical
+        const vAx = -rodLength * Math.sin(theta) * 0.015 * animSpeed * omegaVis;
+        if (Math.abs(vAx) > 2) {
+          ctx.strokeStyle = '#60a5fa';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(Ax, Ay - 20);
+          ctx.lineTo(Ax + vAx, Ay - 20);
+          ctx.stroke();
+          const dir = vAx > 0 ? 1 : -1;
+          ctx.fillStyle = '#60a5fa';
+          ctx.beginPath();
+          ctx.moveTo(Ax + vAx, Ay - 20);
+          ctx.lineTo(Ax + vAx - dir * 8, Ay - 26);
+          ctx.lineTo(Ax + vAx - dir * 8, Ay - 14);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = '#93c5fd';
+          ctx.font = '10px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('v_A', Ax + vAx / 2, Ay - 28);
+        }
 
-      // vB = L cos θ * dθ/dt → vers le haut
-      const vBy = -rodLength * Math.cos(theta) * 0.015 * animSpeed * omegaVis;
-      if (Math.abs(vBy) > 2) {
-        ctx.strokeStyle = '#f87171';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(Bx + 20, By);
-        ctx.lineTo(Bx + 20, By + vBy);
-        ctx.stroke();
-        const dir = vBy > 0 ? 1 : -1;
-        ctx.fillStyle = '#f87171';
-        ctx.beginPath();
-        ctx.moveTo(Bx + 20, By + vBy);
-        ctx.lineTo(Bx + 14, By + vBy - dir * 8);
-        ctx.lineTo(Bx + 26, By + vBy - dir * 8);
-        ctx.closePath();
-        ctx.fill();
-        ctx.fillStyle = '#fca5a5';
-        ctx.font = '10px sans-serif';
-        ctx.textAlign = 'left';
-        ctx.fillText('v_B', Bx + 30, By + vBy / 2);
+        const vBy = -rodLength * Math.cos(theta) * 0.015 * animSpeed * omegaVis;
+        if (Math.abs(vBy) > 2) {
+          ctx.strokeStyle = '#f87171';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(Bx + 20, By);
+          ctx.lineTo(Bx + 20, By + vBy);
+          ctx.stroke();
+          const dir = vBy > 0 ? 1 : -1;
+          ctx.fillStyle = '#f87171';
+          ctx.beginPath();
+          ctx.moveTo(Bx + 20, By + vBy);
+          ctx.lineTo(Bx + 14, By + vBy - dir * 8);
+          ctx.lineTo(Bx + 26, By + vBy - dir * 8);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = '#fca5a5';
+          ctx.font = '10px sans-serif';
+          ctx.textAlign = 'left';
+          ctx.fillText('v_B', Bx + 30, By + vBy / 2);
+        }
+      } else {
+        // Vue depuis A : v_A = 0, v_{B/A} tangent au cercle
+        // v_{B/A} est perpendiculaire à AB, de norme L * dθ/dt
+        const dtheta = 0.015 * animSpeed;
+        const vBrelNorm = rodLength * dtheta * omegaVis;
+        // Direction perpendiculaire à AB (= tangent au cercle)
+        const dx = Bx - Ax;
+        const dy = By - Ay;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        // Tangent = perpendiculaire à (dx, dy) dans le sens de rotation
+        const tx = dy / dist;
+        const ty = -dx / dist;
+
+        const vBrelX = tx * vBrelNorm;
+        const vBrelY = ty * vBrelNorm;
+
+        if (vBrelNorm > 2) {
+          ctx.strokeStyle = '#f87171';
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.moveTo(Bx, By);
+          ctx.lineTo(Bx + vBrelX, By + vBrelY);
+          ctx.stroke();
+          // Tête de flèche
+          const aLen = Math.sqrt(vBrelX * vBrelX + vBrelY * vBrelY);
+          const ux = vBrelX / aLen;
+          const uy = vBrelY / aLen;
+          ctx.fillStyle = '#f87171';
+          ctx.beginPath();
+          ctx.moveTo(Bx + vBrelX, By + vBrelY);
+          ctx.lineTo(Bx + vBrelX - ux * 10 - uy * 5, By + vBrelY - uy * 10 + ux * 5);
+          ctx.lineTo(Bx + vBrelX - ux * 10 + uy * 5, By + vBrelY - uy * 10 - ux * 5);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = '#fca5a5';
+          ctx.font = 'bold 11px sans-serif';
+          ctx.textAlign = 'left';
+          ctx.fillText('v_{B/A}', Bx + vBrelX + 6, By + vBrelY - 6);
+        }
+
+        // Label v_A = 0
+        ctx.fillStyle = '#60a5fa';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('v_A = 0', Ax, Ay - 22);
       }
     }
 
-    // ---- Infos ----
+    ctx.restore(); // fin de la transformation de vue
+
+    // ---- Infos (toujours en coordonnées canvas, hors transformation) ----
     ctx.fillStyle = '#e2e8f0';
     ctx.font = '12px sans-serif';
     ctx.textAlign = 'right';
@@ -342,7 +412,18 @@ export function SliderCrankSimulator() {
     ctx.fillText(`y_B = ${bY.toFixed(1)} px`, W - 14, 42);
     ctx.fillText(`θ = ${angle.toFixed(1)}°`, W - 14, 62);
     ctx.fillText(`P = (${(Px - ox).toFixed(0)}, ${(oy - Py).toFixed(0)})`, W - 14, 82);
-  }, [W, H, ox, oy, rodLength, showRefA, showRefB, showRefO, showTraceP, animate, animSpeed]);
+
+    // Badge mode de vue
+    ctx.fillStyle = isRefA ? '#3b82f6' : '#94a3b8';
+    ctx.font = 'bold 12px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(isRefA ? '👁 Vue depuis A (R_A)' : '👁 Vue globale (R₀)', 14, 22);
+    if (isRefA) {
+      ctx.fillStyle = '#93c5fd';
+      ctx.font = '10px sans-serif';
+      ctx.fillText('A est fixe — les glissières bougent', 14, 38);
+    }
+  }, [W, H, ox, oy, rodLength, showRefA, showRefB, showRefO, showTraceP, animate, animSpeed, viewMode]);
 
   // Dessiner un repère local (axes x, y)
   const drawFrame2 = (
@@ -503,6 +584,33 @@ export function SliderCrankSimulator() {
             >
               Effacer trace
             </button>
+          </div>
+
+          {/* Mode de vue */}
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="text-sm text-gray-700 font-medium">Point de vue :</span>
+            <div className="flex rounded-lg overflow-hidden border border-gray-300">
+              <button
+                onClick={() => { setViewMode('global'); traceRef.current = []; }}
+                className={`px-4 py-2 text-sm font-medium transition-colors ${
+                  viewMode === 'global'
+                    ? 'bg-gray-700 text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                Vue globale (R₀)
+              </button>
+              <button
+                onClick={() => { setViewMode('refA'); traceRef.current = []; }}
+                className={`px-4 py-2 text-sm font-medium transition-colors ${
+                  viewMode === 'refA'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                Vue depuis A (R_A)
+              </button>
+            </div>
           </div>
 
           {/* Référentiels */}
