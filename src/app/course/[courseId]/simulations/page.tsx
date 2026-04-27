@@ -17,6 +17,7 @@ import { TrussAnalysisSimulator } from '@/components/simulations/truss/TrussAnal
 import { MaterialStrengthSimulator } from '@/components/simulations/rdm/MaterialStrengthSimulator';
 import { PlanetaryGearSimulator } from '@/components/simulations/PlanetaryGearSimulator';
 import { SliderCrankSimulator } from '@/components/simulations/SliderCrankSimulator';
+import { CrankRodSimulator } from '@/components/simulations/CrankRodSimulator';
 import { KinematicsGraphSimulator } from '@/components/simulations/KinematicsGraphSimulator';
 import { GuitarStringSimulator } from '@/components/simulations/GuitarStringSimulator';
 import { TrigCircleSimulator } from '@/components/simulations/TrigCircleSimulator';
@@ -509,6 +510,21 @@ export default function SimulationsPage() {
                 du plan, les vecteurs vitesse et les référentiels de chaque point.
               </p>
               <SliderCrankSimulator />
+            </section>
+
+            {/* Bielle-manivelle */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">🔧</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Système bielle-manivelle
+                </h2>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Transformation rotation ↔ translation : manivelle, bielle et piston.
+                Passez en vue depuis B pour observer le mouvement relatif de la tête de bielle.
+              </p>
+              <CrankRodSimulator />
             </section>
 
             {/* More simulations can be added here */}
