@@ -16,6 +16,7 @@ import { TrussSimulator } from '@/components/simulations/TrussSimulator';
 import { TrussAnalysisSimulator } from '@/components/simulations/truss/TrussAnalysisSimulator';
 import { MaterialStrengthSimulator } from '@/components/simulations/rdm/MaterialStrengthSimulator';
 import { PlanetaryGearSimulator } from '@/components/simulations/PlanetaryGearSimulator';
+import { SliderCrankSimulator } from '@/components/simulations/SliderCrankSimulator';
 import { KinematicsGraphSimulator } from '@/components/simulations/KinematicsGraphSimulator';
 import { GuitarStringSimulator } from '@/components/simulations/GuitarStringSimulator';
 import { TrigCircleSimulator } from '@/components/simulations/TrigCircleSimulator';
@@ -493,6 +494,21 @@ export default function SimulationsPage() {
                 pour observer les différents rapports de réduction.
               </p>
               <PlanetaryGearSimulator />
+            </section>
+
+            {/* Coulisseaux croisés */}
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">↔️</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Coulisseaux croisés
+                </h2>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Deux translations couplées par une bielle rigide : observez la cinématique
+                du plan, les vecteurs vitesse et les référentiels de chaque point.
+              </p>
+              <SliderCrankSimulator />
             </section>
 
             {/* More simulations can be added here */}
