@@ -1,6 +1,6 @@
 // Types pour le support multi-cours
 
-export type CourseId = 'statics' | 'kinematics' | 'waves_modern' | 'electricity';
+export type CourseId = 'statics' | 'kinematics' | 'waves_modern' | 'electricity' | 'autres';
 
 export interface Course {
   id: CourseId;
@@ -188,6 +188,16 @@ export const COURSES: Course[] = [
       },
     ],
   },
+  {
+    id: 'autres',
+    code: 'Hors-programme',
+    title: 'Autres',
+    shortTitle: 'Autres',
+    description: 'Simulations et concepts complémentaires non couverts par les cours principaux.',
+    icon: '✨',
+    color: 'rose',
+    modules: [],
+  },
 ];
 
 // Helper functions
@@ -230,5 +240,11 @@ export const COURSE_COLORS: Record<CourseId, { bg: string; text: string; border:
     text: 'text-amber-600',
     border: 'border-amber-500',
     hover: 'hover:bg-amber-50',
+  },
+  autres: {
+    bg: 'bg-rose-500',
+    text: 'text-rose-600',
+    border: 'border-rose-500',
+    hover: 'hover:bg-rose-50',
   },
 };

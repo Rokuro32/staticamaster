@@ -32,6 +32,7 @@ import { ECGSimulator } from '@/components/simulations/ECGSimulator';
 import { QuantumPhysicsSimulator } from '@/components/simulations/quantum/QuantumPhysicsSimulator';
 import { AtomicPhysicsSimulator } from '@/components/simulations/atomic/AtomicPhysicsSimulator';
 import { RadioactivitySimulator } from '@/components/simulations/radioactivity/RadioactivitySimulator';
+import { VenturiTubeSimulator } from '@/components/simulations/VenturiTubeSimulator';
 
 export default function SimulationsPage() {
   const params = useParams();
@@ -52,7 +53,7 @@ export default function SimulationsPage() {
   }, [courseId, selectedCourse, setSelectedCourse]);
 
   // Cette page n'est disponible que pour certains cours
-  const coursesWithSimulations = ['waves_modern', 'statics', 'kinematics', 'electricity'];
+  const coursesWithSimulations = ['waves_modern', 'statics', 'kinematics', 'electricity', 'autres'];
   if (!coursesWithSimulations.includes(courseId)) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-16 text-center">
@@ -109,12 +110,14 @@ export default function SimulationsPage() {
         courseId === 'waves_modern' ? 'bg-violet-50 border-violet-200' :
         courseId === 'kinematics' ? 'bg-green-50 border-green-200' :
         courseId === 'electricity' ? 'bg-amber-50 border-amber-200' :
+        courseId === 'autres' ? 'bg-rose-50 border-rose-200' :
         'bg-blue-50 border-blue-200'
       } border rounded-xl p-6 mb-8`}>
         <h2 className={`text-lg font-semibold ${
           courseId === 'waves_modern' ? 'text-violet-900' :
           courseId === 'kinematics' ? 'text-green-900' :
           courseId === 'electricity' ? 'text-amber-900' :
+          courseId === 'autres' ? 'text-rose-900' :
           'text-blue-900'
         } mb-2`}>
           Apprenez par l'expérimentation
@@ -123,6 +126,7 @@ export default function SimulationsPage() {
           courseId === 'waves_modern' ? 'text-violet-700' :
           courseId === 'kinematics' ? 'text-green-700' :
           courseId === 'electricity' ? 'text-amber-700' :
+          courseId === 'autres' ? 'text-rose-700' :
           'text-blue-700'
         }>
           {courseId === 'waves_modern'
@@ -131,6 +135,8 @@ export default function SimulationsPage() {
             ? 'Les simulations interactives vous permettent de visualiser les opérations vectorielles essentielles à la cinématique. Manipulez les vecteurs position, vitesse et accélération pour comprendre intuitivement les mouvements.'
             : courseId === 'electricity'
             ? 'Explorez les circuits DC interactivement : ajustez les résistances et la tension de la source, et observez les courants, tensions et puissances se recalculer en temps réel. Comprenez la loi d\'Ohm, les associations série/parallèle et le concept de résistance interne.'
+            : courseId === 'autres'
+            ? 'Une collection de simulations complémentaires sur des concepts hors-programme ou transversaux. Manipulez les paramètres et observez en temps réel les phénomènes physiques.'
             : 'Les simulations interactives vous permettent de visualiser les opérations vectorielles et de comprendre intuitivement les concepts fondamentaux de l\'analyse des structures. Manipulez les vecteurs et observez les résultats en temps réel.'}
         </p>
       </div>
@@ -425,6 +431,27 @@ export default function SimulationsPage() {
           </>
         )}
 
+        {/* "Autres" course : extra concepts (Venturi, etc.) */}
+        {courseId === 'autres' && (
+          <>
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">💧</span>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Tube de Venturi
+                </h2>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Visualisez l&apos;effet Venturi : conservation du débit, accélération
+                du fluide dans le col, et chute de pression associée
+                (équation de Bernoulli). Observez les manomètres et les particules
+                changer de vitesse en traversant le rétrécissement.
+              </p>
+              <VenturiTubeSimulator />
+            </section>
+          </>
+        )}
+
         {/* Vector simulations for kinematics course */}
         {courseId === 'kinematics' && (
           <>
@@ -541,6 +568,7 @@ export default function SimulationsPage() {
       </div>
 
       {/* Related Resources */}
+      {courseId !== 'autres' && (
       <div className="mt-12 border-t border-gray-200 pt-8">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
           Ressources associées
@@ -616,18 +644,21 @@ export default function SimulationsPage() {
               <p className="text-sm text-gray-500">Quiz sur les circuits à courant continu</p>
             </Link>
           )}
-          <Link
-            href={`/course/${courseId}/modules`}
-            className={`p-4 bg-white rounded-lg border border-gray-200 hover:border-${
-              courseId === 'waves_modern' ? 'violet' : courseId === 'kinematics' ? 'green' : courseId === 'electricity' ? 'amber' : 'blue'
-            }-300 hover:shadow-md transition-all`}
-          >
-            <div className="text-2xl mb-2">📚</div>
-            <h4 className="font-medium text-gray-900">Tous les modules</h4>
-            <p className="text-sm text-gray-500">Voir l'ensemble du cours</p>
-          </Link>
+          {courseId !== 'autres' && (
+            <Link
+              href={`/course/${courseId}/modules`}
+              className={`p-4 bg-white rounded-lg border border-gray-200 hover:border-${
+                courseId === 'waves_modern' ? 'violet' : courseId === 'kinematics' ? 'green' : courseId === 'electricity' ? 'amber' : 'blue'
+              }-300 hover:shadow-md transition-all`}
+            >
+              <div className="text-2xl mb-2">📚</div>
+              <h4 className="font-medium text-gray-900">Tous les modules</h4>
+              <p className="text-sm text-gray-500">Voir l'ensemble du cours</p>
+            </Link>
+          )}
         </div>
       </div>
+      )}
     </div>
   );
 }

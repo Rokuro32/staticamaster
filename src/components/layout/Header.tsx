@@ -26,14 +26,17 @@ export function Header() {
     router.push('/');
   };
 
-  const coursesWithSimulations = ['waves_modern', 'statics', 'kinematics', 'electricity'];
+  const coursesWithSimulations = ['waves_modern', 'statics', 'kinematics', 'electricity', 'autres'];
+
+  const hasModules = (course?.modules.length ?? 0) > 0;
+  const hasTheorie = selectedCourse !== 'autres';
 
   const navItems = selectedCourse ? [
     { href: `/course/${selectedCourse}`, label: 'Accueil', icon: '🏠' },
-    { href: `/course/${selectedCourse}/theorie`, label: 'Théorie', icon: '📖' },
-    { href: `/course/${selectedCourse}/modules`, label: 'Modules', icon: '📚' },
+    ...(hasTheorie ? [{ href: `/course/${selectedCourse}/theorie`, label: 'Théorie', icon: '📖' }] : []),
+    ...(hasModules ? [{ href: `/course/${selectedCourse}/modules`, label: 'Modules', icon: '📚' }] : []),
     ...(coursesWithSimulations.includes(selectedCourse) ? [{ href: `/course/${selectedCourse}/simulations`, label: 'Simulations', icon: '🔬' }] : []),
-    { href: `/course/${selectedCourse}/progress`, label: 'Progression', icon: '📊' },
+    ...(hasModules ? [{ href: `/course/${selectedCourse}/progress`, label: 'Progression', icon: '📊' }] : []),
   ] : [];
 
   return (

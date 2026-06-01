@@ -53,32 +53,45 @@ export default function CourseHomePage() {
           {course.description}
         </p>
         <div className="flex justify-center gap-4 flex-wrap">
-          <Link href={`/course/${courseId}/theorie`}>
-            <Button size="lg" className={`${colors?.bg} text-white hover:opacity-90`}>
-              📖 Théorie
-            </Button>
-          </Link>
-          <Link href={`/course/${courseId}/modules`}>
-            <Button size="lg" variant="outline" className="border-2">
-              📚 Modules
-            </Button>
-          </Link>
-          {['waves_modern', 'statics', 'kinematics'].includes(courseId) && (
-            <Link href={`/course/${courseId}/simulations`}>
+          {courseId !== 'autres' && (
+            <Link href={`/course/${courseId}/theorie`}>
+              <Button size="lg" className={`${colors?.bg} text-white hover:opacity-90`}>
+                📖 Théorie
+              </Button>
+            </Link>
+          )}
+          {course.modules.length > 0 && (
+            <Link href={`/course/${courseId}/modules`}>
               <Button size="lg" variant="outline" className="border-2">
+                📚 Modules
+              </Button>
+            </Link>
+          )}
+          {['waves_modern', 'statics', 'kinematics', 'electricity', 'autres'].includes(courseId) && (
+            <Link
+              href={`/course/${courseId}/simulations`}
+            >
+              <Button
+                size="lg"
+                className={courseId === 'autres' ? `${colors?.bg} text-white hover:opacity-90` : 'border-2'}
+                variant={courseId === 'autres' ? 'default' : 'outline'}
+              >
                 🔬 Simulations
               </Button>
             </Link>
           )}
-          <Link href={`/course/${courseId}/progress`}>
-            <Button variant="outline" size="lg">
-              📊 Progression
-            </Button>
-          </Link>
+          {course.modules.length > 0 && (
+            <Link href={`/course/${courseId}/progress`}>
+              <Button variant="outline" size="lg">
+                📊 Progression
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
 
       {/* Modules Overview */}
+      {course.modules.length > 0 && (
       <div className="mb-16">
         <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
           Les {course.modules.length} modules du cours
@@ -111,6 +124,7 @@ export default function CourseHomePage() {
           ))}
         </div>
       </div>
+      )}
 
       {/* Features */}
       <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
