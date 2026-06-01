@@ -68,16 +68,16 @@ export default function CourseHomePage() {
             </Link>
           )}
           {['waves_modern', 'statics', 'kinematics', 'electricity', 'autres'].includes(courseId) && (
-            <Link
-              href={`/course/${courseId}/simulations`}
-            >
-              <Button
-                size="lg"
-                className={courseId === 'autres' ? `${colors?.bg} text-white hover:opacity-90` : 'border-2'}
-                variant={courseId === 'autres' ? 'default' : 'outline'}
-              >
-                🔬 Simulations
-              </Button>
+            <Link href={`/course/${courseId}/simulations`}>
+              {courseId === 'autres' ? (
+                <Button size="lg" className={`${colors?.bg} text-white hover:opacity-90`}>
+                  🔬 Simulations
+                </Button>
+              ) : (
+                <Button size="lg" variant="outline" className="border-2">
+                  🔬 Simulations
+                </Button>
+              )}
             </Link>
           )}
           {course.modules.length > 0 && (

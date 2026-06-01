@@ -644,18 +644,16 @@ export default function SimulationsPage() {
               <p className="text-sm text-gray-500">Quiz sur les circuits à courant continu</p>
             </Link>
           )}
-          {courseId !== 'autres' && (
-            <Link
-              href={`/course/${courseId}/modules`}
-              className={`p-4 bg-white rounded-lg border border-gray-200 hover:border-${
-                courseId === 'waves_modern' ? 'violet' : courseId === 'kinematics' ? 'green' : courseId === 'electricity' ? 'amber' : 'blue'
-              }-300 hover:shadow-md transition-all`}
-            >
-              <div className="text-2xl mb-2">📚</div>
-              <h4 className="font-medium text-gray-900">Tous les modules</h4>
-              <p className="text-sm text-gray-500">Voir l'ensemble du cours</p>
-            </Link>
-          )}
+          <Link
+            href={`/course/${courseId}/modules`}
+            className={`p-4 bg-white rounded-lg border border-gray-200 hover:border-${
+              courseId === 'waves_modern' ? 'violet' : courseId === 'kinematics' ? 'green' : courseId === 'electricity' ? 'amber' : 'blue'
+            }-300 hover:shadow-md transition-all`}
+          >
+            <div className="text-2xl mb-2">📚</div>
+            <h4 className="font-medium text-gray-900">Tous les modules</h4>
+            <p className="text-sm text-gray-500">Voir l'ensemble du cours</p>
+          </Link>
         </div>
       </div>
       )}
