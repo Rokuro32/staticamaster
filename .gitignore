@@ -36,8 +36,3 @@ Thumbs.db
 .vscode/
 *.swp
 *.swo
-
-# SQLite database (keep structure, ignore data)
-*.db
-*.sqlite
-*.sqlite3

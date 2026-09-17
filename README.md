@@ -1,255 +1,81 @@
-# StaticaMaster
+# Phet-ford — Simulations interactives de physique
 
-Application pédagogique interactive pour l'évaluation des compétences en statique.
+Site web qui héberge une collection de simulations de physique manipulables
+directement dans le navigateur. Aucun contenu de cours, aucun exercice : que des
+simulations, classées par section.
 
-**Cours:** 203-4A3-RA — Équilibre et analyse des structures
-**Contexte:** Techniques de génie du plastique (CÉGEP)
+**Conçu par** Xavier Arata, B.Ing, CPI
 
-## Fonctionnalités
+## Sections
 
-- **5 Modules** correspondant aux sections du cours
-- **Quiz interactifs** avec validation instantanée
-- **DCL interactif** (Diagramme de Corps Libre) avec drag & drop
-- **Multi-vues** pour chaque problème (Schéma, Équations, Calculs)
-- **Feedback ciblé** avec détection des erreurs courantes
-- **Suivi de progression** par compétence et module
-- **Mode enseignant** avec export des résultats
+| Section | Simulations |
+|---|---|
+| 📐 Mathématiques | Cercle trigonométrique, Opérations vectorielles |
+| ⚖️ Statique | Addition de forces, Moments et rotation, Analyse de treillis, Résistance des matériaux |
+| 🚀 Cinématique | Cinématique 1D et graphiques, Mouvement de projectile, Mouvement relatif |
+| ⚙️ Mécanismes et machines | Train planétaire, Coulisseaux croisés, Bielle-manivelle |
+| 〰️ Ondes et oscillations | Oscillations et ondes mécaniques, Ondes sonores, Corde de guitare, Ondes électromagnétiques |
+| ⚡ Électricité | Circuits à courant continu, Électrocardiogramme |
+| ⚛️ Physique moderne | Relativité restreinte, Paradoxe des jumeaux, Naissance de la physique quantique, Physique atomique |
+| ☢️ Physique nucléaire | Radioactivité et réactions nucléaires |
+| 🌡️ Thermodynamique et fluides | Rayonnement thermique, Effet de serre, Tube de Venturi |
+
+Plusieurs simulations regroupent elles-mêmes plusieurs modules sous forme
+d'onglets (par exemple « Naissance de la physique quantique » couvre huit
+expériences fondatrices).
 
 ## Prérequis
 
-- Node.js 18+ (recommandé: 20+)
-- npm ou yarn
+- Node.js 18.17+ (recommandé : 20+)
 
-## Installation
+## Installation et démarrage
 
 ```bash
-# Cloner ou télécharger le projet
-cd statique-app
-
-# Installer les dépendances
 npm install
-
-# Initialiser la base de données
-npm run db:init
-
-# Lancer en mode développement
-npm run dev
+npm run dev      # http://localhost:3000
 ```
-
-L'application sera accessible à http://localhost:3000
-
-## Scripts disponibles
-
-| Commande | Description |
-|----------|-------------|
-| `npm run dev` | Démarre le serveur de développement |
-| `npm run build` | Compile l'application pour la production |
-| `npm run start` | Lance l'application compilée |
-| `npm run db:init` | Initialise la base de données SQLite |
-| `npm run lint` | Vérifie le code avec ESLint |
-
-## Structure du projet
-
-```
-statique-app/
-├── data/
-│   ├── questions/           # Questions JSON par module
-│   │   ├── module1-bases.json
-│   │   ├── module2-point.json
-│   │   ├── module3-rigide.json
-│   │   ├── module4-structures.json
-│   │   └── module5-rdm.json
-│   └── database.sqlite      # Base de données locale
-│
-├── src/
-│   ├── app/                 # Pages Next.js (App Router)
-│   │   ├── api/             # API Routes
-│   │   ├── modules/         # Page de sélection des modules
-│   │   ├── quiz/[moduleId]/ # Pages de quiz
-│   │   ├── progress/        # Tableau de bord progression
-│   │   └── teacher/         # Mode enseignant
-│   │
-│   ├── components/
-│   │   ├── ui/              # Composants UI réutilisables
-│   │   ├── quiz/            # Composants de quiz
-│   │   ├── dcl/             # Canvas DCL interactif
-│   │   └── problem/         # Conteneur multi-vues
-│   │
-│   ├── lib/
-│   │   ├── db.ts            # Connexion SQLite
-│   │   ├── questions.ts     # Gestion des questions
-│   │   ├── validation.ts    # Moteur de validation
-│   │   └── utils.ts         # Fonctions utilitaires
-│   │
-│   └── types/               # Types TypeScript
-│
-└── scripts/
-    └── init-db.ts           # Script d'initialisation BD
-```
-
-## Modules du cours
-
-### Module 1 — Bases mathématiques
-- Trigonométrie appliquée
-- Vecteurs (graphique + analytique)
-- Décomposition en composantes
-- Produit vectoriel
-
-### Module 2 — Équilibre d'un point matériel
-- Diagramme de corps libre (DCL)
-- Équilibre 2D (ΣFx=0, ΣFy=0)
-- Force résultante et équilibrante
-- Membrure à deux forces
-
-### Module 3 — Équilibre d'un corps rigide
-- Moment de force
-- Bras de levier
-- Couples de forces
-- Conditions d'équilibre (ΣFx=0, ΣFy=0, ΣM=0)
-- Types d'appuis et réactions
-
-### Module 4 — Équilibre des structures
-- Treillis 2D (hypothèses)
-- Méthode des nœuds
-- Méthode des sections
-- Forces internes vs externes
-
-### Module 5 — Résistance des matériaux
-- Contraintes (σ) et déformations (ε)
-- Module de Young (E)
-- Diagramme traction
-- Coefficient de sécurité (FS)
-
-## Format des questions
-
-Les questions sont stockées en JSON avec la structure suivante:
-
-```json
-{
-  "id": "m1-q1-decomposition",
-  "module": 1,
-  "tags": ["vectors", "decomposition"],
-  "difficulty": "beginner",
-  "type": "numeric",
-  "title": "Décomposition d'un vecteur",
-  "statement": "Une force F = {F} N...",
-  "givens": { "F": 100, "angle": 30 },
-  "unknowns": ["Fx"],
-  "answer": {
-    "variable": "Fx",
-    "value": 86.6,
-    "unit": "N",
-    "tolerance": 2,
-    "toleranceType": "percent"
-  },
-  "hints": ["Indice 1", "Indice 2"],
-  "commonMistakes": [...],
-  "explanation": "Explication complète...",
-  "parameters": {
-    "F": { "min": 50, "max": 200, "step": 10, "unit": "N" }
-  },
-  "answerFormula": "F * cos(rad(angle))"
-}
-```
-
-## Types de questions supportés
-
-| Type | Description |
-|------|-------------|
-| `mcq` | Choix multiples |
-| `numeric` | Réponse numérique avec tolérance |
-| `dcl` | Diagramme de corps libre interactif |
-| `equation` | Sélection d'équations |
-| `multi-step` | Problème multi-étapes |
-
-## API Endpoints
-
-| Endpoint | Méthode | Description |
-|----------|---------|-------------|
-| `/api/questions` | GET | Liste les questions (filtrable par module) |
-| `/api/questions` | POST | Ajoute une nouvelle question |
-| `/api/validate` | POST | Valide une réponse |
-| `/api/progress` | GET | Récupère la progression |
-| `/api/progress` | POST | Enregistre une tentative |
-| `/api/export` | GET | Exporte les données (CSV/JSON) |
-
-## Export des données
-
-### Mode enseignant
-
-1. Accédez à `/teacher`
-2. Cliquez sur "Export CSV" ou "Export JSON"
-3. Les données incluent: sessions, tentatives, progression par compétence
-
-### API directe
 
 ```bash
-# Export JSON complet
-curl http://localhost:3000/api/export?all=true
-
-# Export CSV
-curl http://localhost:3000/api/export?all=true&format=csv
-
-# Export d'un utilisateur
-curl http://localhost:3000/api/export?userId=xxx
+npm run build && npm run start   # production
 ```
 
-## Personnalisation
+## Structure
 
-### Ajouter des questions
-
-1. Modifiez les fichiers dans `data/questions/`
-2. Respectez le format JSON décrit ci-dessus
-3. Redémarrez l'application
-
-### Modifier les tolérances
-
-Dans `src/lib/validation.ts`, ajustez `DEFAULT_VALIDATION_CONFIG`:
-
-```typescript
-export const DEFAULT_VALIDATION_CONFIG = {
-  defaultNumericTolerance: 2,      // % d'erreur accepté
-  defaultToleranceType: 'percent',
-  enablePartialCredit: true,       // Crédit partiel activé
-  dclWeight: 0.3,                  // Poids du DCL (30%)
-  equationWeight: 0.3,             // Poids des équations (30%)
-  calculationWeight: 0.4,          // Poids des calculs (40%)
-  requireCorrectUnits: true,       // Vérifier les unités
-};
 ```
+src/
+├── app/
+│   ├── page.tsx                      # Catalogue complet (recherche + filtres)
+│   ├── categorie/[categoryId]/       # Une section
+│   ├── simulation/[simId]/           # Une simulation
+│   └── layout.tsx, not-found.tsx
+├── components/
+│   ├── catalog/                      # Cartes et navigateur du catalogue
+│   ├── layout/Header.tsx
+│   ├── simulations/                  # Les simulations elles-mêmes
+│   │   └── SimulationRenderer.tsx    # Registre id -> composant (lazy)
+│   └── ui/
+├── lib/
+│   ├── catalog.ts                    # Sections, métadonnées, helpers
+│   ├── physics-constants.ts
+│   └── utils.ts
+└── types/simulation.ts
+```
+
+## Ajouter une simulation
+
+1. Créer le composant dans `src/components/simulations/` (`'use client'`).
+2. Ajouter son entrée de métadonnées dans `SIMULATIONS` (`src/lib/catalog.ts`)
+   avec un `id` en kebab-case et un `categoryId` existant.
+3. Enregistrer le composant sous le même `id` dans le `REGISTRY` de
+   `src/components/simulations/SimulationRenderer.tsx`.
+
+La page `/simulation/<id>` et les listings sont générés automatiquement.
+
+Pour ajouter une **section**, ajouter une entrée dans `CATEGORIES` et son thème
+dans `CATEGORY_THEMES` (`src/lib/catalog.ts`), puis étendre le type `CategoryId`
+dans `src/types/simulation.ts`.
 
 ## Déploiement
 
-### Production locale
-
-```bash
-npm run build
-npm run start
-```
-
-### Variables d'environnement
-
-Créez un fichier `.env.local` si nécessaire:
-
-```
-# Exemple (pas obligatoire pour fonctionnement de base)
-DATABASE_PATH=./data/database.sqlite
-```
-
-## Technologies utilisées
-
-- **Next.js 14** - Framework React fullstack
-- **TypeScript** - Typage statique
-- **Tailwind CSS** - Styles utilitaires
-- **SQLite** (better-sqlite3) - Base de données embarquée
-- **Zustand** - Gestion d'état
-- **Zod** - Validation de schémas
-
-## Licence
-
-Usage éducatif - CÉGEP
-
-## Support
-
-Pour signaler un problème ou suggérer une amélioration, contactez l'enseignant responsable du cours 203-4A3-RA.
-
+Le projet se déploie tel quel sur toute plateforme Node (Vercel, Railway…).
+`nixpacks.toml` est fourni pour les builds Nixpacks.
