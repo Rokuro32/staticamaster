@@ -74,15 +74,15 @@ export function RelativitySimulator() {
     const scale = 25; // pixels per meter
 
     // Clear canvas
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.fillRect(0, 0, width, height);
 
     // Draw ground
-    ctx.fillStyle = '#1e3a5f';
+    ctx.fillStyle = '#5d4620';
     ctx.fillRect(0, centerY + 60, width, height - centerY - 60);
 
     // Grass texture
-    ctx.strokeStyle = '#2d5a3d';
+    ctx.strokeStyle = '#556027';
     ctx.lineWidth = 1;
     for (let i = 0; i < width; i += 15) {
       ctx.beginPath();
@@ -102,27 +102,27 @@ export function RelativitySimulator() {
       const poleX = barnCenterX + time * speed * 100 - poleWidth / 2;
 
       // Draw barn (stationary)
-      drawBarn(ctx, barnCenterX - barnWidth / 2, centerY, barnWidth, '#8b4513', '#a0522d');
+      drawBarn(ctx, barnCenterX - barnWidth / 2, centerY, barnWidth, '#864f18', '#ae661f');
 
       // Draw pole (moving, contracted)
       const poleY = centerY + 10;
-      drawPole(ctx, poleX, poleY, poleWidth, '#4a90d9');
+      drawPole(ctx, poleX, poleY, poleWidth, '#be9347');
 
       // Draw runner
       drawRunner(ctx, poleX + poleWidth / 2, poleY + 20, speed > 0);
 
       // Velocity arrow
-      ctx.fillStyle = '#fbbf24';
+      ctx.fillStyle = '#e8c61a';
       ctx.font = 'bold 14px Inter';
       ctx.textAlign = 'center';
       ctx.fillText(`v = ${(speed * 100).toFixed(0)}% c →`, poleX + poleWidth / 2, centerY - 50);
 
       // Length labels
-      ctx.fillStyle = '#4a90d9';
+      ctx.fillStyle = '#be9347';
       ctx.font = '12px Inter';
       ctx.fillText(`Perche: L = ${poleInBarnFrame.toFixed(2)} m (contractée)`, poleX + poleWidth / 2, centerY - 30);
 
-      ctx.fillStyle = '#a0522d';
+      ctx.fillStyle = '#ae661f';
       ctx.fillText(`Grange: L₀ = ${barnRestLength.toFixed(1)} m (repos)`, barnCenterX, centerY + 100);
 
       // Events
@@ -134,16 +134,16 @@ export function RelativitySimulator() {
 
         // Check if pole fits inside barn
         if (poleBack >= barnLeft && poleFront <= barnRight) {
-          ctx.fillStyle = 'rgba(34, 197, 94, 0.3)';
+          ctx.fillStyle = 'rgba(145, 164, 67, 0.3)';
           ctx.fillRect(barnLeft, centerY - 40, barnWidth, 100);
-          ctx.fillStyle = '#22c55e';
+          ctx.fillStyle = '#91a443';
           ctx.font = 'bold 16px Inter';
           ctx.fillText('✓ La perche tient dans la grange!', barnCenterX, 50);
         }
 
         // Front door event
         if (Math.abs(poleFront - barnRight) < 10) {
-          ctx.fillStyle = '#ef4444';
+          ctx.fillStyle = '#ca684a';
           ctx.beginPath();
           ctx.arc(barnRight, centerY + 30, 8, 0, 2 * Math.PI);
           ctx.fill();
@@ -154,7 +154,7 @@ export function RelativitySimulator() {
 
         // Back door event
         if (Math.abs(poleBack - barnLeft) < 10) {
-          ctx.fillStyle = '#3b82f6';
+          ctx.fillStyle = '#c29851';
           ctx.beginPath();
           ctx.arc(barnLeft, centerY + 30, 8, 0, 2 * Math.PI);
           ctx.fill();
@@ -164,7 +164,7 @@ export function RelativitySimulator() {
       }
 
       // Frame label
-      ctx.fillStyle = '#94a3b8';
+      ctx.fillStyle = '#aba6a1';
       ctx.font = 'bold 14px Inter';
       ctx.textAlign = 'left';
       ctx.fillText('Référentiel de la GRANGE (observateur au repos)', 20, 30);
@@ -179,26 +179,26 @@ export function RelativitySimulator() {
 
       // Draw pole (stationary)
       const poleY = centerY + 10;
-      drawPole(ctx, barnCenterX - poleWidth / 2, poleY, poleWidth, '#4a90d9');
+      drawPole(ctx, barnCenterX - poleWidth / 2, poleY, poleWidth, '#be9347');
 
       // Draw runner (stationary with pole)
       drawRunner(ctx, barnCenterX, poleY + 20, false);
 
       // Draw barn (moving, contracted)
-      drawBarn(ctx, barnX, centerY, barnWidth, '#8b4513', '#a0522d');
+      drawBarn(ctx, barnX, centerY, barnWidth, '#864f18', '#ae661f');
 
       // Velocity arrow on barn
-      ctx.fillStyle = '#fbbf24';
+      ctx.fillStyle = '#e8c61a';
       ctx.font = 'bold 14px Inter';
       ctx.textAlign = 'center';
       ctx.fillText(`← v = ${(speed * 100).toFixed(0)}% c`, barnX + barnWidth / 2, centerY - 50);
 
       // Length labels
-      ctx.fillStyle = '#4a90d9';
+      ctx.fillStyle = '#be9347';
       ctx.font = '12px Inter';
       ctx.fillText(`Perche: L₀ = ${poleRestLength.toFixed(1)} m (repos)`, barnCenterX, centerY - 30);
 
-      ctx.fillStyle = '#a0522d';
+      ctx.fillStyle = '#ae661f';
       ctx.fillText(`Grange: L = ${barnInPoleFrame.toFixed(2)} m (contractée)`, barnX + barnWidth / 2, centerY + 100);
 
       // Events - in pole frame, barn is too small!
@@ -210,17 +210,17 @@ export function RelativitySimulator() {
 
         // Pole never fits - show this
         if (barnLeft < poleFront && barnRight > poleBack) {
-          ctx.fillStyle = 'rgba(239, 68, 68, 0.2)';
+          ctx.fillStyle = 'rgba(202, 104, 74, 0.2)';
           ctx.fillRect(Math.max(barnLeft, poleBack - 20), centerY - 40,
                        Math.min(barnRight, poleFront + 20) - Math.max(barnLeft, poleBack - 20), 100);
-          ctx.fillStyle = '#ef4444';
+          ctx.fillStyle = '#ca684a';
           ctx.font = 'bold 16px Inter';
           ctx.fillText('✗ La perche ne tient PAS dans la grange!', barnCenterX, 50);
         }
 
         // Events occur at different times in this frame
         if (Math.abs(barnRight - poleBack) < 10) {
-          ctx.fillStyle = '#3b82f6';
+          ctx.fillStyle = '#c29851';
           ctx.beginPath();
           ctx.arc(barnRight, centerY + 30, 8, 0, 2 * Math.PI);
           ctx.fill();
@@ -230,7 +230,7 @@ export function RelativitySimulator() {
         }
 
         if (Math.abs(barnLeft - poleFront) < 10) {
-          ctx.fillStyle = '#ef4444';
+          ctx.fillStyle = '#ca684a';
           ctx.beginPath();
           ctx.arc(barnLeft, centerY + 30, 8, 0, 2 * Math.PI);
           ctx.fill();
@@ -240,14 +240,14 @@ export function RelativitySimulator() {
       }
 
       // Frame label
-      ctx.fillStyle = '#94a3b8';
+      ctx.fillStyle = '#aba6a1';
       ctx.font = 'bold 14px Inter';
       ctx.textAlign = 'left';
       ctx.fillText('Référentiel de la PERCHE (coureur au repos)', 20, 30);
     }
 
     // Draw Lorentz factor indicator
-    ctx.fillStyle = '#8b5cf6';
+    ctx.fillStyle = '#b57b98';
     ctx.font = '14px Inter';
     ctx.textAlign = 'right';
     ctx.fillText(`γ = ${gamma.toFixed(3)}`, width - 20, 30);
@@ -265,10 +265,10 @@ export function RelativitySimulator() {
     <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
       {/* Title */}
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <h2 className="text-2xl font-bold text-stone-900 mb-2">
           Relativité restreinte: Le paradoxe de la perche et la grange
         </h2>
-        <p className="text-gray-600">
+        <p className="text-stone-600">
           Explorez la contraction des longueurs et la relativité de la simultanéité
         </p>
       </div>
@@ -279,8 +279,8 @@ export function RelativitySimulator() {
           onClick={() => setReferenceFrame('barn')}
           className={`px-6 py-3 rounded-lg font-medium transition-colors ${
             referenceFrame === 'barn'
-              ? 'bg-amber-600 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-ocre-600 text-white'
+              : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
           }`}
         >
           🏠 Référentiel Grange
@@ -289,8 +289,8 @@ export function RelativitySimulator() {
           onClick={() => setReferenceFrame('pole')}
           className={`px-6 py-3 rounded-lg font-medium transition-colors ${
             referenceFrame === 'pole'
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-gold-600 text-white'
+              : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
           }`}
         >
           🏃 Référentiel Perche
@@ -298,41 +298,41 @@ export function RelativitySimulator() {
       </div>
 
       {/* Mathematical Equations */}
-      <div className="bg-violet-50 rounded-lg p-4">
+      <div className="bg-prune-50 rounded-lg p-4">
         <div className="grid md:grid-cols-2 gap-4">
           <div className="text-center">
-            <p className="text-sm text-violet-600 mb-2 font-medium">Facteur de Lorentz</p>
+            <p className="text-sm text-prune-600 mb-2 font-medium">Facteur de Lorentz</p>
             <BlockMath math={`\\gamma = \\frac{1}{\\sqrt{1 - v^2/c^2}} = \\frac{1}{\\sqrt{1 - ${speed.toFixed(2)}^2}} = ${gamma.toFixed(3)}`} />
           </div>
           <div className="text-center">
-            <p className="text-sm text-violet-600 mb-2 font-medium">Contraction des longueurs</p>
+            <p className="text-sm text-prune-600 mb-2 font-medium">Contraction des longueurs</p>
             <BlockMath math={`L = \\frac{L_0}{\\gamma} = \\frac{L_0}{${gamma.toFixed(3)}}`} />
           </div>
         </div>
 
         <div className="mt-4 grid md:grid-cols-2 gap-4 text-sm">
-          <div className={`p-3 rounded ${referenceFrame === 'barn' ? 'bg-amber-100' : 'bg-white'}`}>
-            <p className="font-medium text-amber-800">Dans le référentiel de la grange:</p>
-            <p className="text-amber-700">
+          <div className={`p-3 rounded ${referenceFrame === 'barn' ? 'bg-ocre-100' : 'bg-white'}`}>
+            <p className="font-medium text-ocre-800">Dans le référentiel de la grange:</p>
+            <p className="text-ocre-700">
               Perche: <InlineMath math={`L = ${poleRestLength}/${gamma.toFixed(2)} = ${poleInBarnFrame.toFixed(2)}`} /> m
             </p>
-            <p className="text-amber-700">
+            <p className="text-ocre-700">
               Grange: <InlineMath math={`L_0 = ${barnRestLength}`} /> m (au repos)
             </p>
             {poleInBarnFrame < barnRestLength && (
-              <p className="text-green-600 font-medium mt-1">→ La perche tient!</p>
+              <p className="text-olive-600 font-medium mt-1">→ La perche tient!</p>
             )}
           </div>
-          <div className={`p-3 rounded ${referenceFrame === 'pole' ? 'bg-blue-100' : 'bg-white'}`}>
-            <p className="font-medium text-blue-800">Dans le référentiel de la perche:</p>
-            <p className="text-blue-700">
+          <div className={`p-3 rounded ${referenceFrame === 'pole' ? 'bg-gold-100' : 'bg-white'}`}>
+            <p className="font-medium text-gold-800">Dans le référentiel de la perche:</p>
+            <p className="text-gold-700">
               Perche: <InlineMath math={`L_0 = ${poleRestLength}`} /> m (au repos)
             </p>
-            <p className="text-blue-700">
+            <p className="text-gold-700">
               Grange: <InlineMath math={`L = ${barnRestLength}/${gamma.toFixed(2)} = ${barnInPoleFrame.toFixed(2)}`} /> m
             </p>
             {barnInPoleFrame < poleRestLength && (
-              <p className="text-red-600 font-medium mt-1">→ La perche ne tient pas!</p>
+              <p className="text-brun-600 font-medium mt-1">→ La perche ne tient pas!</p>
             )}
           </div>
         </div>
@@ -342,8 +342,8 @@ export function RelativitySimulator() {
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="space-y-2">
           <label className="flex items-center justify-between">
-            <span className="font-medium text-gray-700">Vitesse (% de c)</span>
-            <span className="text-violet-600 font-mono">{(speed * 100).toFixed(0)}%</span>
+            <span className="font-medium text-stone-700">Vitesse (% de c)</span>
+            <span className="text-prune-600 font-mono">{(speed * 100).toFixed(0)}%</span>
           </label>
           <input
             type="range"
@@ -352,14 +352,14 @@ export function RelativitySimulator() {
             step="0.01"
             value={speed}
             onChange={(e) => setSpeed(parseFloat(e.target.value))}
-            className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+            className="w-full h-2 bg-prune-200 rounded-lg appearance-none cursor-pointer accent-prune-600"
           />
         </div>
 
         <div className="space-y-2">
           <label className="flex items-center justify-between">
-            <span className="font-medium text-gray-700">Longueur perche (repos)</span>
-            <span className="text-violet-600 font-mono">{poleRestLength} m</span>
+            <span className="font-medium text-stone-700">Longueur perche (repos)</span>
+            <span className="text-prune-600 font-mono">{poleRestLength} m</span>
           </label>
           <input
             type="range"
@@ -368,14 +368,14 @@ export function RelativitySimulator() {
             step="1"
             value={poleRestLength}
             onChange={(e) => setPoleRestLength(parseInt(e.target.value))}
-            className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+            className="w-full h-2 bg-prune-200 rounded-lg appearance-none cursor-pointer accent-prune-600"
           />
         </div>
 
         <div className="space-y-2">
           <label className="flex items-center justify-between">
-            <span className="font-medium text-gray-700">Longueur grange (repos)</span>
-            <span className="text-violet-600 font-mono">{barnRestLength} m</span>
+            <span className="font-medium text-stone-700">Longueur grange (repos)</span>
+            <span className="text-prune-600 font-mono">{barnRestLength} m</span>
           </label>
           <input
             type="range"
@@ -384,14 +384,14 @@ export function RelativitySimulator() {
             step="1"
             value={barnRestLength}
             onChange={(e) => setBarnRestLength(parseInt(e.target.value))}
-            className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+            className="w-full h-2 bg-prune-200 rounded-lg appearance-none cursor-pointer accent-prune-600"
           />
         </div>
 
         <div className="space-y-2">
           <label className="flex items-center justify-between">
-            <span className="font-medium text-gray-700">Vitesse animation</span>
-            <span className="text-violet-600 font-mono">{animationSpeed.toFixed(1)}x</span>
+            <span className="font-medium text-stone-700">Vitesse animation</span>
+            <span className="text-prune-600 font-mono">{animationSpeed.toFixed(1)}x</span>
           </label>
           <input
             type="range"
@@ -400,7 +400,7 @@ export function RelativitySimulator() {
             step="0.1"
             value={animationSpeed}
             onChange={(e) => setAnimationSpeed(parseFloat(e.target.value))}
-            className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+            className="w-full h-2 bg-prune-200 rounded-lg appearance-none cursor-pointer accent-prune-600"
           />
         </div>
       </div>
@@ -411,7 +411,7 @@ export function RelativitySimulator() {
           ref={canvasRef}
           width={800}
           height={300}
-          className="w-full rounded-lg border border-gray-200"
+          className="w-full rounded-lg border border-stone-200"
         />
       </div>
 
@@ -421,36 +421,36 @@ export function RelativitySimulator() {
           onClick={() => setIsPlaying(!isPlaying)}
           className={`px-6 py-2 rounded-lg font-medium transition-colors ${
             isPlaying
-              ? 'bg-red-100 text-red-700 hover:bg-red-200'
-              : 'bg-green-100 text-green-700 hover:bg-green-200'
+              ? 'bg-brun-100 text-brun-700 hover:bg-brun-200'
+              : 'bg-olive-100 text-olive-700 hover:bg-olive-200'
           }`}
         >
           {isPlaying ? '⏸ Pause' : '▶ Lecture'}
         </button>
         <button
           onClick={handleReset}
-          className="px-6 py-2 rounded-lg font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
+          className="px-6 py-2 rounded-lg font-medium bg-stone-100 text-stone-700 hover:bg-stone-200 transition-colors"
         >
           ↺ Réinitialiser
         </button>
-        <label className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100">
+        <label className="flex items-center gap-2 px-4 py-2 rounded-lg bg-stone-100">
           <input
             type="checkbox"
             checked={showEvents}
             onChange={(e) => setShowEvents(e.target.checked)}
-            className="rounded text-violet-600"
+            className="rounded text-prune-600"
           />
-          <span className="text-sm text-gray-700">Montrer événements</span>
+          <span className="text-sm text-stone-700">Montrer événements</span>
         </label>
       </div>
 
       {/* Paradox Explanation */}
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-        <h3 className="font-semibold text-amber-900 mb-2">Résolution du paradoxe</h3>
-        <p className="text-amber-800 text-sm">
+      <div className="bg-ocre-50 border border-ocre-200 rounded-lg p-4">
+        <h3 className="font-semibold text-ocre-900 mb-2">Résolution du paradoxe</h3>
+        <p className="text-ocre-800 text-sm">
           Le "paradoxe" n'en est pas vraiment un! La clé est la <strong>relativité de la simultanéité</strong>:
         </p>
-        <ul className="text-amber-700 text-sm mt-2 space-y-1 list-disc list-inside">
+        <ul className="text-ocre-700 text-sm mt-2 space-y-1 list-disc list-inside">
           <li>Dans le référentiel de la grange: les deux portes se ferment <em>simultanément</em> quand la perche est à l'intérieur.</li>
           <li>Dans le référentiel de la perche: les portes ne se ferment <em>pas simultanément</em> - la porte arrière se ferme avant que la porte avant ne soit atteinte.</li>
           <li>Les deux observations sont correctes dans leur propre référentiel!</li>
@@ -458,26 +458,26 @@ export function RelativitySimulator() {
       </div>
 
       {/* Educational Notes */}
-      <div className="border-t border-gray-200 pt-6">
-        <h3 className="font-semibold text-gray-800 mb-3">Concepts clés</h3>
+      <div className="border-t border-stone-200 pt-6">
+        <h3 className="font-semibold text-stone-800 mb-3">Concepts clés</h3>
         <div className="grid md:grid-cols-3 gap-4 text-sm">
-          <div className="bg-violet-50 rounded-lg p-4">
-            <h4 className="font-medium text-violet-800 mb-2">Contraction des longueurs</h4>
-            <p className="text-violet-700">
+          <div className="bg-prune-50 rounded-lg p-4">
+            <h4 className="font-medium text-prune-800 mb-2">Contraction des longueurs</h4>
+            <p className="text-prune-700">
               Un objet en mouvement apparaît contracté dans la direction du mouvement.
               <InlineMath math="L = L_0/\gamma" /> où <InlineMath math="\gamma > 1" />.
             </p>
           </div>
-          <div className="bg-blue-50 rounded-lg p-4">
-            <h4 className="font-medium text-blue-800 mb-2">Relativité de la simultanéité</h4>
-            <p className="text-blue-700">
+          <div className="bg-gold-50 rounded-lg p-4">
+            <h4 className="font-medium text-gold-800 mb-2">Relativité de la simultanéité</h4>
+            <p className="text-gold-700">
               Deux événements simultanés dans un référentiel ne le sont pas nécessairement
               dans un autre référentiel en mouvement.
             </p>
           </div>
-          <div className="bg-green-50 rounded-lg p-4">
-            <h4 className="font-medium text-green-800 mb-2">Pas de contradiction</h4>
-            <p className="text-green-700">
+          <div className="bg-olive-50 rounded-lg p-4">
+            <h4 className="font-medium text-olive-800 mb-2">Pas de contradiction</h4>
+            <p className="text-olive-700">
               La perche n'est jamais "cassée" - chaque observateur voit une réalité cohérente
               avec les lois de la physique relativiste.
             </p>
@@ -508,11 +508,11 @@ function drawBarn(ctx: CanvasRenderingContext2D, x: number, y: number, width: nu
   ctx.fill();
 
   // Door openings (empty space)
-  ctx.fillStyle = '#0f172a';
+  ctx.fillStyle = '#1e1d1b';
   ctx.fillRect(x + 15, y, width - 30, wallHeight);
 
   // Door frames
-  ctx.strokeStyle = '#5d3a1a';
+  ctx.strokeStyle = '#653c12';
   ctx.lineWidth = 3;
   ctx.strokeRect(x, y, 15, wallHeight);
   ctx.strokeRect(x + width - 15, y, 15, wallHeight);
@@ -527,7 +527,7 @@ function drawPole(ctx: CanvasRenderingContext2D, x: number, y: number, width: nu
   ctx.fillRect(x, y, width, height);
 
   // End caps
-  ctx.fillStyle = '#2563eb';
+  ctx.fillStyle = '#c1974f';
   ctx.beginPath();
   ctx.arc(x, y + height / 2, height / 2, 0, 2 * Math.PI);
   ctx.fill();
@@ -543,19 +543,19 @@ function drawPole(ctx: CanvasRenderingContext2D, x: number, y: number, width: nu
 // Helper function to draw the runner
 function drawRunner(ctx: CanvasRenderingContext2D, x: number, y: number, running: boolean) {
   // Body
-  ctx.fillStyle = '#ef4444';
+  ctx.fillStyle = '#ca684a';
   ctx.beginPath();
   ctx.arc(x, y - 15, 8, 0, 2 * Math.PI);
   ctx.fill();
 
   // Head
-  ctx.fillStyle = '#fcd34d';
+  ctx.fillStyle = '#eccf3c';
   ctx.beginPath();
   ctx.arc(x, y - 30, 6, 0, 2 * Math.PI);
   ctx.fill();
 
   // Legs
-  ctx.strokeStyle = '#1e40af';
+  ctx.strokeStyle = '#987435';
   ctx.lineWidth = 3;
   if (running) {
     ctx.beginPath();

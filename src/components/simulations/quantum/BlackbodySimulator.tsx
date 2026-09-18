@@ -75,9 +75,9 @@ function CollapsiblePanel({
 function ConstantTooltip({ symbol }: { symbol: 'h' | 'k' | 'c' }) {
   const info = CONSTANTS_INFO[symbol];
   return (
-    <span className="relative group inline-block cursor-help border-b border-dashed border-gray-500">
+    <span className="relative group inline-block cursor-help border-b border-dashed border-stone-500">
       <InlineMath math={info.latex} />
-      <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block whitespace-nowrap bg-gray-900 text-white text-xs rounded px-2 py-1 shadow-lg z-50">
+      <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block whitespace-nowrap bg-stone-900 text-white text-xs rounded px-2 py-1 shadow-lg z-50">
         {info.name}: {info.value} {info.unit}
       </span>
     </span>
@@ -112,7 +112,7 @@ export function BlackbodySimulator() {
     const plotH = H - mt - mb;
 
     // Clear
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.fillRect(0, 0, W, H);
 
     // Frequency range
@@ -143,7 +143,7 @@ export function BlackbodySimulator() {
     const toY = (u: number) => mt + plotH - (Math.min(u, rjClip) / yMax) * plotH;
 
     // Grid lines
-    ctx.strokeStyle = '#1e293b';
+    ctx.strokeStyle = '#2f2d2a';
     ctx.lineWidth = 1;
     const nGridX = 6;
     const nGridY = 5;
@@ -183,16 +183,16 @@ export function BlackbodySimulator() {
     };
 
     // Draw Rayleigh-Jeans (red) -- clipped
-    drawCurve(rjVals, '#ef4444', rjClip);
+    drawCurve(rjVals, '#ca684a', rjClip);
 
     // Draw Wien (yellow)
-    drawCurve(wienVals, '#eab308', yMax * 10);
+    drawCurve(wienVals, '#dcbb16', yMax * 10);
 
     // Draw Planck (green)
-    drawCurve(planckVals, '#22c55e', yMax * 10);
+    drawCurve(planckVals, '#91a443', yMax * 10);
 
     // Axes
-    ctx.strokeStyle = '#94a3b8';
+    ctx.strokeStyle = '#aba6a1';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(ml, mt);
@@ -201,7 +201,7 @@ export function BlackbodySimulator() {
     ctx.stroke();
 
     // X-axis labels
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'center';
     for (let i = 0; i <= nGridX; i++) {
@@ -216,7 +216,7 @@ export function BlackbodySimulator() {
     ctx.translate(16, mt + plotH / 2);
     ctx.rotate(-Math.PI / 2);
     ctx.textAlign = 'center';
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.font = '11px sans-serif';
     ctx.fillText('u(f)  (J\u00B7s/m\u00B3)', 0, 0);
     ctx.restore();
@@ -243,7 +243,7 @@ export function BlackbodySimulator() {
       const peakX = toX(fPeak);
       const peakY = toY(planck(fPeak, T));
       ctx.setLineDash([4, 4]);
-      ctx.strokeStyle = '#22c55e80';
+      ctx.strokeStyle = '#91a44380';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(peakX, mt);
@@ -252,7 +252,7 @@ export function BlackbodySimulator() {
       ctx.setLineDash([]);
 
       // Peak label
-      ctx.fillStyle = '#22c55e';
+      ctx.fillStyle = '#91a443';
       ctx.font = '10px sans-serif';
       ctx.textAlign = 'left';
       ctx.fillText(`f_peak = ${(fPeak / 1e14).toFixed(1)}\u00D710\u00B9\u2074 Hz`, peakX + 4, peakY - 8);
@@ -262,9 +262,9 @@ export function BlackbodySimulator() {
     const legendX = ml + plotW - 200;
     const legendY = mt + 14;
     const legendItems: [string, string][] = [
-      ['#ef4444', 'Rayleigh-Jeans (classique)'],
-      ['#eab308', 'Wien (approximation)'],
-      ['#22c55e', 'Planck (quantique)'],
+      ['#ca684a', 'Rayleigh-Jeans (classique)'],
+      ['#dcbb16', 'Wien (approximation)'],
+      ['#91a443', 'Planck (quantique)'],
     ];
     ctx.font = '12px sans-serif';
     legendItems.forEach(([color, label], idx) => {
@@ -275,13 +275,13 @@ export function BlackbodySimulator() {
       ctx.moveTo(legendX, y);
       ctx.lineTo(legendX + 24, y);
       ctx.stroke();
-      ctx.fillStyle = '#e2e8f0';
+      ctx.fillStyle = '#eae9e8';
       ctx.textAlign = 'left';
       ctx.fillText(label, legendX + 30, y + 4);
     });
 
     // Temperature display
-    ctx.fillStyle = '#f8fafc';
+    ctx.fillStyle = '#fafafa';
     ctx.font = 'bold 14px sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText(`T = ${T} K`, ml + 10, mt + 20);
@@ -296,10 +296,10 @@ export function BlackbodySimulator() {
     <section className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       {/* Title */}
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-gray-900">
+        <h2 className="text-3xl font-bold text-stone-900">
           Rayonnement du corps noir
         </h2>
-        <p className="text-gray-600">
+        <p className="text-stone-600">
           Naissance de la physique quantique &mdash; Planck, 1900
         </p>
       </div>
@@ -310,12 +310,12 @@ export function BlackbodySimulator() {
           ref={canvasRef}
           width={700}
           height={400}
-          className="w-full max-w-[700px] mx-auto rounded-lg border border-gray-300"
+          className="w-full max-w-[700px] mx-auto rounded-lg border border-stone-300"
         />
 
         {/* Temperature slider */}
         <div className="w-full max-w-[700px] flex items-center gap-4">
-          <label className="text-sm text-gray-700 whitespace-nowrap font-medium">
+          <label className="text-sm text-stone-700 whitespace-nowrap font-medium">
             Temperature <InlineMath math={`T`} />
           </label>
           <input
@@ -325,15 +325,15 @@ export function BlackbodySimulator() {
             step={100}
             value={temperature}
             onChange={(e) => setTemperature(Number(e.target.value))}
-            className="flex-1 accent-green-500"
+            className="flex-1 accent-olive-500"
           />
-          <span className="text-sm font-mono text-gray-900 w-20 text-right">
+          <span className="text-sm font-mono text-stone-900 w-20 text-right">
             {temperature} K
           </span>
         </div>
 
         {/* Constant tooltips */}
-        <div className="flex gap-6 text-gray-600 text-sm">
+        <div className="flex gap-6 text-stone-600 text-sm">
           <span>
             Constantes : <ConstantTooltip symbol="h" />,{' '}
             <ConstantTooltip symbol="k" />,{' '}
@@ -347,12 +347,12 @@ export function BlackbodySimulator() {
         {/* 1. Catastrophe ultraviolette */}
         <CollapsiblePanel
           title="1. Catastrophe ultraviolette"
-          borderColor="border-red-500"
-          bgColor="bg-red-50"
-          textColor="text-red-800"
+          borderColor="border-brun-500"
+          bgColor="bg-brun-50"
+          textColor="text-brun-800"
           defaultOpen
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             La physique classique attribue une énergie moyenne{' '}
             <InlineMath math={`k_B T`} /> à chaque mode de vibration du champ
             électromagnétique (théorème d&apos;équipartition). Le nombre de modes
@@ -361,14 +361,14 @@ export function BlackbodySimulator() {
             <InlineMath math={`\\frac{8\\pi f^2}{c^3}`} />, ce qui conduit à la
             loi de <strong>Rayleigh-Jeans</strong> :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`u(f) = \\frac{8\\pi f^2}{c^3}\\, k_B T`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Cette formule diverge lorsque{' '}
             <InlineMath math={`f \\to \\infty`} /> : l&apos;énergie totale du
             rayonnement serait <em>infinie</em>. C&apos;est la{' '}
-            <strong className="text-red-600">catastrophe ultraviolette</strong>,
+            <strong className="text-brun-600">catastrophe ultraviolette</strong>,
             un échec spectaculaire de la physique classique.
           </p>
         </CollapsiblePanel>
@@ -376,27 +376,27 @@ export function BlackbodySimulator() {
         {/* 2. Hypothese de Planck */}
         <CollapsiblePanel
           title="2. Hypothèse de Planck"
-          borderColor="border-green-500"
-          bgColor="bg-green-50"
-          textColor="text-green-800"
+          borderColor="border-olive-500"
+          bgColor="bg-olive-50"
+          textColor="text-olive-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             En décembre 1900, <strong>Max Planck</strong> propose que
             l&apos;énergie des oscillateurs de fréquence{' '}
             <InlineMath math={`f`} /> ne peut prendre que des valeurs{' '}
             <em>discrètes</em>, multiples d&apos;un quantum élémentaire :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`E_n = n\\,h\\,f \\qquad (n = 0, 1, 2, \\ldots)`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             En calculant la valeur moyenne de l&apos;énergie avec cette
             quantification, Planck obtient la distribution :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`u(f) = \\frac{8\\pi h f^3}{c^3} \\; \\frac{1}{e^{hf/k_BT} - 1}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Cette loi reproduit parfaitement les données expérimentales à toutes
             les fréquences. Le facteur clé est le dénominateur de Bose-Einstein
             qui « éteint » les hautes fréquences.
@@ -406,44 +406,44 @@ export function BlackbodySimulator() {
         {/* 3. Regimes limites */}
         <CollapsiblePanel
           title="3. Régimes limites"
-          borderColor="border-blue-500"
-          bgColor="bg-blue-50"
-          textColor="text-blue-800"
+          borderColor="border-gold-500"
+          bgColor="bg-gold-50"
+          textColor="text-gold-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             La formule de Planck contient les deux approximations classiques
             comme cas limites :
           </p>
 
           <div className="space-y-4">
             <div>
-              <p className="font-semibold text-blue-800 mb-1">
+              <p className="font-semibold text-gold-800 mb-1">
                 Basses fréquences (<InlineMath math={`hf \\ll k_BT`} />) :
               </p>
-              <p className="text-gray-700 mb-2">
+              <p className="text-stone-700 mb-2">
                 On développe l&apos;exponentielle{' '}
                 <InlineMath math={`e^{hf/k_BT} \\approx 1 + hf/k_BT`} />, d&apos;où :
               </p>
-              <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+              <div className="bg-stone-100 rounded p-3 overflow-x-auto">
                 <BlockMath math={`u(f) \\approx \\frac{8\\pi h f^3}{c^3} \\cdot \\frac{k_BT}{hf} = \\frac{8\\pi f^2}{c^3}\\,k_BT`} />
               </div>
-              <p className="text-gray-700">
+              <p className="text-stone-700">
                 On retrouve la loi de <strong>Rayleigh-Jeans</strong> : continuité avec la physique classique.
               </p>
             </div>
 
             <div>
-              <p className="font-semibold text-blue-800 mb-1">
+              <p className="font-semibold text-gold-800 mb-1">
                 Hautes fréquences (<InlineMath math={`hf \\gg k_BT`} />) :
               </p>
-              <p className="text-gray-700 mb-2">
+              <p className="text-stone-700 mb-2">
                 L&apos;exponentielle domine :{' '}
                 <InlineMath math={`e^{hf/k_BT} - 1 \\approx e^{hf/k_BT}`} />, d&apos;où :
               </p>
-              <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+              <div className="bg-stone-100 rounded p-3 overflow-x-auto">
                 <BlockMath math={`u(f) \\approx \\frac{8\\pi h f^3}{c^3}\\,e^{-hf/k_BT}`} />
               </div>
-              <p className="text-gray-700">
+              <p className="text-stone-700">
                 On retrouve la loi de <strong>Wien</strong> : extinction exponentielle
                 aux hautes fréquences, pas de catastrophe.
               </p>
@@ -454,18 +454,18 @@ export function BlackbodySimulator() {
         {/* 4. Contexte historique */}
         <CollapsiblePanel
           title="4. Contexte historique"
-          borderColor="border-gray-500"
-          bgColor="bg-gray-50"
-          textColor="text-gray-700"
+          borderColor="border-stone-500"
+          bgColor="bg-stone-50"
+          textColor="text-stone-700"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             À la fin du XIX<sup>e</sup> siècle, la physique classique semblait
             presque complète. Lord Kelvin évoquait cependant « deux petits
             nuages » à l&apos;horizon : le résultat négatif de
             l&apos;expérience de Michelson-Morley et le problème du rayonnement
             du corps noir.
           </p>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Le 14 décembre 1900, Max Planck présente à la{' '}
             <em>Deutsche Physikalische Gesellschaft</em> sa dérivation de la loi
             du rayonnement, introduisant la constante{' '}
@@ -473,7 +473,7 @@ export function BlackbodySimulator() {
             Il considérait lui-même cette quantification comme un « acte
             de désespoir » (<em>Verzweiflungstat</em>).
           </p>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Cette hypothèse audacieuse ouvre la voie à Einstein (effet
             photoélectrique, 1905), Bohr (modèle atomique, 1913) et finalement à
             la mécanique quantique complète de Heisenberg et Schrödinger

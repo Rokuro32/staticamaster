@@ -60,19 +60,19 @@ function CollapsibleSection({
 
   const colorMap = {
     green: {
-      border: 'border-green-400',
-      bg: 'bg-green-50',
-      header: 'bg-green-100 hover:bg-green-200 text-green-900',
+      border: 'border-olive-400',
+      bg: 'bg-olive-50',
+      header: 'bg-olive-100 hover:bg-olive-200 text-olive-900',
     },
     blue: {
-      border: 'border-blue-400',
-      bg: 'bg-blue-50',
-      header: 'bg-blue-100 hover:bg-blue-200 text-blue-900',
+      border: 'border-gold-400',
+      bg: 'bg-gold-50',
+      header: 'bg-gold-100 hover:bg-gold-200 text-gold-900',
     },
     gray: {
-      border: 'border-gray-400',
-      bg: 'bg-gray-50',
-      header: 'bg-gray-100 hover:bg-gray-200 text-gray-900',
+      border: 'border-stone-400',
+      bg: 'bg-stone-50',
+      header: 'bg-stone-100 hover:bg-stone-200 text-stone-900',
     },
   };
   const c = colorMap[color];
@@ -123,7 +123,7 @@ export function WaveParticleDualitySimulator() {
     ctx.clearRect(0, 0, W, H);
 
     // Background
-    ctx.fillStyle = '#0a0a1a';
+    ctx.fillStyle = '#131211';
     ctx.fillRect(0, 0, W, H);
 
     // ---- Left side: Crystal lattice + beam ----
@@ -138,9 +138,9 @@ export function WaveParticleDualitySimulator() {
     // Draw incoming electron beam
     const beamY = crystalCenterY;
     ctx.save();
-    ctx.strokeStyle = '#00ccff';
+    ctx.strokeStyle = '#5c85a3';
     ctx.lineWidth = 3;
-    ctx.shadowColor = '#00ccff';
+    ctx.shadowColor = '#5c85a3';
     ctx.shadowBlur = 10;
     ctx.beginPath();
     ctx.moveTo(0, beamY);
@@ -149,7 +149,7 @@ export function WaveParticleDualitySimulator() {
 
     // Arrow head
     const arrowX = crystalCenterX - cols * atomSpacing * 0.5 - 10;
-    ctx.fillStyle = '#00ccff';
+    ctx.fillStyle = '#5c85a3';
     ctx.beginPath();
     ctx.moveTo(arrowX + 10, beamY);
     ctx.lineTo(arrowX - 2, beamY - 6);
@@ -159,7 +159,7 @@ export function WaveParticleDualitySimulator() {
     ctx.restore();
 
     // Draw electron label
-    ctx.fillStyle = '#00ccff';
+    ctx.fillStyle = '#5c85a3';
     ctx.font = '13px sans-serif';
     ctx.fillText('Faisceau e\u207B', 10, beamY - 14);
 
@@ -172,18 +172,18 @@ export function WaveParticleDualitySimulator() {
         ctx.beginPath();
         ctx.arc(x, y, atomRadius, 0, Math.PI * 2);
         const grad = ctx.createRadialGradient(x - 1, y - 1, 1, x, y, atomRadius);
-        grad.addColorStop(0, '#c0c0ff');
-        grad.addColorStop(1, '#4040aa');
+        grad.addColorStop(0, '#e3d0af');
+        grad.addColorStop(1, '#ad843d');
         ctx.fillStyle = grad;
         ctx.fill();
-        ctx.strokeStyle = '#6060cc';
+        ctx.strokeStyle = '#c1964d';
         ctx.lineWidth = 0.5;
         ctx.stroke();
       }
     }
 
     // Label crystal
-    ctx.fillStyle = '#aaaacc';
+    ctx.fillStyle = '#bfbbb7';
     ctx.font = '12px sans-serif';
     ctx.fillText('Cristal Ni', crystalCenterX - 25, crystalCenterY + rows * atomSpacing * 0.5 + 20);
     ctx.fillText(`d = 0.215 nm`, crystalCenterX - 30, crystalCenterY + rows * atomSpacing * 0.5 + 36);
@@ -203,8 +203,8 @@ export function WaveParticleDualitySimulator() {
         const intensity = 1 / (idx + 1);
 
         // Upper scattered beam
-        ctx.strokeStyle = `rgba(0, 255, 120, ${intensity * 0.8})`;
-        ctx.shadowColor = '#00ff78';
+        ctx.strokeStyle = `rgba(160, 181, 74, ${intensity * 0.8})`;
+        ctx.shadowColor = '#a0b54a';
         ctx.shadowBlur = 6;
         ctx.beginPath();
         ctx.moveTo(scatterOriginX, scatterOriginY);
@@ -227,7 +227,7 @@ export function WaveParticleDualitySimulator() {
         if (idx === 0) {
           const labelX = scatterOriginX + 80 * Math.cos(alpha);
           const labelY = scatterOriginY - 80 * Math.sin(alpha) - 10;
-          ctx.fillStyle = '#00ff78';
+          ctx.fillStyle = '#a0b54a';
           ctx.font = '12px sans-serif';
           ctx.fillText(
             `\u03B8 = ${((theta * 180) / Math.PI).toFixed(1)}\u00B0`,
@@ -238,8 +238,8 @@ export function WaveParticleDualitySimulator() {
       });
 
       // Forward transmitted beam
-      ctx.strokeStyle = 'rgba(0, 204, 255, 0.3)';
-      ctx.shadowColor = '#00ccff';
+      ctx.strokeStyle = 'rgba(92, 133, 163, 0.3)';
+      ctx.shadowColor = '#5c85a3';
       ctx.shadowBlur = 4;
       ctx.beginPath();
       ctx.moveTo(scatterOriginX, scatterOriginY);
@@ -247,15 +247,15 @@ export function WaveParticleDualitySimulator() {
       ctx.stroke();
     } else {
       // No valid Bragg angle — all forward
-      ctx.strokeStyle = 'rgba(0, 204, 255, 0.6)';
+      ctx.strokeStyle = 'rgba(92, 133, 163, 0.6)';
       ctx.shadowBlur = 4;
-      ctx.shadowColor = '#00ccff';
+      ctx.shadowColor = '#5c85a3';
       ctx.beginPath();
       ctx.moveTo(scatterOriginX, scatterOriginY);
       ctx.lineTo(scatterOriginX + beamLength, scatterOriginY);
       ctx.stroke();
 
-      ctx.fillStyle = '#ff8888';
+      ctx.fillStyle = '#db9984';
       ctx.font = '12px sans-serif';
       ctx.fillText('Pas de pic de Bragg', scatterOriginX + 60, scatterOriginY - 20);
     }
@@ -268,7 +268,7 @@ export function WaveParticleDualitySimulator() {
     const detectorRadius = 160;
 
     // Draw curved detector screen
-    ctx.strokeStyle = '#555588';
+    ctx.strokeStyle = '#a47d39';
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.arc(detectorCenterX - 80, detectorCenterY, detectorRadius, -Math.PI / 2, Math.PI / 2);
@@ -289,9 +289,9 @@ export function WaveParticleDualitySimulator() {
 
     // Plot intensity curve mapped on detector arc
     ctx.save();
-    ctx.strokeStyle = '#ffcc00';
+    ctx.strokeStyle = '#e8c517';
     ctx.lineWidth = 2;
-    ctx.shadowColor = '#ffcc00';
+    ctx.shadowColor = '#e8c517';
     ctx.shadowBlur = 4;
     ctx.beginPath();
 
@@ -312,10 +312,10 @@ export function WaveParticleDualitySimulator() {
     ctx.restore();
 
     // Label detector
-    ctx.fillStyle = '#888899';
+    ctx.fillStyle = '#97918a';
     ctx.font = '12px sans-serif';
     ctx.fillText('Détecteur', detectorCenterX + 60, detectorCenterY + detectorRadius + 20);
-    ctx.fillStyle = '#ffcc00';
+    ctx.fillStyle = '#e8c517';
     ctx.fillText('Intensité(\u03B8)', detectorCenterX - 40, 25);
 
     // Draw angle arc legend
@@ -342,7 +342,7 @@ export function WaveParticleDualitySimulator() {
       const W = canvas.width;
       const H = canvas.height;
       ctx.clearRect(0, 0, W, H);
-      ctx.fillStyle = '#0d0d20';
+      ctx.fillStyle = '#181715';
       ctx.fillRect(0, 0, W, H);
 
       // Draw diffraction pattern as ring-like dots
@@ -387,7 +387,7 @@ export function WaveParticleDualitySimulator() {
       ctx.shadowBlur = 0;
 
       // Label
-      ctx.fillStyle = '#cccccc';
+      ctx.fillStyle = '#cfccc9';
       ctx.font = '13px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(label, centerX, H - 10);
@@ -410,8 +410,8 @@ export function WaveParticleDualitySimulator() {
   }, [drawMainCanvas]);
 
   useEffect(() => {
-    drawComparisonCanvas(electronPatternRef.current, 'Diffraction électronique', lambda, '#00ccff');
-    drawComparisonCanvas(xrayPatternRef.current, 'Diffraction rayons X', lambda, '#ff6644');
+    drawComparisonCanvas(electronPatternRef.current, 'Diffraction électronique', lambda, '#5c85a3');
+    drawComparisonCanvas(xrayPatternRef.current, 'Diffraction rayons X', lambda, '#ce7155');
   }, [lambda, drawComparisonCanvas]);
 
   // ---------- formatted values ----------
@@ -424,29 +424,29 @@ export function WaveParticleDualitySimulator() {
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Title */}
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h2 className="text-2xl font-bold text-stone-900 dark:text-white">
           Dualité onde-corpuscule
         </h2>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
+        <p className="text-stone-600 dark:text-stone-400 mt-1">
           Hypothèse de De Broglie et expérience de Davisson-Germer
         </p>
       </div>
 
       {/* Main simulation */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-4">
+      <div className="bg-white dark:bg-stone-800 rounded-xl shadow-lg p-4 space-y-4">
         <div className="flex justify-center">
           <canvas
             ref={mainCanvasRef}
             width={700}
             height={400}
-            className="rounded-lg border border-gray-300 dark:border-gray-600 max-w-full"
+            className="rounded-lg border border-stone-300 dark:border-stone-600 max-w-full"
             style={{ maxWidth: '100%', height: 'auto' }}
           />
         </div>
 
         {/* Slider */}
         <div className="flex flex-col sm:flex-row items-center gap-4 px-2">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
+          <label className="text-sm font-medium text-stone-700 dark:text-stone-300 whitespace-nowrap">
             Énergie cinétique <InlineMath math={`E_k`} />
           </label>
           <input
@@ -456,9 +456,9 @@ export function WaveParticleDualitySimulator() {
             step={1}
             value={energy}
             onChange={(e) => setEnergy(Number(e.target.value))}
-            className="flex-1 w-full accent-cyan-500"
+            className="flex-1 w-full accent-ardoise-500"
           />
-          <span className="text-sm font-mono font-semibold text-cyan-600 dark:text-cyan-400 min-w-[80px] text-right">
+          <span className="text-sm font-mono font-semibold text-ardoise-600 dark:text-ardoise-400 min-w-[80px] text-right">
             {energy} eV
           </span>
         </div>
@@ -471,43 +471,43 @@ export function WaveParticleDualitySimulator() {
             label: 'Longueur d\'onde de De Broglie',
             value: `${lambdaNm} nm`,
             sub: `(${lambdaPm} pm)`,
-            color: 'text-cyan-600 dark:text-cyan-400',
+            color: 'text-ardoise-600 dark:text-ardoise-400',
           },
           {
             label: 'Quantité de mouvement p',
             value: pStr,
             sub: 'kg\u00B7m/s',
-            color: 'text-purple-600 dark:text-purple-400',
+            color: 'text-prune-600 dark:text-prune-400',
           },
           {
             label: 'Angle de Bragg (n=1)',
             value: !isNaN(thetaDeg) ? `${thetaDeg.toFixed(1)}\u00B0` : '--',
             sub: '',
-            color: 'text-green-600 dark:text-green-400',
+            color: 'text-olive-600 dark:text-olive-400',
           },
           {
             label: 'Espacement cristallin d',
             value: '0.215 nm',
             sub: '(nickel)',
-            color: 'text-amber-600 dark:text-amber-400',
+            color: 'text-ocre-600 dark:text-ocre-400',
           },
         ].map((item, i) => (
           <div
             key={i}
-            className="bg-white dark:bg-gray-800 rounded-lg shadow p-3 text-center"
+            className="bg-white dark:bg-stone-800 rounded-lg shadow p-3 text-center"
           >
-            <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{item.label}</div>
+            <div className="text-xs text-stone-500 dark:text-stone-400 mb-1">{item.label}</div>
             <div className={`text-lg font-bold font-mono ${item.color}`}>{item.value}</div>
             {item.sub && (
-              <div className="text-xs text-gray-400 dark:text-gray-500">{item.sub}</div>
+              <div className="text-xs text-stone-400 dark:text-stone-500">{item.sub}</div>
             )}
           </div>
         ))}
       </div>
 
       {/* Side-by-side comparison */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-3">
-        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 text-center">
+      <div className="bg-white dark:bg-stone-800 rounded-xl shadow-lg p-4 space-y-3">
+        <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-200 text-center">
           Comparaison : électrons vs rayons X
         </h3>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -515,34 +515,34 @@ export function WaveParticleDualitySimulator() {
             ref={electronPatternRef}
             width={300}
             height={200}
-            className="rounded-lg border border-cyan-400/30"
+            className="rounded-lg border border-ardoise-400/30"
           />
           <canvas
             ref={xrayPatternRef}
             width={300}
             height={200}
-            className="rounded-lg border border-orange-400/30"
+            className="rounded-lg border border-terre-400/30"
           />
         </div>
-        <p className="text-center text-sm font-medium text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20 rounded-lg px-3 py-2">
+        <p className="text-center text-sm font-medium text-olive-700 dark:text-olive-400 bg-olive-50 dark:bg-olive-900/20 rounded-lg px-3 py-2">
           Les figures sont identiques ! Les électrons se comportent comme des ondes.
         </p>
       </div>
 
       {/* Equations */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-4">
-        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+      <div className="bg-white dark:bg-stone-800 rounded-xl shadow-lg p-4 space-y-4">
+        <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-200">
           Équations fondamentales
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+          <div className="bg-stone-50 dark:bg-stone-700 rounded-lg p-4 text-center">
+            <p className="text-xs text-stone-500 dark:text-stone-400 mb-2">
               Longueur d&apos;onde de De Broglie
             </p>
             <BlockMath math={`\\lambda = \\frac{h}{p} = \\frac{h}{\\sqrt{2 m_e E_k}}`} />
           </div>
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+          <div className="bg-stone-50 dark:bg-stone-700 rounded-lg p-4 text-center">
+            <p className="text-xs text-stone-500 dark:text-stone-400 mb-2">
               Condition de Bragg
             </p>
             <BlockMath math={`2d \\sin\\theta = n\\lambda`} />

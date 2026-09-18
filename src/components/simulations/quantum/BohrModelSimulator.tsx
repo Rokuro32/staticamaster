@@ -243,14 +243,14 @@ export function BohrModelSimulator() {
       ctx.clearRect(0, 0, W, H);
 
       // Background
-      ctx.fillStyle = '#0a0a1a';
+      ctx.fillStyle = '#131211';
       ctx.fillRect(0, 0, W, H);
 
       // ---- Left half: atom ----
       // Nucleus
       const nucGrad = ctx.createRadialGradient(atomCx, atomCy, 0, atomCx, atomCy, 8);
-      nucGrad.addColorStop(0, '#ff6666');
-      nucGrad.addColorStop(1, '#aa0000');
+      nucGrad.addColorStop(0, '#d5856d');
+      nucGrad.addColorStop(1, '#843c26');
       ctx.beginPath();
       ctx.arc(atomCx, atomCy, 8, 0, Math.PI * 2);
       ctx.fillStyle = nucGrad;
@@ -261,12 +261,12 @@ export function BohrModelSimulator() {
         const r = orbitRadius(n);
         ctx.beginPath();
         ctx.arc(atomCx, atomCy, r, 0, Math.PI * 2);
-        ctx.strokeStyle = n === currentOrbit ? 'rgba(100,180,255,0.6)' : 'rgba(100,100,150,0.3)';
+        ctx.strokeStyle = n === currentOrbit ? 'rgba(205, 172, 114,0.6)' : 'rgba(185, 141, 65,0.3)';
         ctx.lineWidth = n === currentOrbit ? 1.5 : 0.8;
         ctx.stroke();
 
         // Label
-        ctx.fillStyle = 'rgba(180,180,220,0.7)';
+        ctx.fillStyle = 'rgba(203, 200, 197,0.7)';
         ctx.font = '11px sans-serif';
         ctx.fillText(`n=${n}`, atomCx + r + 4, atomCy - 4);
       }
@@ -321,9 +321,9 @@ export function BohrModelSimulator() {
 
       // Draw electron glow
       const elGrad = ctx.createRadialGradient(ex, ey, 0, ex, ey, 12);
-      elGrad.addColorStop(0, 'rgba(80,160,255,0.9)');
-      elGrad.addColorStop(0.5, 'rgba(80,160,255,0.3)');
-      elGrad.addColorStop(1, 'rgba(80,160,255,0)');
+      elGrad.addColorStop(0, 'rgba(201, 164, 101,0.9)');
+      elGrad.addColorStop(0.5, 'rgba(201, 164, 101,0.3)');
+      elGrad.addColorStop(1, 'rgba(201, 164, 101,0)');
       ctx.beginPath();
       ctx.arc(ex, ey, 12, 0, Math.PI * 2);
       ctx.fillStyle = elGrad;
@@ -332,7 +332,7 @@ export function BohrModelSimulator() {
       // Electron core
       ctx.beginPath();
       ctx.arc(ex, ey, 4, 0, Math.PI * 2);
-      ctx.fillStyle = '#60b0ff';
+      ctx.fillStyle = '#cdaa6f';
       ctx.fill();
 
       // ---- Photons ----
@@ -355,7 +355,7 @@ export function BohrModelSimulator() {
 
       // ---- Right half: energy level diagram ----
       // Axis
-      ctx.strokeStyle = 'rgba(180,180,220,0.5)';
+      ctx.strokeStyle = 'rgba(203, 200, 197,0.5)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(diagLeft - 10, diagTop);
@@ -378,9 +378,9 @@ export function BohrModelSimulator() {
         ctx.beginPath();
         ctx.moveTo(diagLeft - 15, y);
         ctx.lineTo(diagLeft - 10, y);
-        ctx.strokeStyle = 'rgba(180,180,220,0.3)';
+        ctx.strokeStyle = 'rgba(203, 200, 197,0.3)';
         ctx.stroke();
-        ctx.fillStyle = 'rgba(180,180,220,0.5)';
+        ctx.fillStyle = 'rgba(203, 200, 197,0.5)';
         ctx.font = '9px sans-serif';
         ctx.textAlign = 'right';
         ctx.fillText(`${e}`, diagLeft - 18, y + 3);
@@ -392,7 +392,7 @@ export function BohrModelSimulator() {
       ctx.setLineDash([4, 4]);
       ctx.moveTo(diagLeft, y0);
       ctx.lineTo(diagRight, y0);
-      ctx.strokeStyle = 'rgba(180,180,220,0.3)';
+      ctx.strokeStyle = 'rgba(203, 200, 197,0.3)';
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = '#aab';
@@ -409,8 +409,8 @@ export function BohrModelSimulator() {
         ctx.lineTo(diagRight, y);
         ctx.strokeStyle =
           (lastTransition && (n === lastTransition.ni || n === lastTransition.nf))
-            ? '#60b0ff'
-            : 'rgba(180,180,220,0.6)';
+            ? '#cdaa6f'
+            : 'rgba(203, 200, 197,0.6)';
         ctx.lineWidth = (lastTransition && (n === lastTransition.ni || n === lastTransition.nf)) ? 2 : 1;
         ctx.stroke();
 
@@ -432,7 +432,7 @@ export function BohrModelSimulator() {
         ctx.beginPath();
         ctx.moveTo(arrowX, yTop);
         ctx.lineTo(arrowX, yBot);
-        ctx.strokeStyle = '#ff6644';
+        ctx.strokeStyle = '#ce7155';
         ctx.lineWidth = 2;
         ctx.stroke();
 
@@ -442,7 +442,7 @@ export function BohrModelSimulator() {
         ctx.lineTo(arrowX - 6, yBot - 12);
         ctx.lineTo(arrowX + 6, yBot - 12);
         ctx.closePath();
-        ctx.fillStyle = '#ff6644';
+        ctx.fillStyle = '#ce7155';
         ctx.fill();
 
         // Photon info
@@ -525,7 +525,7 @@ export function BohrModelSimulator() {
       const irLines = spectralLines.filter((l) => l.wavelengthNm > 750);
 
       if (uvLines.length > 0) {
-        sctx.fillStyle = 'rgba(160,120,255,0.8)';
+        sctx.fillStyle = 'rgba(193, 145, 169,0.8)';
         sctx.font = '9px sans-serif';
         sctx.textAlign = 'left';
         const uvText = uvLines.map((l) => `${l.ni}\u2192${l.nf}: ${l.wavelengthNm.toFixed(0)}nm`).join(', ');
@@ -533,7 +533,7 @@ export function BohrModelSimulator() {
       }
 
       if (irLines.length > 0) {
-        sctx.fillStyle = 'rgba(255,120,80,0.8)';
+        sctx.fillStyle = 'rgba(208, 120, 93,0.8)';
         sctx.font = '9px sans-serif';
         sctx.textAlign = 'right';
         const irText = irLines.map((l) => `${l.ni}\u2192${l.nf}: ${l.wavelengthNm.toFixed(0)}nm`).join(', ');
@@ -560,27 +560,27 @@ export function BohrModelSimulator() {
           ref={mainCanvasRef}
           width={W}
           height={H}
-          className="rounded-lg border border-gray-300 bg-gray-900 max-w-full"
+          className="rounded-lg border border-stone-300 bg-stone-900 max-w-full"
         />
       </div>
 
       {/* Spectrum bar */}
       <div className="flex justify-center">
         <div className="relative">
-          <p className="text-center text-sm text-gray-600 mb-1">
+          <p className="text-center text-sm text-stone-600 mb-1">
             Spectre d&apos;émission accumulé
           </p>
           <canvas
             ref={spectrumCanvasRef}
             width={W}
             height={SPEC_H}
-            className="rounded border border-gray-300 bg-gray-900 max-w-full"
+            className="rounded border border-stone-300 bg-stone-900 max-w-full"
           />
         </div>
       </div>
 
       {/* Controls */}
-      <div className="bg-gray-50 rounded-lg p-4 space-y-4 border border-gray-200">
+      <div className="bg-stone-50 rounded-lg p-4 space-y-4 border border-stone-200">
         <h3 className="font-semibold text-lg">Contrôles</h3>
 
         <div className="flex flex-wrap gap-4 items-end">
@@ -594,7 +594,7 @@ export function BohrModelSimulator() {
                 setNi(val);
                 if (val <= nf) setNf(val - 1);
               }}
-              className="border border-gray-300 rounded px-3 py-1.5 bg-white"
+              className="border border-stone-300 rounded px-3 py-1.5 bg-white"
             >
               {[2, 3, 4, 5].map((n) => (
                 <option key={n} value={n}>
@@ -610,7 +610,7 @@ export function BohrModelSimulator() {
             <select
               value={nf}
               onChange={(e) => setNf(Number(e.target.value))}
-              className="border border-gray-300 rounded px-3 py-1.5 bg-white"
+              className="border border-stone-300 rounded px-3 py-1.5 bg-white"
             >
               {[1, 2, 3, 4]
                 .filter((n) => n < ni)
@@ -626,7 +626,7 @@ export function BohrModelSimulator() {
           <button
             onClick={triggerTransition}
             disabled={transitioning || ni <= nf}
-            className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded font-medium transition-colors"
+            className="px-4 py-1.5 bg-gold-600 hover:bg-gold-700 disabled:bg-stone-400 text-white rounded font-medium transition-colors"
           >
             Déclencher la transition
           </button>
@@ -638,7 +638,7 @@ export function BohrModelSimulator() {
               setLastTransition(null);
               photonsRef.current = [];
             }}
-            className="px-4 py-1.5 bg-gray-500 hover:bg-gray-600 text-white rounded font-medium transition-colors"
+            className="px-4 py-1.5 bg-stone-500 hover:bg-stone-600 text-white rounded font-medium transition-colors"
           >
             Réinitialiser le spectre
           </button>
@@ -649,19 +649,19 @@ export function BohrModelSimulator() {
           <span className="text-sm font-medium self-center mr-2">Séries :</span>
           <button
             onClick={() => triggerSeries(1)}
-            className="px-3 py-1 text-sm bg-violet-600 hover:bg-violet-700 text-white rounded transition-colors"
+            className="px-3 py-1 text-sm bg-prune-600 hover:bg-prune-700 text-white rounded transition-colors"
           >
             Série de Lyman (&rarr;n=1)
           </button>
           <button
             onClick={() => triggerSeries(2)}
-            className="px-3 py-1 text-sm bg-cyan-600 hover:bg-cyan-700 text-white rounded transition-colors"
+            className="px-3 py-1 text-sm bg-ardoise-600 hover:bg-ardoise-700 text-white rounded transition-colors"
           >
             Série de Balmer (&rarr;n=2)
           </button>
           <button
             onClick={() => triggerSeries(3)}
-            className="px-3 py-1 text-sm bg-red-600 hover:bg-red-700 text-white rounded transition-colors"
+            className="px-3 py-1 text-sm bg-brun-600 hover:bg-brun-700 text-white rounded transition-colors"
           >
             Série de Paschen (&rarr;n=3)
           </button>
@@ -669,10 +669,10 @@ export function BohrModelSimulator() {
 
         {/* Current transition info */}
         {lastTransition && (
-          <div className="bg-white border border-gray-200 rounded p-3 text-sm space-y-1">
+          <div className="bg-white border border-stone-200 rounded p-3 text-sm space-y-1">
             <p className="font-medium">
               Transition : n = {lastTransition.ni} &rarr; n = {lastTransition.nf} &nbsp;
-              <span className="text-gray-500">({seriesLabel(lastTransition.nf)})</span>
+              <span className="text-stone-500">({seriesLabel(lastTransition.nf)})</span>
             </p>
             <p>
               <InlineMath math={`\\Delta E = ${transitionEnergy(lastTransition.ni, lastTransition.nf).toFixed(4)} \\text{ eV}`} />
@@ -687,7 +687,7 @@ export function BohrModelSimulator() {
       </div>
 
       {/* Equations panel */}
-      <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
+      <div className="bg-gold-50 border-l-4 border-gold-500 rounded-lg p-4">
         <h3 className="font-semibold mb-3">Équations du modèle de Bohr</h3>
         <div className="space-y-3">
           <div>
@@ -702,7 +702,7 @@ export function BohrModelSimulator() {
           <div>
             <BlockMath math={`\\frac{1}{\\lambda} = R_H \\left( \\frac{1}{n_f^2} - \\frac{1}{n_i^2} \\right)`} />
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-stone-600">
             avec <InlineMath math={`R_H = 1{,}097 \\times 10^7 \\text{ m}^{-1}`} /> (constante de Rydberg)
           </p>
         </div>
@@ -710,9 +710,9 @@ export function BohrModelSimulator() {
 
       {/* Energy levels table */}
       <div className="overflow-x-auto">
-        <table className="min-w-full text-sm border border-gray-300 rounded">
+        <table className="min-w-full text-sm border border-stone-300 rounded">
           <thead>
-            <tr className="bg-gray-100">
+            <tr className="bg-stone-100">
               <th className="px-3 py-2 border-b">n</th>
               <th className="px-3 py-2 border-b">
                 <InlineMath math={`E_n`} /> (eV)
@@ -724,7 +724,7 @@ export function BohrModelSimulator() {
           </thead>
           <tbody>
             {[1, 2, 3, 4, 5].map((n) => (
-              <tr key={n} className="text-center border-b border-gray-200">
+              <tr key={n} className="text-center border-b border-stone-200">
                 <td className="px-3 py-1 font-medium">{n}</td>
                 <td className="px-3 py-1">{energyLevel(n).toFixed(4)}</td>
                 <td className="px-3 py-1">{(n * n * 52.9).toFixed(1)}</td>
@@ -738,9 +738,9 @@ export function BohrModelSimulator() {
       {spectralLines.length > 0 && (
         <div className="overflow-x-auto">
           <h4 className="font-semibold mb-2">Raies observées</h4>
-          <table className="min-w-full text-sm border border-gray-300 rounded">
+          <table className="min-w-full text-sm border border-stone-300 rounded">
             <thead>
-              <tr className="bg-gray-100">
+              <tr className="bg-stone-100">
                 <th className="px-3 py-2 border-b">Transition</th>
                 <th className="px-3 py-2 border-b">Série</th>
                 <th className="px-3 py-2 border-b">
@@ -756,7 +756,7 @@ export function BohrModelSimulator() {
               {spectralLines
                 .sort((a, b) => a.wavelengthNm - b.wavelengthNm)
                 .map((line, i) => (
-                  <tr key={i} className="text-center border-b border-gray-200">
+                  <tr key={i} className="text-center border-b border-stone-200">
                     <td className="px-3 py-1">
                       {line.ni} &rarr; {line.nf}
                     </td>
@@ -779,11 +779,11 @@ export function BohrModelSimulator() {
       {/* Historical context */}
       <CollapsiblePanel
         title="Contexte historique"
-        borderColor="border-gray-400"
-        bgColor="bg-gray-50"
-        textColor="text-gray-800"
+        borderColor="border-stone-400"
+        bgColor="bg-stone-50"
+        textColor="text-stone-800"
       >
-        <div className="text-sm text-gray-700 space-y-2">
+        <div className="text-sm text-stone-700 space-y-2">
           <p>
             En <strong>1913</strong>, le physicien danois <strong>Niels Bohr</strong> propose un modèle
             planétaire de l&apos;atome d&apos;hydrogène qui intègre la quantification. Ce modèle repose sur

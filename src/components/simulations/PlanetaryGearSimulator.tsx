@@ -181,7 +181,7 @@ export function PlanetaryGearSimulator() {
     const angleCarrier = omegaCarrier * animScale * t;
     const anglePlanetSelf = omegaPlanetSelf * animScale * t;
 
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.fillRect(0, 0, W, H);
 
     // ---- Couronne (anneau extérieur) ----
@@ -191,7 +191,7 @@ export function PlanetaryGearSimulator() {
     ctx.rotate(ringAngle);
 
     // Dents intérieures
-    ctx.strokeStyle = config.locked === 'ring' ? '#475569' : '#f59e0b';
+    ctx.strokeStyle = config.locked === 'ring' ? '#5d5853' : '#e8c518';
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.arc(0, 0, Rr, 0, Math.PI * 2);
@@ -209,13 +209,13 @@ export function PlanetaryGearSimulator() {
       ctx.stroke();
     }
     // Label
-    ctx.fillStyle = config.locked === 'ring' ? '#64748b' : '#fbbf24';
+    ctx.fillStyle = config.locked === 'ring' ? '#7e7871' : '#e8c61a';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'center';
     ctx.restore();
 
     // Label couronne (fixe dans le canvas)
-    ctx.fillStyle = config.locked === 'ring' ? '#64748b' : '#fbbf24';
+    ctx.fillStyle = config.locked === 'ring' ? '#7e7871' : '#e8c61a';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(
@@ -229,7 +229,7 @@ export function PlanetaryGearSimulator() {
     ctx.rotate(angleCarrier);
 
     // Bras du porte-satellites
-    ctx.strokeStyle = config.locked === 'carrier' ? '#475569' : '#22c55e';
+    ctx.strokeStyle = config.locked === 'carrier' ? '#5d5853' : '#91a443';
     ctx.lineWidth = 3;
     for (let i = 0; i < numPlanets; i++) {
       const a = (Math.PI * 2 * i) / numPlanets;
@@ -239,7 +239,7 @@ export function PlanetaryGearSimulator() {
       ctx.stroke();
     }
     // Centre du porte-satellites
-    ctx.fillStyle = config.locked === 'carrier' ? '#475569' : '#22c55e';
+    ctx.fillStyle = config.locked === 'carrier' ? '#5d5853' : '#91a443';
     ctx.beginPath();
     ctx.arc(0, 0, 8, 0, Math.PI * 2);
     ctx.fill();
@@ -255,14 +255,14 @@ export function PlanetaryGearSimulator() {
       ctx.rotate(-anglePlanetSelf); // sens opposé (engrènement)
 
       // Cercle
-      ctx.strokeStyle = '#a855f7';
+      ctx.strokeStyle = '#b37895';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(0, 0, Rp, 0, Math.PI * 2);
       ctx.stroke();
 
       // Dents
-      ctx.strokeStyle = '#c084fc';
+      ctx.strokeStyle = '#c496ad';
       ctx.lineWidth = 1.5;
       for (let j = 0; j < Zp; j++) {
         const da = (Math.PI * 2 * j) / Zp;
@@ -273,7 +273,7 @@ export function PlanetaryGearSimulator() {
       }
 
       // Marque radiale (pour voir la rotation propre)
-      ctx.strokeStyle = '#e9d5ff';
+      ctx.strokeStyle = '#dfc6d3';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(0, 0);
@@ -281,7 +281,7 @@ export function PlanetaryGearSimulator() {
       ctx.stroke();
 
       // Centre
-      ctx.fillStyle = '#7c3aed';
+      ctx.fillStyle = '#a76385';
       ctx.beginPath();
       ctx.arc(0, 0, 4, 0, Math.PI * 2);
       ctx.fill();
@@ -296,7 +296,7 @@ export function PlanetaryGearSimulator() {
     ctx.translate(cx, cy);
     ctx.rotate(angleSun);
 
-    ctx.strokeStyle = config.locked === 'sun' ? '#475569' : '#ef4444';
+    ctx.strokeStyle = config.locked === 'sun' ? '#5d5853' : '#ca684a';
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.arc(0, 0, Rs, 0, Math.PI * 2);
@@ -312,7 +312,7 @@ export function PlanetaryGearSimulator() {
     }
 
     // Marque radiale
-    ctx.strokeStyle = config.locked === 'sun' ? '#64748b' : '#fca5a5';
+    ctx.strokeStyle = config.locked === 'sun' ? '#7e7871' : '#e1a897';
     ctx.lineWidth = 2.5;
     ctx.beginPath();
     ctx.moveTo(0, 0);
@@ -320,7 +320,7 @@ export function PlanetaryGearSimulator() {
     ctx.stroke();
 
     // Centre
-    ctx.fillStyle = config.locked === 'sun' ? '#475569' : '#ef4444';
+    ctx.fillStyle = config.locked === 'sun' ? '#5d5853' : '#ca684a';
     ctx.beginPath();
     ctx.arc(0, 0, 6, 0, Math.PI * 2);
     ctx.fill();
@@ -328,7 +328,7 @@ export function PlanetaryGearSimulator() {
     ctx.restore();
 
     // ---- Labels fixes ----
-    ctx.fillStyle = config.locked === 'sun' ? '#64748b' : '#fca5a5';
+    ctx.fillStyle = config.locked === 'sun' ? '#7e7871' : '#e1a897';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(
@@ -336,26 +336,26 @@ export function PlanetaryGearSimulator() {
       cx, cy + Rs + 20,
     );
 
-    ctx.fillStyle = '#c4b5fd';
+    ctx.fillStyle = '#d4b3c3';
     ctx.fillText(`Satellites Z_p=${Zp} × ${numPlanets}`, cx + Rr + 25, cy);
 
-    ctx.fillStyle = config.locked === 'carrier' ? '#64748b' : '#86efac';
+    ctx.fillStyle = config.locked === 'carrier' ? '#7e7871' : '#becc83';
     ctx.fillText(
       `Porte-sat.${config.locked === 'carrier' ? ' (fixe)' : ''}`,
       cx, cy + 4,
     );
 
     // ---- Infos temps réel ----
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = '#eae9e8';
     ctx.font = '12px sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText(`Entrée : ${inputSpeed.toFixed(0)} tr/min`, 14, 22);
     ctx.fillText(`Sortie : ${outputSpeed.toFixed(1)} tr/min`, 14, 42);
-    ctx.fillStyle = '#fbbf24';
+    ctx.fillStyle = '#e8c61a';
     ctx.fillText(`Rapport i = ${ratio.toFixed(4)}`, 14, 62);
 
     // Couleur selon sens
-    ctx.fillStyle = ratio < 0 ? '#ef4444' : '#22c55e';
+    ctx.fillStyle = ratio < 0 ? '#ca684a' : '#91a443';
     ctx.fillText(ratio < 0 ? '↻ Sens inversé' : '↺ Même sens', 14, 82);
 
     animIdRef.current = requestAnimationFrame(draw);
@@ -375,10 +375,10 @@ export function PlanetaryGearSimulator() {
   return (
     <section className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-gray-900">
+        <h2 className="text-3xl font-bold text-stone-900">
           Train planétaire (épicycloïdal)
         </h2>
-        <p className="text-gray-600">
+        <p className="text-stone-600">
           Engrenages planétaires &mdash; rapport de réduction et formule de Willis
         </p>
       </div>
@@ -387,62 +387,62 @@ export function PlanetaryGearSimulator() {
         <canvas
           ref={canvasRef}
           width={W} height={H}
-          className="w-full max-w-[700px] mx-auto rounded-lg border border-gray-300"
+          className="w-full max-w-[700px] mx-auto rounded-lg border border-stone-300"
         />
 
         <div className="w-full max-w-[700px] space-y-3">
           {/* Configuration */}
           <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-sm text-gray-700 font-medium">Élément bloqué :</span>
+            <span className="text-sm text-stone-700 font-medium">Élément bloqué :</span>
             {CONFIGS.map((c, i) => (
               <button
                 key={c.id}
                 onClick={() => setConfigIdx(i)}
                 className={`px-3 py-1.5 text-xs rounded border font-medium transition-colors ${
                   configIdx === i
-                    ? 'bg-blue-600 text-white border-blue-600'
-                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                    ? 'bg-gold-600 text-white border-gold-600'
+                    : 'bg-white text-stone-700 border-stone-300 hover:bg-stone-50'
                 }`}
               >
                 {c.label}
               </button>
             ))}
           </div>
-          <p className="text-xs text-gray-500">{config.description}</p>
+          <p className="text-xs text-stone-500">{config.description}</p>
 
           {/* Vitesse d'entrée */}
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium w-32">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium w-32">
               Vitesse entrée
             </label>
             <input type="range" min={10} max={200} step={5} value={inputSpeed}
               onChange={(e) => setInputSpeed(Number(e.target.value))}
-              className="flex-1 accent-red-500" />
-            <span className="text-sm font-mono text-gray-900 w-24 text-right">{inputSpeed} tr/min</span>
+              className="flex-1 accent-brun-500" />
+            <span className="text-sm font-mono text-stone-900 w-24 text-right">{inputSpeed} tr/min</span>
           </div>
 
           {/* Nombre de satellites */}
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium w-32">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium w-32">
               Nombre de satellites
             </label>
             <input type="range" min={2} max={5} step={1} value={numPlanets}
               onChange={(e) => setNumPlanets(Number(e.target.value))}
-              className="flex-1 accent-purple-500" />
-            <span className="text-sm font-mono text-gray-900 w-24 text-right">{numPlanets}</span>
+              className="flex-1 accent-prune-500" />
+            <span className="text-sm font-mono text-stone-900 w-24 text-right">{numPlanets}</span>
           </div>
 
           <div className="flex items-center gap-3">
             <button
               onClick={() => setRunning(r => !r)}
-              className="px-4 py-2 text-sm font-medium bg-gray-100 hover:bg-gray-200 rounded-lg border border-gray-300"
+              className="px-4 py-2 text-sm font-medium bg-stone-100 hover:bg-stone-200 rounded-lg border border-stone-300"
             >
               {running ? '⏸ Pause' : '▶ Reprendre'}
             </button>
           </div>
 
           {/* Résumé numérique */}
-          <div className="p-3 bg-slate-100 rounded-lg border text-sm grid grid-cols-2 gap-x-6 gap-y-1">
+          <div className="p-3 bg-stone-100 rounded-lg border text-sm grid grid-cols-2 gap-x-6 gap-y-1">
             <div><strong>Z<sub>s</sub></strong> = {Zs} dents (solaire)</div>
             <div><strong>Z<sub>p</sub></strong> = {Zp} dents (satellites)</div>
             <div><strong>Z<sub>r</sub></strong> = {Zr} dents (couronne)</div>
@@ -460,21 +460,21 @@ export function PlanetaryGearSimulator() {
       <div className="space-y-2">
         <CollapsiblePanel
           title="1. Composition d'un train planétaire"
-          borderColor="border-red-500"
-          bgColor="bg-red-50"
-          textColor="text-red-800"
+          borderColor="border-brun-500"
+          bgColor="bg-brun-50"
+          textColor="text-brun-800"
           defaultOpen
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Un train épicycloïdal (ou planétaire) est composé de :
           </p>
-          <ul className="list-disc list-inside text-gray-700 space-y-1">
-            <li><strong className="text-red-600">Solaire</strong> (pignon central) : <InlineMath math="Z_s" /> dents.</li>
-            <li><strong className="text-purple-600">Satellites</strong> (planètes) : <InlineMath math="Z_p" /> dents, montés sur le porte-satellites.</li>
-            <li><strong className="text-yellow-600">Couronne</strong> (anneau externe, denture intérieure) : <InlineMath math="Z_r" /> dents.</li>
-            <li><strong className="text-green-600">Porte-satellites</strong> : bras portant les axes des satellites.</li>
+          <ul className="list-disc list-inside text-stone-700 space-y-1">
+            <li><strong className="text-brun-600">Solaire</strong> (pignon central) : <InlineMath math="Z_s" /> dents.</li>
+            <li><strong className="text-prune-600">Satellites</strong> (planètes) : <InlineMath math="Z_p" /> dents, montés sur le porte-satellites.</li>
+            <li><strong className="text-ocre-600">Couronne</strong> (anneau externe, denture intérieure) : <InlineMath math="Z_r" /> dents.</li>
+            <li><strong className="text-olive-600">Porte-satellites</strong> : bras portant les axes des satellites.</li>
           </ul>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Condition géométrique :{' '}
             <InlineMath math={`Z_r = Z_s + 2\\,Z_p`} /> (les satellites s&apos;insèrent exactement entre le solaire et la couronne).
           </p>
@@ -482,18 +482,18 @@ export function PlanetaryGearSimulator() {
 
         <CollapsiblePanel
           title="2. Formule de Willis"
-          borderColor="border-blue-500"
-          bgColor="bg-blue-50"
-          textColor="text-blue-800"
+          borderColor="border-gold-500"
+          bgColor="bg-gold-50"
+          textColor="text-gold-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             La relation fondamentale (formule de Willis) relie les vitesses angulaires
             des trois composants :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`\\frac{\\omega_r - \\omega_c}{\\omega_s - \\omega_c} = -\\frac{Z_s}{Z_r}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             En fixant un élément (ω = 0), on obtient le rapport de transmission.
             Le signe négatif indique que le solaire et la couronne tournent en sens
             opposés (vue depuis le porte-satellites).
@@ -502,52 +502,52 @@ export function PlanetaryGearSimulator() {
 
         <CollapsiblePanel
           title="3. Trois configurations"
-          borderColor="border-green-500"
-          bgColor="bg-green-50"
-          textColor="text-green-800"
+          borderColor="border-olive-500"
+          bgColor="bg-olive-50"
+          textColor="text-olive-800"
         >
           <div className="space-y-3">
             <div>
-              <p className="font-semibold text-green-700">Couronne fixe (<InlineMath math="\omega_r = 0" />) :</p>
-              <div className="bg-gray-100 rounded p-2 overflow-x-auto">
+              <p className="font-semibold text-olive-700">Couronne fixe (<InlineMath math="\omega_r = 0" />) :</p>
+              <div className="bg-stone-100 rounded p-2 overflow-x-auto">
                 <BlockMath math={`\\frac{\\omega_c}{\\omega_s} = \\frac{Z_s}{Z_s + Z_r} = \\frac{${Zs}}{${Zs + Zr}} \\approx ${(Zs / (Zs + Zr)).toFixed(4)}`} />
               </div>
-              <p className="text-gray-700 text-xs">Réducteur — rapport toujours &lt; 1, même sens.</p>
+              <p className="text-stone-700 text-xs">Réducteur — rapport toujours &lt; 1, même sens.</p>
             </div>
             <div>
-              <p className="font-semibold text-green-700">Porte-satellites fixe (<InlineMath math="\omega_c = 0" />) :</p>
-              <div className="bg-gray-100 rounded p-2 overflow-x-auto">
+              <p className="font-semibold text-olive-700">Porte-satellites fixe (<InlineMath math="\omega_c = 0" />) :</p>
+              <div className="bg-stone-100 rounded p-2 overflow-x-auto">
                 <BlockMath math={`\\frac{\\omega_r}{\\omega_s} = -\\frac{Z_s}{Z_r} = -\\frac{${Zs}}{${Zr}} \\approx ${(-Zs / Zr).toFixed(4)}`} />
               </div>
-              <p className="text-gray-700 text-xs">Inverseur — rapport négatif (sens inversé).</p>
+              <p className="text-stone-700 text-xs">Inverseur — rapport négatif (sens inversé).</p>
             </div>
             <div>
-              <p className="font-semibold text-green-700">Solaire fixe (<InlineMath math="\omega_s = 0" />) :</p>
-              <div className="bg-gray-100 rounded p-2 overflow-x-auto">
+              <p className="font-semibold text-olive-700">Solaire fixe (<InlineMath math="\omega_s = 0" />) :</p>
+              <div className="bg-stone-100 rounded p-2 overflow-x-auto">
                 <BlockMath math={`\\frac{\\omega_c}{\\omega_r} = \\frac{Z_r}{Z_s + Z_r} = \\frac{${Zr}}{${Zs + Zr}} \\approx ${(Zr / (Zs + Zr)).toFixed(4)}`} />
               </div>
-              <p className="text-gray-700 text-xs">Rapport proche de 1, même sens.</p>
+              <p className="text-stone-700 text-xs">Rapport proche de 1, même sens.</p>
             </div>
           </div>
         </CollapsiblePanel>
 
         <CollapsiblePanel
           title="4. Applications"
-          borderColor="border-gray-500"
-          bgColor="bg-gray-50"
-          textColor="text-gray-700"
+          borderColor="border-stone-500"
+          bgColor="bg-stone-50"
+          textColor="text-stone-700"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Les trains planétaires sont omniprésents :
           </p>
-          <ul className="list-disc list-inside text-gray-700 space-y-1">
+          <ul className="list-disc list-inside text-stone-700 space-y-1">
             <li><strong>Boîtes de vitesses automatiques</strong> : différents rapports obtenus en bloquant différents éléments via des embrayages.</li>
             <li><strong>Différentiel automobile</strong> : répartit le couple entre les roues gauche et droite.</li>
             <li><strong>Réducteurs industriels</strong> : couple élevé dans un volume compact (éoliennes, robots).</li>
             <li><strong>Tournevis électriques</strong> et perceuses à plusieurs vitesses.</li>
             <li><strong>Aéronautique</strong> : réducteur du turboréacteur à double flux (Pratt &amp; Whitney PW1000G).</li>
           </ul>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Avantage clé : la charge est répartie sur <InlineMath math="n" /> satellites
             en parallèle, ce qui permet de transmettre un <strong>couple élevé</strong> dans
             un encombrement réduit.

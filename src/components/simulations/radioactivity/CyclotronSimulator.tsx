@@ -55,9 +55,9 @@ interface ParticleDef {
 }
 
 const PARTICLES: ParticleDef[] = [
-  { id: 'proton',   label: 'Proton',       symbol: 'p',   mass: 1.0,  charge: 1, color: '#ef4444' },
-  { id: 'deuteron', label: 'Deutéron',     symbol: 'd',   mass: 2.0,  charge: 1, color: '#3b82f6' },
-  { id: 'alpha',    label: 'Alpha (He²⁺)', symbol: 'α',   mass: 4.0,  charge: 2, color: '#f59e0b' },
+  { id: 'proton',   label: 'Proton',       symbol: 'p',   mass: 1.0,  charge: 1, color: '#ca684a' },
+  { id: 'deuteron', label: 'Deutéron',     symbol: 'd',   mass: 2.0,  charge: 1, color: '#c29851' },
+  { id: 'alpha',    label: 'Alpha (He²⁺)', symbol: 'α',   mass: 4.0,  charge: 2, color: '#e8c518' },
 ];
 
 // ---------------------------------------------------------------------------
@@ -175,11 +175,11 @@ export function CyclotronSimulator() {
     }
 
     // --- Dessin ---
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.fillRect(0, 0, W, H);
 
     // Champ magnétique (symboles × sur fond)
-    ctx.fillStyle = '#1e293b';
+    ctx.fillStyle = '#2f2d2a';
     ctx.font = '14px sans-serif';
     ctx.textAlign = 'center';
     for (let gx = 40; gx < W; gx += 50) {
@@ -196,9 +196,9 @@ export function CyclotronSimulator() {
     ctx.beginPath();
     ctx.arc(cx, cy, deeRadius, Math.PI, 0);
     ctx.closePath();
-    ctx.fillStyle = 'rgba(59, 130, 246, 0.12)';
+    ctx.fillStyle = 'rgba(194, 152, 81, 0.12)';
     ctx.fill();
-    ctx.strokeStyle = '#3b82f6';
+    ctx.strokeStyle = '#c29851';
     ctx.lineWidth = 2.5;
     ctx.stroke();
 
@@ -206,16 +206,16 @@ export function CyclotronSimulator() {
     ctx.beginPath();
     ctx.arc(cx, cy, deeRadius, 0, Math.PI);
     ctx.closePath();
-    ctx.fillStyle = 'rgba(239, 68, 68, 0.12)';
+    ctx.fillStyle = 'rgba(202, 104, 74, 0.12)';
     ctx.fill();
-    ctx.strokeStyle = '#ef4444';
+    ctx.strokeStyle = '#ca684a';
     ctx.lineWidth = 2.5;
     ctx.stroke();
 
     // Gap (zone d'accélération)
-    ctx.fillStyle = 'rgba(250, 204, 21, 0.15)';
+    ctx.fillStyle = 'rgba(233, 201, 38, 0.15)';
     ctx.fillRect(cx - deeRadius, cy - 6, deeRadius * 2, 12);
-    ctx.strokeStyle = '#fbbf24';
+    ctx.strokeStyle = '#e8c61a';
     ctx.lineWidth = 1;
     ctx.setLineDash([4, 3]);
     ctx.beginPath();
@@ -225,23 +225,23 @@ export function CyclotronSimulator() {
     ctx.setLineDash([]);
 
     // Labels Dees
-    ctx.fillStyle = '#93c5fd';
+    ctx.fillStyle = '#d8be90';
     ctx.font = 'bold 16px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('D₁', cx, cy - deeRadius / 2);
-    ctx.fillStyle = '#fca5a5';
+    ctx.fillStyle = '#e1a897';
     ctx.fillText('D₂', cx, cy + deeRadius / 2 + 6);
 
     // Gap label
-    ctx.fillStyle = '#fde68a';
+    ctx.fillStyle = '#f1db6f';
     ctx.font = '10px sans-serif';
     ctx.fillText('Gap (accélération)', cx, cy - 14);
 
     // Signes + et -
-    ctx.fillStyle = '#ef4444';
+    ctx.fillStyle = '#ca684a';
     ctx.font = 'bold 14px sans-serif';
     ctx.fillText('+', cx - deeRadius - 16, cy + 5);
-    ctx.fillStyle = '#3b82f6';
+    ctx.fillStyle = '#c29851';
     ctx.fillText('−', cx + deeRadius + 12, cy + 5);
 
     // Trajectoire (trail)
@@ -249,7 +249,7 @@ export function CyclotronSimulator() {
       ctx.lineWidth = 1.5;
       for (let i = 1; i < s.trail.length; i++) {
         const alpha = Math.max(0.05, i / s.trail.length);
-        ctx.strokeStyle = `rgba(34, 211, 238, ${alpha})`;
+        ctx.strokeStyle = `rgba(103, 142, 169, ${alpha})`;
         ctx.beginPath();
         ctx.moveTo(s.trail[i - 1].x, s.trail[i - 1].y);
         ctx.lineTo(s.trail[i].x, s.trail[i].y);
@@ -274,13 +274,13 @@ export function CyclotronSimulator() {
     }
 
     // Flèche B
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.font = '12px sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText('B⃗ ⊗ (entrant)', 10, 20);
 
     // Infos temps réel
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = '#eae9e8';
     ctx.font = '12px sans-serif';
     ctx.textAlign = 'right';
     const Ek = 0.5 * particle.mass * s.speed * s.speed;
@@ -291,7 +291,7 @@ export function CyclotronSimulator() {
     ctx.fillText(`Énergie ∝ ${Ek.toFixed(0)}`, W - 14, 74);
 
     if (s.ejected) {
-      ctx.fillStyle = '#22c55e';
+      ctx.fillStyle = '#91a443';
       ctx.font = 'bold 14px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('Particule éjectée !', cx, H - 16);
@@ -320,8 +320,8 @@ export function CyclotronSimulator() {
   return (
     <section className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-gray-900">Cyclotron</h2>
-        <p className="text-gray-600">
+        <h2 className="text-3xl font-bold text-stone-900">Cyclotron</h2>
+        <p className="text-stone-600">
           Accélérateur de particules à champ magnétique &mdash; Lawrence, 1932
         </p>
       </div>
@@ -330,13 +330,13 @@ export function CyclotronSimulator() {
         <canvas
           ref={canvasRef}
           width={W} height={H}
-          className="w-full max-w-[700px] mx-auto rounded-lg border border-gray-300"
+          className="w-full max-w-[700px] mx-auto rounded-lg border border-stone-300"
         />
 
         <div className="w-full max-w-[700px] space-y-3">
           {/* Particule */}
           <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-sm text-gray-700 font-medium">Particule :</span>
+            <span className="text-sm text-stone-700 font-medium">Particule :</span>
             {PARTICLES.map((p, i) => (
               <button
                 key={p.id}
@@ -344,7 +344,7 @@ export function CyclotronSimulator() {
                 className={`px-3 py-1.5 text-xs rounded border font-medium transition-colors ${
                   particleIdx === i
                     ? 'text-white border-transparent'
-                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                    : 'bg-white text-stone-700 border-stone-300 hover:bg-stone-50'
                 }`}
                 style={particleIdx === i ? { backgroundColor: p.color } : undefined}
               >
@@ -355,59 +355,59 @@ export function CyclotronSimulator() {
 
           {/* Champ B */}
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium">
               Champ <InlineMath math="B" />
             </label>
             <input
               type="range" min={0.5} max={3.0} step={0.1}
               value={B}
               onChange={(e) => setB(Number(e.target.value))}
-              className="flex-1 accent-blue-500"
+              className="flex-1 accent-gold-500"
             />
-            <span className="text-sm font-mono text-gray-900 w-20 text-right">{B.toFixed(1)} T</span>
+            <span className="text-sm font-mono text-stone-900 w-20 text-right">{B.toFixed(1)} T</span>
           </div>
 
           {/* Tension */}
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium">
               Tension <InlineMath math="V" />
             </label>
             <input
               type="range" min={10} max={200} step={10}
               value={voltage}
               onChange={(e) => setVoltage(Number(e.target.value))}
-              className="flex-1 accent-yellow-500"
+              className="flex-1 accent-ocre-500"
             />
-            <span className="text-sm font-mono text-gray-900 w-20 text-right">{voltage} kV</span>
+            <span className="text-sm font-mono text-stone-900 w-20 text-right">{voltage} kV</span>
           </div>
 
           <div className="flex items-center gap-3">
             <button
               onClick={() => setRunning(r => !r)}
-              className="px-4 py-2 text-sm font-medium bg-gray-100 hover:bg-gray-200 rounded-lg border border-gray-300"
+              className="px-4 py-2 text-sm font-medium bg-stone-100 hover:bg-stone-200 rounded-lg border border-stone-300"
             >
               {running ? '⏸ Pause' : '▶ Reprendre'}
             </button>
             <button
               onClick={() => { resetSim(); setRunning(true); }}
-              className="px-4 py-2 text-sm font-medium bg-gray-100 hover:bg-gray-200 rounded-lg border border-gray-300"
+              className="px-4 py-2 text-sm font-medium bg-stone-100 hover:bg-stone-200 rounded-lg border border-stone-300"
             >
               ↺ Réinitialiser
             </button>
           </div>
 
           {/* Fréquence cyclotron */}
-          <div className="p-3 bg-slate-100 rounded-lg border text-sm space-y-1">
+          <div className="p-3 bg-stone-100 rounded-lg border text-sm space-y-1">
             <div className="flex gap-6 flex-wrap">
               <div>
                 <strong>Fréquence cyclotron :</strong>{' '}
-                <span className="font-mono text-blue-700">
+                <span className="font-mono text-gold-700">
                   f = {(fCyclotron / 1e6).toFixed(2)} MHz
                 </span>
               </div>
               <div>
                 <strong>Période :</strong>{' '}
-                <span className="font-mono text-blue-700">
+                <span className="font-mono text-gold-700">
                   T = {(1e9 / fCyclotron).toFixed(1)} ns
                 </span>
               </div>
@@ -420,16 +420,16 @@ export function CyclotronSimulator() {
       <div className="space-y-2">
         <CollapsiblePanel
           title="1. Principe du cyclotron"
-          borderColor="border-blue-500"
-          bgColor="bg-blue-50"
-          textColor="text-blue-800"
+          borderColor="border-gold-500"
+          bgColor="bg-gold-50"
+          textColor="text-gold-800"
           defaultOpen
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Inventé par <strong>Ernest Lawrence</strong> en 1932 (prix Nobel 1939), le
             cyclotron accélère des particules chargées en combinant deux effets :
           </p>
-          <ul className="list-disc list-inside text-gray-700 space-y-1">
+          <ul className="list-disc list-inside text-stone-700 space-y-1">
             <li>
               Un <strong>champ magnétique uniforme</strong>{' '}
               <InlineMath math="B" /> perpendiculaire au plan des Dees courbe la
@@ -440,7 +440,7 @@ export function CyclotronSimulator() {
               deux Dees accélère la particule à chaque passage.
             </li>
           </ul>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             La trajectoire est une <strong>spirale</strong> dont le rayon augmente à
             chaque demi-tour.
           </p>
@@ -448,25 +448,25 @@ export function CyclotronSimulator() {
 
         <CollapsiblePanel
           title="2. Fréquence cyclotron"
-          borderColor="border-violet-500"
-          bgColor="bg-violet-50"
-          textColor="text-violet-800"
+          borderColor="border-prune-500"
+          bgColor="bg-prune-50"
+          textColor="text-prune-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             L&apos;équilibre entre la force de Lorentz et la force centrifuge donne le
             rayon cyclotron :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`qvB = \\frac{mv^2}{r} \\quad \\Longrightarrow \\quad r = \\frac{mv}{qB}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             La période de révolution est <strong>indépendante de la vitesse</strong>
             (en régime non-relativiste) :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`T = \\frac{2\\pi m}{qB}, \\qquad f = \\frac{qB}{2\\pi m}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             C&apos;est cette propriété qui permet d&apos;utiliser une tension
             alternative de fréquence <strong>fixe</strong> : la particule arrive
             toujours dans le gap au bon moment.
@@ -475,18 +475,18 @@ export function CyclotronSimulator() {
 
         <CollapsiblePanel
           title="3. Énergie cinétique finale"
-          borderColor="border-green-500"
-          bgColor="bg-green-50"
-          textColor="text-green-800"
+          borderColor="border-olive-500"
+          bgColor="bg-olive-50"
+          textColor="text-olive-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             À l&apos;éjection (rayon maximal <InlineMath math="R" /> du Dee), l&apos;énergie
             cinétique vaut :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`E_k = \\frac{q^2 B^2 R^2}{2m}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Elle augmente avec <InlineMath math="B^2" /> et <InlineMath math="R^2" />, mais
             ne dépend pas directement de la tension du gap (qui fixe le nombre de tours
             nécessaires). Pour les protons avec B = 1,5 T et R = 0,5 m :{' '}
@@ -496,19 +496,19 @@ export function CyclotronSimulator() {
 
         <CollapsiblePanel
           title="4. Limite relativiste et synchrocyclotron"
-          borderColor="border-orange-500"
-          bgColor="bg-orange-50"
-          textColor="text-orange-800"
+          borderColor="border-terre-500"
+          bgColor="bg-terre-50"
+          textColor="text-terre-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Lorsque la vitesse approche <InlineMath math="c" />, la masse relativiste{' '}
             <InlineMath math="\gamma m" /> augmente et la fréquence de révolution
             diminue : la particule se désynchronise du champ alternatif.
           </p>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Solutions :
           </p>
-          <ul className="list-disc list-inside text-gray-700 space-y-1">
+          <ul className="list-disc list-inside text-stone-700 space-y-1">
             <li>
               <strong>Synchrocyclotron</strong> : la fréquence RF diminue au cours de
               l&apos;accélération pour compenser <InlineMath math="\gamma" />.
@@ -522,18 +522,18 @@ export function CyclotronSimulator() {
 
         <CollapsiblePanel
           title="5. Applications"
-          borderColor="border-gray-500"
-          bgColor="bg-gray-50"
-          textColor="text-gray-700"
+          borderColor="border-stone-500"
+          bgColor="bg-stone-50"
+          textColor="text-stone-700"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             <strong>Médecine</strong> : production de radio-isotopes pour le TEP-scan
             (¹⁸F, ¹¹C, ¹³N), protonthérapie (traitement de tumeurs par faisceau de
             protons). <strong>Physique nucléaire</strong> : étude des réactions
             nucléaires, production d&apos;éléments super-lourds.{' '}
             <strong>Industrie</strong> : implantation ionique dans les semi-conducteurs.
           </p>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Il existe plus de 1 500 cyclotrons en service dans le monde, la majorité
             dédiés à la médecine nucléaire.
           </p>

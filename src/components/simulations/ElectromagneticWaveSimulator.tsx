@@ -8,9 +8,9 @@ import dynamic from 'next/dynamic';
 const EMWave3DView = dynamic(() => import('./EMWave3DView'), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-[400px] flex items-center justify-center bg-slate-900 text-slate-400 rounded-xl">
+    <div className="w-full h-[400px] flex items-center justify-center bg-stone-900 text-stone-400 rounded-xl">
       <div className="text-center">
-        <div className="animate-spin w-8 h-8 border-4 border-violet-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+        <div className="animate-spin w-8 h-8 border-4 border-prune-500 border-t-transparent rounded-full mx-auto mb-2"></div>
         Chargement de la vue 3D...
       </div>
     </div>
@@ -20,9 +20,9 @@ const EMWave3DView = dynamic(() => import('./EMWave3DView'), {
 const MaxwellSandbox3D = dynamic(() => import('./MaxwellSandbox3D'), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-[500px] flex items-center justify-center bg-slate-900 text-slate-400 rounded-xl">
+    <div className="w-full h-[500px] flex items-center justify-center bg-stone-900 text-stone-400 rounded-xl">
       <div className="text-center">
-        <div className="animate-spin w-8 h-8 border-4 border-violet-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+        <div className="animate-spin w-8 h-8 border-4 border-prune-500 border-t-transparent rounded-full mx-auto mb-2"></div>
         Chargement de la vue 3D...
       </div>
     </div>
@@ -378,11 +378,11 @@ export function ElectromagneticWaveSimulator() {
     const centerY = height / 2;
     const centerX = 50;
 
-    ctx.fillStyle = '#f8fafc';
+    ctx.fillStyle = '#fafafa';
     ctx.fillRect(0, 0, width, height);
 
     // Draw axes
-    ctx.strokeStyle = '#94a3b8';
+    ctx.strokeStyle = '#aba6a1';
     ctx.lineWidth = 1;
 
     // X-axis (propagation direction)
@@ -390,7 +390,7 @@ export function ElectromagneticWaveSimulator() {
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(width - 20, centerY);
     ctx.stroke();
-    ctx.fillStyle = '#64748b';
+    ctx.fillStyle = '#7e7871';
     ctx.font = '14px system-ui';
     ctx.fillText('z (propagation)', width - 100, centerY + 20);
 
@@ -403,17 +403,17 @@ export function ElectromagneticWaveSimulator() {
     ctx.fill();
 
     // Y-axis (E field direction)
-    ctx.strokeStyle = '#94a3b8';
+    ctx.strokeStyle = '#aba6a1';
     ctx.beginPath();
     ctx.moveTo(centerX, 20);
     ctx.lineTo(centerX, height - 20);
     ctx.stroke();
-    ctx.fillStyle = '#ef4444';
+    ctx.fillStyle = '#ca684a';
     ctx.fillText('E', centerX - 20, 35);
 
     // Draw E field wave
     if (showEField) {
-      ctx.strokeStyle = '#ef4444';
+      ctx.strokeStyle = '#ca684a';
       ctx.lineWidth = 2.5;
       ctx.beginPath();
 
@@ -434,7 +434,7 @@ export function ElectromagneticWaveSimulator() {
       ctx.stroke();
 
       // Draw E field vectors at intervals
-      ctx.strokeStyle = 'rgba(239, 68, 68, 0.6)';
+      ctx.strokeStyle = 'rgba(202, 104, 74, 0.6)';
       ctx.lineWidth = 1.5;
       for (let i = 0; i <= width - centerX - 40; i += 30) {
         const x = centerX + i;
@@ -454,7 +454,7 @@ export function ElectromagneticWaveSimulator() {
           ctx.lineTo(x - 3, y + direction * 6);
           ctx.lineTo(x + 3, y + direction * 6);
           ctx.closePath();
-          ctx.fillStyle = 'rgba(239, 68, 68, 0.6)';
+          ctx.fillStyle = 'rgba(202, 104, 74, 0.6)';
           ctx.fill();
         }
       }
@@ -462,7 +462,7 @@ export function ElectromagneticWaveSimulator() {
 
     // Draw B field (perpendicular - shown as depth with perspective)
     if (showBField) {
-      ctx.strokeStyle = '#3b82f6';
+      ctx.strokeStyle = '#c29851';
       ctx.lineWidth = 2.5;
 
       const waveLength = 150;
@@ -499,11 +499,11 @@ export function ElectromagneticWaveSimulator() {
 
         if (bValue > 0.1) {
           // Out of page (dot)
-          ctx.fillStyle = '#3b82f6';
+          ctx.fillStyle = '#c29851';
           ctx.fill();
         } else if (bValue < -0.1) {
           // Into page (cross)
-          ctx.strokeStyle = '#3b82f6';
+          ctx.strokeStyle = '#c29851';
           ctx.lineWidth = 1.5;
           ctx.stroke();
           ctx.beginPath();
@@ -513,19 +513,19 @@ export function ElectromagneticWaveSimulator() {
           ctx.lineTo(x - 3, centerY + 3);
           ctx.stroke();
         } else {
-          ctx.strokeStyle = '#3b82f6';
+          ctx.strokeStyle = '#c29851';
           ctx.stroke();
         }
       }
 
-      ctx.fillStyle = '#3b82f6';
+      ctx.fillStyle = '#c29851';
       ctx.fillText('B', centerX + 25, height - 30);
     }
 
     // Draw Poynting vector
     if (showPoynting) {
-      ctx.strokeStyle = '#10b981';
-      ctx.fillStyle = '#10b981';
+      ctx.strokeStyle = '#7e8f3a';
+      ctx.fillStyle = '#7e8f3a';
       ctx.lineWidth = 3;
 
       // Big arrow in propagation direction
@@ -548,15 +548,15 @@ export function ElectromagneticWaveSimulator() {
     // Legend
     ctx.font = '12px system-ui';
     if (showEField) {
-      ctx.fillStyle = '#ef4444';
+      ctx.fillStyle = '#ca684a';
       ctx.fillRect(width - 120, 20, 15, 15);
-      ctx.fillStyle = '#1e293b';
+      ctx.fillStyle = '#2f2d2a';
       ctx.fillText('Champ E', width - 100, 32);
     }
     if (showBField) {
-      ctx.fillStyle = '#3b82f6';
+      ctx.fillStyle = '#c29851';
       ctx.fillRect(width - 120, 45, 15, 15);
-      ctx.fillStyle = '#1e293b';
+      ctx.fillStyle = '#2f2d2a';
       ctx.fillText('Champ B', width - 100, 57);
     }
 
@@ -576,13 +576,13 @@ export function ElectromagneticWaveSimulator() {
     const centerX = width / 4;
     const centerY = height / 2;
 
-    ctx.fillStyle = '#f8fafc';
+    ctx.fillStyle = '#fafafa';
     ctx.fillRect(0, 0, width, height);
 
     const maxRadius = 80 * amplitude;
 
     // Draw coordinate axes
-    ctx.strokeStyle = '#cbd5e1';
+    ctx.strokeStyle = '#d8d6d4';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(centerX - maxRadius - 20, centerY);
@@ -591,13 +591,13 @@ export function ElectromagneticWaveSimulator() {
     ctx.lineTo(centerX, centerY + maxRadius + 20);
     ctx.stroke();
 
-    ctx.fillStyle = '#64748b';
+    ctx.fillStyle = '#7e7871';
     ctx.font = '12px system-ui';
     ctx.fillText('Ex', centerX + maxRadius + 25, centerY + 5);
     ctx.fillText('Ey', centerX + 5, centerY - maxRadius - 10);
 
     // Draw polarization trace
-    ctx.strokeStyle = '#8b5cf6';
+    ctx.strokeStyle = '#b57b98';
     ctx.lineWidth = 2;
     ctx.beginPath();
 
@@ -620,8 +620,8 @@ export function ElectromagneticWaveSimulator() {
 
     // Draw current E vector
     const currentE = getPolarizedE(time);
-    ctx.strokeStyle = '#ef4444';
-    ctx.fillStyle = '#ef4444';
+    ctx.strokeStyle = '#ca684a';
+    ctx.fillStyle = '#ca684a';
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(centerX, centerY);
@@ -645,7 +645,7 @@ export function ElectromagneticWaveSimulator() {
       const analyzerRadius = maxRadius + 30;
 
       // Draw analyzer circle
-      ctx.strokeStyle = '#64748b';
+      ctx.strokeStyle = '#7e7871';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(analyzerX, centerY, analyzerRadius, 0, 2 * Math.PI);
@@ -653,7 +653,7 @@ export function ElectromagneticWaveSimulator() {
 
       // Draw polarizer axis
       const axisAngle = analyzerAngle * Math.PI / 180;
-      ctx.strokeStyle = '#f59e0b';
+      ctx.strokeStyle = '#e8c518';
       ctx.lineWidth = 4;
       ctx.beginPath();
       ctx.moveTo(
@@ -672,25 +672,25 @@ export function ElectromagneticWaveSimulator() {
       const barWidth = 30;
       const barX = width - 80;
 
-      ctx.fillStyle = '#e2e8f0';
+      ctx.fillStyle = '#eae9e8';
       ctx.fillRect(barX, centerY - barHeight / 2, barWidth, barHeight);
 
-      ctx.fillStyle = '#f59e0b';
+      ctx.fillStyle = '#e8c518';
       ctx.fillRect(barX, centerY + barHeight / 2 - barHeight * intensity, barWidth, barHeight * intensity);
 
-      ctx.fillStyle = '#1e293b';
+      ctx.fillStyle = '#2f2d2a';
       ctx.font = '12px system-ui';
       ctx.fillText('I/I₀', barX + 5, centerY - barHeight / 2 - 10);
       ctx.fillText((intensity * 100).toFixed(0) + '%', barX + 2, centerY + barHeight / 2 + 20);
 
       // Malus's Law label
-      ctx.fillStyle = '#64748b';
+      ctx.fillStyle = '#7e7871';
       ctx.font = '11px system-ui';
       ctx.fillText('Analyseur', analyzerX - 25, centerY - analyzerRadius - 15);
     }
 
     // Labels
-    ctx.fillStyle = '#1e293b';
+    ctx.fillStyle = '#2f2d2a';
     ctx.font = '14px system-ui';
     ctx.fillText('Polarisation: ' + polarizationType, centerX - 50, 30);
 
@@ -708,18 +708,18 @@ export function ElectromagneticWaveSimulator() {
     const width = canvas.width;
     const height = canvas.height;
 
-    ctx.fillStyle = '#1e293b';
+    ctx.fillStyle = '#2f2d2a';
     ctx.fillRect(0, 0, width, height);
 
     // EM Spectrum bands (wavelength ranges in m)
     const bands = [
-      { name: 'Gamma', min: 1e-14, max: 1e-11, color: '#4c1d95' },
-      { name: 'X', min: 1e-11, max: 1e-8, color: '#5b21b6' },
-      { name: 'UV', min: 1e-8, max: 380e-9, color: '#7c3aed' },
+      { name: 'Gamma', min: 1e-14, max: 1e-11, color: '#724059' },
+      { name: 'X', min: 1e-11, max: 1e-8, color: '#8a4d6c' },
+      { name: 'UV', min: 1e-8, max: 380e-9, color: '#a76385' },
       { name: 'Visible', min: 380e-9, max: 750e-9, color: 'rainbow' },
-      { name: 'IR', min: 750e-9, max: 1e-3, color: '#dc2626' },
-      { name: 'Micro-ondes', min: 1e-3, max: 1, color: '#f97316' },
-      { name: 'Radio', min: 1, max: 1e6, color: '#eab308' },
+      { name: 'IR', min: 750e-9, max: 1e-3, color: '#c65c3c' },
+      { name: 'Micro-ondes', min: 1e-3, max: 1, color: '#db8834' },
+      { name: 'Radio', min: 1, max: 1e6, color: '#dcbb16' },
     ];
 
     const logMin = Math.log10(1e-14);
@@ -737,13 +737,13 @@ export function ElectromagneticWaveSimulator() {
       if (band.color === 'rainbow') {
         // Draw visible spectrum
         const gradient = ctx.createLinearGradient(x1, 0, x2, 0);
-        gradient.addColorStop(0, '#8b5cf6');    // Violet
-        gradient.addColorStop(0.17, '#3b82f6'); // Blue
-        gradient.addColorStop(0.33, '#06b6d4'); // Cyan
-        gradient.addColorStop(0.5, '#22c55e');  // Green
-        gradient.addColorStop(0.67, '#eab308'); // Yellow
-        gradient.addColorStop(0.83, '#f97316'); // Orange
-        gradient.addColorStop(1, '#ef4444');    // Red
+        gradient.addColorStop(0, '#b57b98');    // Violet
+        gradient.addColorStop(0.17, '#c29851'); // Blue
+        gradient.addColorStop(0.33, '#4e728c'); // Cyan
+        gradient.addColorStop(0.5, '#91a443');  // Green
+        gradient.addColorStop(0.67, '#dcbb16'); // Yellow
+        gradient.addColorStop(0.83, '#db8834'); // Orange
+        gradient.addColorStop(1, '#ca684a');    // Red
         ctx.fillStyle = gradient;
       } else {
         ctx.fillStyle = band.color;
@@ -759,7 +759,7 @@ export function ElectromagneticWaveSimulator() {
     });
 
     // Draw wavelength scale
-    ctx.strokeStyle = '#94a3b8';
+    ctx.strokeStyle = '#aba6a1';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(0, barY + barHeight + 40);
@@ -767,7 +767,7 @@ export function ElectromagneticWaveSimulator() {
     ctx.stroke();
 
     const scalePoints = [-14, -11, -8, -6, -3, 0, 3, 6];
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.font = '10px system-ui';
     scalePoints.forEach(exp => {
       const x = ((exp - logMin) / logRange) * width;
@@ -831,11 +831,11 @@ export function ElectromagneticWaveSimulator() {
     const height = canvas.height;
 
     // Dark background
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.fillRect(0, 0, width, height);
 
     // Draw grid
-    ctx.strokeStyle = 'rgba(148, 163, 184, 0.1)';
+    ctx.strokeStyle = 'rgba(171, 166, 161, 0.1)';
     ctx.lineWidth = 1;
     for (let x = 0; x < width; x += 40) {
       ctx.beginPath();
@@ -918,8 +918,8 @@ export function ElectromagneticWaveSimulator() {
 
             // Draw arrow with better visibility
             const alpha = 0.4 + 0.6 * normalizedE;
-            ctx.strokeStyle = `rgba(239, 68, 68, ${alpha})`;
-            ctx.fillStyle = `rgba(239, 68, 68, ${alpha})`;
+            ctx.strokeStyle = `rgba(202, 104, 74, ${alpha})`;
+            ctx.fillStyle = `rgba(202, 104, 74, ${alpha})`;
             ctx.lineWidth = 2;
 
             ctx.beginPath();
@@ -962,7 +962,7 @@ export function ElectromagneticWaveSimulator() {
             const radius = 30 + i * 25;
             const alpha = 0.5 - i * 0.1;
 
-            ctx.strokeStyle = `rgba(59, 130, 246, ${alpha})`;
+            ctx.strokeStyle = `rgba(194, 152, 81, ${alpha})`;
             ctx.lineWidth = 2;
             ctx.setLineDash([5, 5]);
             ctx.beginPath();
@@ -981,8 +981,8 @@ export function ElectromagneticWaveSimulator() {
               const bDirection = charge.q * (vy > 0 ? 1 : -1);
               const isOut = (Math.cos(angle) > 0) === (bDirection > 0);
 
-              ctx.fillStyle = `rgba(59, 130, 246, ${alpha + 0.2})`;
-              ctx.strokeStyle = `rgba(59, 130, 246, ${alpha + 0.2})`;
+              ctx.fillStyle = `rgba(194, 152, 81, ${alpha + 0.2})`;
+              ctx.strokeStyle = `rgba(194, 152, 81, ${alpha + 0.2})`;
               ctx.lineWidth = 1.5;
 
               if (isOut) {
@@ -1016,7 +1016,7 @@ export function ElectromagneticWaveSimulator() {
             const alpha = 0.3 * (1 - wavePhase);
 
             if (alpha > 0.02) {
-              ctx.strokeStyle = `rgba(168, 85, 247, ${alpha})`;
+              ctx.strokeStyle = `rgba(179, 120, 149, ${alpha})`;
               ctx.lineWidth = 2;
               ctx.beginPath();
               ctx.arc(charge.currentX, charge.currentY, radius, 0, 2 * Math.PI);
@@ -1039,13 +1039,13 @@ export function ElectromagneticWaveSimulator() {
       );
 
       if (charge.q > 0) {
-        gradient.addColorStop(0, 'rgba(239, 68, 68, 0.8)');
-        gradient.addColorStop(0.5, 'rgba(239, 68, 68, 0.3)');
-        gradient.addColorStop(1, 'rgba(239, 68, 68, 0)');
+        gradient.addColorStop(0, 'rgba(202, 104, 74, 0.8)');
+        gradient.addColorStop(0.5, 'rgba(202, 104, 74, 0.3)');
+        gradient.addColorStop(1, 'rgba(202, 104, 74, 0)');
       } else {
-        gradient.addColorStop(0, 'rgba(59, 130, 246, 0.8)');
-        gradient.addColorStop(0.5, 'rgba(59, 130, 246, 0.3)');
-        gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+        gradient.addColorStop(0, 'rgba(194, 152, 81, 0.8)');
+        gradient.addColorStop(0.5, 'rgba(194, 152, 81, 0.3)');
+        gradient.addColorStop(1, 'rgba(194, 152, 81, 0)');
       }
 
       ctx.fillStyle = gradient;
@@ -1054,14 +1054,14 @@ export function ElectromagneticWaveSimulator() {
       ctx.fill();
 
       // Charge circle
-      ctx.fillStyle = charge.q > 0 ? '#ef4444' : '#3b82f6';
+      ctx.fillStyle = charge.q > 0 ? '#ca684a' : '#c29851';
       ctx.beginPath();
       ctx.arc(charge.currentX, charge.currentY, radius, 0, 2 * Math.PI);
       ctx.fill();
 
       // Selection ring
       if (isSelected) {
-        ctx.strokeStyle = '#fbbf24';
+        ctx.strokeStyle = '#e8c61a';
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.arc(charge.currentX, charge.currentY, radius + 5, 0, 2 * Math.PI);
@@ -1077,7 +1077,7 @@ export function ElectromagneticWaveSimulator() {
     });
 
     // Legend
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.font = '12px system-ui';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
@@ -1085,20 +1085,20 @@ export function ElectromagneticWaveSimulator() {
     ctx.fillText(`Mode: ${chargeMode === 'dipole' ? 'Dipôle oscillant' : chargeMode === 'moving' ? 'Charge en mouvement' : 'Charge statique'}`, 10, 28);
 
     // Field legend
-    ctx.fillStyle = '#ef4444';
+    ctx.fillStyle = '#ca684a';
     ctx.fillRect(width - 150, 10, 15, 15);
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.fillText('Champ E', width - 130, 12);
 
-    ctx.fillStyle = '#3b82f6';
+    ctx.fillStyle = '#c29851';
     ctx.fillRect(width - 150, 32, 15, 15);
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.fillText('Champ B', width - 130, 34);
 
     if (chargeMode === 'dipole') {
-      ctx.fillStyle = '#a855f7';
+      ctx.fillStyle = '#b37895';
       ctx.fillRect(width - 150, 54, 15, 15);
-      ctx.fillStyle = '#94a3b8';
+      ctx.fillStyle = '#aba6a1';
       ctx.fillText('Rayonnement', width - 130, 56);
     }
 
@@ -1116,7 +1116,7 @@ export function ElectromagneticWaveSimulator() {
     const width = canvas.width;
     const height = canvas.height;
 
-    ctx.fillStyle = '#1e293b';
+    ctx.fillStyle = '#2f2d2a';
     ctx.fillRect(0, 0, width, height);
 
     const slitX = 100;
@@ -1132,7 +1132,7 @@ export function ElectromagneticWaveSimulator() {
     }
 
     // Draw barrier with slits
-    ctx.fillStyle = '#64748b';
+    ctx.fillStyle = '#7e7871';
 
     // Top barrier
     const topSlitY = slitPositions[0] - slitSpacing / 3;
@@ -1150,7 +1150,7 @@ export function ElectromagneticWaveSimulator() {
     ctx.fillRect(slitX - 5, bottomSlitY, 10, height - bottomSlitY);
 
     // Draw light source
-    ctx.fillStyle = '#fbbf24';
+    ctx.fillStyle = '#e8c61a';
     ctx.beginPath();
     ctx.arc(30, centerY, 15, 0, 2 * Math.PI);
     ctx.fill();
@@ -1163,7 +1163,7 @@ export function ElectromagneticWaveSimulator() {
     for (let wave = 0; wave < numWaves; wave++) {
       const radius = ((time * 100 + wave * 40) % maxRadius);
 
-      ctx.strokeStyle = '#fbbf24';
+      ctx.strokeStyle = '#e8c61a';
       ctx.lineWidth = numSlits <= 5 ? 2 : 1;
 
       // Draw wave from each slit
@@ -1212,7 +1212,7 @@ export function ElectromagneticWaveSimulator() {
     ctx.stroke();
 
     // Draw screen border
-    ctx.strokeStyle = '#94a3b8';
+    ctx.strokeStyle = '#aba6a1';
     ctx.lineWidth = 2;
     ctx.strokeRect(screenX, 20, 40, patternHeight);
 
@@ -1245,7 +1245,7 @@ export function ElectromagneticWaveSimulator() {
     const width = canvas.width;
     const height = canvas.height;
 
-    ctx.fillStyle = '#1e293b';
+    ctx.fillStyle = '#2f2d2a';
     ctx.fillRect(0, 0, width, height);
 
     const slitX = 120;
@@ -1253,12 +1253,12 @@ export function ElectromagneticWaveSimulator() {
     const centerY = height / 2;
 
     // Draw single slit
-    ctx.fillStyle = '#64748b';
+    ctx.fillStyle = '#7e7871';
     ctx.fillRect(slitX - 5, 0, 10, centerY - 25);
     ctx.fillRect(slitX - 5, centerY + 25, 10, height - centerY - 25);
 
     // Draw light source
-    ctx.fillStyle = '#fbbf24';
+    ctx.fillStyle = '#e8c61a';
     ctx.beginPath();
     ctx.arc(40, centerY, 15, 0, 2 * Math.PI);
     ctx.fill();
@@ -1273,7 +1273,7 @@ export function ElectromagneticWaveSimulator() {
 
       for (let wave = 0; wave < 6; wave++) {
         const radius = ((time * 80 + wave * 35) % 200);
-        ctx.strokeStyle = '#fbbf24';
+        ctx.strokeStyle = '#e8c61a';
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.arc(slitX, sourceY, radius, -Math.PI / 2, Math.PI / 2);
@@ -1340,7 +1340,7 @@ export function ElectromagneticWaveSimulator() {
     const width = canvas.width;
     const height = canvas.height;
 
-    ctx.fillStyle = '#f8fafc';
+    ctx.fillStyle = '#fafafa';
     ctx.fillRect(0, 0, width, height);
 
     const centerX = width / 2;
@@ -1351,7 +1351,7 @@ export function ElectromagneticWaveSimulator() {
     const planeSpacing = 40;
     const planeWidth = 200;
 
-    ctx.strokeStyle = '#6366f1';
+    ctx.strokeStyle = '#caa668';
     ctx.lineWidth = 3;
 
     for (let i = 0; i < numPlanes; i++) {
@@ -1364,7 +1364,7 @@ export function ElectromagneticWaveSimulator() {
       // Draw atoms
       for (let j = 0; j < 8; j++) {
         const x = centerX - planeWidth / 2 + 20 + j * 25;
-        ctx.fillStyle = '#6366f1';
+        ctx.fillStyle = '#caa668';
         ctx.beginPath();
         ctx.arc(x, y, 6, 0, 2 * Math.PI);
         ctx.fill();
@@ -1376,7 +1376,7 @@ export function ElectromagneticWaveSimulator() {
     if (braggAngle !== null) {
       const incidentAngle = braggAngle * Math.PI / 180;
 
-      ctx.strokeStyle = '#ef4444';
+      ctx.strokeStyle = '#ca684a';
       ctx.lineWidth = 3;
 
       // Incoming ray
@@ -1390,7 +1390,7 @@ export function ElectromagneticWaveSimulator() {
       ctx.stroke();
 
       // Arrow
-      ctx.fillStyle = '#ef4444';
+      ctx.fillStyle = '#ca684a';
       ctx.beginPath();
       ctx.moveTo(centerX, centerY - planeSpacing);
       ctx.lineTo(centerX - 15 * Math.cos(incidentAngle - 0.3), centerY - planeSpacing - 15 * Math.sin(incidentAngle - 0.3));
@@ -1399,27 +1399,27 @@ export function ElectromagneticWaveSimulator() {
       ctx.fill();
 
       // Reflected ray
-      ctx.strokeStyle = '#22c55e';
+      ctx.strokeStyle = '#91a443';
       ctx.beginPath();
       ctx.moveTo(centerX, centerY - planeSpacing);
       ctx.lineTo(centerX + rayLength * Math.cos(incidentAngle), startY);
       ctx.stroke();
 
       // Second plane reflection
-      ctx.strokeStyle = 'rgba(239, 68, 68, 0.5)';
+      ctx.strokeStyle = 'rgba(202, 104, 74, 0.5)';
       ctx.beginPath();
       ctx.moveTo(startX + planeSpacing / Math.tan(incidentAngle), startY + planeSpacing / Math.sin(incidentAngle));
       ctx.lineTo(centerX + 20, centerY);
       ctx.stroke();
 
-      ctx.strokeStyle = 'rgba(34, 197, 94, 0.5)';
+      ctx.strokeStyle = 'rgba(145, 164, 67, 0.5)';
       ctx.beginPath();
       ctx.moveTo(centerX + 20, centerY);
       ctx.lineTo(centerX + 20 + rayLength * Math.cos(incidentAngle), centerY - rayLength * Math.sin(incidentAngle));
       ctx.stroke();
 
       // Path difference indicator
-      ctx.strokeStyle = '#f59e0b';
+      ctx.strokeStyle = '#e8c518';
       ctx.lineWidth = 2;
       ctx.setLineDash([5, 5]);
       ctx.beginPath();
@@ -1429,44 +1429,44 @@ export function ElectromagneticWaveSimulator() {
       ctx.setLineDash([]);
 
       // Angle arc
-      ctx.strokeStyle = '#64748b';
+      ctx.strokeStyle = '#7e7871';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.arc(centerX, centerY - planeSpacing, 30, -Math.PI / 2, -Math.PI / 2 + incidentAngle);
       ctx.stroke();
 
-      ctx.fillStyle = '#1e293b';
+      ctx.fillStyle = '#2f2d2a';
       ctx.font = '14px system-ui';
       ctx.fillText(`θ = ${braggAngle.toFixed(1)}°`, centerX + 35, centerY - planeSpacing - 20);
     }
 
     // Parameters
-    ctx.fillStyle = '#1e293b';
+    ctx.fillStyle = '#2f2d2a';
     ctx.font = '12px system-ui';
     ctx.fillText(`d = ${crystalSpacing} nm (espacement)`, 20, 30);
     ctx.fillText(`λ = ${wavelength} nm`, 20, 50);
     ctx.fillText(`n = ${diffractionOrder} (ordre)`, 20, 70);
 
     if (braggAngle !== null) {
-      ctx.fillStyle = '#22c55e';
+      ctx.fillStyle = '#91a443';
       ctx.font = 'bold 14px system-ui';
       ctx.fillText(`Angle de Bragg: θ = ${braggAngle.toFixed(2)}°`, 20, height - 20);
     } else {
-      ctx.fillStyle = '#ef4444';
+      ctx.fillStyle = '#ca684a';
       ctx.font = '14px system-ui';
       ctx.fillText('Pas de réflexion pour ces paramètres', 20, height - 20);
     }
 
     // Legend
-    ctx.fillStyle = '#ef4444';
+    ctx.fillStyle = '#ca684a';
     ctx.fillRect(width - 150, 20, 20, 3);
-    ctx.fillStyle = '#1e293b';
+    ctx.fillStyle = '#2f2d2a';
     ctx.font = '12px system-ui';
     ctx.fillText('Rayon incident', width - 125, 25);
 
-    ctx.fillStyle = '#22c55e';
+    ctx.fillStyle = '#91a443';
     ctx.fillRect(width - 150, 40, 20, 3);
-    ctx.fillStyle = '#1e293b';
+    ctx.fillStyle = '#2f2d2a';
     ctx.fillText('Rayon réfléchi', width - 125, 45);
 
   }, [mode, wavelength, crystalSpacing, diffractionOrder, getBraggAngle]);
@@ -1486,7 +1486,7 @@ export function ElectromagneticWaveSimulator() {
     const centerY = height / 2;
 
     // Clear canvas
-    ctx.fillStyle = '#f8fafc';
+    ctx.fillStyle = '#fafafa';
     ctx.fillRect(0, 0, width, height);
 
     if (opticsMode === 'dispersion') {
@@ -1495,8 +1495,8 @@ export function ElectromagneticWaveSimulator() {
       const prismBase = prismHeight / Math.tan((prismAngle / 2) * Math.PI / 180);
 
       // Draw prism
-      ctx.fillStyle = 'rgba(147, 197, 253, 0.3)';
-      ctx.strokeStyle = '#3b82f6';
+      ctx.fillStyle = 'rgba(216, 190, 144, 0.3)';
+      ctx.strokeStyle = '#c29851';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(centerX, centerY - prismHeight / 2);
@@ -1527,12 +1527,12 @@ export function ElectromagneticWaveSimulator() {
 
       // Dispersion - different colors refract at different angles
       const colors = [
-        { name: 'Rouge', color: '#ef4444', n: 1.51, hue: 0 },
-        { name: 'Orange', color: '#f97316', n: 1.52, hue: 30 },
-        { name: 'Jaune', color: '#eab308', n: 1.53, hue: 60 },
-        { name: 'Vert', color: '#22c55e', n: 1.54, hue: 120 },
-        { name: 'Bleu', color: '#3b82f6', n: 1.55, hue: 240 },
-        { name: 'Violet', color: '#8b5cf6', n: 1.56, hue: 270 },
+        { name: 'Rouge', color: '#ca684a', n: 1.51, hue: 0 },
+        { name: 'Orange', color: '#db8834', n: 1.52, hue: 30 },
+        { name: 'Jaune', color: '#dcbb16', n: 1.53, hue: 60 },
+        { name: 'Vert', color: '#91a443', n: 1.54, hue: 120 },
+        { name: 'Bleu', color: '#c29851', n: 1.55, hue: 240 },
+        { name: 'Violet', color: '#b57b98', n: 1.56, hue: 270 },
       ];
 
       const baseAngle = 25; // Entry angle into prism
@@ -1567,7 +1567,7 @@ export function ElectromagneticWaveSimulator() {
       });
 
       // Labels
-      ctx.fillStyle = '#1e293b';
+      ctx.fillStyle = '#2f2d2a';
       ctx.font = '14px system-ui';
       ctx.fillText('Lumière blanche', 30, centerY - 70);
       ctx.fillText('Prisme', centerX - 20, centerY + prismHeight / 2 + 25);
@@ -1586,15 +1586,15 @@ export function ElectromagneticWaveSimulator() {
       // Draw interface between two media
 
       // Medium 1 (top)
-      ctx.fillStyle = n1 < n2 ? 'rgba(186, 230, 253, 0.4)' : 'rgba(147, 197, 253, 0.6)';
+      ctx.fillStyle = n1 < n2 ? 'rgba(225, 205, 170, 0.4)' : 'rgba(216, 190, 144, 0.6)';
       ctx.fillRect(0, 0, width, centerY);
 
       // Medium 2 (bottom)
-      ctx.fillStyle = n1 < n2 ? 'rgba(147, 197, 253, 0.6)' : 'rgba(186, 230, 253, 0.4)';
+      ctx.fillStyle = n1 < n2 ? 'rgba(216, 190, 144, 0.6)' : 'rgba(225, 205, 170, 0.4)';
       ctx.fillRect(0, centerY, width, height - centerY);
 
       // Draw interface line
-      ctx.strokeStyle = '#64748b';
+      ctx.strokeStyle = '#7e7871';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(0, centerY);
@@ -1603,7 +1603,7 @@ export function ElectromagneticWaveSimulator() {
 
       // Draw normal (dashed)
       if (showNormal) {
-        ctx.strokeStyle = '#94a3b8';
+        ctx.strokeStyle = '#aba6a1';
         ctx.lineWidth = 1;
         ctx.setLineDash([5, 5]);
         ctx.beginPath();
@@ -1612,7 +1612,7 @@ export function ElectromagneticWaveSimulator() {
         ctx.stroke();
         ctx.setLineDash([]);
 
-        ctx.fillStyle = '#64748b';
+        ctx.fillStyle = '#7e7871';
         ctx.font = '12px system-ui';
         ctx.fillText('Normale', centerX + 10, 45);
       }
@@ -1629,7 +1629,7 @@ export function ElectromagneticWaveSimulator() {
       const rayLength = 150;
 
       // Draw incident ray
-      ctx.strokeStyle = '#ef4444';
+      ctx.strokeStyle = '#ca684a';
       ctx.lineWidth = 3;
       ctx.beginPath();
       const incStartX = centerX - rayLength * Math.sin(theta1Rad);
@@ -1639,7 +1639,7 @@ export function ElectromagneticWaveSimulator() {
       ctx.stroke();
 
       // Arrow on incident ray
-      ctx.fillStyle = '#ef4444';
+      ctx.fillStyle = '#ca684a';
       const arrowAngle1 = Math.PI / 2 - theta1Rad;
       ctx.beginPath();
       ctx.moveTo(centerX, centerY);
@@ -1649,7 +1649,7 @@ export function ElectromagneticWaveSimulator() {
       ctx.fill();
 
       // Draw reflected ray
-      ctx.strokeStyle = '#f59e0b';
+      ctx.strokeStyle = '#e8c518';
       ctx.lineWidth = isTotalReflection ? 3 : 2;
       ctx.globalAlpha = isTotalReflection ? 1 : 0.7;
       ctx.beginPath();
@@ -1661,7 +1661,7 @@ export function ElectromagneticWaveSimulator() {
       ctx.globalAlpha = 1;
 
       // Arrow on reflected ray
-      ctx.fillStyle = '#f59e0b';
+      ctx.fillStyle = '#e8c518';
       ctx.globalAlpha = isTotalReflection ? 1 : 0.7;
       const arrowAngle2 = Math.PI / 2 + theta1Rad;
       const arrowPosX = centerX + (rayLength - 30) * Math.sin(theta1Rad);
@@ -1676,7 +1676,7 @@ export function ElectromagneticWaveSimulator() {
 
       // Draw refracted ray (if not total internal reflection)
       if (!isTotalReflection) {
-        ctx.strokeStyle = '#22c55e';
+        ctx.strokeStyle = '#91a443';
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(centerX, centerY);
@@ -1686,7 +1686,7 @@ export function ElectromagneticWaveSimulator() {
         ctx.stroke();
 
         // Arrow on refracted ray
-        ctx.fillStyle = '#22c55e';
+        ctx.fillStyle = '#91a443';
         const arrowAngle3 = -Math.PI / 2 + theta2Rad;
         const arrowPos3X = centerX + (rayLength - 30) * Math.sin(theta2Rad);
         const arrowPos3Y = centerY + (rayLength - 30) * Math.cos(theta2Rad);
@@ -1703,21 +1703,21 @@ export function ElectromagneticWaveSimulator() {
         const arcRadius = 40;
 
         // Incident angle arc
-        ctx.strokeStyle = '#ef4444';
+        ctx.strokeStyle = '#ca684a';
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.arc(centerX, centerY, arcRadius, -Math.PI / 2, -Math.PI / 2 + theta1Rad, false);
         ctx.stroke();
 
         // Reflected angle arc
-        ctx.strokeStyle = '#f59e0b';
+        ctx.strokeStyle = '#e8c518';
         ctx.beginPath();
         ctx.arc(centerX, centerY, arcRadius + 5, -Math.PI / 2 - theta1Rad, -Math.PI / 2, false);
         ctx.stroke();
 
         // Refracted angle arc (if applicable)
         if (!isTotalReflection) {
-          ctx.strokeStyle = '#22c55e';
+          ctx.strokeStyle = '#91a443';
           ctx.beginPath();
           ctx.arc(centerX, centerY, arcRadius, Math.PI / 2 - theta2Rad, Math.PI / 2, false);
           ctx.stroke();
@@ -1725,27 +1725,27 @@ export function ElectromagneticWaveSimulator() {
 
         // Angle labels
         ctx.font = '14px system-ui';
-        ctx.fillStyle = '#ef4444';
+        ctx.fillStyle = '#ca684a';
         ctx.fillText(`θ₁ = ${incidentAngle}°`, centerX - 80, centerY - 50);
 
-        ctx.fillStyle = '#f59e0b';
+        ctx.fillStyle = '#e8c518';
         ctx.fillText(`θᵣ = ${incidentAngle}°`, centerX + 30, centerY - 50);
 
         if (!isTotalReflection) {
-          ctx.fillStyle = '#22c55e';
+          ctx.fillStyle = '#91a443';
           ctx.fillText(`θ₂ = ${(theta2Rad * 180 / Math.PI).toFixed(1)}°`, centerX + 30, centerY + 60);
         }
       }
 
       // Labels for media
       ctx.font = '14px system-ui';
-      ctx.fillStyle = '#1e293b';
+      ctx.fillStyle = '#2f2d2a';
       ctx.fillText(`Milieu 1: n₁ = ${n1.toFixed(2)}`, 20, 30);
       ctx.fillText(`Milieu 2: n₂ = ${n2.toFixed(2)}`, 20, height - 20);
 
       // Warning for total internal reflection
       if (isTotalReflection) {
-        ctx.fillStyle = '#dc2626';
+        ctx.fillStyle = '#c65c3c';
         ctx.font = 'bold 14px system-ui';
         ctx.fillText('⚠️ Réflexion totale interne!', width - 200, 30);
 
@@ -1757,7 +1757,7 @@ export function ElectromagneticWaveSimulator() {
 
       // Show critical angle indicator for totalReflection mode
       if (opticsMode === 'totalReflection' && criticalAngle !== null) {
-        ctx.strokeStyle = '#dc2626';
+        ctx.strokeStyle = '#c65c3c';
         ctx.lineWidth = 1;
         ctx.setLineDash([3, 3]);
 
@@ -1768,7 +1768,7 @@ export function ElectromagneticWaveSimulator() {
         ctx.stroke();
         ctx.setLineDash([]);
 
-        ctx.fillStyle = '#dc2626';
+        ctx.fillStyle = '#c65c3c';
         ctx.font = '11px system-ui';
         ctx.fillText(`θc = ${criticalAngle.toFixed(1)}°`, centerX - 120, centerY - 80);
       }
@@ -1777,20 +1777,20 @@ export function ElectromagneticWaveSimulator() {
       ctx.font = '12px system-ui';
       const legendY = height - 60;
 
-      ctx.fillStyle = '#ef4444';
+      ctx.fillStyle = '#ca684a';
       ctx.fillRect(width - 180, legendY, 15, 3);
-      ctx.fillStyle = '#1e293b';
+      ctx.fillStyle = '#2f2d2a';
       ctx.fillText('Incident', width - 160, legendY + 5);
 
-      ctx.fillStyle = '#f59e0b';
+      ctx.fillStyle = '#e8c518';
       ctx.fillRect(width - 180, legendY + 15, 15, 3);
-      ctx.fillStyle = '#1e293b';
+      ctx.fillStyle = '#2f2d2a';
       ctx.fillText('Réfléchi', width - 160, legendY + 20);
 
       if (!isTotalReflection) {
-        ctx.fillStyle = '#22c55e';
+        ctx.fillStyle = '#91a443';
         ctx.fillRect(width - 180, legendY + 30, 15, 3);
-        ctx.fillStyle = '#1e293b';
+        ctx.fillStyle = '#2f2d2a';
         ctx.fillText('Réfracté', width - 160, legendY + 35);
       }
     }
@@ -1812,7 +1812,7 @@ export function ElectromagneticWaveSimulator() {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
       {/* Mode selector */}
-      <div className="bg-gradient-to-r from-violet-600 to-purple-600 p-4">
+      <div className="bg-gradient-to-r from-ink-850 to-ink-750 p-4">
         <div className="flex flex-wrap gap-2 justify-center">
           {modes.map(m => (
             <button
@@ -1824,7 +1824,7 @@ export function ElectromagneticWaveSimulator() {
               }}
               className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                 mode === m.id
-                  ? 'bg-white text-violet-700 shadow-lg'
+                  ? 'bg-white text-prune-700 shadow-lg'
                   : 'bg-white/20 text-white hover:bg-white/30'
               }`}
             >
@@ -1843,7 +1843,7 @@ export function ElectromagneticWaveSimulator() {
             <button
               onClick={() => setIsPlaying(!isPlaying)}
               className={`p-3 rounded-full ${
-                isPlaying ? 'bg-violet-100 text-violet-700' : 'bg-gray-100 text-gray-600'
+                isPlaying ? 'bg-prune-100 text-prune-700' : 'bg-stone-100 text-stone-600'
               }`}
             >
               {isPlaying ? '⏸️' : '▶️'}
@@ -1853,7 +1853,7 @@ export function ElectromagneticWaveSimulator() {
                 setTime(0);
                 lastTimeRef.current = 0;
               }}
-              className="p-3 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200"
+              className="p-3 rounded-full bg-stone-100 text-stone-600 hover:bg-stone-200"
             >
               🔄
             </button>
@@ -1864,12 +1864,12 @@ export function ElectromagneticWaveSimulator() {
             <>
               {/* 2D/3D Toggle */}
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-gray-700">Vue:</span>
-                <div className="flex bg-gray-100 rounded-lg p-1">
+                <span className="text-sm font-medium text-stone-700">Vue:</span>
+                <div className="flex bg-stone-100 rounded-lg p-1">
                   <button
                     onClick={() => setView3D(false)}
                     className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
-                      !view3D ? 'bg-white shadow text-violet-700' : 'text-gray-600 hover:text-gray-900'
+                      !view3D ? 'bg-white shadow text-prune-700' : 'text-stone-600 hover:text-stone-900'
                     }`}
                   >
                     2D
@@ -1877,7 +1877,7 @@ export function ElectromagneticWaveSimulator() {
                   <button
                     onClick={() => setView3D(true)}
                     className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
-                      view3D ? 'bg-white shadow text-violet-700' : 'text-gray-600 hover:text-gray-900'
+                      view3D ? 'bg-white shadow text-prune-700' : 'text-stone-600 hover:text-stone-900'
                     }`}
                   >
                     3D
@@ -1885,7 +1885,7 @@ export function ElectromagneticWaveSimulator() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-stone-700 mb-1">
                   Amplitude: {amplitude.toFixed(1)}
                 </label>
                 <input
@@ -1899,7 +1899,7 @@ export function ElectromagneticWaveSimulator() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-stone-700 mb-1">
                   Fréquence: {frequency.toFixed(1)} Hz
                 </label>
                 <input
@@ -1920,7 +1920,7 @@ export function ElectromagneticWaveSimulator() {
                     onChange={(e) => setShowEField(e.target.checked)}
                     className="rounded"
                   />
-                  <span className="text-sm text-red-600 font-medium">Champ E</span>
+                  <span className="text-sm text-brun-600 font-medium">Champ E</span>
                 </label>
                 <label className="flex items-center gap-2">
                   <input
@@ -1929,7 +1929,7 @@ export function ElectromagneticWaveSimulator() {
                     onChange={(e) => setShowBField(e.target.checked)}
                     className="rounded"
                   />
-                  <span className="text-sm text-blue-600 font-medium">Champ B</span>
+                  <span className="text-sm text-gold-600 font-medium">Champ B</span>
                 </label>
                 <label className="flex items-center gap-2">
                   <input
@@ -1938,7 +1938,7 @@ export function ElectromagneticWaveSimulator() {
                     onChange={(e) => setShowPoynting(e.target.checked)}
                     className="rounded"
                   />
-                  <span className="text-sm text-green-600 font-medium">Poynting</span>
+                  <span className="text-sm text-olive-600 font-medium">Poynting</span>
                 </label>
                 {view3D && (
                   <label className="flex items-center gap-2">
@@ -1948,7 +1948,7 @@ export function ElectromagneticWaveSimulator() {
                       onChange={(e) => setShowWavefronts(e.target.checked)}
                       className="rounded"
                     />
-                    <span className="text-sm text-purple-600 font-medium">Fronts d'onde</span>
+                    <span className="text-sm text-prune-600 font-medium">Fronts d'onde</span>
                   </label>
                 )}
               </div>
@@ -1958,7 +1958,7 @@ export function ElectromagneticWaveSimulator() {
           {mode === 'polarization' && (
             <>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                <label className="block text-sm font-medium text-stone-700 mb-1">Type</label>
                 <select
                   value={polarizationType}
                   onChange={(e) => setPolarizationType(e.target.value as PolarizationType)}
@@ -1971,7 +1971,7 @@ export function ElectromagneticWaveSimulator() {
               </div>
               {polarizationType === 'linear' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-stone-700 mb-1">
                     Angle de polarisation: {polarizationAngle}°
                   </label>
                   <input
@@ -1988,7 +1988,7 @@ export function ElectromagneticWaveSimulator() {
               {polarizationType === 'elliptical' && (
                 <>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-stone-700 mb-1">
                       Déphasage: {phaseShift}°
                     </label>
                     <input
@@ -2002,7 +2002,7 @@ export function ElectromagneticWaveSimulator() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-stone-700 mb-1">
                       Ratio Ey/Ex: {amplitudeRatio.toFixed(1)}
                     </label>
                     <input
@@ -2030,7 +2030,7 @@ export function ElectromagneticWaveSimulator() {
               </div>
               {showAnalyzer && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-stone-700 mb-1">
                     Angle analyseur: {analyzerAngle}°
                   </label>
                   <input
@@ -2049,7 +2049,7 @@ export function ElectromagneticWaveSimulator() {
 
           {mode === 'spectrum' && (
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-stone-700 mb-1">
                 Longueur d'onde: {wavelength} nm
               </label>
               <input
@@ -2061,7 +2061,7 @@ export function ElectromagneticWaveSimulator() {
                 onChange={(e) => setWavelength(parseInt(e.target.value))}
                 className="w-full"
               />
-              <div className="flex justify-between text-xs text-gray-500 mt-1">
+              <div className="flex justify-between text-xs text-stone-500 mt-1">
                 <span>UV</span>
                 <span>Visible</span>
                 <span>IR</span>
@@ -2073,12 +2073,12 @@ export function ElectromagneticWaveSimulator() {
             <>
               {/* 2D/3D Toggle for Maxwell */}
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-gray-700">Vue:</span>
-                <div className="flex bg-gray-100 rounded-lg p-1">
+                <span className="text-sm font-medium text-stone-700">Vue:</span>
+                <div className="flex bg-stone-100 rounded-lg p-1">
                   <button
                     onClick={() => setView3D(false)}
                     className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
-                      !view3D ? 'bg-white shadow text-violet-700' : 'text-gray-600 hover:text-gray-900'
+                      !view3D ? 'bg-white shadow text-prune-700' : 'text-stone-600 hover:text-stone-900'
                     }`}
                   >
                     2D
@@ -2086,7 +2086,7 @@ export function ElectromagneticWaveSimulator() {
                   <button
                     onClick={() => setView3D(true)}
                     className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
-                      view3D ? 'bg-white shadow text-violet-700' : 'text-gray-600 hover:text-gray-900'
+                      view3D ? 'bg-white shadow text-prune-700' : 'text-stone-600 hover:text-stone-900'
                     }`}
                   >
                     3D
@@ -2094,7 +2094,7 @@ export function ElectromagneticWaveSimulator() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Mode</label>
+                <label className="block text-sm font-medium text-stone-700 mb-1">Mode</label>
                 <select
                   value={chargeMode}
                   onChange={(e) => setChargeMode(e.target.value as 'dipole' | 'moving' | 'static')}
@@ -2110,27 +2110,27 @@ export function ElectromagneticWaveSimulator() {
                 <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => addCharge(true)}
-                    className="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-medium"
+                    className="px-3 py-2 bg-brun-500 text-white rounded-lg hover:bg-brun-600 transition-colors text-sm font-medium"
                   >
                     + Charge +
                   </button>
                   <button
                     onClick={() => addCharge(false)}
-                    className="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium"
+                    className="px-3 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors text-sm font-medium"
                   >
                     + Charge −
                   </button>
                   {selectedChargeId !== null && (
                   <button
                     onClick={removeSelectedCharge}
-                    className="px-3 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors text-sm font-medium"
+                    className="px-3 py-2 bg-stone-500 text-white rounded-lg hover:bg-stone-600 transition-colors text-sm font-medium"
                   >
                     Supprimer
                   </button>
                 )}
                 <button
                   onClick={clearCharges}
-                  className="px-3 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors text-sm font-medium"
+                  className="px-3 py-2 bg-stone-300 text-stone-700 rounded-lg hover:bg-stone-400 transition-colors text-sm font-medium"
                 >
                   Effacer tout
                 </button>
@@ -2144,7 +2144,7 @@ export function ElectromagneticWaveSimulator() {
                     onChange={(e) => setShowEFieldLines(e.target.checked)}
                     className="rounded"
                   />
-                  <span className="text-sm text-red-600 font-medium">Champ E</span>
+                  <span className="text-sm text-brun-600 font-medium">Champ E</span>
                 </label>
                 <label className="flex items-center gap-2">
                   <input
@@ -2153,7 +2153,7 @@ export function ElectromagneticWaveSimulator() {
                     onChange={(e) => setShowBFieldLines(e.target.checked)}
                     className="rounded"
                   />
-                  <span className="text-sm text-blue-600 font-medium">Champ B</span>
+                  <span className="text-sm text-gold-600 font-medium">Champ B</span>
                 </label>
               </div>
             </>
@@ -2162,7 +2162,7 @@ export function ElectromagneticWaveSimulator() {
           {mode === 'young' && (
             <>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-stone-700 mb-1">
                   Nombre de fentes: {numSlits}
                 </label>
                 <input
@@ -2174,14 +2174,14 @@ export function ElectromagneticWaveSimulator() {
                   onChange={(e) => setNumSlits(parseInt(e.target.value))}
                   className="w-full"
                 />
-                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                <div className="flex justify-between text-xs text-stone-500 mt-1">
                   <span>1 (diffraction)</span>
                   <span>2 (Young)</span>
                   <span>N (réseau)</span>
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-stone-700 mb-1">
                   λ: {wavelength} nm
                 </label>
                 <input
@@ -2195,7 +2195,7 @@ export function ElectromagneticWaveSimulator() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-stone-700 mb-1">
                   Séparation fentes (d): {slitSeparation} mm
                 </label>
                 <input
@@ -2209,7 +2209,7 @@ export function ElectromagneticWaveSimulator() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-stone-700 mb-1">
                   Largeur fente (a): {slitWidth} mm
                 </label>
                 <input
@@ -2223,7 +2223,7 @@ export function ElectromagneticWaveSimulator() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-stone-700 mb-1">
                   Distance écran (L): {screenDistance} m
                 </label>
                 <input
@@ -2242,7 +2242,7 @@ export function ElectromagneticWaveSimulator() {
           {mode === 'diffraction' && (
             <>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-stone-700 mb-1">
                   λ: {wavelength} nm
                 </label>
                 <input
@@ -2256,7 +2256,7 @@ export function ElectromagneticWaveSimulator() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-stone-700 mb-1">
                   Largeur fente: {singleSlitWidth} mm
                 </label>
                 <input
@@ -2275,7 +2275,7 @@ export function ElectromagneticWaveSimulator() {
           {mode === 'bragg' && (
             <>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-stone-700 mb-1">
                   λ: {wavelength} nm
                 </label>
                 <input
@@ -2289,7 +2289,7 @@ export function ElectromagneticWaveSimulator() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-stone-700 mb-1">
                   Espacement cristal: {crystalSpacing} nm
                 </label>
                 <input
@@ -2303,7 +2303,7 @@ export function ElectromagneticWaveSimulator() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-stone-700 mb-1">
                   Ordre n: {diffractionOrder}
                 </label>
                 <input
@@ -2322,7 +2322,7 @@ export function ElectromagneticWaveSimulator() {
           {mode === 'optics' && (
             <>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Mode</label>
+                <label className="block text-sm font-medium text-stone-700 mb-1">Mode</label>
                 <select
                   value={opticsMode}
                   onChange={(e) => setOpticsMode(e.target.value as OpticsMode)}
@@ -2335,7 +2335,7 @@ export function ElectromagneticWaveSimulator() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-stone-700 mb-1">
                   Angle d'incidence: {incidentAngle}°
                 </label>
                 <input
@@ -2351,7 +2351,7 @@ export function ElectromagneticWaveSimulator() {
               {opticsMode !== 'dispersion' && (
                 <>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-stone-700 mb-1">
                       n₁ (milieu 1): {n1.toFixed(2)}
                     </label>
                     <input
@@ -2363,7 +2363,7 @@ export function ElectromagneticWaveSimulator() {
                       onChange={(e) => setN1(parseFloat(e.target.value))}
                       className="w-full"
                     />
-                    <div className="flex justify-between text-xs text-gray-500 mt-1">
+                    <div className="flex justify-between text-xs text-stone-500 mt-1">
                       <span>Air (1.0)</span>
                       <span>Eau (1.33)</span>
                       <span>Verre (1.5)</span>
@@ -2371,7 +2371,7 @@ export function ElectromagneticWaveSimulator() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-stone-700 mb-1">
                       n₂ (milieu 2): {n2.toFixed(2)}
                     </label>
                     <input
@@ -2388,7 +2388,7 @@ export function ElectromagneticWaveSimulator() {
               )}
               {opticsMode === 'dispersion' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-stone-700 mb-1">
                     Angle du prisme: {prismAngle}°
                   </label>
                   <input
@@ -2428,7 +2428,7 @@ export function ElectromagneticWaveSimulator() {
         </div>
 
         {/* Canvas / 3D View */}
-        <div className="bg-gray-50 rounded-xl p-4 mb-6">
+        <div className="bg-stone-50 rounded-xl p-4 mb-6">
           {mode === 'emwave' && view3D ? (
             <div className="h-[400px] rounded-lg overflow-hidden">
               <EMWave3DView
@@ -2467,32 +2467,32 @@ export function ElectromagneticWaveSimulator() {
 
         {/* 3D View Instructions */}
         {mode === 'emwave' && view3D && (
-          <div className="mb-6 p-3 bg-violet-50 rounded-lg text-sm text-violet-700">
+          <div className="mb-6 p-3 bg-prune-50 rounded-lg text-sm text-prune-700">
             <span className="font-medium">Navigation 3D:</span> Clic gauche + glisser pour tourner,
             molette pour zoomer, clic droit + glisser pour déplacer.
-            <span className="ml-2 text-violet-500">
-              E oscille en Y (rouge), B oscille en X (bleu), propagation en Z.
+            <span className="ml-2 text-prune-500">
+              E oscille en Y, B oscille en X — les deux champs sont perpendiculaires entre eux et à la propagation, en Z.
             </span>
           </div>
         )}
 
         {mode === 'maxwell' && view3D && (
-          <div className="mb-6 p-3 bg-violet-50 rounded-lg text-sm text-violet-700">
+          <div className="mb-6 p-3 bg-prune-50 rounded-lg text-sm text-prune-700">
             <span className="font-medium">Navigation 3D:</span> Clic gauche + glisser pour tourner,
             molette pour zoomer. Cliquez sur une charge pour la sélectionner.
-            <span className="ml-2 text-violet-500">
+            <span className="ml-2 text-prune-500">
               Utilisez les boutons en bas à gauche pour ajouter/supprimer des charges.
             </span>
           </div>
         )}
 
         {/* Formulas */}
-        <div className="bg-violet-50 rounded-xl p-4">
-          <h3 className="font-semibold text-violet-900 mb-3">Formules</h3>
+        <div className="bg-prune-50 rounded-xl p-4">
+          <h3 className="font-semibold text-prune-900 mb-3">Formules</h3>
 
           {mode === 'emwave' && (
             <div className="space-y-2">
-              <div className="text-sm text-violet-800">
+              <div className="text-sm text-prune-800">
                 <BlockMath math="E(z,t) = E_0 \sin(kz - \omega t) \quad \text{(Champ électrique)}" />
                 <BlockMath math="B(z,t) = \frac{E_0}{c} \sin(kz - \omega t) \quad \text{(Champ magnétique)}" />
                 <BlockMath math="\vec{S} = \frac{1}{\mu_0} \vec{E} \times \vec{B} \quad \text{(Vecteur de Poynting)}" />
@@ -2503,7 +2503,7 @@ export function ElectromagneticWaveSimulator() {
 
           {mode === 'polarization' && (
             <div className="space-y-2">
-              <div className="text-sm text-violet-800">
+              <div className="text-sm text-prune-800">
                 {polarizationType === 'linear' && (
                   <BlockMath math="E_x = E_0 \cos\theta \sin(\omega t), \quad E_y = E_0 \sin\theta \sin(\omega t)" />
                 )}
@@ -2525,7 +2525,7 @@ export function ElectromagneticWaveSimulator() {
 
           {mode === 'spectrum' && (
             <div className="space-y-2">
-              <div className="text-sm text-violet-800">
+              <div className="text-sm text-prune-800">
                 <BlockMath math="c = \lambda f" />
                 <BlockMath math="E = hf = \frac{hc}{\lambda}" />
                 <p className="mt-2">Pour λ = {wavelength} nm: f = {(c / (wavelength * 1e-9)).toExponential(2)} Hz</p>
@@ -2535,7 +2535,7 @@ export function ElectromagneticWaveSimulator() {
 
           {mode === 'maxwell' && (
             <div className="space-y-2">
-              <div className="text-sm text-violet-800">
+              <div className="text-sm text-prune-800">
                 <p className="font-semibold mb-2">Équations de Maxwell:</p>
                 <BlockMath math="\nabla \cdot \vec{E} = \frac{\rho}{\epsilon_0} \quad \text{(Gauss - sources de E)}" />
                 <BlockMath math="\nabla \times \vec{B} = \mu_0 \vec{J} + \mu_0 \epsilon_0 \frac{\partial \vec{E}}{\partial t} \quad \text{(Ampère - courant crée B)}" />
@@ -2563,7 +2563,7 @@ export function ElectromagneticWaveSimulator() {
 
           {mode === 'young' && (
             <div className="space-y-2">
-              <div className="text-sm text-violet-800">
+              <div className="text-sm text-prune-800">
                 <p className="font-semibold mb-2">
                   {numSlits === 1 ? 'Diffraction par une fente' :
                    numSlits === 2 ? 'Interférence de Young (2 fentes)' :
@@ -2576,10 +2576,10 @@ export function ElectromagneticWaveSimulator() {
                 ) : numSlits > 2 ? (
                   <>
                     <BlockMath math={`I = I_0 \\left(\\frac{\\sin(N\\delta/2)}{\\sin(\\delta/2)}\\right)^2 \\cdot \\text{sinc}^2(\\beta)`} />
-                    <p className="text-xs text-violet-600 mt-1">
+                    <p className="text-xs text-prune-600 mt-1">
                       où δ = 2πdy/(λL), β = πay/(λL), N = {numSlits}
                     </p>
-                    <p className="text-xs text-violet-600 mt-2">
+                    <p className="text-xs text-prune-600 mt-2">
                       <strong>N-1 = {numSlits - 1}</strong> minima secondaires entre chaque maximum principal
                     </p>
                   </>
@@ -2592,7 +2592,7 @@ export function ElectromagneticWaveSimulator() {
 
           {mode === 'diffraction' && (
             <div className="space-y-2">
-              <div className="text-sm text-violet-800">
+              <div className="text-sm text-prune-800">
                 <BlockMath math="I(\theta) = I_0 \left(\frac{\sin\beta}{\beta}\right)^2, \quad \beta = \frac{\pi a \sin\theta}{\lambda}" />
                 <BlockMath math="a \sin\theta_n = n\lambda \quad \text{(Minima, } n \neq 0\text{)}" />
                 <BlockMath math="\Delta\theta_{central} = \frac{2\lambda}{a}" />
@@ -2602,7 +2602,7 @@ export function ElectromagneticWaveSimulator() {
 
           {mode === 'bragg' && (
             <div className="space-y-2">
-              <div className="text-sm text-violet-800">
+              <div className="text-sm text-prune-800">
                 <BlockMath math="2d\sin\theta = n\lambda \quad \text{(Loi de Bragg)}" />
                 <BlockMath math="d\sin\theta = m\lambda \quad \text{(Réseau de diffraction)}" />
                 {getBraggAngle() !== null && (
@@ -2616,19 +2616,19 @@ export function ElectromagneticWaveSimulator() {
 
           {mode === 'optics' && (
             <div className="space-y-2">
-              <div className="text-sm text-violet-800">
+              <div className="text-sm text-prune-800">
                 <BlockMath math="n_1 \sin\theta_1 = n_2 \sin\theta_2 \quad \text{(Loi de Snell-Descartes)}" />
                 <BlockMath math="\theta_r = \theta_i \quad \text{(Loi de la réflexion)}" />
                 {opticsMode === 'totalReflection' && (
                   <>
                     <BlockMath math="\theta_c = \arcsin\left(\frac{n_2}{n_1}\right) \quad \text{(Angle critique, } n_1 > n_2\text{)}" />
                     {n1 > n2 && (
-                      <p className="mt-2 text-violet-700">
+                      <p className="mt-2 text-prune-700">
                         Angle critique: θc = {(Math.asin(n2 / n1) * 180 / Math.PI).toFixed(1)}°
                       </p>
                     )}
                     {n1 <= n2 && (
-                      <p className="mt-2 text-amber-600">
+                      <p className="mt-2 text-ocre-600">
                         ⚠️ Pas de réflexion totale possible (n₁ ≤ n₂)
                       </p>
                     )}
@@ -2637,13 +2637,13 @@ export function ElectromagneticWaveSimulator() {
                 {opticsMode === 'dispersion' && (
                   <>
                     <BlockMath math="n(\lambda) = A + \frac{B}{\lambda^2} \quad \text{(Loi de Cauchy)}" />
-                    <p className="mt-2 text-violet-700">
+                    <p className="mt-2 text-prune-700">
                       L'indice de réfraction varie avec la longueur d'onde: les courtes λ (violet) sont plus réfractées.
                     </p>
                   </>
                 )}
                 {opticsMode === 'refraction' && (
-                  <p className="mt-2 text-violet-700">
+                  <p className="mt-2 text-prune-700">
                     Angle réfracté: θ₂ = {n1 / n2 * Math.sin(incidentAngle * Math.PI / 180) <= 1
                       ? (Math.asin(n1 / n2 * Math.sin(incidentAngle * Math.PI / 180)) * 180 / Math.PI).toFixed(1)
                       : '—'

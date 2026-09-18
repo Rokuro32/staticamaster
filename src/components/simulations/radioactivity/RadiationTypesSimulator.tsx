@@ -58,28 +58,28 @@ const RADIATIONS: RadiationType[] = [
   {
     id: 'alpha',
     label: 'Alpha (α)',
-    color: '#ef4444',
+    color: '#ca684a',
     symbol: '⁴₂He²⁺',
     penetration: { air: 80, paper: 5, aluminium: 0, lead: 0, concrete: 0 },
   },
   {
     id: 'beta',
     label: 'Bêta (β)',
-    color: '#3b82f6',
+    color: '#c29851',
     symbol: 'e⁻ / e⁺',
     penetration: { air: 200, paper: 120, aluminium: 15, lead: 0, concrete: 0 },
   },
   {
     id: 'gamma',
     label: 'Gamma (γ)',
-    color: '#a855f7',
+    color: '#b37895',
     symbol: 'γ',
     penetration: { air: 400, paper: 400, aluminium: 350, lead: 60, concrete: 100 },
   },
   {
     id: 'neutron',
     label: 'Neutron (n)',
-    color: '#64748b',
+    color: '#7e7871',
     symbol: 'n',
     penetration: { air: 400, paper: 350, aluminium: 300, lead: 250, concrete: 40 },
   },
@@ -93,11 +93,11 @@ interface ShieldMaterial {
 }
 
 const SHIELDS: ShieldMaterial[] = [
-  { id: 'air',       label: 'Air',          color: '#e0f2fe', thickness: 0 },
-  { id: 'paper',     label: 'Papier',       color: '#fef3c7', thickness: 30 },
-  { id: 'aluminium', label: 'Aluminium',    color: '#d1d5db', thickness: 40 },
-  { id: 'lead',      label: 'Plomb',        color: '#475569', thickness: 50 },
-  { id: 'concrete',  label: 'Béton',        color: '#a8a29e', thickness: 60 },
+  { id: 'air',       label: 'Air',          color: '#f0efee', thickness: 0 },
+  { id: 'paper',     label: 'Papier',       color: '#f6e8a2', thickness: 30 },
+  { id: 'aluminium', label: 'Aluminium',    color: '#d8d6d4', thickness: 40 },
+  { id: 'lead',      label: 'Plomb',        color: '#5d5853', thickness: 50 },
+  { id: 'concrete',  label: 'Béton',        color: '#a8a39e', thickness: 60 },
 ];
 
 // ---------------------------------------------------------------------------
@@ -185,19 +185,19 @@ export function RadiationTypesSimulator() {
     }
 
     // Draw
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.fillRect(0, 0, W, H);
 
     // Source
-    ctx.fillStyle = '#fbbf24';
+    ctx.fillStyle = '#e8c61a';
     ctx.beginPath();
     ctx.arc(sourceX, H / 2, 28, 0, Math.PI * 2);
     ctx.fill();
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.font = 'bold 18px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('☢', sourceX, H / 2 + 6);
-    ctx.fillStyle = '#fde68a';
+    ctx.fillStyle = '#f1db6f';
     ctx.font = '10px sans-serif';
     ctx.fillText('Source', sourceX, H / 2 + 44);
 
@@ -207,10 +207,10 @@ export function RadiationTypesSimulator() {
       ctx.globalAlpha = 0.7;
       ctx.fillRect(shieldX, 20, shield.thickness, H - 40);
       ctx.globalAlpha = 1;
-      ctx.strokeStyle = '#64748b';
+      ctx.strokeStyle = '#7e7871';
       ctx.lineWidth = 1;
       ctx.strokeRect(shieldX, 20, shield.thickness, H - 40);
-      ctx.fillStyle = '#e2e8f0';
+      ctx.fillStyle = '#eae9e8';
       ctx.font = '11px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(shield.label, shieldX + shield.thickness / 2, H - 8);
@@ -218,11 +218,11 @@ export function RadiationTypesSimulator() {
 
     // Détecteur
     const detX = shield.thickness > 0 ? shieldX + shield.thickness + 100 : 550;
-    ctx.fillStyle = '#1e293b';
+    ctx.fillStyle = '#2f2d2a';
     ctx.fillRect(detX, 40, 12, H - 80);
-    ctx.strokeStyle = '#64748b';
+    ctx.strokeStyle = '#7e7871';
     ctx.strokeRect(detX, 40, 12, H - 80);
-    ctx.fillStyle = '#cbd5e1';
+    ctx.fillStyle = '#d8d6d4';
     ctx.font = '10px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('Détecteur', detX + 6, H - 8);
@@ -264,10 +264,10 @@ export function RadiationTypesSimulator() {
   return (
     <section className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-gray-900">
+        <h2 className="text-3xl font-bold text-stone-900">
           Types de rayonnements ionisants
         </h2>
-        <p className="text-gray-600">
+        <p className="text-stone-600">
           Pouvoir de pénétration alpha, bêta, gamma et neutrons
         </p>
       </div>
@@ -277,13 +277,13 @@ export function RadiationTypesSimulator() {
           ref={canvasRef}
           width={W}
           height={H}
-          className="w-full max-w-[700px] mx-auto rounded-lg border border-gray-300"
+          className="w-full max-w-[700px] mx-auto rounded-lg border border-stone-300"
         />
 
         <div className="w-full max-w-[700px] space-y-3">
           {/* Rayonnements */}
           <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-sm text-gray-700 font-medium">Rayonnements :</span>
+            <span className="text-sm text-stone-700 font-medium">Rayonnements :</span>
             {RADIATIONS.map(r => (
               <button
                 key={r.id}
@@ -291,7 +291,7 @@ export function RadiationTypesSimulator() {
                 className={`px-3 py-1.5 text-xs rounded border font-medium transition-colors ${
                   activeRadiations.has(r.id)
                     ? 'text-white border-transparent'
-                    : 'bg-white text-gray-500 border-gray-300 hover:bg-gray-50'
+                    : 'bg-white text-stone-500 border-stone-300 hover:bg-stone-50'
                 }`}
                 style={activeRadiations.has(r.id) ? { backgroundColor: r.color } : undefined}
               >
@@ -302,16 +302,16 @@ export function RadiationTypesSimulator() {
 
           {/* Matériau */}
           <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-sm text-gray-700 font-medium">Blindage :</span>
-            <div className="flex rounded-lg overflow-hidden border border-gray-300">
+            <span className="text-sm text-stone-700 font-medium">Blindage :</span>
+            <div className="flex rounded-lg overflow-hidden border border-stone-300">
               {SHIELDS.map(s => (
                 <button
                   key={s.id}
                   onClick={() => { setShieldId(s.id); particlesRef.current = []; }}
                   className={`px-3 py-1.5 text-sm font-medium transition-colors ${
                     shieldId === s.id
-                      ? 'bg-slate-700 text-white'
-                      : 'bg-white text-gray-700 hover:bg-gray-50'
+                      ? 'bg-stone-700 text-white'
+                      : 'bg-white text-stone-700 hover:bg-stone-50'
                   }`}
                 >
                   {s.label}
@@ -326,18 +326,18 @@ export function RadiationTypesSimulator() {
       <div className="space-y-2">
         <CollapsiblePanel
           title="1. Rayonnement alpha (α)"
-          borderColor="border-red-500"
-          bgColor="bg-red-50"
-          textColor="text-red-800"
+          borderColor="border-brun-500"
+          bgColor="bg-brun-50"
+          textColor="text-brun-800"
           defaultOpen
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Un noyau <InlineMath math="^4_2\\text{He}" /> (2 protons + 2 neutrons) est éjecté :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`^A_Z\\text{X} \\to {}^{A-4}_{Z-2}\\text{Y} + {}^4_2\\text{He}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Particule lourde et chargée : <strong>très ionisante</strong> mais{' '}
             <strong>très peu pénétrante</strong>. Arrêtée par une feuille de papier ou
             quelques centimètres d&apos;air. Dangereuse en cas d&apos;ingestion ou
@@ -347,18 +347,18 @@ export function RadiationTypesSimulator() {
 
         <CollapsiblePanel
           title="2. Rayonnement bêta (β)"
-          borderColor="border-blue-500"
-          bgColor="bg-blue-50"
-          textColor="text-blue-800"
+          borderColor="border-gold-500"
+          bgColor="bg-gold-50"
+          textColor="text-gold-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             <strong>β⁻</strong> : un neutron se transforme en proton avec émission
             d&apos;un électron et d&apos;un antineutrino :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`^A_Z\\text{X} \\to {}^{A}_{Z+1}\\text{Y} + e^- + \\bar{\\nu}_e`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             <strong>β⁺</strong> : un proton se transforme en neutron avec émission d&apos;un
             positron. Le rayonnement β est arrêté par quelques millimètres d&apos;aluminium.
           </p>
@@ -366,19 +366,19 @@ export function RadiationTypesSimulator() {
 
         <CollapsiblePanel
           title="3. Rayonnement gamma (γ)"
-          borderColor="border-purple-500"
-          bgColor="bg-purple-50"
-          textColor="text-purple-800"
+          borderColor="border-prune-500"
+          bgColor="bg-prune-50"
+          textColor="text-prune-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Photon de haute énergie émis lors de la <strong>désexcitation</strong> d&apos;un
             noyau (souvent après une désintégration α ou β). Pas de changement de{' '}
             <InlineMath math="Z" /> ni de <InlineMath math="A" /> :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`^A_Z\\text{X}^* \\to {}^{A}_{Z}\\text{X} + \\gamma`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             <strong>Très pénétrant</strong> (onde électromagnétique sans masse ni charge).
             Atténué exponentiellement par la matière dense : plomb, béton épais.
           </p>
@@ -386,14 +386,14 @@ export function RadiationTypesSimulator() {
 
         <CollapsiblePanel
           title="4. Synthèse : pouvoir de pénétration"
-          borderColor="border-gray-500"
-          bgColor="bg-gray-50"
-          textColor="text-gray-700"
+          borderColor="border-stone-500"
+          bgColor="bg-stone-50"
+          textColor="text-stone-700"
         >
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-center border-collapse">
               <thead>
-                <tr className="border-b border-gray-300">
+                <tr className="border-b border-stone-300">
                   <th className="py-1 px-2 text-left">Rayonnement</th>
                   <th className="py-1 px-2">Papier</th>
                   <th className="py-1 px-2">Aluminium</th>
@@ -402,20 +402,20 @@ export function RadiationTypesSimulator() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b border-gray-200">
-                  <td className="py-1 px-2 text-left font-medium text-red-600">α</td>
+                <tr className="border-b border-stone-200">
+                  <td className="py-1 px-2 text-left font-medium text-brun-600">α</td>
                   <td>✓ arrêté</td><td>✓</td><td>✓</td><td>✓</td>
                 </tr>
-                <tr className="border-b border-gray-200">
-                  <td className="py-1 px-2 text-left font-medium text-blue-600">β</td>
+                <tr className="border-b border-stone-200">
+                  <td className="py-1 px-2 text-left font-medium text-gold-600">β</td>
                   <td>traverse</td><td>✓ arrêté</td><td>✓</td><td>✓</td>
                 </tr>
-                <tr className="border-b border-gray-200">
-                  <td className="py-1 px-2 text-left font-medium text-purple-600">γ</td>
+                <tr className="border-b border-stone-200">
+                  <td className="py-1 px-2 text-left font-medium text-prune-600">γ</td>
                   <td>traverse</td><td>traverse</td><td>atténué</td><td>atténué</td>
                 </tr>
                 <tr>
-                  <td className="py-1 px-2 text-left font-medium text-gray-600">n</td>
+                  <td className="py-1 px-2 text-left font-medium text-stone-600">n</td>
                   <td>traverse</td><td>traverse</td><td>traverse</td><td>atténué</td>
                 </tr>
               </tbody>

@@ -138,7 +138,7 @@ export function GreenhouseEffectSimulator() {
       ctx.clearRect(0, 0, width, height);
 
       // Draw space
-      ctx.fillStyle = '#0c0c24';
+      ctx.fillStyle = '#191817';
       ctx.fillRect(0, 0, width, spaceY);
 
       // Stars
@@ -156,15 +156,15 @@ export function GreenhouseEffectSimulator() {
       const sunY = 35;
       ctx.beginPath();
       const sunGrad = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, 35);
-      sunGrad.addColorStop(0, '#ffff99');
-      sunGrad.addColorStop(0.5, '#ffcc00');
-      sunGrad.addColorStop(1, '#ff880040');
+      sunGrad.addColorStop(0, '#e4e18b');
+      sunGrad.addColorStop(0.5, '#e8c517');
+      sunGrad.addColorStop(1, '#d9802640');
       ctx.fillStyle = sunGrad;
       ctx.arc(sunX, sunY, 35, 0, Math.PI * 2);
       ctx.fill();
 
       // Sun rays animation
-      ctx.strokeStyle = '#ffdd0060';
+      ctx.strokeStyle = '#e8c51760';
       ctx.lineWidth = 3;
       for (let i = 0; i < 12; i++) {
         const angle = (i / 12) * Math.PI * 2 + frame * 0.02;
@@ -178,25 +178,25 @@ export function GreenhouseEffectSimulator() {
 
       // Upper atmosphere (transparent to visible light)
       const upperAtmosGrad = ctx.createLinearGradient(0, spaceY, 0, atmosphereTop);
-      upperAtmosGrad.addColorStop(0, '#1a1a50');
-      upperAtmosGrad.addColorStop(1, '#4a90c2');
+      upperAtmosGrad.addColorStop(0, '#4e3c1c');
+      upperAtmosGrad.addColorStop(1, '#c0954c');
       ctx.fillStyle = upperAtmosGrad;
       ctx.fillRect(0, spaceY, width, atmosphereTop - spaceY);
 
       // Main atmosphere
       const atmosGrad = ctx.createLinearGradient(0, atmosphereTop, 0, groundY);
-      atmosGrad.addColorStop(0, '#87CEEB');
-      atmosGrad.addColorStop(0.5, '#a8d8ea');
-      atmosGrad.addColorStop(1, '#cce5f0');
+      atmosGrad.addColorStop(0, '#8eabbf');
+      atmosGrad.addColorStop(0.5, '#a0b8ca');
+      atmosGrad.addColorStop(1, '#e0dedc');
       ctx.fillStyle = atmosGrad;
       ctx.fillRect(0, atmosphereTop, width, groundY - atmosphereTop);
 
       // Greenhouse gas layer (more visible with more CO2)
       const ghgOpacity = Math.min(0.5, (co2Level - 150) / 600);
       const ghgGrad = ctx.createLinearGradient(0, greenhouseTop, 0, greenhouseBottom);
-      ghgGrad.addColorStop(0, `rgba(255, 150, 100, ${ghgOpacity * 0.3})`);
-      ghgGrad.addColorStop(0.5, `rgba(255, 120, 80, ${ghgOpacity})`);
-      ghgGrad.addColorStop(1, `rgba(255, 150, 100, ${ghgOpacity * 0.3})`);
+      ghgGrad.addColorStop(0, `rgba(226, 160, 93, ${ghgOpacity * 0.3})`);
+      ghgGrad.addColorStop(0.5, `rgba(208, 120, 93, ${ghgOpacity})`);
+      ghgGrad.addColorStop(1, `rgba(226, 160, 93, ${ghgOpacity * 0.3})`);
       ctx.fillStyle = ghgGrad;
       ctx.fillRect(0, greenhouseTop, width, greenhouseBottom - greenhouseTop);
 
@@ -205,31 +205,31 @@ export function GreenhouseEffectSimulator() {
         const wobble = Math.sin(frame * 0.05 + i) * 2;
         ctx.beginPath();
         ctx.arc(mol.x + wobble, mol.y, 6, 0, Math.PI * 2);
-        ctx.fillStyle = '#ff6b6b90';
+        ctx.fillStyle = '#d6887090';
         ctx.fill();
-        ctx.strokeStyle = '#ff4444';
+        ctx.strokeStyle = '#ce7155';
         ctx.lineWidth = 1;
         ctx.stroke();
 
         // CO2 label on some molecules
         if (i % 8 === 0) {
           ctx.font = '8px system-ui';
-          ctx.fillStyle = '#cc3333';
+          ctx.fillStyle = '#c65a39';
           ctx.fillText('CO₂', mol.x - 8, mol.y + 3);
         }
       });
 
       // Draw ground
       const groundGrad = ctx.createLinearGradient(0, groundY, 0, height);
-      groundGrad.addColorStop(0, '#3d8b40');
-      groundGrad.addColorStop(0.3, '#2d6b30');
-      groundGrad.addColorStop(1, '#1d4b20');
+      groundGrad.addColorStop(0, '#7d8e3a');
+      groundGrad.addColorStop(0.3, '#5f6c2c');
+      groundGrad.addColorStop(1, '#414a1e');
       ctx.fillStyle = groundGrad;
       ctx.fillRect(0, groundY, width, height - groundY);
 
       // Ground heat glow based on temperature
       const heatIntensity = Math.min(1, (groundTemp - 10) / 20);
-      ctx.fillStyle = `rgba(255, 100, 50, ${heatIntensity * 0.3})`;
+      ctx.fillStyle = `rgba(202, 103, 72, ${heatIntensity * 0.3})`;
       ctx.fillRect(0, groundY, width, 15);
 
       // Emit photons
@@ -319,8 +319,8 @@ export function GreenhouseEffectSimulator() {
             ctx.lineTo(photon.trail[i].x, photon.trail[i].y);
           }
           ctx.strokeStyle = photon.type === 'solar'
-            ? 'rgba(255, 220, 0, 0.4)'
-            : 'rgba(255, 80, 80, 0.4)';
+            ? 'rgba(232, 197, 23, 0.4)'
+            : 'rgba(208, 120, 93, 0.4)';
           ctx.lineWidth = 2;
           ctx.stroke();
         }
@@ -330,7 +330,7 @@ export function GreenhouseEffectSimulator() {
         const amplitude = photon.type === 'solar' ? 4 : 6;
 
         ctx.beginPath();
-        ctx.strokeStyle = photon.type === 'solar' ? '#ffdd00' : '#ff4444';
+        ctx.strokeStyle = photon.type === 'solar' ? '#e8c517' : '#ce7155';
         ctx.lineWidth = photon.type === 'solar' ? 2 : 3;
 
         const angle = Math.atan2(photon.vy, photon.vx);
@@ -350,14 +350,14 @@ export function GreenhouseEffectSimulator() {
         // Glow effect
         ctx.beginPath();
         ctx.arc(photon.x, photon.y, photon.type === 'solar' ? 8 : 10, 0, Math.PI * 2);
-        const glowColor = photon.type === 'solar' ? 'rgba(255, 220, 0, 0.3)' : 'rgba(255, 80, 80, 0.3)';
+        const glowColor = photon.type === 'solar' ? 'rgba(232, 197, 23, 0.3)' : 'rgba(208, 120, 93, 0.3)';
         ctx.fillStyle = glowColor;
         ctx.fill();
 
         // Arrow head showing direction
         const arrowSize = 6;
         ctx.beginPath();
-        ctx.fillStyle = photon.type === 'solar' ? '#ffdd00' : '#ff4444';
+        ctx.fillStyle = photon.type === 'solar' ? '#e8c517' : '#ce7155';
         const headX = photon.x + Math.cos(angle) * 8;
         const headY = photon.y + Math.sin(angle) * 8;
         ctx.moveTo(headX, headY);
@@ -379,10 +379,10 @@ export function GreenhouseEffectSimulator() {
         ctx.fillStyle = '#ffffff';
         ctx.fillText('ESPACE', 10, 45);
 
-        ctx.fillStyle = '#1a4a70';
+        ctx.fillStyle = '#664e24';
         ctx.fillText('Haute atmosphère', 10, spaceY + 30);
 
-        ctx.fillStyle = '#8b4513';
+        ctx.fillStyle = '#864f18';
         ctx.fillText('COUCHE DE GAZ À EFFET DE SERRE', 10, greenhouseTop + 25);
         ctx.font = '11px system-ui';
         ctx.fillText(`(CO₂, H₂O, CH₄, N₂O)`, 10, greenhouseTop + 42);
@@ -404,7 +404,7 @@ export function GreenhouseEffectSimulator() {
         // Solar
         ctx.beginPath();
         ctx.arc(width - 180, 115, 6, 0, Math.PI * 2);
-        ctx.fillStyle = '#ffdd00';
+        ctx.fillStyle = '#e8c517';
         ctx.fill();
         ctx.fillStyle = '#333';
         ctx.font = '11px system-ui';
@@ -413,7 +413,7 @@ export function GreenhouseEffectSimulator() {
         // IR
         ctx.beginPath();
         ctx.arc(width - 180, 140, 6, 0, Math.PI * 2);
-        ctx.fillStyle = '#ff4444';
+        ctx.fillStyle = '#ce7155';
         ctx.fill();
         ctx.fillStyle = '#333';
         ctx.fillText('Rayonnement infrarouge', width - 168, 144);
@@ -426,7 +426,7 @@ export function GreenhouseEffectSimulator() {
       ctx.beginPath();
       ctx.moveTo(150, 20);
       ctx.lineTo(250, 100);
-      ctx.strokeStyle = '#ffdd00';
+      ctx.strokeStyle = '#e8c517';
       ctx.lineWidth = 4;
       ctx.stroke();
       ctx.beginPath();
@@ -434,7 +434,7 @@ export function GreenhouseEffectSimulator() {
       ctx.lineTo(240, 85);
       ctx.lineTo(235, 100);
       ctx.closePath();
-      ctx.fillStyle = '#ffdd00';
+      ctx.fillStyle = '#e8c517';
       ctx.fill();
 
       // Outgoing IR arrow (size based on escape rate)
@@ -442,7 +442,7 @@ export function GreenhouseEffectSimulator() {
       ctx.beginPath();
       ctx.moveTo(width - 150, 100);
       ctx.lineTo(width - 100, 20);
-      ctx.strokeStyle = '#ff4444';
+      ctx.strokeStyle = '#ce7155';
       ctx.lineWidth = 2 + escapeRate * 3;
       ctx.stroke();
 
@@ -482,11 +482,11 @@ export function GreenhouseEffectSimulator() {
     : 0;
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-orange-500 to-red-500 p-4">
+      <div className="bg-gradient-to-r from-terre-500 to-brun-500 p-4">
         <h3 className="text-lg font-semibold text-white">Effet de serre</h3>
-        <p className="text-orange-100 text-sm">
+        <p className="text-terre-100 text-sm">
           Visualisez comment les gaz à effet de serre piègent le rayonnement infrarouge
         </p>
       </div>
@@ -499,7 +499,7 @@ export function GreenhouseEffectSimulator() {
               ref={canvasRef}
               width={800}
               height={500}
-              className="w-full rounded-lg border border-gray-300 shadow-inner"
+              className="w-full rounded-lg border border-stone-300 shadow-inner"
             />
 
             {/* Controls */}
@@ -508,15 +508,15 @@ export function GreenhouseEffectSimulator() {
                 onClick={() => setIsPlaying(!isPlaying)}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                   isPlaying
-                    ? 'bg-red-100 text-red-700 hover:bg-red-200'
-                    : 'bg-green-100 text-green-700 hover:bg-green-200'
+                    ? 'bg-brun-100 text-brun-700 hover:bg-brun-200'
+                    : 'bg-olive-100 text-olive-700 hover:bg-olive-200'
                 }`}
               >
                 {isPlaying ? '⏸ Pause' : '▶ Lecture'}
               </button>
               <button
                 onClick={resetSimulation}
-                className="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 font-medium transition-colors"
+                className="px-4 py-2 rounded-lg bg-stone-100 text-stone-700 hover:bg-stone-200 font-medium transition-colors"
               >
                 🔄 Réinitialiser
               </button>
@@ -527,10 +527,10 @@ export function GreenhouseEffectSimulator() {
                   onChange={(e) => setShowLabels(e.target.checked)}
                   className="rounded"
                 />
-                <span className="text-sm text-gray-600">Labels</span>
+                <span className="text-sm text-stone-600">Labels</span>
               </label>
               <div className="flex items-center gap-2 ml-auto">
-                <span className="text-sm text-gray-500">Vitesse:</span>
+                <span className="text-sm text-stone-500">Vitesse:</span>
                 <input
                   type="range"
                   min="0.5"
@@ -538,9 +538,9 @@ export function GreenhouseEffectSimulator() {
                   step="0.5"
                   value={speed}
                   onChange={(e) => setSpeed(Number(e.target.value))}
-                  className="w-20 accent-orange-500"
+                  className="w-20 accent-terre-500"
                 />
-                <span className="text-sm text-gray-700">{speed}x</span>
+                <span className="text-sm text-stone-700">{speed}x</span>
               </div>
             </div>
           </div>
@@ -548,8 +548,8 @@ export function GreenhouseEffectSimulator() {
           {/* Parameters & Stats */}
           <div className="space-y-4">
             {/* CO2 Level */}
-            <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-lg p-4 border border-orange-200">
-              <label className="block text-sm font-semibold text-orange-900 mb-3">
+            <div className="bg-gradient-to-br from-terre-50 to-brun-50 rounded-lg p-4 border border-terre-200">
+              <label className="block text-sm font-semibold text-terre-900 mb-3">
                 Concentration de CO₂
               </label>
               <input
@@ -558,12 +558,12 @@ export function GreenhouseEffectSimulator() {
                 max="800"
                 value={co2Level}
                 onChange={(e) => setCo2Level(Number(e.target.value))}
-                className="w-full accent-orange-500 h-2"
+                className="w-full accent-terre-500 h-2"
               />
               <div className="flex justify-between items-center mt-2">
-                <span className="text-xs text-orange-600">200 ppm</span>
-                <span className="text-xl font-bold text-orange-700">{co2Level} ppm</span>
-                <span className="text-xs text-orange-600">800 ppm</span>
+                <span className="text-xs text-terre-600">200 ppm</span>
+                <span className="text-xl font-bold text-terre-700">{co2Level} ppm</span>
+                <span className="text-xs text-terre-600">800 ppm</span>
               </div>
 
               {/* Presets */}
@@ -574,8 +574,8 @@ export function GreenhouseEffectSimulator() {
                     onClick={() => setCo2Level(preset.co2)}
                     className={`px-2 py-1 text-xs rounded-full transition-colors ${
                       co2Level === preset.co2
-                        ? 'bg-orange-500 text-white'
-                        : 'bg-white text-orange-700 hover:bg-orange-100 border border-orange-200'
+                        ? 'bg-terre-500 text-white'
+                        : 'bg-white text-terre-700 hover:bg-terre-100 border border-terre-200'
                     }`}
                   >
                     {preset.emoji} {preset.name}
@@ -585,69 +585,69 @@ export function GreenhouseEffectSimulator() {
             </div>
 
             {/* Temperature */}
-            <div className="bg-gradient-to-br from-red-100 to-orange-100 rounded-lg p-4 border border-red-200">
-              <div className="text-sm font-semibold text-red-900 mb-1">
+            <div className="bg-gradient-to-br from-brun-100 to-terre-100 rounded-lg p-4 border border-brun-200">
+              <div className="text-sm font-semibold text-brun-900 mb-1">
                 Température de surface
               </div>
               <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-bold text-red-600">{groundTemp}</span>
-                <span className="text-xl text-red-500">°C</span>
+                <span className="text-4xl font-bold text-brun-600">{groundTemp}</span>
+                <span className="text-xl text-brun-500">°C</span>
               </div>
-              <div className="mt-2 h-3 bg-gradient-to-r from-blue-400 via-green-400 via-yellow-400 to-red-500 rounded-full overflow-hidden">
+              <div className="mt-2 h-3 bg-gradient-to-r from-gold-400 via-olive-400 via-ocre-400 to-brun-500 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-white/50 transition-all duration-300"
                   style={{ marginLeft: `${((groundTemp + 20) / 50) * 100}%`, width: '3px' }}
                 />
               </div>
-              <div className="flex justify-between text-xs text-gray-500 mt-1">
+              <div className="flex justify-between text-xs text-stone-500 mt-1">
                 <span>-20°C</span>
                 <span>+30°C</span>
               </div>
             </div>
 
             {/* Stats */}
-            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-              <div className="text-sm font-semibold text-gray-700 mb-3 flex items-center justify-between">
+            <div className="bg-stone-50 rounded-lg p-4 border border-stone-200">
+              <div className="text-sm font-semibold text-stone-700 mb-3 flex items-center justify-between">
                 Statistiques en temps réel
-                <span className={`w-2 h-2 rounded-full ${isPlaying ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`} />
+                <span className={`w-2 h-2 rounded-full ${isPlaying ? 'bg-olive-500 animate-pulse' : 'bg-stone-400'}`} />
               </div>
 
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between items-center">
-                  <span className="text-yellow-600 flex items-center gap-1">
-                    <span className="w-3 h-3 rounded-full bg-yellow-400" />
+                  <span className="text-ocre-600 flex items-center gap-1">
+                    <span className="w-3 h-3 rounded-full bg-ocre-400" />
                     Solaire absorbé
                   </span>
                   <span className="font-mono font-bold">{stats.solarAbsorbed}</span>
                 </div>
 
                 <div className="flex justify-between items-center">
-                  <span className="text-red-600 flex items-center gap-1">
-                    <span className="w-3 h-3 rounded-full bg-red-400" />
+                  <span className="text-brun-600 flex items-center gap-1">
+                    <span className="w-3 h-3 rounded-full bg-brun-400" />
                     IR émis (sol)
                   </span>
                   <span className="font-mono font-bold">{stats.irEmittedUp}</span>
                 </div>
 
                 <div className="flex justify-between items-center">
-                  <span className="text-orange-600 flex items-center gap-1">
-                    <span className="w-3 h-3 rounded-full bg-orange-400" />
+                  <span className="text-terre-600 flex items-center gap-1">
+                    <span className="w-3 h-3 rounded-full bg-terre-400" />
                     IR absorbé (GES)
                   </span>
                   <span className="font-mono font-bold">{stats.irAbsorbed}</span>
                 </div>
 
                 <div className="flex justify-between items-center">
-                  <span className="text-purple-600 flex items-center gap-1">
-                    <span className="w-3 h-3 rounded-full bg-purple-400" />
+                  <span className="text-prune-600 flex items-center gap-1">
+                    <span className="w-3 h-3 rounded-full bg-prune-400" />
                     IR renvoyé au sol
                   </span>
                   <span className="font-mono font-bold">{stats.irReturnedToGround}</span>
                 </div>
 
                 <div className="flex justify-between items-center">
-                  <span className="text-blue-600 flex items-center gap-1">
-                    <span className="w-3 h-3 rounded-full bg-blue-400" />
+                  <span className="text-gold-600 flex items-center gap-1">
+                    <span className="w-3 h-3 rounded-full bg-gold-400" />
                     IR échappé (espace)
                   </span>
                   <span className="font-mono font-bold">{stats.irEscaped}</span>
@@ -655,14 +655,14 @@ export function GreenhouseEffectSimulator() {
               </div>
 
               {/* Trapping indicator */}
-              <div className="mt-4 pt-3 border-t border-gray-200">
+              <div className="mt-4 pt-3 border-t border-stone-200">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="text-xs text-gray-500">Taux de piégeage IR</span>
-                  <span className="font-bold text-orange-600">{trappingRate}%</span>
+                  <span className="text-xs text-stone-500">Taux de piégeage IR</span>
+                  <span className="font-bold text-terre-600">{trappingRate}%</span>
                 </div>
-                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-2 bg-stone-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-orange-400 to-red-500 transition-all duration-300"
+                    className="h-full bg-gradient-to-r from-terre-400 to-brun-500 transition-all duration-300"
                     style={{ width: `${trappingRate}%` }}
                   />
                 </div>
@@ -672,29 +672,29 @@ export function GreenhouseEffectSimulator() {
         </div>
 
         {/* Explanation */}
-        <div className="mt-6 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-6 border border-orange-100">
-          <h4 className="font-semibold text-gray-900 mb-4">Mécanisme de l'effet de serre</h4>
+        <div className="mt-6 bg-gradient-to-r from-terre-50 to-brun-50 rounded-lg p-6 border border-terre-100">
+          <h4 className="font-semibold text-stone-900 mb-4">Mécanisme de l'effet de serre</h4>
           <div className="grid md:grid-cols-3 gap-4">
-            <div className="bg-white rounded-lg p-4 border border-orange-200">
+            <div className="bg-white rounded-lg p-4 border border-terre-200">
               <div className="text-2xl mb-2">☀️ → 🌍</div>
-              <div className="font-medium text-gray-800">1. Entrée d'énergie</div>
-              <p className="text-sm text-gray-600 mt-1">
+              <div className="font-medium text-stone-800">1. Entrée d'énergie</div>
+              <p className="text-sm text-stone-600 mt-1">
                 Le rayonnement solaire (lumière visible) traverse l'atmosphère
                 et est absorbé par la surface terrestre.
               </p>
             </div>
-            <div className="bg-white rounded-lg p-4 border border-orange-200">
+            <div className="bg-white rounded-lg p-4 border border-terre-200">
               <div className="text-2xl mb-2">🌍 → 🔴</div>
-              <div className="font-medium text-gray-800">2. Émission IR</div>
-              <p className="text-sm text-gray-600 mt-1">
+              <div className="font-medium text-stone-800">2. Émission IR</div>
+              <p className="text-sm text-stone-600 mt-1">
                 La Terre chauffée émet un rayonnement infrarouge
                 (chaleur) vers l'atmosphère.
               </p>
             </div>
-            <div className="bg-white rounded-lg p-4 border border-orange-200">
+            <div className="bg-white rounded-lg p-4 border border-terre-200">
               <div className="text-2xl mb-2">🔴 ↔️ CO₂</div>
-              <div className="font-medium text-gray-800">3. Piégeage</div>
-              <p className="text-sm text-gray-600 mt-1">
+              <div className="font-medium text-stone-800">3. Piégeage</div>
+              <p className="text-sm text-stone-600 mt-1">
                 Les GES absorbent l'IR et le réémettent dans toutes les directions,
                 dont vers le sol = réchauffement.
               </p>

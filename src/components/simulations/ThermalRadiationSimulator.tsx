@@ -64,7 +64,7 @@ export function ThermalRadiationSimulator() {
     let r, g, b;
 
     if (wavelength < 380) {
-      return 'rgb(50, 0, 80)'; // UV - dark purple
+      return 'rgb(51, 29, 40)'; // UV - dark purple
     } else if (wavelength < 440) {
       r = -(wavelength - 440) / (440 - 380);
       g = 0;
@@ -90,7 +90,7 @@ export function ThermalRadiationSimulator() {
       g = 0;
       b = 0;
     } else {
-      return 'rgb(80, 0, 0)'; // IR - dark red
+      return 'rgb(62, 28, 18)'; // IR - dark red
     }
 
     return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
@@ -129,7 +129,7 @@ export function ThermalRadiationSimulator() {
     const plotHeight = height - padding.top - padding.bottom;
 
     // Clear
-    ctx.fillStyle = '#1a1a2e';
+    ctx.fillStyle = '#262422';
     ctx.fillRect(0, 0, width, height);
 
     // Determine wavelength range based on view mode
@@ -166,7 +166,7 @@ export function ThermalRadiationSimulator() {
     }
 
     // Draw Planck curves
-    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4'];
+    const colors = ['#c96445', '#c1964e', '#6d7a38', '#8e5270'];  // brun, or, olive, prune  // brun, or, olive, prune
     temps.forEach((T, idx) => {
       ctx.strokeStyle = colors[idx];
       ctx.lineWidth = 2;
@@ -296,11 +296,11 @@ export function ThermalRadiationSimulator() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-red-500 to-orange-500 p-4">
+      <div className="bg-gradient-to-r from-brun-500 to-terre-500 p-4">
         <h3 className="text-lg font-semibold text-white">Rayonnement thermique et énergie transportée</h3>
-        <p className="text-red-100 text-sm">
+        <p className="text-brun-100 text-sm">
           Loi de Planck, loi de Wien et loi de Stefan-Boltzmann
         </p>
       </div>
@@ -319,8 +319,8 @@ export function ThermalRadiationSimulator() {
               onClick={() => setViewMode(mode.id as ViewMode)}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 viewMode === mode.id
-                  ? 'bg-red-500 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-brun-500 text-white'
+                  : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
               }`}
             >
               {mode.icon} {mode.label}
@@ -347,7 +347,7 @@ export function ThermalRadiationSimulator() {
                   onChange={(e) => setShowWienPeak(e.target.checked)}
                   className="rounded"
                 />
-                <span className="text-sm text-gray-600">Pic de Wien</span>
+                <span className="text-sm text-stone-600">Pic de Wien</span>
               </label>
               <label className="flex items-center gap-2">
                 <input
@@ -356,7 +356,7 @@ export function ThermalRadiationSimulator() {
                   onChange={(e) => setLogScale(e.target.checked)}
                   className="rounded"
                 />
-                <span className="text-sm text-gray-600">Échelle log</span>
+                <span className="text-sm text-stone-600">Échelle log</span>
               </label>
             </div>
           </div>
@@ -364,8 +364,8 @@ export function ThermalRadiationSimulator() {
           {/* Controls */}
           <div className="space-y-6">
             {/* Temperature 1 */}
-            <div className="bg-red-50 rounded-lg p-4">
-              <label className="block text-sm font-medium text-red-900 mb-2">
+            <div className="bg-brun-50 rounded-lg p-4">
+              <label className="block text-sm font-medium text-brun-900 mb-2">
                 Température 1
               </label>
               <input
@@ -374,16 +374,16 @@ export function ThermalRadiationSimulator() {
                 max="10000"
                 value={temperature}
                 onChange={(e) => setTemperature(Number(e.target.value))}
-                className="w-full accent-red-500"
+                className="w-full accent-brun-500"
               />
               <div className="flex justify-between items-center mt-2">
                 <span
-                  className="text-2xl font-bold"
+                  className="text-2xl font-bold px-2.5 py-0.5 rounded-lg bg-stone-800"
                   style={{ color: temperatureToColor(temperature) }}
                 >
                   {temperature} K
                 </span>
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-stone-500">
                   ({(temperature - 273).toFixed(0)}°C)
                 </span>
               </div>
@@ -396,8 +396,8 @@ export function ThermalRadiationSimulator() {
                     onClick={() => setTemperature(preset.temp)}
                     className={`px-2 py-1 text-xs rounded transition-colors ${
                       temperature === preset.temp
-                        ? 'bg-red-500 text-white'
-                        : 'bg-white text-gray-600 hover:bg-red-100'
+                        ? 'bg-brun-500 text-white'
+                        : 'bg-white text-stone-600 hover:bg-brun-100'
                     }`}
                     title={preset.name}
                   >
@@ -409,8 +409,8 @@ export function ThermalRadiationSimulator() {
 
             {/* Temperature 2 (for comparison mode) */}
             {viewMode === 'comparison' && (
-              <div className="bg-teal-50 rounded-lg p-4">
-                <label className="block text-sm font-medium text-teal-900 mb-2">
+              <div className="bg-ardoise-50 rounded-lg p-4">
+                <label className="block text-sm font-medium text-ardoise-900 mb-2">
                   Température 2
                 </label>
                 <input
@@ -419,16 +419,16 @@ export function ThermalRadiationSimulator() {
                   max="10000"
                   value={temperature2}
                   onChange={(e) => setTemperature2(Number(e.target.value))}
-                  className="w-full accent-teal-500"
+                  className="w-full accent-ardoise-500"
                 />
                 <div className="flex justify-between items-center mt-2">
                   <span
-                    className="text-2xl font-bold"
+                    className="text-2xl font-bold px-2.5 py-0.5 rounded-lg bg-stone-800"
                     style={{ color: temperatureToColor(temperature2) }}
                   >
                     {temperature2} K
                   </span>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-stone-500">
                     ({(temperature2 - 273).toFixed(0)}°C)
                   </span>
                 </div>
@@ -439,7 +439,7 @@ export function ThermalRadiationSimulator() {
             {viewMode === 'powerBalance' && (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-stone-700 mb-2">
                     Émissivité ε
                   </label>
                   <input
@@ -451,10 +451,10 @@ export function ThermalRadiationSimulator() {
                     onChange={(e) => setEmissivity(Number(e.target.value))}
                     className="w-full"
                   />
-                  <div className="text-center text-sm text-gray-500">{emissivity.toFixed(2)}</div>
+                  <div className="text-center text-sm text-stone-500">{emissivity.toFixed(2)}</div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-stone-700 mb-2">
                     Surface A (m²)
                   </label>
                   <input
@@ -466,42 +466,42 @@ export function ThermalRadiationSimulator() {
                     onChange={(e) => setSurfaceArea(Number(e.target.value))}
                     className="w-full"
                   />
-                  <div className="text-center text-sm text-gray-500">{surfaceArea.toFixed(2)} m²</div>
+                  <div className="text-center text-sm text-stone-500">{surfaceArea.toFixed(2)} m²</div>
                 </div>
               </div>
             )}
 
             {/* Results */}
-            <div className="bg-gray-50 rounded-lg p-4 space-y-3">
-              <div className="text-sm font-medium text-gray-700 mb-2">Résultats</div>
+            <div className="bg-stone-50 rounded-lg p-4 space-y-3">
+              <div className="text-sm font-medium text-stone-700 mb-2">Résultats</div>
 
               <div className="p-3 bg-white rounded border">
-                <div className="text-xs text-gray-500 mb-1">Loi de Wien (λmax)</div>
-                <div className="font-mono text-lg text-red-600">
+                <div className="text-xs text-stone-500 mb-1">Loi de Wien (λmax)</div>
+                <div className="font-mono text-lg text-brun-600">
                   {peak1 > 1000 ? `${(peak1/1000).toFixed(2)} µm` : `${Math.round(peak1)} nm`}
                 </div>
-                <div className="text-xs text-gray-400">
+                <div className="text-xs text-stone-400">
                   {peak1 < 380 ? 'UV' : peak1 < 780 ? 'Visible' : 'Infrarouge'}
                 </div>
               </div>
 
               <div className="p-3 bg-white rounded border">
-                <div className="text-xs text-gray-500 mb-1">Puissance émise (Stefan-Boltzmann)</div>
-                <div className="font-mono text-lg text-orange-600">
+                <div className="text-xs text-stone-500 mb-1">Puissance émise (Stefan-Boltzmann)</div>
+                <div className="font-mono text-lg text-terre-600">
                   {formatPower(power1)}
                 </div>
-                <div className="text-xs text-gray-400">
+                <div className="text-xs text-stone-400">
                   par {surfaceArea} m² de surface
                 </div>
               </div>
 
               {viewMode === 'comparison' && (
-                <div className="p-3 bg-white rounded border border-teal-200">
-                  <div className="text-xs text-gray-500 mb-1">Rapport des puissances</div>
-                  <div className="font-mono text-lg text-teal-600">
+                <div className="p-3 bg-white rounded border border-ardoise-200">
+                  <div className="text-xs text-stone-500 mb-1">Rapport des puissances</div>
+                  <div className="font-mono text-lg text-ardoise-600">
                     P₁/P₂ = {(power1/power2).toFixed(2)}
                   </div>
-                  <div className="text-xs text-gray-400">
+                  <div className="text-xs text-stone-400">
                     (T₁/T₂)⁴ = {Math.pow(temperature/temperature2, 4).toFixed(2)}
                   </div>
                 </div>
@@ -511,27 +511,27 @@ export function ThermalRadiationSimulator() {
         </div>
 
         {/* Formulas */}
-        <div className="mt-6 bg-gradient-to-r from-red-50 to-orange-50 rounded-lg p-6">
-          <h4 className="font-semibold text-gray-900 mb-4">Lois du rayonnement thermique</h4>
+        <div className="mt-6 bg-gradient-to-r from-brun-50 to-terre-50 rounded-lg p-6">
+          <h4 className="font-semibold text-stone-900 mb-4">Lois du rayonnement thermique</h4>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="bg-white rounded-lg p-4 border">
-              <div className="text-sm font-medium text-gray-700 mb-2">Loi de Planck</div>
+              <div className="text-sm font-medium text-stone-700 mb-2">Loi de Planck</div>
               <BlockMath math="B(\lambda, T) = \frac{2hc^2}{\lambda^5} \cdot \frac{1}{e^{\frac{hc}{\lambda k_B T}} - 1}" />
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-stone-500 mt-2">
                 Distribution spectrale de la radiance d'un corps noir
               </p>
             </div>
             <div className="bg-white rounded-lg p-4 border">
-              <div className="text-sm font-medium text-gray-700 mb-2">Loi de Wien</div>
+              <div className="text-sm font-medium text-stone-700 mb-2">Loi de Wien</div>
               <BlockMath math="\lambda_{max} = \frac{b}{T}" />
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-stone-500 mt-2">
                 où <InlineMath math="b = 2,898 \times 10^{-3}" /> m·K
               </p>
             </div>
             <div className="bg-white rounded-lg p-4 border">
-              <div className="text-sm font-medium text-gray-700 mb-2">Loi de Stefan-Boltzmann</div>
+              <div className="text-sm font-medium text-stone-700 mb-2">Loi de Stefan-Boltzmann</div>
               <BlockMath math="P = \varepsilon \sigma A T^4" />
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-stone-500 mt-2">
                 où <InlineMath math="\sigma = 5,67 \times 10^{-8}" /> W/(m²·K⁴)
               </p>
             </div>
@@ -540,17 +540,17 @@ export function ThermalRadiationSimulator() {
 
         {/* Applications */}
         <div className="mt-4 grid md:grid-cols-2 gap-4">
-          <div className="bg-yellow-50 rounded-lg p-4">
-            <h5 className="font-medium text-yellow-800 mb-2">☀️ Rayonnement solaire</h5>
-            <p className="text-sm text-yellow-700">
+          <div className="bg-ocre-50 rounded-lg p-4">
+            <h5 className="font-medium text-ocre-800 mb-2">☀️ Rayonnement solaire</h5>
+            <p className="text-sm text-ocre-700">
               Le Soleil (5778 K) émet principalement dans le visible.
               Sa puissance totale est de 3,8×10²⁶ W.
               La constante solaire à la Terre est ~1361 W/m².
             </p>
           </div>
-          <div className="bg-blue-50 rounded-lg p-4">
-            <h5 className="font-medium text-blue-800 mb-2">🌍 Rayonnement terrestre</h5>
-            <p className="text-sm text-blue-700">
+          <div className="bg-gold-50 rounded-lg p-4">
+            <h5 className="font-medium text-gold-800 mb-2">🌍 Rayonnement terrestre</h5>
+            <p className="text-sm text-gold-700">
               La Terre (~288 K) émet dans l'infrarouge (λmax ≈ 10 µm).
               Ce rayonnement IR est absorbé par les gaz à effet de serre,
               contribuant au réchauffement climatique.

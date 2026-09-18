@@ -9,10 +9,10 @@ const SPECIAL_ANGLES = [0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 27
 
 // Quadrant information
 const QUADRANTS = [
-  { name: 'I', range: '0° - 90°', sin: '+', cos: '+', tan: '+', color: '#22c55e' },
-  { name: 'II', range: '90° - 180°', sin: '+', cos: '−', tan: '−', color: '#3b82f6' },
-  { name: 'III', range: '180° - 270°', sin: '−', cos: '−', tan: '+', color: '#f59e0b' },
-  { name: 'IV', range: '270° - 360°', sin: '−', cos: '+', tan: '−', color: '#ef4444' },
+  { name: 'I', range: '0° - 90°', sin: '+', cos: '+', tan: '+', color: '#91a443' },
+  { name: 'II', range: '90° - 180°', sin: '+', cos: '−', tan: '−', color: '#c29851' },
+  { name: 'III', range: '180° - 270°', sin: '−', cos: '−', tan: '+', color: '#e8c518' },
+  { name: 'IV', range: '270° - 360°', sin: '−', cos: '+', tan: '−', color: '#ca684a' },
 ];
 
 export function TrigCircleSimulator() {
@@ -85,7 +85,7 @@ export function TrigCircleSimulator() {
 
     // Draw quadrant backgrounds
     if (showAllQuadrants) {
-      const quadrantColors = ['#dcfce7', '#dbeafe', '#fef3c7', '#fee2e2'];
+      const quadrantColors = ['#edeceb', '#eeedeb', '#f6e8a2', '#f1f0ef'];
       for (let i = 0; i < 4; i++) {
         ctx.fillStyle = quadrantColors[i] + '60';
         ctx.beginPath();
@@ -97,7 +97,7 @@ export function TrigCircleSimulator() {
     }
 
     // Draw grid
-    ctx.strokeStyle = '#e5e7eb';
+    ctx.strokeStyle = '#e9e8e7';
     ctx.lineWidth = 1;
     for (let i = -1; i <= 1; i += 0.5) {
       if (i === 0) continue;
@@ -114,7 +114,7 @@ export function TrigCircleSimulator() {
     }
 
     // Draw axes
-    ctx.strokeStyle = '#374151';
+    ctx.strokeStyle = '#484440';
     ctx.lineWidth = 2;
     // X axis
     ctx.beginPath();
@@ -128,7 +128,7 @@ export function TrigCircleSimulator() {
     ctx.stroke();
 
     // Axis arrows
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     // X arrow
     ctx.beginPath();
     ctx.moveTo(centerX + radius + 30, centerY);
@@ -145,42 +145,42 @@ export function TrigCircleSimulator() {
     ctx.fill();
 
     // Axis labels
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.font = 'bold 14px system-ui';
     ctx.textAlign = 'center';
     ctx.fillText('x', centerX + radius + 40, centerY + 5);
     ctx.fillText('y', centerX + 5, centerY - radius - 35);
 
     // Draw unit circle
-    ctx.strokeStyle = '#6366f1';
+    ctx.strokeStyle = '#caa668';
     ctx.lineWidth = 2.5;
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
     ctx.stroke();
 
     // Draw special angle markers
-    ctx.fillStyle = '#9ca3af';
+    ctx.fillStyle = '#aaa6a1';
     ctx.font = '10px system-ui';
     for (const deg of [0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330]) {
       const r = toRadians(deg);
       const x = centerX + Math.cos(r) * radius;
       const y = centerY - Math.sin(r) * radius;
 
-      ctx.fillStyle = '#d1d5db';
+      ctx.fillStyle = '#d8d6d4';
       ctx.beginPath();
       ctx.arc(x, y, 3, 0, Math.PI * 2);
       ctx.fill();
     }
 
     // Draw angle arc
-    ctx.strokeStyle = '#8b5cf6';
+    ctx.strokeStyle = '#b57b98';
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.arc(centerX, centerY, 40, 0, -rad, rad > 0);
     ctx.stroke();
 
     // Angle label
-    ctx.fillStyle = '#8b5cf6';
+    ctx.fillStyle = '#b57b98';
     ctx.font = 'bold 12px system-ui';
     const labelAngle = rad / 2;
     const labelRadius = 55;
@@ -192,7 +192,7 @@ export function TrigCircleSimulator() {
 
     // Draw right triangle
     if (showTriangle) {
-      ctx.fillStyle = 'rgba(139, 92, 246, 0.1)';
+      ctx.fillStyle = 'rgba(181, 123, 152, 0.1)';
       ctx.beginPath();
       ctx.moveTo(centerX, centerY);
       ctx.lineTo(pointX, centerY);
@@ -200,7 +200,7 @@ export function TrigCircleSimulator() {
       ctx.closePath();
       ctx.fill();
 
-      ctx.strokeStyle = '#8b5cf6';
+      ctx.strokeStyle = '#b57b98';
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 4]);
       ctx.stroke();
@@ -210,7 +210,7 @@ export function TrigCircleSimulator() {
     // Draw projections
     if (showProjections) {
       // Cosine projection (horizontal)
-      ctx.strokeStyle = '#22c55e';
+      ctx.strokeStyle = '#91a443';
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(centerX, centerY);
@@ -218,7 +218,7 @@ export function TrigCircleSimulator() {
       ctx.stroke();
 
       // Sine projection (vertical)
-      ctx.strokeStyle = '#ef4444';
+      ctx.strokeStyle = '#ca684a';
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(pointX, centerY);
@@ -227,11 +227,11 @@ export function TrigCircleSimulator() {
 
       // Labels
       ctx.font = 'bold 11px system-ui';
-      ctx.fillStyle = '#22c55e';
+      ctx.fillStyle = '#91a443';
       ctx.textAlign = 'center';
       ctx.fillText('cos θ', (centerX + pointX) / 2, centerY + 18);
 
-      ctx.fillStyle = '#ef4444';
+      ctx.fillStyle = '#ca684a';
       ctx.save();
       ctx.translate(pointX + 15, (centerY + pointY) / 2);
       ctx.fillText('sin θ', 0, 4);
@@ -243,7 +243,7 @@ export function TrigCircleSimulator() {
       const tanLength = Math.min(Math.abs(tanValue), 3) * radius;
       const tanY = centerY - tanLength * Math.sign(tanValue);
 
-      ctx.strokeStyle = '#f59e0b';
+      ctx.strokeStyle = '#e8c518';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(centerX + radius, centerY);
@@ -251,7 +251,7 @@ export function TrigCircleSimulator() {
       ctx.stroke();
 
       // Tangent label
-      ctx.fillStyle = '#f59e0b';
+      ctx.fillStyle = '#e8c518';
       ctx.font = 'bold 11px system-ui';
       ctx.textAlign = 'left';
       if (Math.abs(tanValue) < 10) {
@@ -259,7 +259,7 @@ export function TrigCircleSimulator() {
       }
 
       // Line from origin through point to tangent
-      ctx.strokeStyle = '#f59e0b';
+      ctx.strokeStyle = '#e8c518';
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
@@ -270,7 +270,7 @@ export function TrigCircleSimulator() {
     }
 
     // Draw radius line
-    ctx.strokeStyle = '#1e3a8a';
+    ctx.strokeStyle = '#7c5f2c';
     ctx.lineWidth = 2.5;
     ctx.beginPath();
     ctx.moveTo(centerX, centerY);
@@ -278,7 +278,7 @@ export function TrigCircleSimulator() {
     ctx.stroke();
 
     // Draw point on circle
-    ctx.fillStyle = '#1e3a8a';
+    ctx.fillStyle = '#7c5f2c';
     ctx.beginPath();
     ctx.arc(pointX, pointY, 8, 0, Math.PI * 2);
     ctx.fill();
@@ -289,7 +289,7 @@ export function TrigCircleSimulator() {
     ctx.fill();
 
     // Point coordinates
-    ctx.fillStyle = '#1e3a8a';
+    ctx.fillStyle = '#7c5f2c';
     ctx.font = 'bold 11px system-ui';
     ctx.textAlign = 'left';
     const coordX = pointX + 12;
@@ -297,7 +297,7 @@ export function TrigCircleSimulator() {
     ctx.fillText(`(${cosValue.toFixed(2)}, ${sinValue.toFixed(2)})`, coordX, coordY);
 
     // Draw scale markers
-    ctx.fillStyle = '#6b7280';
+    ctx.fillStyle = '#7c766f';
     ctx.font = '10px system-ui';
     ctx.textAlign = 'center';
     ctx.fillText('1', centerX + radius, centerY + 15);
@@ -308,13 +308,13 @@ export function TrigCircleSimulator() {
 
     // Quadrant labels
     ctx.font = 'bold 14px system-ui';
-    ctx.fillStyle = '#22c55e';
+    ctx.fillStyle = '#91a443';
     ctx.fillText('I', centerX + radius * 0.6, centerY - radius * 0.7);
-    ctx.fillStyle = '#3b82f6';
+    ctx.fillStyle = '#c29851';
     ctx.fillText('II', centerX - radius * 0.6, centerY - radius * 0.7);
-    ctx.fillStyle = '#f59e0b';
+    ctx.fillStyle = '#e8c518';
     ctx.fillText('III', centerX - radius * 0.6, centerY + radius * 0.75);
-    ctx.fillStyle = '#ef4444';
+    ctx.fillStyle = '#ca684a';
     ctx.fillText('IV', centerX + radius * 0.6, centerY + radius * 0.75);
 
   }, [angle, cosValue, sinValue, showProjections, showTriangle, showTangent, showAllQuadrants, tanValue]);
@@ -336,7 +336,7 @@ export function TrigCircleSimulator() {
     ctx.fillRect(0, 0, graphWidth, graphHeight);
 
     // Grid
-    ctx.strokeStyle = '#e5e7eb';
+    ctx.strokeStyle = '#e9e8e7';
     ctx.lineWidth = 1;
 
     // Horizontal lines
@@ -358,7 +358,7 @@ export function TrigCircleSimulator() {
     }
 
     // Axes
-    ctx.strokeStyle = '#374151';
+    ctx.strokeStyle = '#484440';
     ctx.lineWidth = 1.5;
     // X axis
     ctx.beginPath();
@@ -372,7 +372,7 @@ export function TrigCircleSimulator() {
     ctx.stroke();
 
     // Draw cosine curve
-    ctx.strokeStyle = '#22c55e';
+    ctx.strokeStyle = '#91a443';
     ctx.lineWidth = 2;
     ctx.beginPath();
     for (let i = 0; i <= 360; i++) {
@@ -384,7 +384,7 @@ export function TrigCircleSimulator() {
     ctx.stroke();
 
     // Draw sine curve
-    ctx.strokeStyle = '#ef4444';
+    ctx.strokeStyle = '#ca684a';
     ctx.lineWidth = 2;
     ctx.beginPath();
     for (let i = 0; i <= 360; i++) {
@@ -398,7 +398,7 @@ export function TrigCircleSimulator() {
     // Current angle marker
     const currentX = padding.left + (((angle % 360) + 360) % 360 / 360) * width;
 
-    ctx.strokeStyle = '#6366f1';
+    ctx.strokeStyle = '#caa668';
     ctx.lineWidth = 2;
     ctx.setLineDash([4, 4]);
     ctx.beginPath();
@@ -411,18 +411,18 @@ export function TrigCircleSimulator() {
     const cosY = centerY - cosValue * (height / 2) * 0.9;
     const sinY = centerY - sinValue * (height / 2) * 0.9;
 
-    ctx.fillStyle = '#22c55e';
+    ctx.fillStyle = '#91a443';
     ctx.beginPath();
     ctx.arc(currentX, cosY, 6, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = '#ef4444';
+    ctx.fillStyle = '#ca684a';
     ctx.beginPath();
     ctx.arc(currentX, sinY, 6, 0, Math.PI * 2);
     ctx.fill();
 
     // Labels
-    ctx.fillStyle = '#6b7280';
+    ctx.fillStyle = '#7c766f';
     ctx.font = '10px system-ui';
     ctx.textAlign = 'center';
     ctx.fillText('0°', padding.left, graphHeight - 10);
@@ -439,9 +439,9 @@ export function TrigCircleSimulator() {
     // Legend
     ctx.font = 'bold 10px system-ui';
     ctx.textAlign = 'left';
-    ctx.fillStyle = '#22c55e';
+    ctx.fillStyle = '#91a443';
     ctx.fillText('cos θ', graphWidth - 60, padding.top + 15);
-    ctx.fillStyle = '#ef4444';
+    ctx.fillStyle = '#ca684a';
     ctx.fillText('sin θ', graphWidth - 60, padding.top + 30);
 
   }, [angle, cosValue, sinValue]);
@@ -457,12 +457,12 @@ export function TrigCircleSimulator() {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
       {/* Header */}
-      <div className="border-b border-gray-200 bg-gradient-to-r from-indigo-50 to-purple-50 p-4">
+      <div className="border-b border-stone-200 bg-gradient-to-r from-gold-50 to-prune-50 p-4">
         <div className="flex items-center gap-3">
           <span className="text-2xl">📐</span>
           <div>
-            <h3 className="font-bold text-gray-800">Cercle trigonométrique</h3>
-            <p className="text-xs text-gray-600">
+            <h3 className="font-bold text-stone-800">Cercle trigonométrique</h3>
+            <p className="text-xs text-stone-600">
               Visualisez les relations entre sinus, cosinus et tangente selon l'angle
             </p>
           </div>
@@ -473,7 +473,7 @@ export function TrigCircleSimulator() {
         <div className="flex gap-4">
           {/* Left: Circle */}
           <div className="flex-shrink-0">
-            <div className="border border-gray-200 rounded-lg overflow-hidden">
+            <div className="border border-stone-200 rounded-lg overflow-hidden">
               <canvas
                 ref={canvasRef}
                 width={canvasSize}
@@ -488,7 +488,7 @@ export function TrigCircleSimulator() {
                 }}
               />
             </div>
-            <p className="text-xs text-gray-500 text-center mt-1">
+            <p className="text-xs text-stone-500 text-center mt-1">
               Cliquez sur le cercle pour changer l'angle
             </p>
           </div>
@@ -497,38 +497,38 @@ export function TrigCircleSimulator() {
           <div className="flex-1 space-y-4">
             {/* Current values */}
             <div className="grid grid-cols-3 gap-2">
-              <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
-                <div className="text-xs text-green-600 font-medium mb-1">Cosinus</div>
-                <div className="text-xl font-bold text-green-700">{cosValue.toFixed(4)}</div>
-                <div className="text-xs text-green-600 mt-1">
+              <div className="bg-olive-50 border border-olive-200 rounded-lg p-3 text-center">
+                <div className="text-xs text-olive-600 font-medium mb-1">Cosinus</div>
+                <div className="text-xl font-bold text-olive-700">{cosValue.toFixed(4)}</div>
+                <div className="text-xs text-olive-600 mt-1">
                   {cosValue >= 0 ? '(+)' : '(−)'}
                 </div>
               </div>
-              <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-center">
-                <div className="text-xs text-red-600 font-medium mb-1">Sinus</div>
-                <div className="text-xl font-bold text-red-700">{sinValue.toFixed(4)}</div>
-                <div className="text-xs text-red-600 mt-1">
+              <div className="bg-brun-50 border border-brun-200 rounded-lg p-3 text-center">
+                <div className="text-xs text-brun-600 font-medium mb-1">Sinus</div>
+                <div className="text-xl font-bold text-brun-700">{sinValue.toFixed(4)}</div>
+                <div className="text-xs text-brun-600 mt-1">
                   {sinValue >= 0 ? '(+)' : '(−)'}
                 </div>
               </div>
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-center">
-                <div className="text-xs text-amber-600 font-medium mb-1">Tangente</div>
-                <div className="text-xl font-bold text-amber-700">
+              <div className="bg-ocre-50 border border-ocre-200 rounded-lg p-3 text-center">
+                <div className="text-xs text-ocre-600 font-medium mb-1">Tangente</div>
+                <div className="text-xl font-bold text-ocre-700">
                   {Math.abs(tanValue) > 1000 ? '±∞' : tanValue.toFixed(4)}
                 </div>
-                <div className="text-xs text-amber-600 mt-1">
+                <div className="text-xs text-ocre-600 mt-1">
                   {Math.abs(tanValue) > 1000 ? 'indéfini' : tanValue >= 0 ? '(+)' : '(−)'}
                 </div>
               </div>
             </div>
 
             {/* Angle control */}
-            <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+            <div className="border border-stone-200 rounded-lg p-3 bg-stone-50">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-bold text-gray-700">Angle θ</span>
+                <span className="text-sm font-bold text-stone-700">Angle θ</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold text-indigo-600">{angle.toFixed(1)}°</span>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-lg font-bold text-gold-600">{angle.toFixed(1)}°</span>
+                  <span className="text-sm text-stone-500">
                     ({(angle * Math.PI / 180).toFixed(3)} rad)
                   </span>
                 </div>
@@ -540,7 +540,7 @@ export function TrigCircleSimulator() {
                 step="1"
                 value={angle}
                 onChange={(e) => setAngle(parseFloat(e.target.value))}
-                className="w-full accent-indigo-600 h-5"
+                className="w-full accent-gold-600 h-5"
               />
 
               {/* Special angle buttons */}
@@ -552,8 +552,8 @@ export function TrigCircleSimulator() {
                     className={cn(
                       "px-2 py-1 text-[10px] rounded transition-colors",
                       Math.abs(angle - deg) < 1
-                        ? "bg-indigo-600 text-white"
-                        : "bg-white text-gray-600 border hover:bg-gray-100"
+                        ? "bg-gold-600 text-white"
+                        : "bg-white text-stone-600 border hover:bg-stone-100"
                     )}
                   >
                     {deg}°
@@ -568,8 +568,8 @@ export function TrigCircleSimulator() {
                   className={cn(
                     "px-3 py-1.5 text-xs font-semibold rounded transition-colors",
                     isAnimating
-                      ? "bg-red-500 text-white"
-                      : "bg-indigo-500 text-white hover:bg-indigo-600"
+                      ? "bg-brun-500 text-white"
+                      : "bg-gold-500 text-white hover:bg-gold-600"
                   )}
                 >
                   {isAnimating ? '⏸ Pause' : '▶ Animer'}
@@ -580,22 +580,22 @@ export function TrigCircleSimulator() {
                   max="120"
                   value={animationSpeed}
                   onChange={(e) => setAnimationSpeed(parseFloat(e.target.value))}
-                  className="flex-1 accent-indigo-600"
+                  className="flex-1 accent-gold-600"
                 />
-                <span className="text-xs text-gray-500">{animationSpeed}°/s</span>
+                <span className="text-xs text-stone-500">{animationSpeed}°/s</span>
               </div>
             </div>
 
             {/* Display options */}
-            <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
-              <div className="text-sm font-bold text-gray-700 mb-2">Affichage</div>
+            <div className="border border-stone-200 rounded-lg p-3 bg-stone-50">
+              <div className="text-sm font-bold text-stone-700 mb-2">Affichage</div>
               <div className="grid grid-cols-2 gap-2">
                 <label className="flex items-center gap-2 text-xs cursor-pointer">
                   <input
                     type="checkbox"
                     checked={showProjections}
                     onChange={(e) => setShowProjections(e.target.checked)}
-                    className="accent-indigo-600"
+                    className="accent-gold-600"
                   />
                   Projections sin/cos
                 </label>
@@ -604,7 +604,7 @@ export function TrigCircleSimulator() {
                     type="checkbox"
                     checked={showTriangle}
                     onChange={(e) => setShowTriangle(e.target.checked)}
-                    className="accent-indigo-600"
+                    className="accent-gold-600"
                   />
                   Triangle rectangle
                 </label>
@@ -613,7 +613,7 @@ export function TrigCircleSimulator() {
                     type="checkbox"
                     checked={showTangent}
                     onChange={(e) => setShowTangent(e.target.checked)}
-                    className="accent-indigo-600"
+                    className="accent-gold-600"
                   />
                   Tangente
                 </label>
@@ -622,7 +622,7 @@ export function TrigCircleSimulator() {
                     type="checkbox"
                     checked={showAllQuadrants}
                     onChange={(e) => setShowAllQuadrants(e.target.checked)}
-                    className="accent-indigo-600"
+                    className="accent-gold-600"
                   />
                   Couleurs quadrants
                 </label>
@@ -642,22 +642,22 @@ export function TrigCircleSimulator() {
                   <span className="text-sm font-bold" style={{ color: QUADRANTS[currentQuadrant - 1].color }}>
                     Quadrant {QUADRANTS[currentQuadrant - 1].name}
                   </span>
-                  <span className="text-xs text-gray-500 ml-2">
+                  <span className="text-xs text-stone-500 ml-2">
                     ({QUADRANTS[currentQuadrant - 1].range})
                   </span>
                 </div>
               </div>
               <div className="flex gap-4 mt-2 text-sm">
                 <span>
-                  <span className="text-green-600 font-medium">cos: </span>
+                  <span className="text-olive-600 font-medium">cos: </span>
                   <span className="font-bold">{QUADRANTS[currentQuadrant - 1].cos}</span>
                 </span>
                 <span>
-                  <span className="text-red-600 font-medium">sin: </span>
+                  <span className="text-brun-600 font-medium">sin: </span>
                   <span className="font-bold">{QUADRANTS[currentQuadrant - 1].sin}</span>
                 </span>
                 <span>
-                  <span className="text-amber-600 font-medium">tan: </span>
+                  <span className="text-ocre-600 font-medium">tan: </span>
                   <span className="font-bold">{QUADRANTS[currentQuadrant - 1].tan}</span>
                 </span>
               </div>
@@ -667,7 +667,7 @@ export function TrigCircleSimulator() {
 
         {/* Sine/Cosine graph */}
         <div className="mt-4">
-          <div className="border border-gray-200 rounded-lg overflow-hidden">
+          <div className="border border-stone-200 rounded-lg overflow-hidden">
             <canvas
               ref={graphCanvasRef}
               width={graphWidth}
@@ -678,8 +678,8 @@ export function TrigCircleSimulator() {
         </div>
 
         {/* Quadrant summary table */}
-        <div className="mt-4 bg-gradient-to-r from-slate-50 to-gray-50 rounded-lg p-4 border border-gray-200">
-          <h4 className="text-sm font-bold text-gray-700 mb-3">Signes par quadrant</h4>
+        <div className="mt-4 bg-gradient-to-r from-stone-50 to-stone-50 rounded-lg p-4 border border-stone-200">
+          <h4 className="text-sm font-bold text-stone-700 mb-3">Signes par quadrant</h4>
           <div className="grid grid-cols-4 gap-2">
             {QUADRANTS.map((q, i) => (
               <div
@@ -694,11 +694,11 @@ export function TrigCircleSimulator() {
                 <div className="font-bold text-sm" style={{ color: q.color }}>
                   {q.name}
                 </div>
-                <div className="text-[10px] text-gray-500">{q.range}</div>
+                <div className="text-[10px] text-stone-500">{q.range}</div>
                 <div className="mt-1 space-y-0.5 text-xs">
-                  <div><span className="text-green-600">cos:</span> <span className="font-bold">{q.cos}</span></div>
-                  <div><span className="text-red-600">sin:</span> <span className="font-bold">{q.sin}</span></div>
-                  <div><span className="text-amber-600">tan:</span> <span className="font-bold">{q.tan}</span></div>
+                  <div><span className="text-olive-600">cos:</span> <span className="font-bold">{q.cos}</span></div>
+                  <div><span className="text-brun-600">sin:</span> <span className="font-bold">{q.sin}</span></div>
+                  <div><span className="text-ocre-600">tan:</span> <span className="font-bold">{q.tan}</span></div>
                 </div>
               </div>
             ))}
@@ -706,8 +706,8 @@ export function TrigCircleSimulator() {
         </div>
 
         {/* Formulas */}
-        <div className="mt-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-4 border border-indigo-200">
-          <h4 className="text-sm font-bold text-indigo-900 mb-3">Relations fondamentales</h4>
+        <div className="mt-4 bg-gradient-to-r from-gold-50 to-prune-50 rounded-lg p-4 border border-gold-200">
+          <h4 className="text-sm font-bold text-gold-900 mb-3">Relations fondamentales</h4>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <div className="bg-white px-3 py-2 rounded border shadow-sm">
@@ -729,7 +729,7 @@ export function TrigCircleSimulator() {
 
           {/* Verification of identity */}
           <div className="mt-3 p-2 bg-white rounded border">
-            <p className="text-xs text-gray-600">
+            <p className="text-xs text-stone-600">
               Vérification: <InlineMath math={`\\cos^2(${angle.toFixed(0)}°) + \\sin^2(${angle.toFixed(0)}°) = ${(cosValue*cosValue + sinValue*sinValue).toFixed(6)}`} /> ≈ 1
             </p>
           </div>

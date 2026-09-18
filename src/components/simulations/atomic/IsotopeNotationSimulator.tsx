@@ -134,7 +134,7 @@ export function IsotopeNotationSimulator() {
     const t = tRef.current;
 
     // Fond
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.fillRect(0, 0, W, H);
 
     const cx = W / 2;
@@ -160,9 +160,9 @@ export function IsotopeNotationSimulator() {
     for (const n of nucleons) {
       ctx.beginPath();
       ctx.arc(n.x, n.y, 6, 0, Math.PI * 2);
-      ctx.fillStyle = n.proton ? '#ef4444' : '#94a3b8';
+      ctx.fillStyle = n.proton ? '#ca684a' : '#aba6a1';
       ctx.fill();
-      ctx.strokeStyle = n.proton ? '#991b1b' : '#475569';
+      ctx.strokeStyle = n.proton ? '#8b4028' : '#5d5853';
       ctx.lineWidth = 0.8;
       ctx.stroke();
     }
@@ -174,7 +174,7 @@ export function IsotopeNotationSimulator() {
     for (let i = 0; i < shells.length; i++) {
       const r = baseR + i * shellGap;
       // Orbite
-      ctx.strokeStyle = '#334155';
+      ctx.strokeStyle = '#484440';
       ctx.lineWidth = 1;
       ctx.setLineDash([2, 4]);
       ctx.beginPath();
@@ -190,9 +190,9 @@ export function IsotopeNotationSimulator() {
         const ey = cy + r * Math.sin(angle);
         ctx.beginPath();
         ctx.arc(ex, ey, 4, 0, Math.PI * 2);
-        ctx.fillStyle = '#22d3ee';
+        ctx.fillStyle = '#678ea9';
         ctx.fill();
-        ctx.strokeStyle = '#0e7490';
+        ctx.strokeStyle = '#395365';
         ctx.lineWidth = 0.8;
         ctx.stroke();
       }
@@ -202,9 +202,9 @@ export function IsotopeNotationSimulator() {
     ctx.font = '12px sans-serif';
     ctx.textAlign = 'left';
     const legend: [string, string][] = [
-      ['#ef4444', `Protons (Z = ${Z})`],
-      ['#94a3b8', `Neutrons (N = ${N})`],
-      ['#22d3ee', `Électrons (${Z})`],
+      ['#ca684a', `Protons (Z = ${Z})`],
+      ['#aba6a1', `Neutrons (N = ${N})`],
+      ['#678ea9', `Électrons (${Z})`],
     ];
     legend.forEach(([color, label], i) => {
       const y = 24 + i * 20;
@@ -212,14 +212,14 @@ export function IsotopeNotationSimulator() {
       ctx.beginPath();
       ctx.arc(20, y - 4, 6, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = '#e2e8f0';
+      ctx.fillStyle = '#eae9e8';
       ctx.fillText(label, 34, y);
     });
 
     // Badge stabilité
     ctx.font = 'bold 12px sans-serif';
     ctx.textAlign = 'right';
-    ctx.fillStyle = stable ? '#22c55e' : '#f59e0b';
+    ctx.fillStyle = stable ? '#91a443' : '#e8c518';
     ctx.fillText(stable ? '✓ Isotope stable connu' : '⚠ Isotope rare ou radioactif', W - 14, 24);
 
     animIdRef.current = requestAnimationFrame(draw);
@@ -235,10 +235,10 @@ export function IsotopeNotationSimulator() {
   return (
     <section className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-gray-900">
+        <h2 className="text-3xl font-bold text-stone-900">
           Notation des isotopes
         </h2>
-        <p className="text-gray-600">
+        <p className="text-stone-600">
           Protons, neutrons et modèle atomique de Bohr
         </p>
       </div>
@@ -249,32 +249,32 @@ export function IsotopeNotationSimulator() {
           ref={canvasRef}
           width={700}
           height={400}
-          className="w-full max-w-[700px] mx-auto rounded-lg border border-gray-300"
+          className="w-full max-w-[700px] mx-auto rounded-lg border border-stone-300"
         />
 
         {/* Notation symbolique */}
         <div className="flex items-center justify-center gap-6 py-2">
           <div className="text-center">
-            <div className="text-4xl font-serif text-gray-900 leading-none">
+            <div className="text-4xl font-serif text-stone-900 leading-none">
               <sup className="text-lg align-top mr-0.5">{A}</sup>
               <sub className="text-lg align-bottom mr-0.5 -ml-3">{Z}</sub>
               <span className="text-5xl font-bold">{element?.symbol ?? '?'}</span>
             </div>
-            <div className="mt-2 text-gray-600 text-sm">
+            <div className="mt-2 text-stone-600 text-sm">
               {element?.name ?? '—'}
             </div>
           </div>
-          <div className="text-left text-sm text-gray-700 space-y-1 border-l border-gray-200 pl-6">
+          <div className="text-left text-sm text-stone-700 space-y-1 border-l border-stone-200 pl-6">
             <div><strong>A</strong> = {A} (nombre de masse)</div>
             <div><strong>Z</strong> = {Z} (numéro atomique = protons)</div>
-            <div><strong>N</strong> = {N} (neutrons) &nbsp; <span className="text-gray-500">= A − Z</span></div>
+            <div><strong>N</strong> = {N} (neutrons) &nbsp; <span className="text-stone-500">= A − Z</span></div>
           </div>
         </div>
 
         {/* Sliders */}
         <div className="w-full max-w-[700px] space-y-3">
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium w-28">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium w-28">
               Protons <InlineMath math="Z" />
             </label>
             <input
@@ -284,13 +284,13 @@ export function IsotopeNotationSimulator() {
               step={1}
               value={Z}
               onChange={(e) => setZ(Number(e.target.value))}
-              className="flex-1 accent-red-500"
+              className="flex-1 accent-brun-500"
             />
-            <span className="text-sm font-mono text-gray-900 w-16 text-right">{Z}</span>
+            <span className="text-sm font-mono text-stone-900 w-16 text-right">{Z}</span>
           </div>
 
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium w-28">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium w-28">
               Neutrons <InlineMath math="N" />
             </label>
             <input
@@ -300,9 +300,9 @@ export function IsotopeNotationSimulator() {
               step={1}
               value={N}
               onChange={(e) => setN(Number(e.target.value))}
-              className="flex-1 accent-gray-500"
+              className="flex-1 accent-stone-500"
             />
-            <span className="text-sm font-mono text-gray-900 w-16 text-right">{N}</span>
+            <span className="text-sm font-mono text-stone-900 w-16 text-right">{N}</span>
           </div>
         </div>
       </div>
@@ -311,19 +311,19 @@ export function IsotopeNotationSimulator() {
       <div className="space-y-2">
         <CollapsiblePanel
           title="1. La notation AZX"
-          borderColor="border-red-500"
-          bgColor="bg-red-50"
-          textColor="text-red-800"
+          borderColor="border-brun-500"
+          bgColor="bg-brun-50"
+          textColor="text-brun-800"
           defaultOpen
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Un noyau atomique est désigné par le symbole de l&apos;élément précédé de
             deux nombres :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`{}^{A}_{Z}\\mathrm{X}`} />
           </div>
-          <ul className="list-disc list-inside text-gray-700 space-y-1">
+          <ul className="list-disc list-inside text-stone-700 space-y-1">
             <li>
               <strong>Z</strong> (numéro atomique) : nombre de protons. Détermine
               l&apos;élément chimique (et donc le symbole X).
@@ -341,11 +341,11 @@ export function IsotopeNotationSimulator() {
 
         <CollapsiblePanel
           title="2. Isotopes, isobares, isotones"
-          borderColor="border-blue-500"
-          bgColor="bg-blue-50"
-          textColor="text-blue-800"
+          borderColor="border-gold-500"
+          bgColor="bg-gold-50"
+          textColor="text-gold-800"
         >
-          <ul className="list-disc list-inside text-gray-700 space-y-1">
+          <ul className="list-disc list-inside text-stone-700 space-y-1">
             <li>
               <strong>Isotopes</strong> : même <InlineMath math="Z" />, différents{' '}
               <InlineMath math="N" /> (donc même élément, masses différentes). Ex :
@@ -362,7 +362,7 @@ export function IsotopeNotationSimulator() {
               <InlineMath math="Z" />.
             </li>
           </ul>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Les propriétés <em>chimiques</em> d&apos;un atome sont déterminées par{' '}
             <InlineMath math="Z" /> (nombre d&apos;électrons), tandis que les
             propriétés <em>nucléaires</em> (masse, stabilité, radioactivité) dépendent
@@ -372,17 +372,17 @@ export function IsotopeNotationSimulator() {
 
         <CollapsiblePanel
           title="3. Stabilité et vallée des noyaux"
-          borderColor="border-green-500"
-          bgColor="bg-green-50"
-          textColor="text-green-800"
+          borderColor="border-olive-500"
+          bgColor="bg-olive-50"
+          textColor="text-olive-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Pour les noyaux légers (<InlineMath math={`Z \\lesssim 20`} />), les
             isotopes stables satisfont <InlineMath math={`N \\approx Z`} />. Au-delà,
             la répulsion coulombienne entre protons impose un excès de neutrons :
             <InlineMath math={`\\;N/Z \\approx 1{,}5`} /> pour les noyaux lourds.
           </p>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Les noyaux trop riches en neutrons décroissent par <InlineMath math={`\\beta^-`} />{' '}
             (neutron → proton), les noyaux trop riches en protons par{' '}
             <InlineMath math={`\\beta^+`} /> ou capture électronique. Les noyaux très
@@ -393,11 +393,11 @@ export function IsotopeNotationSimulator() {
 
         <CollapsiblePanel
           title="4. Le modèle atomique"
-          borderColor="border-cyan-500"
-          bgColor="bg-cyan-50"
-          textColor="text-cyan-800"
+          borderColor="border-ardoise-500"
+          bgColor="bg-ardoise-50"
+          textColor="text-ardoise-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             La représentation ci-dessus suit le <strong>modèle de Bohr</strong> (1913) :
             un noyau compact entouré d&apos;électrons circulant sur des couches
             discrètes. La vraie description quantique (orbitales, Schrödinger 1926)
@@ -406,7 +406,7 @@ export function IsotopeNotationSimulator() {
             <InlineMath math="N" /> et la structure en couches
             (<InlineMath math="2, 8, 8, 18, \\ldots" />).
           </p>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Dans un atome neutre, le nombre d&apos;électrons égale{' '}
             <InlineMath math="Z" />. Un ion a un nombre d&apos;électrons différent de{' '}
             <InlineMath math="Z" />, mais <InlineMath math="Z" /> lui-même (donc

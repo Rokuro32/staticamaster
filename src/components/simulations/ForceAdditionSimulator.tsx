@@ -26,7 +26,7 @@ export function ForceAdditionSimulator() {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
       {/* Mode selector */}
-      <div className="border-b border-gray-200 bg-gray-50 p-4">
+      <div className="border-b border-stone-200 bg-stone-50 p-4">
         <div className="flex flex-wrap gap-2">
           {modes.map((m) => (
             <button
@@ -34,15 +34,15 @@ export function ForceAdditionSimulator() {
               onClick={() => setMode(m.id)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 mode === m.id
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
+                  ? 'bg-gold-600 text-white'
+                  : 'bg-white text-stone-700 hover:bg-stone-100 border border-stone-300'
               }`}
             >
               {m.label}
             </button>
           ))}
         </div>
-        <p className="mt-2 text-sm text-gray-600">
+        <p className="mt-2 text-sm text-stone-600">
           {modes.find((m) => m.id === mode)?.description}
         </p>
       </div>
@@ -92,12 +92,12 @@ function BoxForceSimulator() {
 
   // Predefined forces
   const forceOptions = [
-    { name: 'F1', magnitude: 100, angle: 0, color: '#dc2626', label: 'Force 1 (droite)' },
-    { name: 'F2', magnitude: 100, angle: 90, color: '#2563eb', label: 'Force 2 (haut)' },
-    { name: 'F3', magnitude: 100, angle: 180, color: '#16a34a', label: 'Force 3 (gauche)' },
-    { name: 'F4', magnitude: 100, angle: 270, color: '#9333ea', label: 'Force 4 (bas)' },
-    { name: 'F5', magnitude: 100, angle: 45, color: '#f59e0b', label: 'Force 5 (45°)' },
-    { name: 'F6', magnitude: 100, angle: 135, color: '#ec4899', label: 'Force 6 (135°)' },
+    { name: 'F1', magnitude: 100, angle: 0, color: '#c65c3c', label: 'Force 1 (droite)' },
+    { name: 'F2', magnitude: 100, angle: 90, color: '#c1974f', label: 'Force 2 (haut)' },
+    { name: 'F3', magnitude: 100, angle: 180, color: '#748336', label: 'Force 3 (gauche)' },
+    { name: 'F4', magnitude: 100, angle: 270, color: '#a45d80', label: 'Force 4 (bas)' },
+    { name: 'F5', magnitude: 100, angle: 45, color: '#e8c518', label: 'Force 5 (45°)' },
+    { name: 'F6', magnitude: 100, angle: 135, color: '#ab6a8b', label: 'Force 6 (135°)' },
   ];
 
   const snapToGrid = (point: { x: number; y: number }) => ({
@@ -211,7 +211,7 @@ function BoxForceSimulator() {
         <div
           ref={canvasRef}
           className={cn(
-            "relative border-2 border-blue-200 rounded-lg overflow-hidden bg-blue-50",
+            "relative border-2 border-gold-200 rounded-lg overflow-hidden bg-gold-50",
             pendingForce ? "cursor-copy" : "cursor-default"
           )}
           style={{ width: canvasSize.width, height: canvasSize.height }}
@@ -226,7 +226,7 @@ function BoxForceSimulator() {
                 <path
                   d={`M ${gridSize} 0 L 0 0 0 ${gridSize}`}
                   fill="none"
-                  stroke="#bfdbfe"
+                  stroke="#e3cfae"
                   strokeWidth="0.5"
                 />
               </pattern>
@@ -239,8 +239,8 @@ function BoxForceSimulator() {
               y={boxCenter.y - boxHeight / 2}
               width={boxWidth}
               height={boxHeight}
-              fill="#e5e7eb"
-              stroke="#374151"
+              fill="#e9e8e7"
+              stroke="#484440"
               strokeWidth="3"
               rx="4"
             />
@@ -249,7 +249,7 @@ function BoxForceSimulator() {
               y={boxCenter.y}
               textAnchor="middle"
               dominantBaseline="middle"
-              className="text-sm font-medium fill-gray-600"
+              className="text-sm font-medium fill-stone-600"
             >
               Objet
             </text>
@@ -308,7 +308,7 @@ function BoxForceSimulator() {
                   y1={boxCenter.y}
                   x2={boxCenter.x + (resultantMagnitude * 0.6) * Math.cos((-resultantAngle * Math.PI) / 180)}
                   y2={boxCenter.y + (resultantMagnitude * 0.6) * Math.sin((-resultantAngle * Math.PI) / 180)}
-                  stroke="#059669"
+                  stroke="#616e2d"
                   strokeWidth="4"
                   strokeDasharray="8,4"
                   strokeLinecap="round"
@@ -324,13 +324,13 @@ function BoxForceSimulator() {
                     const headAngle2 = rad - (Math.PI * 5) / 6;
                     return `${endX},${endY} ${endX + headLength * Math.cos(headAngle1)},${endY + headLength * Math.sin(headAngle1)} ${endX + headLength * Math.cos(headAngle2)},${endY + headLength * Math.sin(headAngle2)}`;
                   })()}
-                  fill="#059669"
+                  fill="#616e2d"
                 />
                 <text
                   x={boxCenter.x + (resultantMagnitude * 0.3 + 25) * Math.cos((-resultantAngle * Math.PI) / 180)}
                   y={boxCenter.y + (resultantMagnitude * 0.3 + 25) * Math.sin((-resultantAngle * Math.PI) / 180)}
                   textAnchor="middle"
-                  className="text-sm font-bold fill-emerald-700"
+                  className="text-sm font-bold fill-olive-700"
                 >
                   R
                 </text>
@@ -357,19 +357,19 @@ function BoxForceSimulator() {
         <div className="space-y-4">
           {/* Pending selection indicator */}
           {pendingForce && (
-            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="p-3 bg-gold-50 border border-gold-200 rounded-lg">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-blue-700">
+                  <p className="text-sm font-medium text-gold-700">
                     Force: {pendingForce.name}
                   </p>
-                  <p className="text-xs text-blue-600">
+                  <p className="text-xs text-gold-600">
                     Cliquez sur le canvas pour placer
                   </p>
                 </div>
                 <button
                   onClick={() => setPendingForce(null)}
-                  className="p-1 text-blue-600 hover:text-blue-800 hover:bg-blue-100 rounded"
+                  className="p-1 text-gold-600 hover:text-gold-800 hover:bg-gold-100 rounded"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -380,8 +380,8 @@ function BoxForceSimulator() {
           )}
 
           {/* Force buttons */}
-          <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-            <p className="text-xs font-medium text-gray-500 uppercase mb-3">
+          <div className="p-4 bg-stone-50 rounded-lg border border-stone-200">
+            <p className="text-xs font-medium text-stone-500 uppercase mb-3">
               Ajouter une force
             </p>
             <div className="grid grid-cols-2 gap-2">
@@ -392,8 +392,8 @@ function BoxForceSimulator() {
                   className={cn(
                     "flex items-center gap-2 p-2 rounded-lg border transition-colors text-left",
                     pendingForce?.name === force.name
-                      ? "border-blue-500 bg-blue-100 ring-2 ring-blue-300"
-                      : "border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50"
+                      ? "border-gold-500 bg-gold-100 ring-2 ring-gold-300"
+                      : "border-stone-200 bg-white hover:border-gold-300 hover:bg-gold-50"
                   )}
                 >
                   <div
@@ -408,14 +408,14 @@ function BoxForceSimulator() {
 
           {/* Selected force controls */}
           {selectedForce && (
-            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <p className="text-xs font-medium text-gray-500 uppercase mb-3">
+            <div className="p-4 bg-stone-50 rounded-lg border border-stone-200">
+              <p className="text-xs font-medium text-stone-500 uppercase mb-3">
                 Force sélectionnée: {forces.find(f => f.id === selectedForce)?.name}
               </p>
 
               {/* Magnitude slider */}
               <div className="mb-3">
-                <label className="block text-sm text-gray-600 mb-1">
+                <label className="block text-sm text-stone-600 mb-1">
                   Magnitude: {forces.find(f => f.id === selectedForce)?.magnitude} N
                 </label>
                 <input
@@ -432,21 +432,21 @@ function BoxForceSimulator() {
               <div className="flex gap-2">
                 <button
                   onClick={() => handleRotateForce(selectedForce, -15)}
-                  className="flex-1 p-2 bg-white border border-gray-200 rounded hover:bg-gray-100"
+                  className="flex-1 p-2 bg-white border border-stone-200 rounded hover:bg-stone-100"
                   title="Rotation -15°"
                 >
                   -15°
                 </button>
                 <button
                   onClick={() => handleRotateForce(selectedForce, 15)}
-                  className="flex-1 p-2 bg-white border border-gray-200 rounded hover:bg-gray-100"
+                  className="flex-1 p-2 bg-white border border-stone-200 rounded hover:bg-stone-100"
                   title="Rotation +15°"
                 >
                   +15°
                 </button>
                 <button
                   onClick={() => handleDeleteForce(selectedForce)}
-                  className="p-2 bg-red-50 border border-red-200 text-red-600 rounded hover:bg-red-100"
+                  className="p-2 bg-brun-50 border border-brun-200 text-brun-600 rounded hover:bg-brun-100"
                   title="Supprimer"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -461,7 +461,7 @@ function BoxForceSimulator() {
           {forces.length > 0 && (
             <button
               onClick={handleClearAll}
-              className="w-full p-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
+              className="w-full p-2 text-sm text-stone-600 bg-white border border-stone-200 rounded-lg hover:bg-stone-50"
             >
               Tout effacer
             </button>
@@ -469,8 +469,8 @@ function BoxForceSimulator() {
 
           {/* Placed forces list */}
           {forces.length > 0 && (
-            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <p className="text-xs font-medium text-gray-500 uppercase mb-2">
+            <div className="p-4 bg-stone-50 rounded-lg border border-stone-200">
+              <p className="text-xs font-medium text-stone-500 uppercase mb-2">
                 Forces placées
               </p>
               <div className="space-y-1">
@@ -480,7 +480,7 @@ function BoxForceSimulator() {
                       <div className="w-2 h-2 rounded-full" style={{ backgroundColor: f.color }} />
                       <span>{f.name}</span>
                     </div>
-                    <span className="text-gray-500">{f.magnitude}N @ {f.angle}°</span>
+                    <span className="text-stone-500">{f.magnitude}N @ {f.angle}°</span>
                   </div>
                 ))}
               </div>
@@ -492,10 +492,10 @@ function BoxForceSimulator() {
       {/* Results */}
       <div className="grid md:grid-cols-2 gap-6">
         {/* Component breakdown */}
-        <div className="p-4 bg-gray-50 rounded-lg">
-          <h3 className="font-semibold text-gray-800 mb-3">Décomposition des forces</h3>
+        <div className="p-4 bg-stone-50 rounded-lg">
+          <h3 className="font-semibold text-stone-800 mb-3">Décomposition des forces</h3>
           {forces.length === 0 ? (
-            <p className="text-sm text-gray-500">Ajoutez des forces pour voir la décomposition</p>
+            <p className="text-sm text-stone-500">Ajoutez des forces pour voir la décomposition</p>
           ) : (
             <div className="space-y-2">
               {forces.map(f => {
@@ -514,9 +514,9 @@ function BoxForceSimulator() {
               })}
               {forces.length > 1 && (
                 <>
-                  <div className="border-t border-gray-200 pt-2 mt-2">
-                    <div className="flex items-center gap-3 text-sm font-semibold text-emerald-700">
-                      <div className="w-2 h-2 rounded-full bg-emerald-600" />
+                  <div className="border-t border-stone-200 pt-2 mt-2">
+                    <div className="flex items-center gap-3 text-sm font-semibold text-olive-700">
+                      <div className="w-2 h-2 rounded-full bg-olive-600" />
                       <span className="w-8">R:</span>
                       <span className="font-mono">
                         ({resultant.x.toFixed(1)}, {resultant.y.toFixed(1)}) N
@@ -530,25 +530,25 @@ function BoxForceSimulator() {
         </div>
 
         {/* Resultant */}
-        <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-200">
-          <h3 className="font-semibold text-emerald-800 mb-3">Force Résultante</h3>
+        <div className="p-4 bg-olive-50 rounded-lg border border-olive-200">
+          <h3 className="font-semibold text-olive-800 mb-3">Force Résultante</h3>
           {forces.length === 0 ? (
-            <p className="text-sm text-emerald-600">Ajoutez des forces pour calculer la résultante</p>
+            <p className="text-sm text-olive-600">Ajoutez des forces pour calculer la résultante</p>
           ) : forces.length === 1 ? (
-            <p className="text-sm text-emerald-600">Ajoutez plus de forces pour voir la somme vectorielle</p>
+            <p className="text-sm text-olive-600">Ajoutez plus de forces pour voir la somme vectorielle</p>
           ) : (
             <div className="space-y-2">
-              <p className="text-emerald-700">
+              <p className="text-olive-700">
                 <strong>Magnitude:</strong> |R| = {resultantMagnitude.toFixed(2)} N
               </p>
-              <p className="text-emerald-700">
+              <p className="text-olive-700">
                 <strong>Direction:</strong> θ = {resultantAngle.toFixed(1)}°
               </p>
-              <p className="text-emerald-700">
+              <p className="text-olive-700">
                 <strong>Composantes:</strong> Rx = {resultant.x.toFixed(2)} N, Ry = {resultant.y.toFixed(2)} N
               </p>
               {resultantMagnitude < 0.1 && (
-                <div className="mt-2 p-2 bg-emerald-100 rounded text-sm text-emerald-800">
+                <div className="mt-2 p-2 bg-olive-100 rounded text-sm text-olive-800">
                   Les forces s'annulent! L'objet est en équilibre.
                 </div>
               )}
@@ -558,15 +558,15 @@ function BoxForceSimulator() {
       </div>
 
       {/* Formula */}
-      <div className="bg-gray-50 rounded-lg p-4">
-        <h3 className="font-semibold text-gray-800 mb-2">Formules</h3>
+      <div className="bg-stone-50 rounded-lg p-4">
+        <h3 className="font-semibold text-stone-800 mb-2">Formules</h3>
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <p className="text-sm text-gray-600 mb-1">Somme vectorielle:</p>
+            <p className="text-sm text-stone-600 mb-1">Somme vectorielle:</p>
             <BlockMath math="\vec{R} = \sum_{i=1}^{n} \vec{F}_i" />
           </div>
           <div>
-            <p className="text-sm text-gray-600 mb-1">Composantes:</p>
+            <p className="text-sm text-stone-600 mb-1">Composantes:</p>
             <BlockMath math="R_x = \sum F_{ix}, \quad R_y = \sum F_{iy}" />
           </div>
         </div>
@@ -614,7 +614,7 @@ function FreePlaceForceSimulator() {
     y: Math.round(point.y / gridSize) * gridSize,
   });
 
-  const colors = ['#dc2626', '#2563eb', '#16a34a', '#9333ea', '#f59e0b', '#ec4899', '#0891b2', '#84cc16'];
+  const colors = ['#c65c3c', '#c1974f', '#748336', '#a45d80', '#e8c518', '#ab6a8b', '#436177', '#b7b22b'];
 
   const handleAddForce = () => {
     const newForce: Force = {
@@ -719,7 +719,7 @@ function FreePlaceForceSimulator() {
         {/* Canvas */}
         <div
           ref={canvasRef}
-          className="relative border-2 border-blue-200 rounded-lg overflow-hidden bg-blue-50"
+          className="relative border-2 border-gold-200 rounded-lg overflow-hidden bg-gold-50"
           style={{ width: canvasSize.width, height: canvasSize.height }}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
@@ -732,7 +732,7 @@ function FreePlaceForceSimulator() {
                 <path
                   d={`M ${gridSize} 0 L 0 0 0 ${gridSize}`}
                   fill="none"
-                  stroke="#bfdbfe"
+                  stroke="#e3cfae"
                   strokeWidth="0.5"
                 />
               </pattern>
@@ -740,8 +740,8 @@ function FreePlaceForceSimulator() {
             <rect width="100%" height="100%" fill="url(#freeGrid)" />
 
             {/* Origin point */}
-            <circle cx={origin.x} cy={origin.y} r={6} fill="#374151" />
-            <text x={origin.x + 10} y={origin.y - 10} className="text-xs fill-gray-600">O</text>
+            <circle cx={origin.x} cy={origin.y} r={6} fill="#484440" />
+            <text x={origin.x + 10} y={origin.y - 10} className="text-xs fill-stone-600">O</text>
 
             {/* Forces */}
             {forces.map(force => {
@@ -792,12 +792,12 @@ function FreePlaceForceSimulator() {
             {/* Resultant at origin */}
             {forces.length > 1 && resultantMagnitude > 0.1 && (
               <g>
-                {drawArrow(origin.x, origin.y, resultantAngle, Math.min(resultantMagnitude * 0.6, 100), '#059669', 4)}
+                {drawArrow(origin.x, origin.y, resultantAngle, Math.min(resultantMagnitude * 0.6, 100), '#616e2d', 4)}
                 <text
                   x={origin.x + (resultantMagnitude * 0.3 + 25) * Math.cos((-resultantAngle * Math.PI) / 180)}
                   y={origin.y + (resultantMagnitude * 0.3 + 25) * Math.sin((-resultantAngle * Math.PI) / 180)}
                   textAnchor="middle"
-                  className="text-sm font-bold fill-emerald-700"
+                  className="text-sm font-bold fill-olive-700"
                 >
                   R
                 </text>
@@ -809,13 +809,13 @@ function FreePlaceForceSimulator() {
         {/* Control Panel */}
         <div className="space-y-4">
           {/* Add new force */}
-          <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-            <p className="text-xs font-medium text-gray-500 uppercase mb-3">
+          <div className="p-4 bg-stone-50 rounded-lg border border-stone-200">
+            <p className="text-xs font-medium text-stone-500 uppercase mb-3">
               Nouvelle force
             </p>
             <div className="space-y-3">
               <div>
-                <label className="block text-sm text-gray-600 mb-1">Nom</label>
+                <label className="block text-sm text-stone-600 mb-1">Nom</label>
                 <input
                   type="text"
                   value={newForceName}
@@ -824,7 +824,7 @@ function FreePlaceForceSimulator() {
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-600 mb-1">Magnitude: {newForceMagnitude} N</label>
+                <label className="block text-sm text-stone-600 mb-1">Magnitude: {newForceMagnitude} N</label>
                 <input
                   type="range"
                   min="10"
@@ -835,7 +835,7 @@ function FreePlaceForceSimulator() {
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-600 mb-1">Angle: {newForceAngle}°</label>
+                <label className="block text-sm text-stone-600 mb-1">Angle: {newForceAngle}°</label>
                 <input
                   type="range"
                   min="0"
@@ -847,7 +847,7 @@ function FreePlaceForceSimulator() {
               </div>
               <button
                 onClick={handleAddForce}
-                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="w-full px-4 py-2 bg-gold-600 text-white rounded-lg hover:bg-gold-700"
               >
                 Ajouter la force
               </button>
@@ -856,33 +856,33 @@ function FreePlaceForceSimulator() {
 
           {/* Selected force controls */}
           {selectedForce && (
-            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <p className="text-xs font-medium text-gray-500 uppercase mb-3">
+            <div className="p-4 bg-stone-50 rounded-lg border border-stone-200">
+              <p className="text-xs font-medium text-stone-500 uppercase mb-3">
                 Force sélectionnée: {forces.find(f => f.id === selectedForce)?.name}
               </p>
               <div className="flex gap-2">
                 <button
                   onClick={() => handleRotateForce(selectedForce, -15)}
-                  className="flex-1 p-2 bg-white border border-gray-200 rounded hover:bg-gray-100"
+                  className="flex-1 p-2 bg-white border border-stone-200 rounded hover:bg-stone-100"
                 >
                   -15°
                 </button>
                 <button
                   onClick={() => handleRotateForce(selectedForce, 15)}
-                  className="flex-1 p-2 bg-white border border-gray-200 rounded hover:bg-gray-100"
+                  className="flex-1 p-2 bg-white border border-stone-200 rounded hover:bg-stone-100"
                 >
                   +15°
                 </button>
                 <button
                   onClick={() => handleDeleteForce(selectedForce)}
-                  className="p-2 bg-red-50 border border-red-200 text-red-600 rounded hover:bg-red-100"
+                  className="p-2 bg-brun-50 border border-brun-200 text-brun-600 rounded hover:bg-brun-100"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
                 </button>
               </div>
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-stone-500 mt-2">
                 Glissez la force pour la repositionner
               </p>
             </div>
@@ -890,8 +890,8 @@ function FreePlaceForceSimulator() {
 
           {/* Forces list */}
           {forces.length > 0 && (
-            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <p className="text-xs font-medium text-gray-500 uppercase mb-2">
+            <div className="p-4 bg-stone-50 rounded-lg border border-stone-200">
+              <p className="text-xs font-medium text-stone-500 uppercase mb-2">
                 Forces ({forces.length})
               </p>
               <div className="space-y-1 max-h-40 overflow-y-auto">
@@ -901,7 +901,7 @@ function FreePlaceForceSimulator() {
                       <div className="w-2 h-2 rounded-full" style={{ backgroundColor: f.color }} />
                       <span>{f.name}</span>
                     </div>
-                    <span className="text-gray-500">{f.magnitude}N @ {f.angle}°</span>
+                    <span className="text-stone-500">{f.magnitude}N @ {f.angle}°</span>
                   </div>
                 ))}
               </div>
@@ -912,16 +912,16 @@ function FreePlaceForceSimulator() {
 
       {/* Resultant */}
       {forces.length > 1 && (
-        <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-200">
-          <h3 className="font-semibold text-emerald-800 mb-2">Force Résultante R</h3>
+        <div className="p-4 bg-olive-50 rounded-lg border border-olive-200">
+          <h3 className="font-semibold text-olive-800 mb-2">Force Résultante R</h3>
           <div className="grid md:grid-cols-3 gap-4">
-            <p className="text-emerald-700">
+            <p className="text-olive-700">
               <strong>|R|</strong> = {resultantMagnitude.toFixed(2)} N
             </p>
-            <p className="text-emerald-700">
+            <p className="text-olive-700">
               <strong>θ</strong> = {resultantAngle.toFixed(1)}°
             </p>
-            <p className="text-emerald-700">
+            <p className="text-olive-700">
               <strong>R</strong> = ({resultant.x.toFixed(2)}, {resultant.y.toFixed(2)}) N
             </p>
           </div>

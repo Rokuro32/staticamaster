@@ -38,7 +38,7 @@ function SimpleGrid() {
       <Line
         key={`x-${i}`}
         points={[[-size, i, 0], [size, i, 0]]}
-        color="#444444"
+        color="#484440"
         lineWidth={0.5}
       />
     );
@@ -47,7 +47,7 @@ function SimpleGrid() {
       <Line
         key={`y-${i}`}
         points={[[i, -size, 0], [i, size, 0]]}
-        color="#444444"
+        color="#484440"
         lineWidth={0.5}
       />
     );
@@ -61,11 +61,11 @@ function SimpleAxes() {
   return (
     <>
       {/* X axis - Red */}
-      <Line points={[[0, 0, 0], [10, 0, 0]]} color="#ff0000" lineWidth={2} />
+      <Line points={[[0, 0, 0], [10, 0, 0]]} color="#c65a39" lineWidth={2} />
       {/* Y axis - Green */}
-      <Line points={[[0, 0, 0], [0, 10, 0]]} color="#00ff00" lineWidth={2} />
+      <Line points={[[0, 0, 0], [0, 10, 0]]} color="#a0b54a" lineWidth={2} />
       {/* Z axis - Blue */}
-      <Line points={[[0, 0, 0], [0, 0, 10]]} color="#0000ff" lineWidth={2} />
+      <Line points={[[0, 0, 0], [0, 0, 10]]} color="#bd9042" lineWidth={2} />
     </>
   );
 }
@@ -150,7 +150,7 @@ function PlaneFromVectors({ vectors }: { vectors: VectorData[] }) {
       {/* Parallelogram outline */}
       <Line
         points={[[0, 0, 0], v1, sum, v2, [0, 0, 0]]}
-        color="#4a9eff"
+        color="#c7a261"
         lineWidth={1}
         opacity={0.5}
         transparent
@@ -168,7 +168,7 @@ export default function Canvas3DView({ vectors, result, operation, showComponent
 
   if (!mounted) {
     return (
-      <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#1e293b', color: '#94a3b8' }}>
+      <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#2f2d2a', color: '#aba6a1' }}>
         Chargement 3D...
       </div>
     );
@@ -207,7 +207,7 @@ export default function Canvas3DView({ vectors, result, operation, showComponent
           <VectorArrow3D
             start={[0, 0, 0]}
             end={[result.x, result.y, result.z || 0]}
-            color="#f97316"
+            color="#db8834"
             label={operation === 'cross' ? 'C' : 'R'}
             showComponents={false}
           />

@@ -245,9 +245,9 @@ export function SectionMethodSimulator() {
   }, [memberForces]);
 
   const getColor = (f: number) => {
-    if (f > 10) return '#3b82f6';
-    if (f < -10) return '#ef4444';
-    return '#6b7280';
+    if (f > 10) return '#c29851';
+    if (f < -10) return '#ca684a';
+    return '#7c766f';
   };
   const getWidth = (f: number) => 3 + Math.min(Math.abs(f) / maxForce, 1) * 5;
 
@@ -258,22 +258,22 @@ export function SectionMethodSimulator() {
   return (
     <section className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-gray-900">
+        <h2 className="text-3xl font-bold text-stone-900">
           Méthode des sections (Ritter)
         </h2>
-        <p className="text-gray-600">
+        <p className="text-stone-600">
           Déterminer la force dans une barre sans résoudre tout le treillis
         </p>
       </div>
 
       {/* SVG */}
       <div className="flex flex-col items-center space-y-4">
-        <div className="border-2 border-blue-200 rounded-lg overflow-hidden bg-gradient-to-b from-blue-50 to-white w-full max-w-[700px]">
+        <div className="border-2 border-gold-200 rounded-lg overflow-hidden bg-gradient-to-b from-gold-50 to-white w-full max-w-[700px]">
           <svg width={svgW} height={svgH} viewBox={`0 0 ${svgW} ${svgH}`} className="w-full h-auto">
             {/* Grid */}
             <defs>
               <pattern id="sGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#dbeafe" strokeWidth="0.5" />
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#eeedeb" strokeWidth="0.5" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#sGrid)" />
@@ -284,11 +284,11 @@ export function SectionMethodSimulator() {
               y1={20}
               x2={cut.cutX}
               y2={svgH - 20}
-              stroke="#f59e0b"
+              stroke="#e8c518"
               strokeWidth={2.5}
               strokeDasharray="8,5"
             />
-            <text x={cut.cutX + 6} y={35} className="text-xs fill-amber-600 font-bold">
+            <text x={cut.cutX + 6} y={35} className="text-xs fill-ocre-600 font-bold">
               {cut.label.split(' ')[1]}
             </text>
 
@@ -298,7 +298,7 @@ export function SectionMethodSimulator() {
               y={0}
               width={cut.cutX}
               height={svgH}
-              fill="#fef3c7"
+              fill="#f6e8a2"
               fillOpacity={0.20}
             />
 
@@ -313,7 +313,7 @@ export function SectionMethodSimulator() {
                   <line
                     x1={sn.x} y1={sn.y}
                     x2={en.x} y2={en.y}
-                    stroke={isCut ? '#f59e0b' : getColor(f)}
+                    stroke={isCut ? '#e8c518' : getColor(f)}
                     strokeWidth={isCut ? 5 : getWidth(f)}
                     strokeLinecap="round"
                     opacity={isCut ? 1 : 0.7}
@@ -324,7 +324,7 @@ export function SectionMethodSimulator() {
                     y={(sn.y + en.y) / 2 - 8}
                     textAnchor="middle"
                     className="text-xs font-mono font-medium"
-                    fill={isCut ? '#b45309' : getColor(f)}
+                    fill={isCut ? '#a15e1c' : getColor(f)}
                   >
                     {Math.abs(f) > 5 ? `${Math.abs(f).toFixed(0)} N` : ''}
                   </text>
@@ -335,7 +335,7 @@ export function SectionMethodSimulator() {
                       y={(sn.y + en.y) / 2 + 8}
                       textAnchor="middle"
                       className="text-[10px] font-bold"
-                      fill={f > 0 ? '#2563eb' : '#dc2626'}
+                      fill={f > 0 ? '#c1974f' : '#c65c3c'}
                     >
                       {f > 0 ? '(T)' : '(C)'}
                     </text>
@@ -349,19 +349,19 @@ export function SectionMethodSimulator() {
               if (n.supportType === 'pin') {
                 return (
                   <g key={`sup-${n.id}`} transform={`translate(${n.x},${n.y})`}>
-                    <polygon points="0,0 -12,20 12,20" fill="none" stroke="#374151" strokeWidth="2" />
-                    <circle cx={0} cy={0} r={5} fill="#4f46e5" />
-                    <line x1={-16} y1={23} x2={16} y2={23} stroke="#374151" strokeWidth="2" />
+                    <polygon points="0,0 -12,20 12,20" fill="none" stroke="#484440" strokeWidth="2" />
+                    <circle cx={0} cy={0} r={5} fill="#c0964d" />
+                    <line x1={-16} y1={23} x2={16} y2={23} stroke="#484440" strokeWidth="2" />
                   </g>
                 );
               }
               return (
                 <g key={`sup-${n.id}`} transform={`translate(${n.x},${n.y})`}>
-                  <polygon points="0,0 -10,16 10,16" fill="none" stroke="#374151" strokeWidth="2" />
-                  <circle cx={0} cy={0} r={5} fill="#10b981" />
-                  <circle cx={-5} cy={21} r={4} fill="none" stroke="#374151" strokeWidth="1.5" />
-                  <circle cx={5} cy={21} r={4} fill="none" stroke="#374151" strokeWidth="1.5" />
-                  <line x1={-14} y1={28} x2={14} y2={28} stroke="#374151" strokeWidth="2" />
+                  <polygon points="0,0 -10,16 10,16" fill="none" stroke="#484440" strokeWidth="2" />
+                  <circle cx={0} cy={0} r={5} fill="#7e8f3a" />
+                  <circle cx={-5} cy={21} r={4} fill="none" stroke="#484440" strokeWidth="1.5" />
+                  <circle cx={5} cy={21} r={4} fill="none" stroke="#484440" strokeWidth="1.5" />
+                  <line x1={-14} y1={28} x2={14} y2={28} stroke="#484440" strokeWidth="2" />
                 </g>
               );
             })}
@@ -370,9 +370,9 @@ export function SectionMethodSimulator() {
             {NODES.map(n => (
               <g key={n.id}>
                 <circle cx={n.x} cy={n.y} r={7}
-                  fill={n.supportType === 'pin' ? '#4f46e5' : n.supportType === 'roller' ? '#10b981' : '#374151'}
+                  fill={n.supportType === 'pin' ? '#c0964d' : n.supportType === 'roller' ? '#7e8f3a' : '#484440'}
                 />
-                <text x={n.x} y={n.y - 14} textAnchor="middle" className="text-xs font-bold fill-gray-700">
+                <text x={n.x} y={n.y - 14} textAnchor="middle" className="text-xs font-bold fill-stone-700">
                   {n.id}
                 </text>
               </g>
@@ -384,13 +384,13 @@ export function SectionMethodSimulator() {
                 <line
                   x1={forceNode.x} y1={forceNode.y - 12}
                   x2={forceNode.x} y2={forceNode.y - 70}
-                  stroke="#dc2626" strokeWidth="3.5"
+                  stroke="#c65c3c" strokeWidth="3.5"
                 />
                 <polygon
                   points={`${forceNode.x},${forceNode.y - 12} ${forceNode.x - 7},${forceNode.y - 24} ${forceNode.x + 7},${forceNode.y - 24}`}
-                  fill="#dc2626"
+                  fill="#c65c3c"
                 />
-                <text x={forceNode.x + 12} y={forceNode.y - 45} className="text-xs font-bold fill-red-600">
+                <text x={forceNode.x + 12} y={forceNode.y - 45} className="text-xs font-bold fill-brun-600">
                   F = {forceY} N
                 </text>
               </g>
@@ -399,24 +399,24 @@ export function SectionMethodSimulator() {
             {/* Réactions */}
             {Ry_pin !== 0 && (
               <g>
-                <line x1={NODES[0].x} y1={NODES[0].y + 30} x2={NODES[0].x} y2={NODES[0].y + 30 - 40} stroke="#10b981" strokeWidth="2.5" />
+                <line x1={NODES[0].x} y1={NODES[0].y + 30} x2={NODES[0].x} y2={NODES[0].y + 30 - 40} stroke="#7e8f3a" strokeWidth="2.5" />
                 <polygon
                   points={`${NODES[0].x},${NODES[0].y + 30 - 40} ${NODES[0].x - 5},${NODES[0].y + 30 - 28} ${NODES[0].x + 5},${NODES[0].y + 30 - 28}`}
-                  fill="#10b981"
+                  fill="#7e8f3a"
                 />
-                <text x={NODES[0].x + 10} y={NODES[0].y + 14} className="text-[10px] fill-emerald-600 font-medium">
+                <text x={NODES[0].x + 10} y={NODES[0].y + 14} className="text-[10px] fill-olive-600 font-medium">
                   {Ry_pin.toFixed(0)} N
                 </text>
               </g>
             )}
             {Ry_roller !== 0 && (
               <g>
-                <line x1={NODES[3].x} y1={NODES[3].y + 34} x2={NODES[3].x} y2={NODES[3].y + 34 - 40} stroke="#10b981" strokeWidth="2.5" />
+                <line x1={NODES[3].x} y1={NODES[3].y + 34} x2={NODES[3].x} y2={NODES[3].y + 34 - 40} stroke="#7e8f3a" strokeWidth="2.5" />
                 <polygon
                   points={`${NODES[3].x},${NODES[3].y + 34 - 40} ${NODES[3].x - 5},${NODES[3].y + 34 - 28} ${NODES[3].x + 5},${NODES[3].y + 34 - 28}`}
-                  fill="#10b981"
+                  fill="#7e8f3a"
                 />
-                <text x={NODES[3].x + 10} y={NODES[3].y + 18} className="text-[10px] fill-emerald-600 font-medium">
+                <text x={NODES[3].x + 10} y={NODES[3].y + 18} className="text-[10px] fill-olive-600 font-medium">
                   {Ry_roller.toFixed(0)} N
                 </text>
               </g>
@@ -424,27 +424,27 @@ export function SectionMethodSimulator() {
 
             {/* Point du moment */}
             <circle cx={nodeMap.get(cut.momentNode)!.x} cy={nodeMap.get(cut.momentNode)!.y} r={14}
-              fill="none" stroke="#f59e0b" strokeWidth="2" strokeDasharray="3,3" />
+              fill="none" stroke="#e8c518" strokeWidth="2" strokeDasharray="3,3" />
             <text
               x={nodeMap.get(cut.momentNode)!.x}
               y={nodeMap.get(cut.momentNode)!.y + 28}
               textAnchor="middle"
-              className="text-[10px] fill-amber-700 font-bold"
+              className="text-[10px] fill-ocre-700 font-bold"
             >
               Moment ici
             </text>
 
             {/* Légende */}
             <g transform={`translate(10, ${svgH - 50})`}>
-              <rect x="0" y="-5" width="200" height="48" rx="4" fill="white" fillOpacity="0.9" stroke="#e5e7eb" />
-              <line x1="10" y1="5" x2="35" y2="5" stroke="#3b82f6" strokeWidth="3" />
-              <text x="40" y="9" className="text-[10px] fill-gray-600">Tension (+)</text>
-              <line x1="10" y1="20" x2="35" y2="20" stroke="#ef4444" strokeWidth="3" />
-              <text x="40" y="24" className="text-[10px] fill-gray-600">Compression (-)</text>
-              <line x1="100" y1="5" x2="130" y2="5" stroke="#f59e0b" strokeWidth="4" />
-              <text x="135" y="9" className="text-[10px] fill-amber-700">Barre coupée</text>
-              <line x1="100" y1="20" x2="130" y2="20" stroke="#f59e0b" strokeWidth="2" strokeDasharray="6,4" />
-              <text x="135" y="24" className="text-[10px] fill-amber-700">Ligne de coupe</text>
+              <rect x="0" y="-5" width="200" height="48" rx="4" fill="white" fillOpacity="0.9" stroke="#e9e8e7" />
+              <line x1="10" y1="5" x2="35" y2="5" stroke="#c29851" strokeWidth="3" />
+              <text x="40" y="9" className="text-[10px] fill-stone-600">Tension (+)</text>
+              <line x1="10" y1="20" x2="35" y2="20" stroke="#ca684a" strokeWidth="3" />
+              <text x="40" y="24" className="text-[10px] fill-stone-600">Compression (-)</text>
+              <line x1="100" y1="5" x2="130" y2="5" stroke="#e8c518" strokeWidth="4" />
+              <text x="135" y="9" className="text-[10px] fill-ocre-700">Barre coupée</text>
+              <line x1="100" y1="20" x2="130" y2="20" stroke="#e8c518" strokeWidth="2" strokeDasharray="6,4" />
+              <text x="135" y="24" className="text-[10px] fill-ocre-700">Ligne de coupe</text>
             </g>
           </svg>
         </div>
@@ -452,20 +452,20 @@ export function SectionMethodSimulator() {
         {/* Controls */}
         <div className="w-full max-w-[700px] space-y-3">
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium w-36">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium w-36">
               Force <InlineMath math="F_y" />
             </label>
             <input
               type="range" min={0} max={5000} step={100}
               value={forceY}
               onChange={(e) => setForceY(Number(e.target.value))}
-              className="flex-1 accent-red-500"
+              className="flex-1 accent-brun-500"
             />
-            <span className="text-sm font-mono text-gray-900 w-20 text-right">{forceY} N</span>
+            <span className="text-sm font-mono text-stone-900 w-20 text-right">{forceY} N</span>
           </div>
 
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium w-36">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium w-36">
               Noeud d&apos;application
             </label>
             <div className="flex gap-1">
@@ -476,8 +476,8 @@ export function SectionMethodSimulator() {
                   className={cn(
                     'px-3 py-1 text-sm rounded border font-medium',
                     forceNodeId === n.id
-                      ? 'bg-red-600 text-white border-red-600'
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50',
+                      ? 'bg-brun-600 text-white border-brun-600'
+                      : 'bg-white text-stone-700 border-stone-300 hover:bg-stone-50',
                   )}
                 >
                   {n.id}
@@ -487,7 +487,7 @@ export function SectionMethodSimulator() {
           </div>
 
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium w-36">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium w-36">
               Coupe
             </label>
             <div className="flex gap-1 flex-wrap">
@@ -498,8 +498,8 @@ export function SectionMethodSimulator() {
                   className={cn(
                     'px-3 py-1.5 text-sm rounded border font-medium',
                     selectedCut === c.id
-                      ? 'bg-amber-500 text-white border-amber-500'
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50',
+                      ? 'bg-ocre-500 text-white border-ocre-500'
+                      : 'bg-white text-stone-700 border-stone-300 hover:bg-stone-50',
                   )}
                 >
                   {c.label}
@@ -510,19 +510,19 @@ export function SectionMethodSimulator() {
         </div>
 
         {/* Résultat de la coupe */}
-        <div className="w-full max-w-[700px] p-4 bg-amber-50 rounded-lg border border-amber-200">
-          <h3 className="font-semibold text-amber-800 mb-2">{cut.label}</h3>
-          <p className="text-sm text-amber-700 mb-3">{cut.description}</p>
+        <div className="w-full max-w-[700px] p-4 bg-ocre-50 rounded-lg border border-ocre-200">
+          <h3 className="font-semibold text-ocre-800 mb-2">{cut.label}</h3>
+          <p className="text-sm text-ocre-700 mb-3">{cut.description}</p>
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div>
-              <span className="text-gray-600">Barre cible : </span>
-              <span className="font-mono font-bold text-amber-900">{cut.targetMember}</span>
+              <span className="text-stone-600">Barre cible : </span>
+              <span className="font-mono font-bold text-ocre-900">{cut.targetMember}</span>
             </div>
             <div>
-              <span className="text-gray-600">Force : </span>
+              <span className="text-stone-600">Force : </span>
               <span className={cn(
                 'font-mono font-bold',
-                (memberForces.get(cut.targetMember) || 0) > 0 ? 'text-blue-700' : 'text-red-700',
+                (memberForces.get(cut.targetMember) || 0) > 0 ? 'text-gold-700' : 'text-brun-700',
               )}>
                 {Math.abs(memberForces.get(cut.targetMember) || 0).toFixed(0)} N
                 {' '}
@@ -537,43 +537,43 @@ export function SectionMethodSimulator() {
       <div className="space-y-2">
         <CollapsiblePanel
           title="1. Principe de la méthode des sections"
-          borderColor="border-amber-500"
-          bgColor="bg-amber-50"
-          textColor="text-amber-800"
+          borderColor="border-ocre-500"
+          bgColor="bg-ocre-50"
+          textColor="text-ocre-800"
           defaultOpen
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             La <strong>méthode des sections</strong> (ou méthode de Ritter) permet de
             déterminer la force dans <strong>une barre précise</strong> sans devoir
             résoudre tout le treillis noeud par noeud.
           </p>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             On effectue une <em>coupe fictive</em> qui traverse au plus <strong>3 barres
             </strong> (dont celle recherchée), séparant le treillis en deux parties. On
             isole une des deux parties et on écrit les équations d&apos;équilibre de ce
             corps libre.
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`\\sum F_x = 0, \\quad \\sum F_y = 0, \\quad \\sum M_O = 0`} />
           </div>
         </CollapsiblePanel>
 
         <CollapsiblePanel
           title="2. Équation des moments"
-          borderColor="border-blue-500"
-          bgColor="bg-blue-50"
-          textColor="text-blue-800"
+          borderColor="border-gold-500"
+          bgColor="bg-gold-50"
+          textColor="text-gold-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             L&apos;astuce clé : choisir le <strong>point de moment</strong> à
             l&apos;intersection des lignes d&apos;action des deux <em>autres</em> barres
             coupées. Ainsi, seule la force recherchée produit un moment, et on la
             détermine directement :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`\\sum M_O = 0 \\quad \\Longrightarrow \\quad F_{\\text{cible}} = \\frac{\\text{moments des forces externes}}{d_{\\perp}}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             <InlineMath math={`d_{\\perp}`} /> est le bras de levier de la force dans la
             barre cible par rapport au point de moment.
           </p>
@@ -581,22 +581,22 @@ export function SectionMethodSimulator() {
 
         <CollapsiblePanel
           title="3. Comparaison avec la méthode des noeuds"
-          borderColor="border-green-500"
-          bgColor="bg-green-50"
-          textColor="text-green-800"
+          borderColor="border-olive-500"
+          bgColor="bg-olive-50"
+          textColor="text-olive-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             <strong>Méthode des noeuds</strong> : on résout l&apos;équilibre{' '}
             <InlineMath math={`\\sum F_x = \\sum F_y = 0`} /> à chaque noeud,
             en progressant de proche en proche. C&apos;est systématique mais fastidieux
             pour les grands treillis.
           </p>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             <strong>Méthode des sections</strong> : on va directement à la barre
             d&apos;intérêt. Idéale lorsqu&apos;on ne cherche la force que dans quelques
             barres (cas fréquent en conception et en examen).
           </p>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Les deux méthodes s&apos;appuient sur les mêmes hypothèses :{' '}
             articulations parfaites, charges aux noeuds, barres en effort axial pur.
           </p>
@@ -604,26 +604,26 @@ export function SectionMethodSimulator() {
 
         <CollapsiblePanel
           title="4. Conditions d'application"
-          borderColor="border-gray-500"
-          bgColor="bg-gray-50"
-          textColor="text-gray-700"
+          borderColor="border-stone-500"
+          bgColor="bg-stone-50"
+          textColor="text-stone-700"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             La coupe doit traverser <strong>au plus 3 barres</strong> (car on dispose de
             3 équations d&apos;équilibre en 2D). Si la coupe coupe plus de 3 barres, le
             système est indéterminé avec cette seule coupe.
           </p>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Le treillis doit être <strong>isostatique</strong> : le nombre de barres{' '}
             <InlineMath math={`b`} /> et de réactions <InlineMath math={`r`} />
             vérifie <InlineMath math={`b + r = 2n`} /> où <InlineMath math={`n`} /> est
             le nombre de noeuds.
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto text-center">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto text-center">
             <InlineMath math={`b = ${MEMBERS.length}, \\; r = 3, \\; n = ${NODES.length} \\quad \\Rightarrow \\quad ${MEMBERS.length} + 3 = ${MEMBERS.length + 3} = 2 \\times ${NODES.length} = ${2 * NODES.length}`} />
             {MEMBERS.length + 3 === 2 * NODES.length
-              ? <span className="block text-green-700 font-medium mt-1">Treillis isostatique ✓</span>
-              : <span className="block text-red-700 font-medium mt-1">Treillis non-isostatique</span>
+              ? <span className="block text-olive-700 font-medium mt-1">Treillis isostatique ✓</span>
+              : <span className="block text-brun-700 font-medium mt-1">Treillis non-isostatique</span>
             }
           </div>
         </CollapsiblePanel>

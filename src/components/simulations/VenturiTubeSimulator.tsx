@@ -156,7 +156,7 @@ export function VenturiTubeSimulator() {
       lastTimeRef.current = now;
 
       // Fond
-      ctx.fillStyle = '#0b1220';
+      ctx.fillStyle = '#171614';
       ctx.fillRect(0, 0, W, H);
 
       // ---- Profil du tube (deux courbes : haut et bas) ----
@@ -174,14 +174,14 @@ export function VenturiTubeSimulator() {
 
       // Remplissage du fluide
       const grad = ctx.createLinearGradient(0, tubeY - tubeR1, 0, tubeY + tubeR1);
-      grad.addColorStop(0, 'rgba(56, 189, 248, 0.35)');
-      grad.addColorStop(0.5, 'rgba(14, 165, 233, 0.55)');
-      grad.addColorStop(1, 'rgba(56, 189, 248, 0.35)');
+      grad.addColorStop(0, 'rgba(104, 142, 170, 0.35)');
+      grad.addColorStop(0.5, 'rgba(89, 129, 158, 0.55)');
+      grad.addColorStop(1, 'rgba(104, 142, 170, 0.35)');
       ctx.fillStyle = grad;
       ctx.fill();
 
       // Bordure du tube
-      ctx.strokeStyle = '#cbd5e1';
+      ctx.strokeStyle = '#d8d6d4';
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(0, tubeY - tubeR1);
@@ -201,7 +201,7 @@ export function VenturiTubeSimulator() {
 
       // ---- Lignes de courant (streamlines) ----
       if (showStreamlines) {
-        ctx.strokeStyle = 'rgba(148, 197, 250, 0.35)';
+        ctx.strokeStyle = 'rgba(216, 189, 143, 0.35)';
         ctx.lineWidth = 1;
         const nLines = 5;
         for (let i = 1; i < nLines; i++) {
@@ -235,11 +235,11 @@ export function VenturiTubeSimulator() {
         const r = tubeRadiusAt(p.x);
         const y = tubeY + (p.yOffset * 0.85) * r;
         const speed = localSpeed(p.x);
-        // Couleur selon vitesse : bleu lent -> jaune rapide
+        // Couleur selon vitesse : brun (lent) -> or (rapide)
         const t = Math.min(1, (speed - v1) / Math.max(0.001, v2 - v1));
-        const hue = 200 - t * 160;             // 200 (bleu) → 40 (jaune)
-        const sat = 90;
-        const light = 55 + t * 15;
+        const hue = 18 + t * 32;               // 18 (brun) → 50 (ocre)
+        const sat = 55 + t * 28;
+        const light = 34 + t * 28;
         ctx.fillStyle = `hsl(${hue}, ${sat}%, ${light}%)`;
         ctx.beginPath();
         ctx.arc(p.x, y, 1.8, 0, Math.PI * 2);
@@ -271,12 +271,12 @@ export function VenturiTubeSimulator() {
           const yFluidTop = yBase - colHeightPx;
           const fluidGrad = ctx.createLinearGradient(0, yFluidTop, 0, yBase);
           fluidGrad.addColorStop(0, colorFluid);
-          fluidGrad.addColorStop(1, '#1e40af');
+          fluidGrad.addColorStop(1, '#987435');
           ctx.fillStyle = fluidGrad;
           ctx.fillRect(xPos - tubeWidth / 2 + 2, yFluidTop, tubeWidth - 4, yBase - yFluidTop);
 
           // Méniscus
-          ctx.strokeStyle = '#dbeafe';
+          ctx.strokeStyle = '#eeedeb';
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(xPos - tubeWidth / 2 + 2, yFluidTop);
@@ -284,35 +284,35 @@ export function VenturiTubeSimulator() {
           ctx.stroke();
 
           // Étiquette
-          ctx.fillStyle = '#e2e8f0';
+          ctx.fillStyle = '#eae9e8';
           ctx.font = 'bold 12px sans-serif';
           ctx.textAlign = 'center';
           ctx.fillText(label, xPos, yTop - 8);
-          ctx.fillStyle = '#94a3b8';
+          ctx.fillStyle = '#aba6a1';
           ctx.font = '11px sans-serif';
           ctx.fillText(`${(pressure / 1000).toFixed(2)} kPa`, xPos, yTop - 24);
         };
 
         // Point 1 : amont (entrée large)
-        drawManometer(170, h1mm, '#cbd5e1', '#60a5fa', 'P₁', p1);
+        drawManometer(170, h1mm, '#d8d6d4', '#cba86c', 'P₁', p1);
         // Point 2 : col (rétrécissement) — pression plus faible, colonne plus basse
-        drawManometer(370, h2mm, '#fca5a5', '#3b82f6', 'P₂', p2);
+        drawManometer(370, h2mm, '#e1a897', '#c29851', 'P₂', p2);
         // Point 3 : aval (retour à A1) — pression ≈ P1 (fluide idéal, sans pertes)
-        drawManometer(600, h1mm, '#cbd5e1', '#60a5fa', 'P₃', p1);
+        drawManometer(600, h1mm, '#d8d6d4', '#cba86c', 'P₃', p1);
       }
 
       // ---- Étiquettes sur le tube ----
-      ctx.fillStyle = '#fde68a';
+      ctx.fillStyle = '#f1db6f';
       ctx.font = 'bold 13px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(`A₁, v₁ = ${v1.toFixed(2)} m/s`, 130, tubeY + tubeR1 + 28);
-      ctx.fillStyle = '#fca5a5';
+      ctx.fillStyle = '#e1a897';
       ctx.fillText(`A₂, v₂ = ${v2.toFixed(2)} m/s`, 370, tubeY + tubeRadiusAt(370) + 32);
-      ctx.fillStyle = '#fde68a';
+      ctx.fillStyle = '#f1db6f';
       ctx.fillText(`A₃ = A₁, v₃ = ${v1.toFixed(2)} m/s`, 640, tubeY + tubeR1 + 28);
 
       // Flèche d'écoulement
-      ctx.strokeStyle = '#fbbf24';
+      ctx.strokeStyle = '#e8c61a';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(20, 30);
@@ -321,7 +321,7 @@ export function VenturiTubeSimulator() {
       ctx.moveTo(120, 30);
       ctx.lineTo(110, 36);
       ctx.stroke();
-      ctx.fillStyle = '#fbbf24';
+      ctx.fillStyle = '#e8c61a';
       ctx.font = '12px sans-serif';
       ctx.textAlign = 'left';
       ctx.fillText('Écoulement', 24, 22);
@@ -347,10 +347,10 @@ export function VenturiTubeSimulator() {
   return (
     <section className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-gray-900">
+        <h2 className="text-3xl font-bold text-stone-900">
           Tube de Venturi
         </h2>
-        <p className="text-gray-600">
+        <p className="text-stone-600">
           Conservation de la masse et équation de Bernoulli &mdash; quand le tube
           se rétrécit, le fluide accélère et sa pression chute.
         </p>
@@ -361,70 +361,70 @@ export function VenturiTubeSimulator() {
           ref={canvasRef}
           width={W}
           height={H}
-          className="w-full max-w-[760px] mx-auto rounded-lg border border-gray-300 bg-slate-900"
+          className="w-full max-w-[760px] mx-auto rounded-lg border border-stone-300 bg-stone-900"
         />
 
         <div className="w-full max-w-[760px] space-y-3">
           {/* Vitesse d'entrée */}
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium w-44">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium w-44">
               Vitesse à l&apos;entrée v₁
             </label>
             <input
               type="range" min={0.5} max={6} step={0.1}
               value={v1}
               onChange={(e) => setV1(Number(e.target.value))}
-              className="flex-1 accent-blue-500"
+              className="flex-1 accent-gold-500"
             />
-            <span className="text-sm font-mono text-gray-900 w-24 text-right">
+            <span className="text-sm font-mono text-stone-900 w-24 text-right">
               {v1.toFixed(2)} m/s
             </span>
           </div>
 
           {/* Rapport des aires */}
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium w-44">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium w-44">
               Rapport A₂ / A₁
             </label>
             <input
               type="range" min={0.15} max={0.9} step={0.05}
               value={areaRatio}
               onChange={(e) => setAreaRatio(Number(e.target.value))}
-              className="flex-1 accent-rose-500"
+              className="flex-1 accent-brun-500"
             />
-            <span className="text-sm font-mono text-gray-900 w-24 text-right">
+            <span className="text-sm font-mono text-stone-900 w-24 text-right">
               {areaRatio.toFixed(2)}
             </span>
           </div>
 
           {/* Densité du fluide */}
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium w-44">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium w-44">
               Densité ρ
             </label>
             <input
               type="range" min={200} max={1500} step={50}
               value={rho}
               onChange={(e) => setRho(Number(e.target.value))}
-              className="flex-1 accent-purple-500"
+              className="flex-1 accent-prune-500"
             />
-            <span className="text-sm font-mono text-gray-900 w-24 text-right">
+            <span className="text-sm font-mono text-stone-900 w-24 text-right">
               {rho} kg/m³
             </span>
           </div>
 
           {/* Pression amont */}
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium w-44">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium w-44">
               Pression amont P₁
             </label>
             <input
               type="range" min={50000} max={300000} step={1000}
               value={p1}
               onChange={(e) => setP1(Number(e.target.value))}
-              className="flex-1 accent-emerald-500"
+              className="flex-1 accent-olive-500"
             />
-            <span className="text-sm font-mono text-gray-900 w-24 text-right">
+            <span className="text-sm font-mono text-stone-900 w-24 text-right">
               {(p1 / 1000).toFixed(1)} kPa
             </span>
           </div>
@@ -433,7 +433,7 @@ export function VenturiTubeSimulator() {
           <div className="flex items-center gap-3 flex-wrap">
             <button
               onClick={() => setRunning(r => !r)}
-              className="px-4 py-2 text-sm font-medium bg-gray-100 hover:bg-gray-200 rounded-lg border border-gray-300"
+              className="px-4 py-2 text-sm font-medium bg-stone-100 hover:bg-stone-200 rounded-lg border border-stone-300"
             >
               {running ? '⏸ Pause' : '▶ Reprendre'}
             </button>
@@ -441,8 +441,8 @@ export function VenturiTubeSimulator() {
               onClick={() => setShowStreamlines(s => !s)}
               className={`px-4 py-2 text-sm font-medium rounded-lg border ${
                 showStreamlines
-                  ? 'bg-blue-600 text-white border-blue-600'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                  ? 'bg-gold-600 text-white border-gold-600'
+                  : 'bg-white text-stone-700 border-stone-300 hover:bg-stone-50'
               }`}
             >
               Lignes de courant
@@ -451,8 +451,8 @@ export function VenturiTubeSimulator() {
               onClick={() => setShowManometers(s => !s)}
               className={`px-4 py-2 text-sm font-medium rounded-lg border ${
                 showManometers
-                  ? 'bg-blue-600 text-white border-blue-600'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                  ? 'bg-gold-600 text-white border-gold-600'
+                  : 'bg-white text-stone-700 border-stone-300 hover:bg-stone-50'
               }`}
             >
               Manomètres
@@ -460,7 +460,7 @@ export function VenturiTubeSimulator() {
           </div>
 
           {/* Résumé numérique */}
-          <div className="p-3 bg-slate-100 rounded-lg border text-sm grid grid-cols-2 gap-x-6 gap-y-1">
+          <div className="p-3 bg-stone-100 rounded-lg border text-sm grid grid-cols-2 gap-x-6 gap-y-1">
             <div><strong>v₁</strong> = {v1.toFixed(2)} m/s</div>
             <div>
               <strong>v₂</strong> ={' '}
@@ -469,7 +469,7 @@ export function VenturiTubeSimulator() {
             <div><strong>P₁</strong> = {(p1 / 1000).toFixed(2)} kPa</div>
             <div>
               <strong>P₂</strong> ={' '}
-              <span className={`font-mono font-bold ${p2 < 0 ? 'text-red-600' : ''}`}>
+              <span className={`font-mono font-bold ${p2 < 0 ? 'text-brun-600' : ''}`}>
                 {(p2 / 1000).toFixed(2)} kPa
               </span>
             </div>
@@ -484,7 +484,7 @@ export function VenturiTubeSimulator() {
           </div>
 
           {cavitation && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-800">
+            <div className="p-3 bg-brun-50 border border-brun-200 rounded-lg text-sm text-brun-800">
               ⚠️ <strong>Pression négative au col !</strong> En pratique, le
               liquide se vaporiserait : c&apos;est le phénomène de <em>cavitation</em>.
               Réduisez le rétrécissement ou la vitesse pour rester dans un régime
@@ -498,24 +498,24 @@ export function VenturiTubeSimulator() {
       <div className="space-y-2">
         <CollapsiblePanel
           title="1. Conservation de la masse (équation de continuité)"
-          borderColor="border-blue-500"
-          bgColor="bg-blue-50"
-          textColor="text-blue-800"
+          borderColor="border-gold-500"
+          bgColor="bg-gold-50"
+          textColor="text-gold-800"
           defaultOpen
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Pour un fluide incompressible en régime permanent, le débit volumique
             <InlineMath math="\,Q = A\,v\," />est constant le long du tube :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`A_1\\,v_1 = A_2\\,v_2`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Quand la section diminue (<InlineMath math="A_2 < A_1" />), la vitesse
             augmente proportionnellement :{' '}
             <InlineMath math={`v_2 = v_1 \\cdot \\dfrac{A_1}{A_2}`} />.
           </p>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Dans la simulation, on visualise cette accélération : les particules
             roulent plus vite et changent de couleur (bleu → jaune) en traversant le col.
           </p>
@@ -523,31 +523,31 @@ export function VenturiTubeSimulator() {
 
         <CollapsiblePanel
           title="2. Équation de Bernoulli"
-          borderColor="border-rose-500"
-          bgColor="bg-rose-50"
-          textColor="text-rose-800"
+          borderColor="border-brun-500"
+          bgColor="bg-brun-50"
+          textColor="text-brun-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Pour un fluide parfait (incompressible, non visqueux, écoulement
             stationnaire), l&apos;énergie mécanique par unité de volume se conserve
             le long d&apos;une ligne de courant :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`P + \\tfrac{1}{2}\\rho v^{2} + \\rho g h = \\text{constante}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Pour un tube horizontal (<InlineMath math="h_1 = h_2" />) :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`P_1 + \\tfrac{1}{2}\\rho v_1^{2} = P_2 + \\tfrac{1}{2}\\rho v_2^{2}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             On obtient directement la chute de pression :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`\\Delta P = P_2 - P_1 = \\tfrac{1}{2}\\rho (v_1^{2} - v_2^{2}) < 0`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             <strong>Résultat clé :</strong> là où le fluide va plus vite, la pression
             est <em>plus basse</em>. C&apos;est ce que montrent les manomètres : la
             colonne au col est plus courte que celle en amont.
@@ -556,26 +556,26 @@ export function VenturiTubeSimulator() {
 
         <CollapsiblePanel
           title="3. Le venturimètre comme débitmètre"
-          borderColor="border-emerald-500"
-          bgColor="bg-emerald-50"
-          textColor="text-emerald-800"
+          borderColor="border-olive-500"
+          bgColor="bg-olive-50"
+          textColor="text-olive-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             En combinant continuité et Bernoulli, on peut déduire la vitesse à partir
             de la différence de pression mesurée :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath
               math={`v_1 = \\sqrt{\\dfrac{2\\,(P_1 - P_2)}{\\rho\\,\\left[(A_1/A_2)^{2} - 1\\right]}}`}
             />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Et donc le débit :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`Q = A_1\\,v_1`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Le tube de Venturi est ainsi un instrument de mesure du débit qui
             n&apos;a aucune pièce mobile.
           </p>
@@ -583,11 +583,11 @@ export function VenturiTubeSimulator() {
 
         <CollapsiblePanel
           title="4. Applications"
-          borderColor="border-amber-500"
-          bgColor="bg-amber-50"
-          textColor="text-amber-800"
+          borderColor="border-ocre-500"
+          bgColor="bg-ocre-50"
+          textColor="text-ocre-800"
         >
-          <ul className="list-disc list-inside text-gray-700 space-y-1">
+          <ul className="list-disc list-inside text-stone-700 space-y-1">
             <li><strong>Carburateurs</strong> automobiles : l&apos;air accélère dans le col, aspirant l&apos;essence par dépression.</li>
             <li><strong>Trompes à eau</strong> de laboratoire : produisent un vide partiel.</li>
             <li><strong>Pulvérisateurs</strong> de peinture, parfum, aérographes.</li>
@@ -595,7 +595,7 @@ export function VenturiTubeSimulator() {
             <li><strong>Compteurs de débit</strong> industriels (gaz, vapeur, eau).</li>
             <li><strong>Cheminées</strong> et systèmes de ventilation.</li>
           </ul>
-          <p className="text-gray-700 mt-2">
+          <p className="text-stone-700 mt-2">
             ⚠️ Si la pression au col devient inférieure à la pression de vapeur du
             liquide, des bulles de vapeur apparaissent : c&apos;est la
             <strong> cavitation</strong>, destructrice pour les pompes et les hélices.

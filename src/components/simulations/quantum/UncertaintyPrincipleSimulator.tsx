@@ -51,9 +51,9 @@ function ConstantTooltip({ symbol }: { symbol: string }) {
   const info = CONSTANTS_INFO[symbol];
   if (!info) return <InlineMath math={symbol} />;
   return (
-    <span className="relative group inline-block cursor-help border-b border-dashed border-gray-500">
+    <span className="relative group inline-block cursor-help border-b border-dashed border-stone-500">
       <InlineMath math={info.latex} />
-      <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block whitespace-nowrap bg-gray-900 text-white text-xs rounded px-2 py-1 shadow-lg z-50">
+      <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block whitespace-nowrap bg-stone-900 text-white text-xs rounded px-2 py-1 shadow-lg z-50">
         {info.name}: {info.value} {info.unit}
       </span>
     </span>
@@ -184,7 +184,7 @@ export function UncertaintyPrincipleSimulator() {
     ctx.clearRect(0, 0, W, H);
 
     // Background
-    ctx.fillStyle = '#0f1117';
+    ctx.fillStyle = '#141312';
     ctx.fillRect(0, 0, W, H);
 
     const margin = 50;
@@ -195,13 +195,13 @@ export function UncertaintyPrincipleSimulator() {
     // Top graph: position space
     const ox1 = margin;
     const oy1 = margin + graphH;
-    drawAxes(ctx, ox1, oy1, graphW, graphH, 'Position x', '|ψ(x)|²', '#60a5fa');
-    drawGaussianCurve(ctx, ox1, oy1, graphW, graphH, deltaX, 8, '#3b82f6', 0.25);
+    drawAxes(ctx, ox1, oy1, graphW, graphH, 'Position x', '|ψ(x)|²', '#cba86c');
+    drawGaussianCurve(ctx, ox1, oy1, graphW, graphH, deltaX, 8, '#c29851', 0.25);
 
     // Sigma indicator on top graph
     const centerX1 = ox1 + graphW / 2;
     const sigmaPixels1 = (deltaX / 8) * (graphW / 2);
-    ctx.strokeStyle = '#93c5fd';
+    ctx.strokeStyle = '#d8be90';
     ctx.lineWidth = 1;
     ctx.setLineDash([4, 4]);
     ctx.beginPath();
@@ -211,7 +211,7 @@ export function UncertaintyPrincipleSimulator() {
     ctx.lineTo(centerX1 + sigmaPixels1, oy1);
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = '#93c5fd';
+    ctx.fillStyle = '#d8be90';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(`Δx = ${deltaX.toFixed(2)}`, centerX1, oy1 - graphH + 14);
@@ -219,13 +219,13 @@ export function UncertaintyPrincipleSimulator() {
     // Bottom graph: momentum space
     const ox2 = margin;
     const oy2 = oy1 + gapY + graphH;
-    drawAxes(ctx, ox2, oy2, graphW, graphH, 'Momentum p', '|φ(p)|²', '#fb923c');
-    drawGaussianCurve(ctx, ox2, oy2, graphW, graphH, deltaP, 8, '#f97316', 0.25);
+    drawAxes(ctx, ox2, oy2, graphW, graphH, 'Momentum p', '|φ(p)|²', '#dc8c3b');
+    drawGaussianCurve(ctx, ox2, oy2, graphW, graphH, deltaP, 8, '#db8834', 0.25);
 
     // Sigma indicator on bottom graph
     const centerX2 = ox2 + graphW / 2;
     const sigmaPixels2 = (deltaP / 8) * (graphW / 2);
-    ctx.strokeStyle = '#fdba74';
+    ctx.strokeStyle = '#e4a668';
     ctx.lineWidth = 1;
     ctx.setLineDash([4, 4]);
     ctx.beginPath();
@@ -235,7 +235,7 @@ export function UncertaintyPrincipleSimulator() {
     ctx.lineTo(centerX2 + sigmaPixels2, oy2);
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = '#fdba74';
+    ctx.fillStyle = '#e4a668';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(`Δp = ${deltaP.toFixed(2)}`, centerX2, oy2 - graphH + 14);
@@ -259,7 +259,7 @@ export function UncertaintyPrincipleSimulator() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       ctx.clearRect(0, 0, W, H);
-      ctx.fillStyle = '#0f1117';
+      ctx.fillStyle = '#141312';
       ctx.fillRect(0, 0, W, H);
 
       const margin = 50;
@@ -282,7 +282,7 @@ export function UncertaintyPrincipleSimulator() {
       ctx.save();
       ctx.translate(ox - 16, oy);
       ctx.rotate(-Math.PI / 2);
-      ctx.fillStyle = '#a78bfa';
+      ctx.fillStyle = '#c599af';
       ctx.fillText('ψ(x)', 0, 0);
       ctx.restore();
 
@@ -321,7 +321,7 @@ export function UncertaintyPrincipleSimulator() {
         if (i === 0) ctx.moveTo(px, py);
         else ctx.lineTo(px, py);
       }
-      ctx.strokeStyle = '#a78bfa';
+      ctx.strokeStyle = '#c599af';
       ctx.lineWidth = 2;
       ctx.stroke();
 
@@ -336,7 +336,7 @@ export function UncertaintyPrincipleSimulator() {
         if (i === 0) ctx.moveTo(px, py);
         else ctx.lineTo(px, py);
       }
-      ctx.strokeStyle = 'rgba(96, 165, 250, 0.4)';
+      ctx.strokeStyle = 'rgba(203, 168, 108, 0.4)';
       ctx.lineWidth = 1.5;
       ctx.setLineDash([6, 4]);
       ctx.stroke();
@@ -353,14 +353,14 @@ export function UncertaintyPrincipleSimulator() {
         if (i === 0) ctx.moveTo(px, py);
         else ctx.lineTo(px, py);
       }
-      ctx.strokeStyle = 'rgba(96, 165, 250, 0.4)';
+      ctx.strokeStyle = 'rgba(203, 168, 108, 0.4)';
       ctx.lineWidth = 1.5;
       ctx.setLineDash([6, 4]);
       ctx.stroke();
       ctx.setLineDash([]);
 
       // Label
-      ctx.fillStyle = '#c4b5fd';
+      ctx.fillStyle = '#d4b3c3';
       ctx.font = '12px sans-serif';
       ctx.textAlign = 'left';
       ctx.fillText('Paquet d\'onde ψ(x)', ox + 5, margin - 8);
@@ -392,29 +392,29 @@ export function UncertaintyPrincipleSimulator() {
     <section className="max-w-4xl mx-auto space-y-8 py-8 px-4">
       {/* Title */}
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-gray-900">
+        <h2 className="text-3xl font-bold text-stone-900">
           Principe d&apos;incertitude de Heisenberg
         </h2>
-        <p className="text-gray-600 text-sm">
+        <p className="text-stone-600 text-sm">
           Heisenberg, 1927 &mdash; Une propriété fondamentale de la nature quantique
         </p>
       </div>
 
       {/* Main equation */}
       <div className="flex justify-center">
-        <div className="bg-gray-50 border border-gray-200 rounded-xl px-8 py-4">
+        <div className="bg-stone-50 border border-stone-200 rounded-xl px-8 py-4">
           <BlockMath math={String.raw`\Delta x \cdot \Delta p \;\geq\; \frac{\hbar}{2}`} />
         </div>
       </div>
 
       {/* Slider */}
-      <div className="bg-gray-50 rounded-xl p-5 border border-gray-200 space-y-3">
+      <div className="bg-stone-50 rounded-xl p-5 border border-stone-200 space-y-3">
         <div className="flex items-center justify-between">
-          <label className="text-sm text-gray-700 font-medium">
+          <label className="text-sm text-stone-700 font-medium">
             Incertitude en position{' '}
             <InlineMath math={String.raw`\Delta x`} />
           </label>
-          <span className="font-mono text-gray-900 text-sm">
+          <span className="font-mono text-stone-900 text-sm">
             {deltaX.toFixed(2)} (u.a.)
           </span>
         </div>
@@ -425,62 +425,62 @@ export function UncertaintyPrincipleSimulator() {
           step={0.01}
           value={deltaX}
           onChange={(e) => setDeltaX(parseFloat(e.target.value))}
-          className="w-full accent-blue-500 cursor-pointer"
+          className="w-full accent-gold-500 cursor-pointer"
         />
-        <div className="flex justify-between text-xs text-gray-500">
+        <div className="flex justify-between text-xs text-stone-500">
           <span>0.1 — très localisé</span>
           <span>5.0 — très étalé</span>
         </div>
       </div>
 
       {/* Product display */}
-      <div className="bg-gray-50 rounded-xl p-5 border border-gray-200 space-y-4">
+      <div className="bg-stone-50 rounded-xl p-5 border border-stone-200 space-y-4">
         <div className="text-center space-y-1">
-          <p className="text-lg text-gray-900">
+          <p className="text-lg text-stone-900">
             <InlineMath math={String.raw`\Delta x \cdot \Delta p`} />{' '}
-            <span className="font-mono text-green-600 text-xl font-bold">
+            <span className="font-mono text-olive-600 text-xl font-bold">
               = {product.toFixed(3)}
             </span>{' '}
-            <span className="text-gray-600">
+            <span className="text-stone-600">
               <InlineMath math={String.raw`\geq \;\tfrac{\hbar}{2} = 0.500`} />
             </span>
           </p>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-stone-500">
             Le produit reste toujours au minimum (état gaussien = état d&apos;incertitude minimale)
           </p>
         </div>
 
         {/* Bar indicator */}
-        <div className="relative w-full h-6 bg-gray-200 rounded-full overflow-hidden border border-gray-300">
+        <div className="relative w-full h-6 bg-stone-200 rounded-full overflow-hidden border border-stone-300">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all duration-150"
+            className="h-full rounded-full bg-gradient-to-r from-olive-500 to-olive-400 transition-all duration-150"
             style={{ width: `${barFraction * 100}%` }}
           />
-          <div className="absolute inset-0 flex items-center justify-center text-xs font-mono text-gray-900">
+          <div className="absolute inset-0 flex items-center justify-center text-xs font-mono text-stone-900">
             {product.toFixed(3)} &ge; 0.500 (= <ConstantTooltip symbol="hbar" />/2)
           </div>
         </div>
 
         {/* Individual values */}
         <div className="grid grid-cols-2 gap-4 text-center">
-          <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
-            <p className="text-xs text-blue-700 mb-1">
+          <div className="bg-gold-50 rounded-lg p-3 border border-gold-200">
+            <p className="text-xs text-gold-700 mb-1">
               <InlineMath math={String.raw`\Delta x`} />
             </p>
-            <p className="font-mono text-blue-600 text-lg">{deltaX.toFixed(3)}</p>
+            <p className="font-mono text-gold-600 text-lg">{deltaX.toFixed(3)}</p>
           </div>
-          <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
-            <p className="text-xs text-orange-700 mb-1">
+          <div className="bg-terre-50 rounded-lg p-3 border border-terre-200">
+            <p className="text-xs text-terre-700 mb-1">
               <InlineMath math={String.raw`\Delta p = \hbar / (2\Delta x)`} />
             </p>
-            <p className="font-mono text-orange-600 text-lg">{deltaP.toFixed(3)}</p>
+            <p className="font-mono text-terre-600 text-lg">{deltaP.toFixed(3)}</p>
           </div>
         </div>
       </div>
 
       {/* Main Canvas — Two linked Gaussians */}
-      <div className="bg-white rounded-xl p-4 border border-gray-200">
-        <h3 className="text-sm font-semibold text-gray-700 mb-3">
+      <div className="bg-white rounded-xl p-4 border border-stone-200">
+        <h3 className="text-sm font-semibold text-stone-700 mb-3">
           Distributions de probabilité liées
         </h3>
         <div className="flex justify-center overflow-x-auto">
@@ -493,11 +493,11 @@ export function UncertaintyPrincipleSimulator() {
       </div>
 
       {/* Wave packet Canvas */}
-      <div className="bg-white rounded-xl p-4 border border-gray-200">
-        <h3 className="text-sm font-semibold text-gray-700 mb-3">
+      <div className="bg-white rounded-xl p-4 border border-stone-200">
+        <h3 className="text-sm font-semibold text-stone-700 mb-3">
           Paquet d&apos;onde dans l&apos;espace réel
         </h3>
-        <p className="text-xs text-gray-500 mb-3">
+        <p className="text-xs text-stone-500 mb-3">
           {deltaX < 1
             ? 'Δx petit → paquet étroit, beaucoup de fréquences (oscillations rapides à l\'extérieur)'
             : deltaX > 3
@@ -517,15 +517,15 @@ export function UncertaintyPrincipleSimulator() {
       <div className="space-y-2">
         <CollapsiblePanel
           title="⚠ Ce n'est PAS une limite instrumentale"
-          borderColor="border-purple-500"
-          bgColor="bg-purple-50"
-          textColor="text-purple-900"
+          borderColor="border-prune-500"
+          bgColor="bg-prune-50"
+          textColor="text-prune-900"
           defaultOpen
         >
           <p>
-            Le principe d&apos;incertitude n&apos;est <strong className="text-purple-700">pas</strong> une
+            Le principe d&apos;incertitude n&apos;est <strong className="text-prune-700">pas</strong> une
             limitation de nos instruments de mesure. C&apos;est une{' '}
-            <strong className="text-purple-700">propriété fondamentale de la nature</strong>.
+            <strong className="text-prune-700">propriété fondamentale de la nature</strong>.
           </p>
           <p>
             Une particule quantique ne possède tout simplement pas une position définie et une
@@ -542,9 +542,9 @@ export function UncertaintyPrincipleSimulator() {
 
         <CollapsiblePanel
           title="Lien avec la transformée de Fourier"
-          borderColor="border-blue-500"
-          bgColor="bg-blue-50"
-          textColor="text-blue-900"
+          borderColor="border-gold-500"
+          bgColor="bg-gold-50"
+          textColor="text-gold-900"
         >
           <p>
             Un paquet d&apos;onde localisé dans l&apos;espace des positions nécessite de
@@ -573,9 +573,9 @@ export function UncertaintyPrincipleSimulator() {
 
         <CollapsiblePanel
           title="Contexte historique"
-          borderColor="border-gray-500"
-          bgColor="bg-gray-50"
-          textColor="text-gray-700"
+          borderColor="border-stone-500"
+          bgColor="bg-stone-50"
+          textColor="text-stone-700"
         >
           <p>
             En <strong>1927</strong>, Werner Heisenberg formula le principe d&apos;incertitude
@@ -596,7 +596,7 @@ export function UncertaintyPrincipleSimulator() {
       </div>
 
       {/* Footer with real ℏ value */}
-      <div className="text-center text-xs text-gray-600 pt-4 border-t border-gray-200">
+      <div className="text-center text-xs text-stone-600 pt-4 border-t border-stone-200">
         <p>
           Simulation en unités arbitraires (<InlineMath math={String.raw`\hbar_{\text{vis}} = 1`} />).
           En unités SI :{' '}

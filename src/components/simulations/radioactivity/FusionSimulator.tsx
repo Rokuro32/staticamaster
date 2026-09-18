@@ -61,8 +61,8 @@ const REACTIONS: FusionReaction[] = [
   {
     id: 'dd',
     label: 'D + D',
-    nuc1: { symbol: 'D', Z: 1, N: 1, color: '#3b82f6' },
-    nuc2: { symbol: 'D', Z: 1, N: 1, color: '#60a5fa' },
+    nuc1: { symbol: 'D', Z: 1, N: 1, color: '#c29851' },
+    nuc2: { symbol: 'D', Z: 1, N: 1, color: '#cba86c' },
     product: { symbol: '³He', Z: 2, N: 1 },
     byproduct: 'n (2,45 MeV)',
     energy: '3,27 MeV',
@@ -72,8 +72,8 @@ const REACTIONS: FusionReaction[] = [
   {
     id: 'dt',
     label: 'D + T',
-    nuc1: { symbol: 'D', Z: 1, N: 1, color: '#3b82f6' },
-    nuc2: { symbol: 'T', Z: 1, N: 2, color: '#f472b6' },
+    nuc1: { symbol: 'D', Z: 1, N: 1, color: '#c29851' },
+    nuc2: { symbol: 'T', Z: 1, N: 2, color: '#bb87a1' },
     product: { symbol: '⁴He', Z: 2, N: 2 },
     byproduct: 'n (14,1 MeV)',
     energy: '17,6 MeV',
@@ -83,8 +83,8 @@ const REACTIONS: FusionReaction[] = [
   {
     id: 'pp',
     label: 'p + p (Soleil)',
-    nuc1: { symbol: 'p', Z: 1, N: 0, color: '#ef4444' },
-    nuc2: { symbol: 'p', Z: 1, N: 0, color: '#f87171' },
+    nuc1: { symbol: 'p', Z: 1, N: 0, color: '#ca684a' },
+    nuc2: { symbol: 'p', Z: 1, N: 0, color: '#d58770' },
     product: { symbol: 'D', Z: 1, N: 1 },
     byproduct: 'e⁺ + νₑ',
     energy: '0,42 MeV',
@@ -236,15 +236,15 @@ export function FusionSimulator() {
     }
 
     // --- Draw ---
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.fillRect(0, 0, W, H);
 
     // Fond plasma
     if (temperature > 0.3) {
       const grad = ctx.createRadialGradient(midX, midY, 20, midX, midY, 250);
       const alpha = Math.min(0.15, temperature * 0.08);
-      grad.addColorStop(0, `rgba(251, 146, 60, ${alpha})`);
-      grad.addColorStop(1, 'rgba(15, 23, 42, 0)');
+      grad.addColorStop(0, `rgba(220, 140, 59, ${alpha})`);
+      grad.addColorStop(1, 'rgba(30, 29, 27, 0)');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, W, H);
     }
@@ -252,9 +252,9 @@ export function FusionSimulator() {
     // Flashes
     for (const f of flashesRef.current) {
       const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r);
-      grad.addColorStop(0, `rgba(253, 224, 71, ${f.opacity})`);
-      grad.addColorStop(0.4, `rgba(251, 146, 60, ${f.opacity * 0.6})`);
-      grad.addColorStop(1, 'rgba(239, 68, 68, 0)');
+      grad.addColorStop(0, `rgba(235, 205, 56, ${f.opacity})`);
+      grad.addColorStop(0.4, `rgba(220, 140, 59, ${f.opacity * 0.6})`);
+      grad.addColorStop(1, 'rgba(202, 104, 74, 0)');
       ctx.fillStyle = grad;
       ctx.beginPath();
       ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
@@ -268,7 +268,7 @@ export function FusionSimulator() {
 
       // Barrière coulombienne (arc répulsif)
       if (dist < 120) {
-        ctx.strokeStyle = `rgba(239, 68, 68, ${Math.max(0, 1 - dist / 120)})`;
+        ctx.strokeStyle = `rgba(202, 104, 74, ${Math.max(0, 1 - dist / 120)})`;
         ctx.lineWidth = 2;
         ctx.setLineDash([4, 4]);
         ctx.beginPath();
@@ -276,7 +276,7 @@ export function FusionSimulator() {
         ctx.stroke();
         ctx.setLineDash([]);
 
-        ctx.fillStyle = `rgba(239, 68, 68, ${Math.max(0, 0.6 - dist / 120)})`;
+        ctx.fillStyle = `rgba(202, 104, 74, ${Math.max(0, 0.6 - dist / 120)})`;
         ctx.font = '10px sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText('Barrière coulombienne', (x1 + x2) / 2, midY - dist / 2 - 10);
@@ -285,12 +285,12 @@ export function FusionSimulator() {
       // Noyau 1
       const nucs1 = buildNucleons(x1, midY, n1.Z, n1.N);
       for (const n of nucs1) {
-        ctx.fillStyle = n.proton ? '#ef4444' : '#94a3b8';
+        ctx.fillStyle = n.proton ? '#ca684a' : '#aba6a1';
         ctx.beginPath();
         ctx.arc(n.x, n.y, 7, 0, Math.PI * 2);
         ctx.fill();
       }
-      ctx.fillStyle = '#e2e8f0';
+      ctx.fillStyle = '#eae9e8';
       ctx.font = 'bold 14px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(n1.symbol, x1, midY + 40);
@@ -298,17 +298,17 @@ export function FusionSimulator() {
       // Noyau 2
       const nucs2 = buildNucleons(x2, midY, n2.Z, n2.N);
       for (const n of nucs2) {
-        ctx.fillStyle = n.proton ? '#ef4444' : '#94a3b8';
+        ctx.fillStyle = n.proton ? '#ca684a' : '#aba6a1';
         ctx.beginPath();
         ctx.arc(n.x, n.y, 7, 0, Math.PI * 2);
         ctx.fill();
       }
-      ctx.fillStyle = '#e2e8f0';
+      ctx.fillStyle = '#eae9e8';
       ctx.fillText(n2.symbol, x2, midY + 40);
 
       // Température basse → label "trop froid"
       if (temperature <= 0.5 && phase === 'barrier') {
-        ctx.fillStyle = '#93c5fd';
+        ctx.fillStyle = '#d8be90';
         ctx.font = 'bold 14px sans-serif';
         ctx.fillText('Température insuffisante — les noyaux se repoussent', midX, 30);
       }
@@ -317,59 +317,59 @@ export function FusionSimulator() {
     // Produit de fusion
     if (phase === 'fusion' || phase === 'done') {
       for (const n of productRef.current) {
-        ctx.fillStyle = n.proton ? '#ef4444' : '#94a3b8';
+        ctx.fillStyle = n.proton ? '#ca684a' : '#aba6a1';
         ctx.beginPath();
         ctx.arc(n.x, n.y, 7, 0, Math.PI * 2);
         ctx.fill();
       }
-      ctx.fillStyle = '#22c55e';
+      ctx.fillStyle = '#91a443';
       ctx.font = 'bold 14px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(reaction.product.symbol, midX, midY + 45);
 
       // Neutron / sous-produit
       if (neutronRef.current) {
-        ctx.fillStyle = '#22d3ee';
+        ctx.fillStyle = '#678ea9';
         ctx.beginPath();
         ctx.arc(neutronRef.current.x, neutronRef.current.y, 5, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = '#cffafe';
+        ctx.fillStyle = '#c2d2dd';
         ctx.font = '11px sans-serif';
         ctx.fillText(reaction.byproduct, neutronRef.current.x, neutronRef.current.y - 12);
       }
 
       // Énergie
-      ctx.fillStyle = '#fbbf24';
+      ctx.fillStyle = '#e8c61a';
       ctx.font = 'bold 15px sans-serif';
       ctx.fillText(`Énergie libérée : ${reaction.energy}`, midX, 28);
     }
 
     // Température jauge
-    ctx.fillStyle = '#334155';
+    ctx.fillStyle = '#484440';
     ctx.fillRect(W - 40, 40, 14, H - 80);
     const tH = (H - 80) * Math.min(1, temperature / 2);
     const tGrad = ctx.createLinearGradient(0, H - 40, 0, H - 40 - tH);
-    tGrad.addColorStop(0, '#22c55e');
-    tGrad.addColorStop(0.5, '#f59e0b');
-    tGrad.addColorStop(1, '#ef4444');
+    tGrad.addColorStop(0, '#91a443');
+    tGrad.addColorStop(0.5, '#e8c518');
+    tGrad.addColorStop(1, '#ca684a');
     ctx.fillStyle = tGrad;
     ctx.fillRect(W - 40, H - 40 - tH, 14, tH);
-    ctx.fillStyle = '#cbd5e1';
+    ctx.fillStyle = '#d8d6d4';
     ctx.font = '9px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('T', W - 33, H - 20);
 
     // Légende
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = '#eae9e8';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillStyle = '#ef4444';
+    ctx.fillStyle = '#ca684a';
     ctx.beginPath(); ctx.arc(14, 16, 5, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = '#eae9e8';
     ctx.fillText('Proton', 24, 20);
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.beginPath(); ctx.arc(14, 34, 5, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = '#eae9e8';
     ctx.fillText('Neutron', 24, 38);
 
     animIdRef.current = requestAnimationFrame(step);
@@ -385,8 +385,8 @@ export function FusionSimulator() {
   return (
     <section className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-gray-900">Fusion nucléaire</h2>
-        <p className="text-gray-600">
+        <h2 className="text-3xl font-bold text-stone-900">Fusion nucléaire</h2>
+        <p className="text-stone-600">
           Assemblage de noyaux légers &mdash; source d&apos;énergie des étoiles
         </p>
       </div>
@@ -395,21 +395,21 @@ export function FusionSimulator() {
         <canvas
           ref={canvasRef}
           width={W} height={H}
-          className="w-full max-w-[700px] mx-auto rounded-lg border border-gray-300"
+          className="w-full max-w-[700px] mx-auto rounded-lg border border-stone-300"
         />
 
         <div className="w-full max-w-[700px] space-y-3">
           {/* Réaction */}
           <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-sm text-gray-700 font-medium">Réaction :</span>
+            <span className="text-sm text-stone-700 font-medium">Réaction :</span>
             {REACTIONS.map((r, i) => (
               <button
                 key={r.id}
                 onClick={() => setReactionIdx(i)}
                 className={`px-3 py-1.5 text-xs rounded border font-medium transition-colors ${
                   reactionIdx === i
-                    ? 'bg-yellow-500 text-white border-yellow-500'
-                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                    ? 'bg-ocre-500 text-white border-ocre-500'
+                    : 'bg-white text-stone-700 border-stone-300 hover:bg-stone-50'
                 }`}
               >
                 {r.label}
@@ -419,16 +419,16 @@ export function FusionSimulator() {
 
           {/* Température */}
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium">
               Température <InlineMath math="T" />
             </label>
             <input
               type="range" min={0} max={2} step={0.05}
               value={temperature}
               onChange={(e) => { setTemperature(Number(e.target.value)); resetSim(); }}
-              className="flex-1 accent-orange-500"
+              className="flex-1 accent-terre-500"
             />
-            <span className="text-sm font-mono text-gray-900 w-20 text-right">
+            <span className="text-sm font-mono text-stone-900 w-20 text-right">
               {temperature < 0.5 ? 'Froid' : temperature < 1 ? 'Chaud' : 'Plasma'}
             </span>
           </div>
@@ -436,16 +436,16 @@ export function FusionSimulator() {
           <div className="flex items-center gap-3">
             <button
               onClick={resetSim}
-              className="px-4 py-2 text-sm font-medium bg-gray-100 hover:bg-gray-200 rounded-lg border border-gray-300"
+              className="px-4 py-2 text-sm font-medium bg-stone-100 hover:bg-stone-200 rounded-lg border border-stone-300"
             >
               ↺ Relancer
             </button>
           </div>
 
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={reaction.latex} />
           </div>
-          <p className="text-xs text-gray-500 text-center">
+          <p className="text-xs text-stone-500 text-center">
             Température minimale requise : {reaction.tempMin}
           </p>
         </div>
@@ -455,38 +455,38 @@ export function FusionSimulator() {
       <div className="space-y-2">
         <CollapsiblePanel
           title="1. Principe de la fusion"
-          borderColor="border-yellow-500"
-          bgColor="bg-yellow-50"
-          textColor="text-yellow-800"
+          borderColor="border-ocre-500"
+          bgColor="bg-ocre-50"
+          textColor="text-ocre-800"
           defaultOpen
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Deux noyaux légers, portés à <strong>très haute température</strong>
             (≥ 10⁷ K), acquièrent assez d&apos;énergie cinétique pour vaincre
             la <strong>répulsion coulombienne</strong> et fusionner en un noyau plus
             lourd. L&apos;énergie de liaison par nucléon augmente (courbe d&apos;Aston) :
             la masse du produit est inférieure à la somme des masses des réactifs.
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`\\Delta E = \\left[m_1 + m_2 - m_{\\text{produit}} - m_{\\text{sous-produit}}\\right] c^2 > 0`} />
           </div>
         </CollapsiblePanel>
 
         <CollapsiblePanel
           title="2. Barrière coulombienne"
-          borderColor="border-red-500"
-          bgColor="bg-red-50"
-          textColor="text-red-800"
+          borderColor="border-brun-500"
+          bgColor="bg-brun-50"
+          textColor="text-brun-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Les noyaux, de charges <InlineMath math="Z_1 e" /> et{' '}
             <InlineMath math="Z_2 e" />, se repoussent électriquement. L&apos;énergie
             potentielle coulombienne à surmonter vaut :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`E_C = \\frac{Z_1 Z_2 e^2}{4\\pi\\varepsilon_0 \\, r_0} \\sim \\text{MeV}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             D&apos;où la nécessité de températures extrêmes (plasma) ou de
             l&apos;effet tunnel quantique (qui permet à la réaction p+p de se
             produire même à « seulement » 15 × 10⁶ K au cœur du Soleil).
@@ -495,18 +495,18 @@ export function FusionSimulator() {
 
         <CollapsiblePanel
           title="3. Fusion dans les étoiles"
-          borderColor="border-orange-500"
-          bgColor="bg-orange-50"
-          textColor="text-orange-800"
+          borderColor="border-terre-500"
+          bgColor="bg-terre-50"
+          textColor="text-terre-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Le Soleil convertit 4 protons en un noyau d&apos;hélium-4 via la{' '}
             <strong>chaîne proton-proton</strong> (pp). Le bilan net est :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`4\\,p \\to {}^4_2\\text{He} + 2\\,e^+ + 2\\,\\nu_e + 26{,}7\\,\\text{MeV}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Le Soleil fusionne ~620 millions de tonnes d&apos;hydrogène par seconde,
             convertissant ~4,3 Mt en énergie pure (<InlineMath math="E = mc^2" />).
             Les étoiles massives utilisent aussi le <strong>cycle CNO</strong>.
@@ -515,16 +515,16 @@ export function FusionSimulator() {
 
         <CollapsiblePanel
           title="4. Fusion contrôlée sur Terre"
-          borderColor="border-blue-500"
-          bgColor="bg-blue-50"
-          textColor="text-blue-800"
+          borderColor="border-gold-500"
+          bgColor="bg-gold-50"
+          textColor="text-gold-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             La réaction <strong>D + T</strong> est la plus accessible car elle a la
             section efficace la plus élevée et la barrière coulombienne la plus basse.
             Deux approches :
           </p>
-          <ul className="list-disc list-inside text-gray-700 space-y-1">
+          <ul className="list-disc list-inside text-stone-700 space-y-1">
             <li>
               <strong>Confinement magnétique</strong> (tokamak) : plasma piégé par des
               champs magnétiques intenses. Projet <strong>ITER</strong> (France, 2035).
@@ -534,7 +534,7 @@ export function FusionSimulator() {
               de DT par lasers puissants (NIF, USA — ignition démontrée en 2022).
             </li>
           </ul>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             La fusion ne produit pas de déchets à longue vie et utilise un combustible
             quasi-illimité (deutérium de l&apos;eau de mer).
           </p>

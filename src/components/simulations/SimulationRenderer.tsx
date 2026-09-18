@@ -6,9 +6,9 @@ import type { SimulationId } from '@/types/simulation';
 
 function Loading() {
   return (
-    <div className="flex items-center justify-center h-64 bg-white rounded-xl border border-gray-200">
-      <div className="flex items-center gap-3 text-gray-500">
-        <span className="w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+    <div className="flex items-center justify-center h-64 bg-white rounded-xl border border-stone-200">
+      <div className="flex items-center gap-3 text-stone-500">
+        <span className="w-5 h-5 border-2 border-stone-300 border-t-stone-600 rounded-full animate-spin" />
         Chargement de la simulation…
       </div>
     </div>
@@ -159,7 +159,7 @@ export function SimulationRenderer({ simId }: { simId: SimulationId }) {
 
   if (!Simulator) {
     return (
-      <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 text-amber-800">
+      <div className="bg-ocre-50 border border-ocre-200 rounded-xl p-6 text-ocre-800">
         Cette simulation n&apos;est pas disponible.
       </div>
     );

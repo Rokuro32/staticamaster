@@ -115,10 +115,10 @@ export function PauliExclusionSimulator() {
     <section className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       {/* Title */}
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-gray-900">
+        <h2 className="text-3xl font-bold text-stone-900">
           Principe d&apos;exclusion de Pauli
         </h2>
-        <p className="text-gray-600">
+        <p className="text-stone-600">
           Remplissage des sous-couches atomiques &mdash; Pauli, 1925
         </p>
       </div>
@@ -126,7 +126,7 @@ export function PauliExclusionSimulator() {
       {/* Slider Z */}
       <div className="w-full max-w-[700px] mx-auto space-y-3">
         <div className="flex items-center gap-4">
-          <label className="text-sm text-gray-700 whitespace-nowrap font-medium">
+          <label className="text-sm text-stone-700 whitespace-nowrap font-medium">
             Numéro atomique <InlineMath math={`Z`} />
           </label>
           <input
@@ -136,23 +136,23 @@ export function PauliExclusionSimulator() {
             step={1}
             value={Z}
             onChange={(e) => setZ(Number(e.target.value))}
-            className="flex-1 accent-violet-500"
+            className="flex-1 accent-prune-500"
           />
-          <span className="text-sm font-mono text-gray-900 w-24 text-right">
+          <span className="text-sm font-mono text-stone-900 w-24 text-right">
             Z = {Z}
             {element ? ` (${element.symbol})` : ''}
           </span>
         </div>
         {element && (
-          <div className="text-center text-gray-600 text-sm">
+          <div className="text-center text-stone-600 text-sm">
             <strong>{element.name}</strong> — configuration :{' '}
-            <span className="font-mono text-violet-700">{configText}</span>
+            <span className="font-mono text-prune-700">{configText}</span>
           </div>
         )}
       </div>
 
       {/* Diagramme des sous-couches */}
-      <div className="bg-slate-900 rounded-lg p-6 space-y-3">
+      <div className="bg-stone-900 rounded-lg p-6 space-y-3">
         {SUBSHELLS.map((s, i) => {
           const filled = config[i];
           const orbitals = 2 * s.l + 1; // nombre de cases quantiques m_l
@@ -167,25 +167,25 @@ export function PauliExclusionSimulator() {
 
           return (
             <div key={i} className="flex items-center gap-3">
-              <div className="w-10 text-right text-sm font-mono text-slate-300">
+              <div className="w-10 text-right text-sm font-mono text-stone-300">
                 {s.label}
               </div>
               <div className="flex gap-1">
                 {Array.from({ length: orbitals }).map((_, k) => (
                   <div
                     key={k}
-                    className="w-8 h-10 border border-slate-500 rounded bg-slate-800 flex flex-col items-center justify-center text-xs"
+                    className="w-8 h-10 border border-stone-500 rounded bg-stone-800 flex flex-col items-center justify-center text-xs"
                   >
-                    <span className={upPerOrbital[k] ? 'text-blue-400' : 'text-slate-700'}>
+                    <span className={upPerOrbital[k] ? 'text-gold-400' : 'text-stone-700'}>
                       ↑
                     </span>
-                    <span className={downPerOrbital[k] ? 'text-pink-400' : 'text-slate-700'}>
+                    <span className={downPerOrbital[k] ? 'text-brun-400' : 'text-stone-700'}>
                       ↓
                     </span>
                   </div>
                 ))}
               </div>
-              <div className="text-xs text-slate-400 ml-2">
+              <div className="text-xs text-stone-400 ml-2">
                 {filled}/{s.capacity}
               </div>
             </div>
@@ -197,20 +197,20 @@ export function PauliExclusionSimulator() {
       <div className="space-y-2">
         <CollapsiblePanel
           title="1. L'énoncé de Pauli (1925)"
-          borderColor="border-violet-500"
-          bgColor="bg-violet-50"
-          textColor="text-violet-800"
+          borderColor="border-prune-500"
+          bgColor="bg-prune-50"
+          textColor="text-prune-800"
           defaultOpen
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             <strong>Wolfgang Pauli</strong> énonce en 1925 que dans un atome, deux électrons
             ne peuvent occuper le même état quantique. Ils doivent différer par au moins un
             des quatre nombres quantiques :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`(n,\\; \\ell,\\; m_\\ell,\\; m_s)`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Chaque orbitale <InlineMath math={`(n, \\ell, m_\\ell)`} /> peut donc accueillir{' '}
             <strong>au plus 2 électrons</strong>, de spins opposés{' '}
             <InlineMath math={`m_s = \\pm 1/2`} />.
@@ -219,21 +219,21 @@ export function PauliExclusionSimulator() {
 
         <CollapsiblePanel
           title="2. Capacité des sous-couches"
-          borderColor="border-blue-500"
-          bgColor="bg-blue-50"
-          textColor="text-blue-800"
+          borderColor="border-gold-500"
+          bgColor="bg-gold-50"
+          textColor="text-gold-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Une sous-couche caractérisée par <InlineMath math={`\\ell`} /> contient{' '}
             <InlineMath math={`2\\ell + 1`} /> orbitales (les valeurs de{' '}
             <InlineMath math={`m_\\ell`} />
             allant de <InlineMath math={`-\\ell`} /> à <InlineMath math={`+\\ell`} />). Sa
             capacité totale est donc :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`N_\\ell = 2(2\\ell + 1)`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             D&apos;où : <InlineMath math={`s : 2`} />, <InlineMath math={`p : 6`} />,{' '}
             <InlineMath math={`d : 10`} />, <InlineMath math={`f : 14`} />.
           </p>
@@ -241,19 +241,19 @@ export function PauliExclusionSimulator() {
 
         <CollapsiblePanel
           title="3. Règle de Klechkowski et de Hund"
-          borderColor="border-green-500"
-          bgColor="bg-green-50"
-          textColor="text-green-800"
+          borderColor="border-olive-500"
+          bgColor="bg-olive-50"
+          textColor="text-olive-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             <strong>Klechkowski :</strong> les sous-couches se remplissent par ordre
             croissant de <InlineMath math={`n + \\ell`} />, et à valeur égale, par ordre
             croissant de <InlineMath math={`n`} />. D&apos;où la succession :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto text-center font-mono text-xs">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto text-center font-mono text-xs">
             1s → 2s → 2p → 3s → 3p → 4s → 3d → 4p → 5s → 4d → 5p ...
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             <strong>Hund :</strong> au sein d&apos;une même sous-couche, les électrons
             occupent d&apos;abord chaque orbitale séparément avec des spins parallèles,
             avant de s&apos;apparier (énergie d&apos;échange minimisée).
@@ -262,16 +262,16 @@ export function PauliExclusionSimulator() {
 
         <CollapsiblePanel
           title="4. Conséquences"
-          borderColor="border-orange-500"
-          bgColor="bg-orange-50"
-          textColor="text-orange-800"
+          borderColor="border-terre-500"
+          bgColor="bg-terre-50"
+          textColor="text-terre-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Sans le principe d&apos;exclusion, tous les électrons s&apos;effondreraient dans
             la sous-couche 1s : aucune chimie, aucun tableau périodique, pas de matière
             telle que nous la connaissons.
           </p>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Le principe de Pauli s&apos;applique à tous les <strong>fermions</strong>
             (particules de spin demi-entier). Il est à l&apos;origine de la stabilité de la
             matière, de la structure des étoiles (pression de dégénérescence des naines

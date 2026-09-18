@@ -30,7 +30,7 @@ const MOTION_TYPES: MotionConfig[] = [
   { id: 'custom', name: 'Combiné', description: 'Combinez plusieurs phases MRU et MRUA', emoji: '🔀', color: 'indigo' },
 ];
 
-const SEGMENT_COLORS = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+const SEGMENT_COLORS = ['#7e8f3a', '#c29851', '#e8c518', '#ca684a', '#b57b98', '#ab6a8b'];
 
 interface GravityPreset {
   id: string;
@@ -282,7 +282,7 @@ export function KinematicsGraphSimulator() {
     const toCanvasY = (y: number) => padding.top + graphHeight - ((y - minY) / (maxY - minY)) * graphHeight;
 
     // Grid
-    ctx.strokeStyle = '#e5e7eb';
+    ctx.strokeStyle = '#e9e8e7';
     ctx.lineWidth = 1;
 
     const numYLines = 5;
@@ -293,7 +293,7 @@ export function KinematicsGraphSimulator() {
       ctx.moveTo(padding.left, canvasY);
       ctx.lineTo(canvasWidth - padding.right, canvasY);
       ctx.stroke();
-      ctx.fillStyle = '#6b7280';
+      ctx.fillStyle = '#7c766f';
       ctx.font = '9px system-ui';
       ctx.textAlign = 'right';
       ctx.fillText(y.toFixed(1), padding.left - 5, canvasY + 3);
@@ -307,7 +307,7 @@ export function KinematicsGraphSimulator() {
       ctx.moveTo(canvasX, padding.top);
       ctx.lineTo(canvasX, canvasHeight - padding.bottom);
       ctx.stroke();
-      ctx.fillStyle = '#6b7280';
+      ctx.fillStyle = '#7c766f';
       ctx.font = '9px system-ui';
       ctx.textAlign = 'center';
       ctx.fillText(t.toFixed(1), canvasX, canvasHeight - padding.bottom + 12);
@@ -334,7 +334,7 @@ export function KinematicsGraphSimulator() {
 
     // Zero line
     if (minY < 0 && maxY > 0) {
-      ctx.strokeStyle = '#374151';
+      ctx.strokeStyle = '#484440';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(padding.left, toCanvasY(0));
@@ -346,7 +346,7 @@ export function KinematicsGraphSimulator() {
     if (motionType === 'freeFall') {
       const groundTime = getGroundTime();
       if (groundTime < effectiveMaxTime) {
-        ctx.strokeStyle = '#ef4444';
+        ctx.strokeStyle = '#ca684a';
         ctx.lineWidth = 1.5;
         ctx.setLineDash([4, 4]);
         ctx.beginPath();
@@ -386,7 +386,7 @@ export function KinematicsGraphSimulator() {
 
     // Current time vertical line
     const markerX = toCanvasX(currentTime);
-    ctx.strokeStyle = '#374151';
+    ctx.strokeStyle = '#484440';
     ctx.lineWidth = 2;
     ctx.setLineDash([6, 4]);
     ctx.beginPath();
@@ -419,7 +419,7 @@ export function KinematicsGraphSimulator() {
       const slope = (nextVal - currentVal) / dt;
       const tangentLength = 50;
 
-      ctx.strokeStyle = '#9333ea';
+      ctx.strokeStyle = '#a45d80';
       ctx.lineWidth = 2;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
@@ -458,7 +458,7 @@ export function KinematicsGraphSimulator() {
     ctx.fillText(`${label}(t)`, 8, 18);
 
     // Axis label
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.font = '10px system-ui';
     ctx.textAlign = 'center';
     ctx.fillText('t (s)', canvasWidth / 2, canvasHeight - 5);
@@ -471,7 +471,7 @@ export function KinematicsGraphSimulator() {
 
     // Derivative/Integral indicators (not for free fall)
     if (derivativeLabel && motionType !== 'freeFall') {
-      ctx.fillStyle = '#9333ea';
+      ctx.fillStyle = '#a45d80';
       ctx.font = '9px system-ui';
       ctx.textAlign = 'right';
       ctx.fillText(`pente → ${derivativeLabel}`, canvasWidth - 8, 14);
@@ -494,7 +494,7 @@ export function KinematicsGraphSimulator() {
     const { x, v } = getKinematics(currentTime);
     const effectiveMaxTime = getEffectiveMaxTime();
 
-    ctx.fillStyle = '#f8fafc';
+    ctx.fillStyle = '#fafafa';
     ctx.fillRect(0, 0, animCanvasWidth, animCanvasHeight);
 
     // Calculate range
@@ -513,11 +513,11 @@ export function KinematicsGraphSimulator() {
     const toCanvasX = (pos: number) => padding + ((pos - minX) / (maxX - minX)) * trackWidth;
 
     // Track
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = '#eae9e8';
     ctx.fillRect(padding, animCanvasHeight / 2 - 2, trackWidth, 4);
 
     // Scale marks
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.font = '9px system-ui';
     ctx.textAlign = 'center';
     for (let i = 0; i <= 5; i++) {
@@ -529,7 +529,7 @@ export function KinematicsGraphSimulator() {
 
     // Trajectory trail
     if (motionType === 'sinusoidal') {
-      ctx.strokeStyle = 'rgba(147, 51, 234, 0.2)';
+      ctx.strokeStyle = 'rgba(164, 93, 128, 0.2)';
       ctx.lineWidth = 2;
       ctx.beginPath();
       for (let t = 0; t <= currentTime; t += 0.05) {
@@ -548,13 +548,13 @@ export function KinematicsGraphSimulator() {
     // Velocity arrow
     if (Math.abs(v) > 0.1) {
       const arrowLen = Math.min(Math.abs(v) * 8, 40) * Math.sign(v);
-      ctx.strokeStyle = '#2563eb';
+      ctx.strokeStyle = '#c1974f';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(objX, objY);
       ctx.lineTo(objX + arrowLen, objY);
       ctx.stroke();
-      ctx.fillStyle = '#2563eb';
+      ctx.fillStyle = '#c1974f';
       ctx.beginPath();
       ctx.moveTo(objX + arrowLen, objY);
       ctx.lineTo(objX + arrowLen - 6 * Math.sign(v), objY - 4);
@@ -564,14 +564,14 @@ export function KinematicsGraphSimulator() {
     }
 
     // Ball with color based on motion type
-    const ballColor = motionType === 'sinusoidal' ? '#9333ea' : '#16a34a';
+    const ballColor = motionType === 'sinusoidal' ? '#a45d80' : '#748336';
     ctx.fillStyle = ballColor;
     ctx.beginPath();
     ctx.arc(objX, objY, 10, 0, Math.PI * 2);
     ctx.fill();
 
     // Labels
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.font = 'bold 11px system-ui';
     ctx.textAlign = 'left';
     ctx.fillText(`t = ${currentTime.toFixed(2)}s   x = ${x.toFixed(2)}m   v = ${v.toFixed(2)}m/s`, 10, 15);
@@ -589,16 +589,16 @@ export function KinematicsGraphSimulator() {
 
     // Background gradient (sky)
     const skyGradient = ctx.createLinearGradient(0, 0, 0, animCanvasHeight);
-    skyGradient.addColorStop(0, '#87CEEB');
-    skyGradient.addColorStop(0.8, '#B0E0E6');
-    skyGradient.addColorStop(1, '#90EE90');
+    skyGradient.addColorStop(0, '#8eabbf');
+    skyGradient.addColorStop(0.8, '#a2bacb');
+    skyGradient.addColorStop(1, '#c1cf89');
     ctx.fillStyle = skyGradient;
     ctx.fillRect(0, 0, animCanvasWidth, animCanvasHeight);
 
     // Ground
-    ctx.fillStyle = '#8B4513';
+    ctx.fillStyle = '#864f18';
     ctx.fillRect(0, animCanvasHeight - 20, animCanvasWidth, 20);
-    ctx.fillStyle = '#228B22';
+    ctx.fillStyle = '#6c7b32';
     ctx.fillRect(0, animCanvasHeight - 25, animCanvasWidth, 8);
 
     // Calculate scale for vertical height
@@ -634,7 +634,7 @@ export function KinematicsGraphSimulator() {
 
     // Initial height marker line
     const y0Pos = animCanvasHeight - bottomPadding - y0 * scale;
-    ctx.strokeStyle = '#16a34a';
+    ctx.strokeStyle = '#748336';
     ctx.lineWidth = 1;
     ctx.setLineDash([4, 4]);
     ctx.beginPath();
@@ -642,14 +642,14 @@ export function KinematicsGraphSimulator() {
     ctx.lineTo(animCanvasWidth - 100, y0Pos);
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = '#16a34a';
+    ctx.fillStyle = '#748336';
     ctx.font = 'bold 10px system-ui';
     ctx.textAlign = 'left';
     ctx.fillText('y₀', rulerX + 5, y0Pos - 5);
 
     // Draw trajectory trail (vertical line showing path)
     const ballCenterX = 80;
-    ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)';
+    ctx.strokeStyle = 'rgba(202, 104, 74, 0.4)';
     ctx.lineWidth = 3;
     ctx.beginPath();
     const numTrailPoints = 40;
@@ -672,7 +672,7 @@ export function KinematicsGraphSimulator() {
       const arrowLen = Math.min(Math.abs(v) * arrowScale, 40);
       const arrowDir = v > 0 ? -1 : 1; // Up when positive, down when negative
 
-      ctx.strokeStyle = '#2563eb';
+      ctx.strokeStyle = '#c1974f';
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(ballCenterX, objY);
@@ -680,7 +680,7 @@ export function KinematicsGraphSimulator() {
       ctx.stroke();
 
       // Arrow head
-      ctx.fillStyle = '#2563eb';
+      ctx.fillStyle = '#c1974f';
       ctx.beginPath();
       const headY = objY + arrowLen * arrowDir;
       ctx.moveTo(ballCenterX, headY);
@@ -699,9 +699,9 @@ export function KinematicsGraphSimulator() {
       ballCenterX - 5, objY - 5, 0,
       ballCenterX, objY, ballRadius
     );
-    ballGradient.addColorStop(0, '#ef4444');
-    ballGradient.addColorStop(0.7, '#dc2626');
-    ballGradient.addColorStop(1, '#991b1b');
+    ballGradient.addColorStop(0, '#ca684a');
+    ballGradient.addColorStop(0.7, '#c65c3c');
+    ballGradient.addColorStop(1, '#8b4028');
 
     ctx.fillStyle = ballGradient;
     ctx.beginPath();
@@ -728,46 +728,46 @@ export function KinematicsGraphSimulator() {
     ctx.beginPath();
     ctx.roundRect(panelX, panelY, panelWidth, panelHeight, 8);
     ctx.fill();
-    ctx.strokeStyle = '#d1d5db';
+    ctx.strokeStyle = '#d8d6d4';
     ctx.lineWidth = 1;
     ctx.stroke();
 
     // Panel content
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.font = 'bold 12px system-ui';
     ctx.textAlign = 'left';
     ctx.fillText('Chute libre', panelX + 15, panelY + 25);
 
     // Gravity info
     const currentPreset = GRAVITY_PRESETS.find(p => p.id === gravityPreset);
-    ctx.fillStyle = '#6b7280';
+    ctx.fillStyle = '#7c766f';
     ctx.font = '11px system-ui';
     ctx.fillText(`${currentPreset?.emoji || ''} g = ${g.toFixed(2)} m/s²`, panelX + 15, panelY + 45);
 
     // Current values
     ctx.font = 'bold 11px system-ui';
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.fillText(`t = ${currentTime.toFixed(2)} s`, panelX + 15, panelY + 70);
 
-    ctx.fillStyle = '#16a34a';
+    ctx.fillStyle = '#748336';
     ctx.fillText(`y = ${y.toFixed(2)} m`, panelX + 15, panelY + 90);
 
-    ctx.fillStyle = '#2563eb';
+    ctx.fillStyle = '#c1974f';
     ctx.fillText(`v = ${v.toFixed(2)} m/s`, panelX + 15, panelY + 110);
 
-    ctx.fillStyle = '#dc2626';
+    ctx.fillStyle = '#c65c3c';
     ctx.fillText(`a = ${(-g).toFixed(2)} m/s²`, panelX + 15, panelY + 130);
 
     // Impact time info
     if (groundTime < getEffectiveMaxTime()) {
-      ctx.fillStyle = '#6b7280';
+      ctx.fillStyle = '#7c766f';
       ctx.font = '10px system-ui';
       ctx.fillText(`Impact à t = ${groundTime.toFixed(2)}s`, panelX + 15, panelY + 155);
     }
 
     // Impact message
     if (currentTime >= groundTime) {
-      ctx.fillStyle = '#ef4444';
+      ctx.fillStyle = '#ca684a';
       ctx.font = 'bold 14px system-ui';
       ctx.textAlign = 'center';
       ctx.fillText('💥 IMPACT!', ballCenterX, animCanvasHeight - 35);
@@ -777,9 +777,9 @@ export function KinematicsGraphSimulator() {
   // Draw all
   useEffect(() => {
     const posLabel = motionType === 'freeFall' ? 'y' : 'x';
-    drawGraph(positionCanvasRef.current, (t) => getKinematics(t).x, '#16a34a', '#f0fdf4', posLabel, 'm', 'v(t)', undefined);
-    drawGraph(velocityCanvasRef.current, (t) => getKinematics(t).v, '#2563eb', '#eff6ff', 'v', 'm/s', 'a(t)', posLabel);
-    drawGraph(accelerationCanvasRef.current, (t) => getKinematics(t).a, '#dc2626', '#fef2f2', 'a', 'm/s²', undefined, 'v');
+    drawGraph(positionCanvasRef.current, (t) => getKinematics(t).x, '#748336', '#f7f7f6', posLabel, 'm', 'v(t)', undefined);
+    drawGraph(velocityCanvasRef.current, (t) => getKinematics(t).v, '#c1974f', '#f7f7f7', 'v', 'm/s', 'a(t)', posLabel);
+    drawGraph(accelerationCanvasRef.current, (t) => getKinematics(t).a, '#c65c3c', '#f8f8f8', 'a', 'm/s²', undefined, 'v');
 
     if (motionType === 'freeFall') {
       drawFreeFallAnimation();
@@ -807,7 +807,7 @@ export function KinematicsGraphSimulator() {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
       {/* Header with motion type selector */}
-      <div className="border-b border-gray-200 bg-gradient-to-r from-emerald-50 via-blue-50 to-orange-50 p-3">
+      <div className="border-b border-stone-200 bg-gradient-to-r from-olive-50 via-gold-50 to-terre-50 p-3">
         <div className="flex flex-wrap items-center gap-2 mb-2">
           {MOTION_TYPES.map((m) => (
             <button
@@ -817,13 +817,13 @@ export function KinematicsGraphSimulator() {
                 "px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5",
                 motionType === m.id
                   ? `bg-${m.color}-600 text-white shadow-md`
-                  : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
+                  : "bg-white text-stone-700 hover:bg-stone-100 border border-stone-300"
               )}
               style={motionType === m.id ? {
-                backgroundColor: m.color === 'emerald' ? '#059669' :
-                                 m.color === 'blue' ? '#2563eb' :
-                                 m.color === 'orange' ? '#ea580c' :
-                                 m.color === 'purple' ? '#9333ea' : '#6b7280'
+                backgroundColor: m.color === 'emerald' ? '#616e2d' :
+                                 m.color === 'blue' ? '#c1974f' :
+                                 m.color === 'orange' ? '#d17b25' :
+                                 m.color === 'purple' ? '#a45d80' : '#7c766f'
               } : {}}
             >
               <span>{m.emoji}</span>
@@ -831,7 +831,7 @@ export function KinematicsGraphSimulator() {
             </button>
           ))}
         </div>
-        <p className="text-xs text-gray-600">
+        <p className="text-xs text-stone-600">
           {currentMotion?.description}
         </p>
       </div>
@@ -842,7 +842,7 @@ export function KinematicsGraphSimulator() {
           {/* Animation at top */}
           {showAnimation && (
             <div className="w-full">
-              <div className="border border-gray-200 rounded-lg overflow-hidden">
+              <div className="border border-stone-200 rounded-lg overflow-hidden">
                 <canvas
                   ref={animationCanvasRef}
                   width={animCanvasWidth}
@@ -858,47 +858,47 @@ export function KinematicsGraphSimulator() {
             {/* Graphs grid - always 3 columns */}
             <div className="grid grid-cols-3 gap-2">
               {/* Position graph */}
-              <div className="border border-green-300 rounded-lg overflow-hidden bg-gradient-to-b from-green-50 to-white">
-                <div className="px-2 py-1 bg-green-100 border-b border-green-200 flex justify-between items-center">
-                  <span className="text-xs font-bold text-green-800">
+              <div className="border border-olive-300 rounded-lg overflow-hidden bg-gradient-to-b from-olive-50 to-white">
+                <div className="px-2 py-1 bg-olive-100 border-b border-olive-200 flex justify-between items-center">
+                  <span className="text-xs font-bold text-olive-800">
                     {motionType === 'freeFall' ? 'Hauteur y(t)' : 'Position x(t)'}
                   </span>
-                  <span className="text-sm font-mono font-bold text-green-700">{currentKinematics.x.toFixed(2)} m</span>
+                  <span className="text-sm font-mono font-bold text-olive-700">{currentKinematics.x.toFixed(2)} m</span>
                 </div>
                 <canvas ref={positionCanvasRef} width={canvasWidth} height={canvasHeight} className="w-full" />
               </div>
 
               {/* Velocity graph */}
-              <div className="border border-blue-300 rounded-lg overflow-hidden bg-gradient-to-b from-blue-50 to-white">
-                <div className="px-2 py-1 bg-blue-100 border-b border-blue-200 flex justify-between items-center">
-                  <span className="text-xs font-bold text-blue-800">Vitesse v(t)</span>
-                  <span className="text-sm font-mono font-bold text-blue-700">{currentKinematics.v.toFixed(2)} m/s</span>
+              <div className="border border-gold-300 rounded-lg overflow-hidden bg-gradient-to-b from-gold-50 to-white">
+                <div className="px-2 py-1 bg-gold-100 border-b border-gold-200 flex justify-between items-center">
+                  <span className="text-xs font-bold text-gold-800">Vitesse v(t)</span>
+                  <span className="text-sm font-mono font-bold text-gold-700">{currentKinematics.v.toFixed(2)} m/s</span>
                 </div>
                 <canvas ref={velocityCanvasRef} width={canvasWidth} height={canvasHeight} className="w-full" />
               </div>
 
               {/* Acceleration graph */}
-              <div className="border border-red-300 rounded-lg overflow-hidden bg-gradient-to-b from-red-50 to-white">
-                <div className="px-2 py-1 bg-red-100 border-b border-red-200 flex justify-between items-center">
-                  <span className="text-xs font-bold text-red-800">Accélération a(t)</span>
-                  <span className="text-sm font-mono font-bold text-red-700">{currentKinematics.a.toFixed(2)} m/s²</span>
+              <div className="border border-brun-300 rounded-lg overflow-hidden bg-gradient-to-b from-brun-50 to-white">
+                <div className="px-2 py-1 bg-brun-100 border-b border-brun-200 flex justify-between items-center">
+                  <span className="text-xs font-bold text-brun-800">Accélération a(t)</span>
+                  <span className="text-sm font-mono font-bold text-brun-700">{currentKinematics.a.toFixed(2)} m/s²</span>
                 </div>
                 <canvas ref={accelerationCanvasRef} width={canvasWidth} height={canvasHeight} className="w-full" />
               </div>
             </div>
 
             {/* Controls */}
-            <div className="border border-gray-300 rounded-lg p-3 bg-gray-50">
+            <div className="border border-stone-300 rounded-lg p-3 bg-stone-50">
               <div className="grid grid-cols-2 gap-4">
                 {/* Left: Time controls */}
                 <div className="space-y-2">
                   <div>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-medium text-gray-700">Temps</span>
-                      <span className="text-xs font-mono font-bold text-gray-800">
+                      <span className="text-xs font-medium text-stone-700">Temps</span>
+                      <span className="text-xs font-mono font-bold text-stone-800">
                         {currentTime.toFixed(2)} s
                         {motionType === 'freeFall' && getGroundTime() < maxTime && (
-                          <span className="text-red-500 ml-1">(impact: {getGroundTime().toFixed(2)}s)</span>
+                          <span className="text-brun-500 ml-1">(impact: {getGroundTime().toFixed(2)}s)</span>
                         )}
                       </span>
                     </div>
@@ -909,7 +909,7 @@ export function KinematicsGraphSimulator() {
                       step="0.01"
                       value={currentTime}
                       onChange={(e) => setCurrentTime(parseFloat(e.target.value))}
-                      className="w-full accent-emerald-600 h-5"
+                      className="w-full accent-olive-600 h-5"
                     />
                   </div>
 
@@ -918,32 +918,32 @@ export function KinematicsGraphSimulator() {
                       onClick={() => setIsPlaying(!isPlaying)}
                       className={cn(
                         "flex-1 px-3 py-1.5 rounded text-xs font-semibold transition-colors",
-                        isPlaying ? "bg-amber-500 text-white" : "bg-emerald-500 text-white"
+                        isPlaying ? "bg-ocre-500 text-white" : "bg-olive-500 text-white"
                       )}
                     >
                       {isPlaying ? '⏸ Pause' : '▶ Lecture'}
                     </button>
                     <button
                       onClick={handleReset}
-                      className="px-3 py-1.5 rounded text-xs font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300"
+                      className="px-3 py-1.5 rounded text-xs font-semibold bg-stone-200 text-stone-700 hover:bg-stone-300"
                     >
                       ↺
                     </button>
                     <select
                       value={maxTime}
                       onChange={(e) => { setMaxTime(parseFloat(e.target.value)); handleReset(); }}
-                      className="px-2 py-1 rounded border border-gray-300 text-xs"
+                      className="px-2 py-1 rounded border border-stone-300 text-xs"
                     >
                       {[2, 3, 5, 8, 10, 15].map(t => (
                         <option key={t} value={t}>{t}s</option>
                       ))}
                     </select>
-                    <label className="flex items-center gap-1 text-xs text-gray-600 cursor-pointer">
+                    <label className="flex items-center gap-1 text-xs text-stone-600 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={showAnimation}
                         onChange={(e) => setShowAnimation(e.target.checked)}
-                        className="w-3 h-3 accent-emerald-600"
+                        className="w-3 h-3 accent-olive-600"
                       />
                       Anim
                     </label>
@@ -951,7 +951,7 @@ export function KinematicsGraphSimulator() {
                 </div>
 
                 {/* Right: Parameters */}
-                <div className="space-y-2 border-l border-gray-200 pl-4">
+                <div className="space-y-2 border-l border-stone-200 pl-4">
                   {/* Free fall specific parameters */}
                   {motionType === 'freeFall' && (
                     <>
@@ -963,8 +963,8 @@ export function KinematicsGraphSimulator() {
                             className={cn(
                               "px-2 py-0.5 rounded text-[10px] font-medium transition-all",
                               gravityPreset === preset.id
-                                ? "bg-orange-500 text-white"
-                                : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
+                                ? "bg-terre-500 text-white"
+                                : "bg-white text-stone-600 border border-stone-300 hover:bg-stone-50"
                             )}
                           >
                             {preset.emoji} {preset.name}
@@ -972,7 +972,7 @@ export function KinematicsGraphSimulator() {
                         ))}
                       </div>
                       <div>
-                        <label className="block text-[10px] font-medium text-green-700 mb-0.5">
+                        <label className="block text-[10px] font-medium text-olive-700 mb-0.5">
                           y₀ = {y0} m
                         </label>
                         <input
@@ -982,12 +982,12 @@ export function KinematicsGraphSimulator() {
                           step="5"
                           value={y0}
                           onChange={(e) => { setY0(parseFloat(e.target.value)); handleReset(); }}
-                          className="w-full accent-green-600 h-4"
+                          className="w-full accent-olive-600 h-4"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] font-medium text-blue-700 mb-0.5">
-                          v₀ = {v0Fall} m/s <span className="text-gray-500">(+ = haut)</span>
+                        <label className="block text-[10px] font-medium text-gold-700 mb-0.5">
+                          v₀ = {v0Fall} m/s <span className="text-stone-500">(+ = haut)</span>
                         </label>
                         <input
                           type="range"
@@ -996,12 +996,12 @@ export function KinematicsGraphSimulator() {
                           step="1"
                           value={v0Fall}
                           onChange={(e) => { setV0Fall(parseFloat(e.target.value)); handleReset(); }}
-                          className="w-full accent-blue-600 h-4"
+                          className="w-full accent-gold-600 h-4"
                         />
                       </div>
                       {gravityPreset === 'custom' && (
                         <div>
-                          <label className="block text-[10px] font-medium text-red-700 mb-0.5">
+                          <label className="block text-[10px] font-medium text-brun-700 mb-0.5">
                             g = {customGravity} m/s²
                           </label>
                           <input
@@ -1011,7 +1011,7 @@ export function KinematicsGraphSimulator() {
                             step="0.5"
                             value={customGravity}
                             onChange={(e) => { setCustomGravity(parseFloat(e.target.value)); handleReset(); }}
-                            className="w-full accent-red-600 h-4"
+                            className="w-full accent-brun-600 h-4"
                           />
                         </div>
                       )}
@@ -1022,7 +1022,7 @@ export function KinematicsGraphSimulator() {
                   {(motionType === 'uniform' || motionType === 'uniformAccel') && (
                     <>
                       <div>
-                        <label className="block text-[10px] font-medium text-green-700 mb-0.5">x₀ = {x0} m</label>
+                        <label className="block text-[10px] font-medium text-olive-700 mb-0.5">x₀ = {x0} m</label>
                         <input
                           type="range"
                           min="-5"
@@ -1030,11 +1030,11 @@ export function KinematicsGraphSimulator() {
                           step="0.5"
                           value={x0}
                           onChange={(e) => { setX0(parseFloat(e.target.value)); handleReset(); }}
-                          className="w-full accent-green-600 h-4"
+                          className="w-full accent-olive-600 h-4"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] font-medium text-blue-700 mb-0.5">v₀ = {v0} m/s</label>
+                        <label className="block text-[10px] font-medium text-gold-700 mb-0.5">v₀ = {v0} m/s</label>
                         <input
                           type="range"
                           min="-5"
@@ -1042,12 +1042,12 @@ export function KinematicsGraphSimulator() {
                           step="0.5"
                           value={v0}
                           onChange={(e) => { setV0(parseFloat(e.target.value)); handleReset(); }}
-                          className="w-full accent-blue-600 h-4"
+                          className="w-full accent-gold-600 h-4"
                         />
                       </div>
                       {motionType === 'uniformAccel' && (
                         <div>
-                          <label className="block text-[10px] font-medium text-red-700 mb-0.5">a = {a0} m/s²</label>
+                          <label className="block text-[10px] font-medium text-brun-700 mb-0.5">a = {a0} m/s²</label>
                           <input
                             type="range"
                             min="-3"
@@ -1055,7 +1055,7 @@ export function KinematicsGraphSimulator() {
                             step="0.25"
                             value={a0}
                             onChange={(e) => { setA0(parseFloat(e.target.value)); handleReset(); }}
-                            className="w-full accent-red-600 h-4"
+                            className="w-full accent-brun-600 h-4"
                           />
                         </div>
                       )}
@@ -1066,7 +1066,7 @@ export function KinematicsGraphSimulator() {
                   {motionType === 'sinusoidal' && (
                     <>
                       <div>
-                        <label className="block text-[10px] font-medium text-purple-700 mb-0.5">A = {amplitude} m</label>
+                        <label className="block text-[10px] font-medium text-prune-700 mb-0.5">A = {amplitude} m</label>
                         <input
                           type="range"
                           min="1"
@@ -1074,11 +1074,11 @@ export function KinematicsGraphSimulator() {
                           step="0.5"
                           value={amplitude}
                           onChange={(e) => { setAmplitude(parseFloat(e.target.value)); handleReset(); }}
-                          className="w-full accent-purple-600 h-4"
+                          className="w-full accent-prune-600 h-4"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] font-medium text-orange-700 mb-0.5">ω = {omega} rad/s</label>
+                        <label className="block text-[10px] font-medium text-terre-700 mb-0.5">ω = {omega} rad/s</label>
                         <input
                           type="range"
                           min="0.5"
@@ -1086,7 +1086,7 @@ export function KinematicsGraphSimulator() {
                           step="0.5"
                           value={omega}
                           onChange={(e) => { setOmega(parseFloat(e.target.value)); handleReset(); }}
-                          className="w-full accent-orange-600 h-4"
+                          className="w-full accent-terre-600 h-4"
                         />
                       </div>
                     </>
@@ -1099,11 +1099,11 @@ export function KinematicsGraphSimulator() {
 
         {/* Custom mode segment editor */}
         {motionType === 'custom' && (
-          <div className="mt-4 bg-indigo-50 rounded-lg p-4 border border-indigo-200">
+          <div className="mt-4 bg-gold-50 rounded-lg p-4 border border-gold-200">
             <div className="flex items-center justify-between mb-3">
-              <h4 className="text-sm font-bold text-indigo-900">🔀 Éditeur de segments</h4>
+              <h4 className="text-sm font-bold text-gold-900">🔀 Éditeur de segments</h4>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-indigo-700">
+                <span className="text-xs text-gold-700">
                   Durée totale: {getTotalSegmentsDuration().toFixed(1)}s
                 </span>
                 <button
@@ -1117,7 +1117,7 @@ export function KinematicsGraphSimulator() {
                     setNextSegmentId(nextSegmentId + 1);
                     handleReset();
                   }}
-                  className="px-2 py-1 bg-indigo-600 text-white text-xs rounded hover:bg-indigo-700 transition-colors"
+                  className="px-2 py-1 bg-gold-600 text-white text-xs rounded hover:bg-gold-700 transition-colors"
                 >
                   + Segment
                 </button>
@@ -1125,9 +1125,9 @@ export function KinematicsGraphSimulator() {
             </div>
 
             {/* Initial conditions */}
-            <div className="flex gap-4 mb-3 p-2 bg-white rounded border border-indigo-100">
+            <div className="flex gap-4 mb-3 p-2 bg-white rounded border border-gold-100">
               <div className="flex items-center gap-2">
-                <label className="text-xs font-medium text-gray-700">x₀:</label>
+                <label className="text-xs font-medium text-stone-700">x₀:</label>
                 <input
                   type="number"
                   value={customX0}
@@ -1135,10 +1135,10 @@ export function KinematicsGraphSimulator() {
                   className="w-16 px-2 py-1 text-xs border rounded"
                   step="0.5"
                 />
-                <span className="text-xs text-gray-500">m</span>
+                <span className="text-xs text-stone-500">m</span>
               </div>
               <div className="flex items-center gap-2">
-                <label className="text-xs font-medium text-gray-700">v₀:</label>
+                <label className="text-xs font-medium text-stone-700">v₀:</label>
                 <input
                   type="number"
                   value={customV0}
@@ -1146,7 +1146,7 @@ export function KinematicsGraphSimulator() {
                   className="w-16 px-2 py-1 text-xs border rounded"
                   step="0.5"
                 />
-                <span className="text-xs text-gray-500">m/s</span>
+                <span className="text-xs text-stone-500">m/s</span>
               </div>
             </div>
 
@@ -1158,7 +1158,7 @@ export function KinematicsGraphSimulator() {
                   className="flex items-center gap-2 p-2 bg-white rounded border"
                   style={{ borderLeftColor: SEGMENT_COLORS[index % SEGMENT_COLORS.length], borderLeftWidth: 4 }}
                 >
-                  <span className="text-xs font-bold text-gray-500 w-6">#{index + 1}</span>
+                  <span className="text-xs font-bold text-stone-500 w-6">#{index + 1}</span>
 
                   <select
                     value={segment.type}
@@ -1176,7 +1176,7 @@ export function KinematicsGraphSimulator() {
                   </select>
 
                   <div className="flex items-center gap-1">
-                    <label className="text-xs text-gray-600">Δt:</label>
+                    <label className="text-xs text-stone-600">Δt:</label>
                     <input
                       type="number"
                       value={segment.duration}
@@ -1190,12 +1190,12 @@ export function KinematicsGraphSimulator() {
                       min="0.5"
                       step="0.5"
                     />
-                    <span className="text-xs text-gray-500">s</span>
+                    <span className="text-xs text-stone-500">s</span>
                   </div>
 
                   {segment.type === 'mrua' && (
                     <div className="flex items-center gap-1">
-                      <label className="text-xs text-gray-600">a:</label>
+                      <label className="text-xs text-stone-600">a:</label>
                       <input
                         type="number"
                         value={segment.acceleration}
@@ -1208,7 +1208,7 @@ export function KinematicsGraphSimulator() {
                         className="w-14 px-1 py-1 text-xs border rounded"
                         step="0.5"
                       />
-                      <span className="text-xs text-gray-500">m/s²</span>
+                      <span className="text-xs text-stone-500">m/s²</span>
                     </div>
                   )}
 
@@ -1220,7 +1220,7 @@ export function KinematicsGraphSimulator() {
                         setSegments(segments.filter((_, i) => i !== index));
                         handleReset();
                       }}
-                      className="p-1 text-red-500 hover:bg-red-50 rounded"
+                      className="p-1 text-brun-500 hover:bg-brun-50 rounded"
                     >
                       ✕
                     </button>
@@ -1230,8 +1230,8 @@ export function KinematicsGraphSimulator() {
             </div>
 
             {/* Timeline visualization */}
-            <div className="mt-3 p-2 bg-white rounded border border-indigo-100">
-              <div className="text-xs text-gray-600 mb-1">Timeline:</div>
+            <div className="mt-3 p-2 bg-white rounded border border-gold-100">
+              <div className="text-xs text-stone-600 mb-1">Timeline:</div>
               <div className="flex h-6 rounded overflow-hidden">
                 {segments.map((segment, index) => {
                   const totalDuration = getTotalSegmentsDuration();
@@ -1251,7 +1251,7 @@ export function KinematicsGraphSimulator() {
                   );
                 })}
               </div>
-              <div className="flex text-[9px] text-gray-500 mt-1">
+              <div className="flex text-[9px] text-stone-500 mt-1">
                 {getSegmentBoundaries().map((t, i) => (
                   <span
                     key={i}
@@ -1269,29 +1269,29 @@ export function KinematicsGraphSimulator() {
         )}
 
         {/* Mathematical relations */}
-        <div className="mt-4 bg-gradient-to-r from-slate-50 to-gray-50 rounded-lg p-3 border border-gray-200">
+        <div className="mt-4 bg-gradient-to-r from-stone-50 to-stone-50 rounded-lg p-3 border border-stone-200">
           <div className="flex flex-wrap items-center justify-between gap-4">
             {/* Derivative/Integral chain */}
             <div className="flex items-center gap-2">
-              <div className="text-center px-2 py-1 bg-green-100 rounded">
-                <p className="text-[10px] text-green-600">Position</p>
-                <p className="text-sm font-bold text-green-700">{motionType === 'freeFall' ? 'y(t)' : 'x(t)'}</p>
+              <div className="text-center px-2 py-1 bg-olive-100 rounded">
+                <p className="text-[10px] text-olive-600">Position</p>
+                <p className="text-sm font-bold text-olive-700">{motionType === 'freeFall' ? 'y(t)' : 'x(t)'}</p>
               </div>
               <div className="text-center text-[9px]">
-                <p className="text-purple-600">d/dt →</p>
-                <p className="text-amber-600">← ∫dt</p>
+                <p className="text-prune-600">d/dt →</p>
+                <p className="text-ocre-600">← ∫dt</p>
               </div>
-              <div className="text-center px-2 py-1 bg-blue-100 rounded">
-                <p className="text-[10px] text-blue-600">Vitesse</p>
-                <p className="text-sm font-bold text-blue-700">v(t)</p>
+              <div className="text-center px-2 py-1 bg-gold-100 rounded">
+                <p className="text-[10px] text-gold-600">Vitesse</p>
+                <p className="text-sm font-bold text-gold-700">v(t)</p>
               </div>
               <div className="text-center text-[9px]">
-                <p className="text-purple-600">d/dt →</p>
-                <p className="text-amber-600">← ∫dt</p>
+                <p className="text-prune-600">d/dt →</p>
+                <p className="text-ocre-600">← ∫dt</p>
               </div>
-              <div className="text-center px-2 py-1 bg-red-100 rounded">
-                <p className="text-[10px] text-red-600">Accélération</p>
-                <p className="text-sm font-bold text-red-700">a(t)</p>
+              <div className="text-center px-2 py-1 bg-brun-100 rounded">
+                <p className="text-[10px] text-brun-600">Accélération</p>
+                <p className="text-sm font-bold text-brun-700">a(t)</p>
               </div>
             </div>
 
@@ -1313,12 +1313,12 @@ export function KinematicsGraphSimulator() {
               )}
               {motionType === 'custom' && (
                 <>
-                  <div className="bg-emerald-50 px-2 py-1 rounded border border-emerald-200 shadow-sm">
-                    <span className="text-[10px] text-emerald-700 font-medium">MRU: </span>
+                  <div className="bg-olive-50 px-2 py-1 rounded border border-olive-200 shadow-sm">
+                    <span className="text-[10px] text-olive-700 font-medium">MRU: </span>
                     <InlineMath math="x = x_i + v_i \Delta t" />
                   </div>
-                  <div className="bg-blue-50 px-2 py-1 rounded border border-blue-200 shadow-sm">
-                    <span className="text-[10px] text-blue-700 font-medium">MRUA: </span>
+                  <div className="bg-gold-50 px-2 py-1 rounded border border-gold-200 shadow-sm">
+                    <span className="text-[10px] text-gold-700 font-medium">MRUA: </span>
                     <InlineMath math="x = x_i + v_i \Delta t + \frac{1}{2}a\Delta t^2" />
                   </div>
                 </>

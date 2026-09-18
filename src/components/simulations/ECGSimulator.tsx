@@ -182,11 +182,11 @@ function ECGSignalMode() {
     const yCenter = padding.top + gH / 2;
 
     // ECG grid paper background
-    ctx.fillStyle = '#fefce8';
+    ctx.fillStyle = '#f4f3f2';
     ctx.fillRect(padding.left, padding.top, gW, gH);
 
     // Small grid (1mm equivalent)
-    ctx.strokeStyle = '#fde68a';
+    ctx.strokeStyle = '#f1db6f';
     ctx.lineWidth = 0.5;
     const smallGrid = 10;
     for (let x = padding.left; x <= padding.left + gW; x += smallGrid) {
@@ -203,7 +203,7 @@ function ECGSignalMode() {
     }
 
     // Large grid (5mm equivalent)
-    ctx.strokeStyle = '#f59e0b50';
+    ctx.strokeStyle = '#e8c51850';
     ctx.lineWidth = 1;
     for (let x = padding.left; x <= padding.left + gW; x += smallGrid * 5) {
       ctx.beginPath();
@@ -219,7 +219,7 @@ function ECGSignalMode() {
     }
 
     // Baseline
-    ctx.strokeStyle = '#d1d5db';
+    ctx.strokeStyle = '#d8d6d4';
     ctx.lineWidth = 1;
     ctx.setLineDash([4, 4]);
     ctx.beginPath();
@@ -229,7 +229,7 @@ function ECGSignalMode() {
     ctx.setLineDash([]);
 
     // Y-axis labels (mV)
-    ctx.fillStyle = '#6b7280';
+    ctx.fillStyle = '#7c766f';
     ctx.font = '11px Inter, sans-serif';
     ctx.textAlign = 'right';
     const mVPerPixel = 2.0 / (gH / 2); // ±2 mV range
@@ -243,7 +243,7 @@ function ECGSignalMode() {
     ctx.save();
     ctx.translate(14, yCenter);
     ctx.rotate(-Math.PI / 2);
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.font = 'bold 12px Inter, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('Tension (mV)', 0, 0);
@@ -258,7 +258,7 @@ function ECGSignalMode() {
     const startSample = Math.floor(offsetRef.current) % (signal.length - samplesVisible);
 
     ctx.beginPath();
-    ctx.strokeStyle = '#16a34a';
+    ctx.strokeStyle = '#748336';
     ctx.lineWidth = 2;
 
     for (let i = 0; i < samplesVisible && (startSample + i) < signal.length; i++) {
@@ -300,22 +300,22 @@ function ECGSignalMode() {
       const qrsPos = cycleStart + Math.floor((0.05 + NORMAL_PARAMS.prInterval + NORMAL_PARAMS.qrsDuration / 2) * sampleRate);
       const tPos = cycleStart + Math.floor((0.05 + NORMAL_PARAMS.prInterval + NORMAL_PARAMS.qtInterval - 0.08) * sampleRate);
 
-      labelWave('P', pPos, '#3b82f6', 20);
-      labelWave('QRS', qrsPos, '#dc2626', 20);
-      labelWave('T', tPos, '#7c3aed', 20);
+      labelWave('P', pPos, '#c29851', 20);
+      labelWave('QRS', qrsPos, '#c65c3c', 20);
+      labelWave('T', tPos, '#a76385', 20);
 
       // Interval labels at bottom
       const prStartX = padding.left + (cycleStart + 0.05 * sampleRate - startSample) * pixelsPerSample;
       const prEndX = padding.left + (cycleStart + (0.05 + NORMAL_PARAMS.prInterval) * sampleRate - startSample) * pixelsPerSample;
       if (prStartX > padding.left && prEndX < padding.left + gW) {
-        ctx.strokeStyle = '#3b82f6';
+        ctx.strokeStyle = '#c29851';
         ctx.lineWidth = 2;
         ctx.beginPath();
         const yBar = padding.top + gH - 15;
         ctx.moveTo(prStartX, yBar);
         ctx.lineTo(prEndX, yBar);
         ctx.stroke();
-        ctx.fillStyle = '#3b82f6';
+        ctx.fillStyle = '#c29851';
         ctx.font = '10px Inter, sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(`PR: ${(NORMAL_PARAMS.prInterval * 1000).toFixed(0)} ms`, (prStartX + prEndX) / 2, yBar - 4);
@@ -323,13 +323,13 @@ function ECGSignalMode() {
     }
 
     // Title
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.font = 'bold 14px Inter, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(`ECG — Dérivation II — ${heartRate} BPM`, W / 2, 20);
 
     // Time axis label
-    ctx.fillStyle = '#6b7280';
+    ctx.fillStyle = '#7c766f';
     ctx.font = '11px Inter, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(`Temps (vitesse papier : ${speed} mm/s)`, padding.left + gW / 2, H - 8);
@@ -349,16 +349,16 @@ function ECGSignalMode() {
 
   return (
     <div className="space-y-4">
-      <canvas ref={canvasRef} width={800} height={350} className="w-full max-w-[800px] mx-auto bg-white rounded-lg border border-gray-200" />
+      <canvas ref={canvasRef} width={800} height={350} className="w-full max-w-[800px] mx-auto bg-white rounded-lg border border-stone-200" />
 
       <div className="flex flex-wrap gap-4 items-end">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Fréquence cardiaque (BPM)</label>
+          <label className="block text-sm font-medium text-stone-700 mb-1">Fréquence cardiaque (BPM)</label>
           <input type="range" min={30} max={180} step={1} value={heartRate} onChange={e => setHeartRate(+e.target.value)} className="w-40" />
-          <span className="ml-2 text-sm text-gray-500">{heartRate} BPM</span>
+          <span className="ml-2 text-sm text-stone-500">{heartRate} BPM</span>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Vitesse papier</label>
+          <label className="block text-sm font-medium text-stone-700 mb-1">Vitesse papier</label>
           <select value={speed} onChange={e => setSpeed(+e.target.value)} className="border rounded px-2 py-1 text-sm">
             <option value={25}>25 mm/s (standard)</option>
             <option value={50}>50 mm/s</option>
@@ -366,33 +366,33 @@ function ECGSignalMode() {
         </div>
         <button
           onClick={() => setIsPlaying(!isPlaying)}
-          className={`px-4 py-2 rounded-lg text-sm font-medium ${isPlaying ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}
+          className={`px-4 py-2 rounded-lg text-sm font-medium ${isPlaying ? 'bg-brun-100 text-brun-700' : 'bg-olive-100 text-olive-700'}`}
         >
           {isPlaying ? '⏸ Pause' : '▶ Lecture'}
         </button>
-        <label className="flex items-center gap-2 text-sm text-gray-700">
+        <label className="flex items-center gap-2 text-sm text-stone-700">
           <input type="checkbox" checked={showLabels} onChange={e => setShowLabels(e.target.checked)} />
           Annotations
         </label>
       </div>
 
-      <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-        <h4 className="font-semibold text-green-900 mb-2">Interprétation du signal ECG</h4>
+      <div className="bg-olive-50 border border-olive-200 rounded-lg p-4">
+        <h4 className="font-semibold text-olive-900 mb-2">Interprétation du signal ECG</h4>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
-          <div className="bg-white rounded p-3 border border-green-100">
-            <span className="font-bold text-blue-600">Onde P</span>
-            <p className="text-gray-600 mt-1">Dépolarisation des oreillettes. Amplitude ~0.25 mV, durée ~80 ms.</p>
+          <div className="bg-white rounded p-3 border border-olive-100">
+            <span className="font-bold text-gold-600">Onde P</span>
+            <p className="text-stone-600 mt-1">Dépolarisation des oreillettes. Amplitude ~0.25 mV, durée ~80 ms.</p>
           </div>
-          <div className="bg-white rounded p-3 border border-green-100">
-            <span className="font-bold text-red-600">Complexe QRS</span>
-            <p className="text-gray-600 mt-1">Dépolarisation des ventricules. Amplitude ~1.6 mV, durée ~80 ms. C'est l'événement électrique le plus puissant.</p>
+          <div className="bg-white rounded p-3 border border-olive-100">
+            <span className="font-bold text-brun-600">Complexe QRS</span>
+            <p className="text-stone-600 mt-1">Dépolarisation des ventricules. Amplitude ~1.6 mV, durée ~80 ms. C'est l'événement électrique le plus puissant.</p>
           </div>
-          <div className="bg-white rounded p-3 border border-green-100">
-            <span className="font-bold text-purple-600">Onde T</span>
-            <p className="text-gray-600 mt-1">Repolarisation des ventricules. Amplitude ~0.35 mV. Suit le complexe QRS après le segment ST.</p>
+          <div className="bg-white rounded p-3 border border-olive-100">
+            <span className="font-bold text-prune-600">Onde T</span>
+            <p className="text-stone-600 mt-1">Repolarisation des ventricules. Amplitude ~0.35 mV. Suit le complexe QRS après le segment ST.</p>
           </div>
         </div>
-        <div className="mt-3 text-sm text-gray-600">
+        <div className="mt-3 text-sm text-stone-600">
           <strong>Période : </strong>{(60 / heartRate).toFixed(3)} s | <strong>Fréquence : </strong>{heartRate} BPM |
           <strong> Intervalle PR : </strong>{(NORMAL_PARAMS.prInterval * 1000).toFixed(0)} ms |
           <strong> Durée QRS : </strong>{(NORMAL_PARAMS.qrsDuration * 1000).toFixed(0)} ms |
@@ -478,16 +478,16 @@ function DipoleMode() {
     // Heart fill with depolarization wave
     const gradient = ctx.createRadialGradient(0, 0, 5, 0, 0, heartSize);
     const depolarizationColor = phase >= 0.15 && phase < 0.25
-      ? `rgba(239, 68, 68, ${0.3 + magnitude * 0.5})`
+      ? `rgba(202, 104, 74, ${0.3 + magnitude * 0.5})`
       : phase < 0.1
-        ? `rgba(59, 130, 246, ${0.2 + magnitude * 0.3})`
-        : `rgba(252, 211, 77, ${0.2})`;
+        ? `rgba(194, 152, 81, ${0.2 + magnitude * 0.3})`
+        : `rgba(236, 207, 60, ${0.2})`;
     gradient.addColorStop(0, depolarizationColor);
-    gradient.addColorStop(1, 'rgba(254, 240, 240, 0.3)');
+    gradient.addColorStop(1, 'rgba(247, 247, 247, 0.3)');
     ctx.fillStyle = gradient;
     ctx.fill();
 
-    ctx.strokeStyle = '#dc2626';
+    ctx.strokeStyle = '#c65c3c';
     ctx.lineWidth = 2;
     ctx.stroke();
 
@@ -501,7 +501,7 @@ function DipoleMode() {
       ctx.beginPath();
       ctx.moveTo(0, 0);
       ctx.lineTo(vx, vy);
-      ctx.strokeStyle = '#059669';
+      ctx.strokeStyle = '#616e2d';
       ctx.lineWidth = 3;
       ctx.stroke();
 
@@ -519,22 +519,22 @@ function DipoleMode() {
         vx - headLen * Math.cos(angle + headAngle),
         vy + headLen * Math.sin(angle + headAngle)
       );
-      ctx.strokeStyle = '#059669';
+      ctx.strokeStyle = '#616e2d';
       ctx.lineWidth = 3;
       ctx.stroke();
 
       // + and - charges
       const chargeOffset = vecLen * 0.15;
-      ctx.fillStyle = '#dc2626';
+      ctx.fillStyle = '#c65c3c';
       ctx.font = 'bold 18px Inter, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('+', vx + Math.cos(angle) * chargeOffset, vy - Math.sin(angle) * chargeOffset + 6);
-      ctx.fillStyle = '#2563eb';
+      ctx.fillStyle = '#c1974f';
       ctx.fillText('−', -Math.cos(angle) * chargeOffset, Math.sin(angle) * chargeOffset + 6);
 
       // Electric field lines (simplified)
       if (showField) {
-        ctx.strokeStyle = '#d1d5db';
+        ctx.strokeStyle = '#d8d6d4';
         ctx.lineWidth = 0.8;
         ctx.setLineDash([3, 3]);
         for (let i = -2; i <= 2; i++) {
@@ -565,9 +565,9 @@ function DipoleMode() {
     const phaseH = H - 80;
 
     // Mini ECG trace on right
-    ctx.fillStyle = '#fefce8';
+    ctx.fillStyle = '#f4f3f2';
     ctx.fillRect(phaseX, phaseY, phaseW, phaseH);
-    ctx.strokeStyle = '#e5e7eb';
+    ctx.strokeStyle = '#e9e8e7';
     ctx.lineWidth = 1;
     ctx.strokeRect(phaseX, phaseY, phaseW, phaseH);
 
@@ -575,7 +575,7 @@ function DipoleMode() {
     const miniSignal = generateECGCycle(NORMAL_PARAMS, 200);
     const midY = phaseY + phaseH / 2;
     ctx.beginPath();
-    ctx.strokeStyle = '#16a34a';
+    ctx.strokeStyle = '#748336';
     ctx.lineWidth = 1.5;
     for (let i = 0; i < miniSignal.length; i++) {
       const x = phaseX + (i / miniSignal.length) * phaseW;
@@ -590,17 +590,17 @@ function DipoleMode() {
     ctx.beginPath();
     ctx.moveTo(posX, phaseY);
     ctx.lineTo(posX, phaseY + phaseH);
-    ctx.strokeStyle = '#dc2626';
+    ctx.strokeStyle = '#c65c3c';
     ctx.lineWidth = 2;
     ctx.stroke();
 
     // Phase label
     let phaseLabel = 'Repos';
-    let phaseColor = '#6b7280';
-    if (phase < 0.1) { phaseLabel = 'Onde P (oreillettes)'; phaseColor = '#3b82f6'; }
-    else if (phase >= 0.15 && phase < 0.25) { phaseLabel = 'Complexe QRS (ventricules)'; phaseColor = '#dc2626'; }
-    else if (phase >= 0.25 && phase < 0.35) { phaseLabel = 'Segment ST'; phaseColor = '#6b7280'; }
-    else if (phase >= 0.35 && phase < 0.5) { phaseLabel = 'Onde T (repolarisation)'; phaseColor = '#7c3aed'; }
+    let phaseColor = '#7c766f';
+    if (phase < 0.1) { phaseLabel = 'Onde P (oreillettes)'; phaseColor = '#c29851'; }
+    else if (phase >= 0.15 && phase < 0.25) { phaseLabel = 'Complexe QRS (ventricules)'; phaseColor = '#c65c3c'; }
+    else if (phase >= 0.25 && phase < 0.35) { phaseLabel = 'Segment ST'; phaseColor = '#7c766f'; }
+    else if (phase >= 0.35 && phase < 0.5) { phaseLabel = 'Onde T (repolarisation)'; phaseColor = '#a76385'; }
 
     ctx.fillStyle = phaseColor;
     ctx.font = 'bold 13px Inter, sans-serif';
@@ -608,14 +608,14 @@ function DipoleMode() {
     ctx.fillText(phaseLabel, cx, H - 15);
 
     // Titles
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.font = 'bold 13px Inter, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('Vecteur cardiaque', cx, 20);
     ctx.fillText('ECG simultané', phaseX + phaseW / 2, 28);
 
     // Legend
-    ctx.fillStyle = '#059669';
+    ctx.fillStyle = '#616e2d';
     ctx.font = '11px Inter, sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText('→ Vecteur dipôle', 10, H - 10);
@@ -638,35 +638,35 @@ function DipoleMode() {
 
   return (
     <div className="space-y-4">
-      <canvas ref={canvasRef} width={800} height={380} className="w-full max-w-[800px] mx-auto bg-white rounded-lg border border-gray-200" />
+      <canvas ref={canvasRef} width={800} height={380} className="w-full max-w-[800px] mx-auto bg-white rounded-lg border border-stone-200" />
 
       <div className="flex flex-wrap gap-4 items-end">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Fréquence (BPM)</label>
+          <label className="block text-sm font-medium text-stone-700 mb-1">Fréquence (BPM)</label>
           <input type="range" min={40} max={120} step={1} value={heartRate} onChange={e => setHeartRate(+e.target.value)} className="w-40" />
-          <span className="ml-2 text-sm text-gray-500">{heartRate} BPM</span>
+          <span className="ml-2 text-sm text-stone-500">{heartRate} BPM</span>
         </div>
         <button
           onClick={() => setIsPlaying(!isPlaying)}
-          className={`px-4 py-2 rounded-lg text-sm font-medium ${isPlaying ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}
+          className={`px-4 py-2 rounded-lg text-sm font-medium ${isPlaying ? 'bg-brun-100 text-brun-700' : 'bg-olive-100 text-olive-700'}`}
         >
           {isPlaying ? '⏸ Pause' : '▶ Lecture'}
         </button>
-        <label className="flex items-center gap-2 text-sm text-gray-700">
+        <label className="flex items-center gap-2 text-sm text-stone-700">
           <input type="checkbox" checked={showField} onChange={e => setShowField(e.target.checked)} />
           Lignes de champ
         </label>
       </div>
 
-      <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 text-sm">
-        <h4 className="font-semibold text-emerald-900 mb-2">Le cœur comme dipôle électrique</h4>
-        <p className="text-gray-700">
+      <div className="bg-olive-50 border border-olive-200 rounded-lg p-4 text-sm">
+        <h4 className="font-semibold text-olive-900 mb-2">Le cœur comme dipôle électrique</h4>
+        <p className="text-stone-700">
           Le cœur génère un champ électrique qui change au cours du cycle cardiaque. On modélise cette activité
           par un <strong>dipôle électrique</strong> dont le vecteur (flèche verte) tourne et change d'amplitude.
           La différence de potentiel mesurée entre deux électrodes sur la peau est la <strong>projection</strong> de
           ce vecteur sur l'axe reliant les deux électrodes.
         </p>
-        <p className="text-gray-700 mt-2">
+        <p className="text-stone-700 mt-2">
           <strong>V = |d| × cos(θ)</strong>, où <strong>d</strong> est le vecteur dipôle et <strong>θ</strong> l'angle
           entre le dipôle et l'axe de la dérivation.
         </p>
@@ -731,7 +731,7 @@ function LeadsMode() {
     ctx.lineTo(LA.x, LA.y);
     ctx.lineTo(LL.x, LL.y);
     ctx.closePath();
-    ctx.strokeStyle = '#94a3b8';
+    ctx.strokeStyle = '#aba6a1';
     ctx.lineWidth = 1.5;
     ctx.setLineDash([6, 3]);
     ctx.stroke();
@@ -739,9 +739,9 @@ function LeadsMode() {
 
     // Lead labels
     const leads = [
-      { name: 'I', from: RA, to: LA, color: '#dc2626', angle: 0 },
-      { name: 'II', from: RA, to: LL, color: '#2563eb', angle: Math.PI / 3 },
-      { name: 'III', from: LA, to: LL, color: '#059669', angle: 2 * Math.PI / 3 },
+      { name: 'I', from: RA, to: LA, color: '#c65c3c', angle: 0 },
+      { name: 'II', from: RA, to: LL, color: '#c1974f', angle: Math.PI / 3 },
+      { name: 'III', from: LA, to: LL, color: '#616e2d', angle: 2 * Math.PI / 3 },
     ];
 
     // Draw leads with arrows
@@ -792,18 +792,18 @@ function LeadsMode() {
     electrodes.forEach(e => {
       ctx.beginPath();
       ctx.arc(e.pos.x, e.pos.y, 8, 0, Math.PI * 2);
-      ctx.fillStyle = '#f59e0b';
+      ctx.fillStyle = '#e8c518';
       ctx.fill();
-      ctx.strokeStyle = '#d97706';
+      ctx.strokeStyle = '#be7021';
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      ctx.fillStyle = '#374151';
+      ctx.fillStyle = '#484440';
       ctx.font = 'bold 13px Inter, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(e.label, e.pos.x + e.dx, e.pos.y + e.dy);
       ctx.font = '10px Inter, sans-serif';
-      ctx.fillStyle = '#6b7280';
+      ctx.fillStyle = '#7c766f';
       ctx.fillText(e.sublabel, e.pos.x + e.dx, e.pos.y + e.dy + 13);
     });
 
@@ -816,7 +816,7 @@ function LeadsMode() {
       ctx.beginPath();
       ctx.moveTo(triCx, triCy);
       ctx.lineTo(triCx + vx, triCy + vy);
-      ctx.strokeStyle = '#7c3aed';
+      ctx.strokeStyle = '#a76385';
       ctx.lineWidth = 3;
       ctx.stroke();
 
@@ -850,9 +850,9 @@ function LeadsMode() {
       ctx.fillText(`Dérivation ${lead.name}`, traceX, ty);
 
       // Trace background
-      ctx.fillStyle = '#fefce8';
+      ctx.fillStyle = '#f4f3f2';
       ctx.fillRect(traceX, ty + 5, traceW, traceH);
-      ctx.strokeStyle = '#e5e7eb';
+      ctx.strokeStyle = '#e9e8e7';
       ctx.lineWidth = 1;
       ctx.strokeRect(traceX, ty + 5, traceW, traceH);
 
@@ -879,25 +879,25 @@ function LeadsMode() {
       ctx.beginPath();
       ctx.moveTo(posX, ty + 5);
       ctx.lineTo(posX, ty + 5 + traceH);
-      ctx.strokeStyle = '#94a3b8';
+      ctx.strokeStyle = '#aba6a1';
       ctx.lineWidth = 1;
       ctx.stroke();
 
       // Current voltage
-      ctx.fillStyle = '#374151';
+      ctx.fillStyle = '#484440';
       ctx.font = '11px Inter, sans-serif';
       ctx.textAlign = 'right';
       ctx.fillText(`${(projections[idx] * 1.6).toFixed(2)} mV`, traceX + traceW, ty + 5 + traceH + 14);
     });
 
     // Einthoven's law
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.font = 'bold 12px Inter, sans-serif';
     ctx.textAlign = 'center';
     const lawY = H - 20;
     ctx.fillText('Loi d\'Einthoven :  V_II = V_I + V_III', W / 2, lawY);
     ctx.font = '11px Inter, sans-serif';
-    ctx.fillStyle = '#6b7280';
+    ctx.fillStyle = '#7c766f';
     ctx.fillText(
       `${(projections[1] * 1.6).toFixed(2)} ≈ ${(projections[0] * 1.6).toFixed(2)} + ${(projections[2] * 1.6).toFixed(2)} = ${((projections[0] + projections[2]) * 1.6).toFixed(2)}`,
       W / 2, lawY + 16
@@ -919,34 +919,34 @@ function LeadsMode() {
 
   return (
     <div className="space-y-4">
-      <canvas ref={canvasRef} width={800} height={380} className="w-full max-w-[800px] mx-auto bg-white rounded-lg border border-gray-200" />
+      <canvas ref={canvasRef} width={800} height={380} className="w-full max-w-[800px] mx-auto bg-white rounded-lg border border-stone-200" />
 
       <div className="flex flex-wrap gap-4 items-end">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Fréquence (BPM)</label>
+          <label className="block text-sm font-medium text-stone-700 mb-1">Fréquence (BPM)</label>
           <input type="range" min={40} max={120} step={1} value={heartRate} onChange={e => setHeartRate(+e.target.value)} className="w-40" />
-          <span className="ml-2 text-sm text-gray-500">{heartRate} BPM</span>
+          <span className="ml-2 text-sm text-stone-500">{heartRate} BPM</span>
         </div>
         <button
           onClick={() => setIsPlaying(!isPlaying)}
-          className={`px-4 py-2 rounded-lg text-sm font-medium ${isPlaying ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}
+          className={`px-4 py-2 rounded-lg text-sm font-medium ${isPlaying ? 'bg-brun-100 text-brun-700' : 'bg-olive-100 text-olive-700'}`}
         >
           {isPlaying ? '⏸ Pause' : '▶ Lecture'}
         </button>
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
-        <h4 className="font-semibold text-blue-900 mb-2">Triangle d'Einthoven</h4>
-        <p className="text-gray-700">
+      <div className="bg-gold-50 border border-gold-200 rounded-lg p-4 text-sm">
+        <h4 className="font-semibold text-gold-900 mb-2">Triangle d'Einthoven</h4>
+        <p className="text-stone-700">
           Les 3 dérivations bipolaires forment un triangle équilatéral autour du cœur.
           Chaque dérivation mesure la <strong>projection</strong> du vecteur cardiaque sur son axe :
         </p>
-        <ul className="mt-2 space-y-1 text-gray-700">
-          <li><span className="font-bold text-red-600">I</span> : RA → LA (horizontal, 0°)</li>
-          <li><span className="font-bold text-blue-600">II</span> : RA → LL (+60°)</li>
-          <li><span className="font-bold text-green-600">III</span> : LA → LL (+120°)</li>
+        <ul className="mt-2 space-y-1 text-stone-700">
+          <li><span className="font-bold text-brun-600">I</span> : RA → LA (horizontal, 0°)</li>
+          <li><span className="font-bold text-gold-600">II</span> : RA → LL (+60°)</li>
+          <li><span className="font-bold text-olive-600">III</span> : LA → LL (+120°)</li>
         </ul>
-        <p className="text-gray-700 mt-2">
+        <p className="text-stone-700 mt-2">
           <strong>Loi d'Einthoven :</strong> V<sub>II</sub> = V<sub>I</sub> + V<sub>III</sub> — c'est une conséquence directe de la loi des mailles de Kirchhoff appliquée au triangle.
         </p>
       </div>
@@ -967,31 +967,31 @@ function PathologiesMode() {
       name: 'Normal',
       description: 'Rythme sinusal normal. FC 72 BPM, intervalles réguliers.',
       params: { ...NORMAL_PARAMS },
-      color: '#16a34a',
+      color: '#748336',
     },
     {
       name: 'Tachycardie sinusale',
       description: 'FC > 100 BPM. Causes : exercice, stress, fièvre, anémie. Ondes P présentes, rythme régulier.',
       params: { ...NORMAL_PARAMS, heartRate: 130 },
-      color: '#dc2626',
+      color: '#c65c3c',
     },
     {
       name: 'Bradycardie sinusale',
       description: 'FC < 60 BPM. Normal chez les athlètes. Peut indiquer un bloc sino-auriculaire.',
       params: { ...NORMAL_PARAMS, heartRate: 42 },
-      color: '#2563eb',
+      color: '#c1974f',
     },
     {
       name: 'Fibrillation auriculaire',
       description: 'Rythme irrégulier, absence d\'ondes P. Les oreillettes se contractent de façon chaotique. Risque d\'AVC.',
       params: { ...NORMAL_PARAMS, heartRate: 110, pWavePresent: false, irregular: true, noise: 0.08 },
-      color: '#d97706',
+      color: '#be7021',
     },
     {
       name: 'Élévation du segment ST',
       description: 'Signe classique d\'un infarctus du myocarde (crise cardiaque). Le segment ST est surélevé par rapport à la ligne de base.',
       params: { ...NORMAL_PARAMS, flatST: true },
-      color: '#7c3aed',
+      color: '#a76385',
     },
   ];
 
@@ -1020,11 +1020,11 @@ function PathologiesMode() {
       const yCenter = padding.top + gH / 2;
 
       // Background
-      ctx.fillStyle = isSelected ? '#fefce8' : '#fafafa';
+      ctx.fillStyle = isSelected ? '#f4f3f2' : '#fafafa';
       ctx.fillRect(0, 0, W, H);
 
       // Grid
-      ctx.strokeStyle = isSelected ? '#fde68a' : '#f3f4f6';
+      ctx.strokeStyle = isSelected ? '#f1db6f' : '#f5f5f4';
       ctx.lineWidth = 0.5;
       for (let x = padding.left; x <= padding.left + gW; x += 8) {
         ctx.beginPath();
@@ -1040,7 +1040,7 @@ function PathologiesMode() {
       }
 
       // Baseline
-      ctx.strokeStyle = '#e5e7eb';
+      ctx.strokeStyle = '#e9e8e7';
       ctx.lineWidth = 0.5;
       ctx.beginPath();
       ctx.moveTo(padding.left, yCenter);
@@ -1091,13 +1091,13 @@ function PathologiesMode() {
             key={idx}
             onClick={() => setSelected(idx)}
             className={`text-left rounded-lg border-2 overflow-hidden transition-all ${
-              selected === idx ? 'border-amber-400 shadow-md' : 'border-gray-200 hover:border-gray-300'
+              selected === idx ? 'border-ocre-400 shadow-md' : 'border-stone-200 hover:border-stone-300'
             }`}
           >
             <div className="flex items-center gap-2 px-3 py-2 bg-white">
               <span className="w-3 h-3 rounded-full" style={{ backgroundColor: patho.color }} />
-              <span className="font-medium text-sm text-gray-900">{patho.name}</span>
-              <span className="text-xs text-gray-500 ml-auto">{patho.params.heartRate} BPM</span>
+              <span className="font-medium text-sm text-stone-900">{patho.name}</span>
+              <span className="text-xs text-stone-500 ml-auto">{patho.params.heartRate} BPM</span>
             </div>
             <canvas
               ref={el => { canvasRefs.current[idx] = el; }}
@@ -1112,18 +1112,18 @@ function PathologiesMode() {
       <div className="flex gap-3">
         <button
           onClick={() => setIsPlaying(!isPlaying)}
-          className={`px-4 py-2 rounded-lg text-sm font-medium ${isPlaying ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}
+          className={`px-4 py-2 rounded-lg text-sm font-medium ${isPlaying ? 'bg-brun-100 text-brun-700' : 'bg-olive-100 text-olive-700'}`}
         >
           {isPlaying ? '⏸ Pause' : '▶ Lecture'}
         </button>
       </div>
 
       <div className="rounded-lg border-2 p-4" style={{ borderColor: selPatho.color + '60', backgroundColor: selPatho.color + '10' }}>
-        <h4 className="font-semibold text-gray-900 mb-1" style={{ color: selPatho.color }}>
+        <h4 className="font-semibold text-stone-900 mb-1" style={{ color: selPatho.color }}>
           {selPatho.name}
         </h4>
-        <p className="text-sm text-gray-700">{selPatho.description}</p>
-        <div className="mt-2 text-sm text-gray-600">
+        <p className="text-sm text-stone-700">{selPatho.description}</p>
+        <div className="mt-2 text-sm text-stone-600">
           <strong>FC : </strong>{selPatho.params.heartRate} BPM |
           <strong> Période : </strong>{(60 / selPatho.params.heartRate).toFixed(2)} s |
           <strong> Onde P : </strong>{selPatho.params.pWavePresent ? 'présente' : 'absente'} |
@@ -1131,15 +1131,15 @@ function PathologiesMode() {
         </div>
       </div>
 
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm">
-        <h4 className="font-semibold text-amber-900 mb-2">Lien avec l'électricité</h4>
-        <p className="text-gray-700">
+      <div className="bg-ocre-50 border border-ocre-200 rounded-lg p-4 text-sm">
+        <h4 className="font-semibold text-ocre-900 mb-2">Lien avec l'électricité</h4>
+        <p className="text-stone-700">
           L'ECG est une application directe des concepts d'électricité : le cœur est un <strong>générateur
           de différence de potentiel</strong> (~1-2 mV). Le signal se propage à travers le corps (un
           conducteur avec une résistance interne), et les électrodes mesurent la <strong>tension</strong> entre
           deux points, exactement comme un voltmètre dans un circuit.
         </p>
-        <p className="text-gray-700 mt-2">
+        <p className="text-stone-700 mt-2">
           La résistance de la peau (~1-100 kΩ) joue le rôle de <strong>résistance de contact</strong>,
           analogue à la résistance interne d'une pile. Le gel conducteur réduit cette résistance
           pour améliorer le signal.
@@ -1154,17 +1154,17 @@ export function ECGSimulator() {
   const [mode, setMode] = useState<SimulationMode>('ecg');
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+    <div className="bg-white rounded-xl border border-stone-200 shadow-sm overflow-hidden">
       {/* Mode Tabs */}
-      <div className="flex border-b border-gray-200 overflow-x-auto">
+      <div className="flex border-b border-stone-200 overflow-x-auto">
         {(Object.keys(MODE_LABELS) as SimulationMode[]).map((m) => (
           <button
             key={m}
             onClick={() => setMode(m)}
             className={`px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors ${
               mode === m
-                ? 'bg-red-50 text-red-700 border-b-2 border-red-500'
-                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                ? 'bg-brun-50 text-brun-700 border-b-2 border-brun-500'
+                : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50'
             }`}
           >
             {MODE_LABELS[m]}
@@ -1173,8 +1173,8 @@ export function ECGSimulator() {
       </div>
 
       {/* Description */}
-      <div className="px-6 py-3 bg-gray-50 border-b border-gray-100">
-        <p className="text-sm text-gray-600">{MODE_DESCRIPTIONS[mode]}</p>
+      <div className="px-6 py-3 bg-stone-50 border-b border-stone-100">
+        <p className="text-sm text-stone-600">{MODE_DESCRIPTIONS[mode]}</p>
       </div>
 
       {/* Simulation */}

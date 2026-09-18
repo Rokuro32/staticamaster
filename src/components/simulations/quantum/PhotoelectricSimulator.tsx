@@ -127,9 +127,9 @@ function HoverTerm({
   tooltip: string;
 }) {
   return (
-    <span className="relative group inline-block cursor-help border-b border-dashed border-gray-500">
+    <span className="relative group inline-block cursor-help border-b border-dashed border-stone-500">
       {children}
-      <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block whitespace-nowrap bg-gray-900 text-white text-xs rounded px-2 py-1 shadow-lg z-50">
+      <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block whitespace-nowrap bg-stone-900 text-white text-xs rounded px-2 py-1 shadow-lg z-50">
         {tooltip}
       </span>
     </span>
@@ -179,7 +179,7 @@ export function PhotoelectricSimulator() {
     const H = canvas.height;
 
     // Clear
-    ctx.fillStyle = '#111827';
+    ctx.fillStyle = '#1e1c1a';
     ctx.fillRect(0, 0, W, H);
 
     // --- Metal block ---
@@ -187,14 +187,14 @@ export function PhotoelectricSimulator() {
     const metalW = 100;
     const metalY = 60;
     const metalH = H - 120;
-    ctx.fillStyle = '#6B7280';
+    ctx.fillStyle = '#7c766f';
     ctx.fillRect(metalX, metalY, metalW, metalH);
-    ctx.strokeStyle = '#9CA3AF';
+    ctx.strokeStyle = '#aaa6a1';
     ctx.lineWidth = 2;
     ctx.strokeRect(metalX, metalY, metalW, metalH);
 
     // Metal label
-    ctx.fillStyle = '#D1D5DB';
+    ctx.fillStyle = '#d8d6d4';
     ctx.font = '13px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(metal.name, metalX + metalW / 2, metalY + metalH + 20);
@@ -293,19 +293,19 @@ export function PhotoelectricSimulator() {
       // Draw electron
       ctx.beginPath();
       ctx.arc(e.x, e.y, 3, 0, Math.PI * 2);
-      ctx.fillStyle = '#60A5FA';
+      ctx.fillStyle = '#cba86c';
       ctx.fill();
 
       // small glow
       ctx.beginPath();
       ctx.arc(e.x, e.y, 6, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(96,165,250,0.25)';
+      ctx.fillStyle = 'rgba(203, 168, 108,0.25)';
       ctx.fill();
     }
 
     // --- Vibrating electrons on surface when below threshold ---
     if (!aboveThreshold) {
-      ctx.fillStyle = '#FCA5A5';
+      ctx.fillStyle = '#e1a897';
       ctx.font = 'bold 14px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('Aucun électron éjecté', W / 2 + 60, H / 2);
@@ -317,13 +317,13 @@ export function PhotoelectricSimulator() {
         const vibX = metalX + metalW + 2 + Math.sin(now * 0.02 + j * 2) * vibAmp;
         ctx.beginPath();
         ctx.arc(vibX, ey, 3, 0, Math.PI * 2);
-        ctx.fillStyle = '#93C5FD';
+        ctx.fillStyle = '#d8be90';
         ctx.fill();
       }
     }
 
     // --- HUD info ---
-    ctx.fillStyle = '#E5E7EB';
+    ctx.fillStyle = '#e9e8e7';
     ctx.font = '12px monospace';
     ctx.textAlign = 'left';
     ctx.fillText(`f = ${freq.toExponential(2)} Hz`, W - 220, H - 40);
@@ -331,7 +331,7 @@ export function PhotoelectricSimulator() {
     ctx.fillText(`f_seuil = ${fSeuil.toExponential(2)} Hz`, W - 220, H - 8);
 
     if (aboveThreshold) {
-      ctx.fillStyle = '#86EFAC';
+      ctx.fillStyle = '#becc83';
       ctx.fillText(`E_k = ${ekEv.toFixed(2)} eV`, W - 440, H - 8);
     }
 
@@ -368,11 +368,11 @@ export function PhotoelectricSimulator() {
     const plotH = H - pad.top - pad.bottom;
 
     // Clear
-    ctx.fillStyle = '#1F2937';
+    ctx.fillStyle = '#2d2b29';
     ctx.fillRect(0, 0, W, H);
 
     // Axes
-    ctx.strokeStyle = '#9CA3AF';
+    ctx.strokeStyle = '#aaa6a1';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(pad.left, pad.top);
@@ -389,7 +389,7 @@ export function PhotoelectricSimulator() {
     const toY = (ek: number) => pad.top + plotH - (ek / ekMax) * plotH;
 
     // Grid lines
-    ctx.strokeStyle = 'rgba(156,163,175,0.2)';
+    ctx.strokeStyle = 'rgba(170, 166, 161,0.2)';
     ctx.setLineDash([4, 4]);
     for (let ek = 1; ek <= 5; ek++) {
       ctx.beginPath();
@@ -406,7 +406,7 @@ export function PhotoelectricSimulator() {
     ctx.setLineDash([]);
 
     // Ek = hf - phi line (only for f >= fSeuil)
-    ctx.strokeStyle = '#34D399';
+    ctx.strokeStyle = '#a3b750';
     ctx.lineWidth = 2;
     ctx.beginPath();
     let started = false;
@@ -421,7 +421,7 @@ export function PhotoelectricSimulator() {
     ctx.stroke();
 
     // Mark f_seuil
-    ctx.strokeStyle = '#F87171';
+    ctx.strokeStyle = '#d58770';
     ctx.lineWidth = 1;
     ctx.setLineDash([6, 3]);
     ctx.beginPath();
@@ -430,13 +430,13 @@ export function PhotoelectricSimulator() {
     ctx.stroke();
     ctx.setLineDash([]);
 
-    ctx.fillStyle = '#F87171';
+    ctx.fillStyle = '#d58770';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('f_seuil', toX(fSeuil), pad.top + plotH + 14);
 
     // Mark -phi on y axis (show phi value)
-    ctx.fillStyle = '#FBBF24';
+    ctx.fillStyle = '#e8c61a';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'right';
     ctx.fillText(`\u03C6=${metal.phi}eV`, pad.left - 4, toY(0) - 6);
@@ -447,14 +447,14 @@ export function PhotoelectricSimulator() {
       const cy = toY(ekEv);
       ctx.beginPath();
       ctx.arc(cx, cy, 6, 0, Math.PI * 2);
-      ctx.fillStyle = '#FBBF24';
+      ctx.fillStyle = '#e8c61a';
       ctx.fill();
-      ctx.strokeStyle = '#FDE68A';
+      ctx.strokeStyle = '#f1db6f';
       ctx.lineWidth = 2;
       ctx.stroke();
 
       // Label
-      ctx.fillStyle = '#FDE68A';
+      ctx.fillStyle = '#f1db6f';
       ctx.font = '11px sans-serif';
       ctx.textAlign = 'left';
       ctx.fillText(`(${(freq / 1e15).toFixed(2)} PHz, ${ekEv.toFixed(2)} eV)`, cx + 10, cy - 4);
@@ -464,16 +464,16 @@ export function PhotoelectricSimulator() {
       const cy = toY(0);
       ctx.beginPath();
       ctx.arc(cx, cy, 5, 0, Math.PI * 2);
-      ctx.fillStyle = '#EF4444';
+      ctx.fillStyle = '#ca684a';
       ctx.fill();
-      ctx.fillStyle = '#FCA5A5';
+      ctx.fillStyle = '#e1a897';
       ctx.font = '10px sans-serif';
       ctx.textAlign = 'left';
       ctx.fillText('E_k = 0', cx + 8, cy + 4);
     }
 
     // Axis labels
-    ctx.fillStyle = '#D1D5DB';
+    ctx.fillStyle = '#d8d6d4';
     ctx.font = '12px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('Fréquence f (Hz)', pad.left + plotW / 2, H - 4);
@@ -485,7 +485,7 @@ export function PhotoelectricSimulator() {
     ctx.restore();
 
     // X-axis tick labels
-    ctx.fillStyle = '#9CA3AF';
+    ctx.fillStyle = '#aaa6a1';
     ctx.font = '10px sans-serif';
     ctx.textAlign = 'center';
     for (let f = 0.5e15; f <= 2e15; f += 0.5e15) {
@@ -507,10 +507,10 @@ export function PhotoelectricSimulator() {
     <div className="max-w-4xl mx-auto p-4 space-y-6">
       {/* Title */}
       <div className="text-center space-y-1">
-        <h2 className="text-2xl font-bold text-gray-900">
+        <h2 className="text-2xl font-bold text-stone-900">
           Effet photoélectrique
         </h2>
-        <p className="text-gray-600 text-sm">
+        <p className="text-stone-600 text-sm">
           Simulation de l&apos;effet photoélectrique d&apos;Einstein (1905)
         </p>
       </div>
@@ -521,16 +521,16 @@ export function PhotoelectricSimulator() {
           ref={canvasRef}
           width={700}
           height={400}
-          className="rounded-lg border border-gray-300 max-w-full"
-          style={{ background: '#111827' }}
+          className="rounded-lg border border-stone-300 max-w-full"
+          style={{ background: '#1e1c1a' }}
         />
       </div>
 
       {/* Controls */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Frequency slider */}
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2">
-          <label className="text-sm font-medium text-gray-700 block">
+        <div className="bg-stone-50 border border-stone-200 rounded-lg p-4 space-y-2">
+          <label className="text-sm font-medium text-stone-700 block">
             Fréquence <InlineMath math={`f`} />
           </label>
           <input
@@ -540,9 +540,9 @@ export function PhotoelectricSimulator() {
             step={1e13}
             value={freq}
             onChange={(e) => setFreq(Number(e.target.value))}
-            className="w-full accent-indigo-500"
+            className="w-full accent-gold-500"
           />
-          <div className="text-xs text-gray-600 space-y-0.5">
+          <div className="text-xs text-stone-600 space-y-0.5">
             <p>
               <InlineMath math={`f = ${(freq / 1e15).toFixed(2)} \\times 10^{15}\\,\\text{Hz}`} />
             </p>
@@ -553,8 +553,8 @@ export function PhotoelectricSimulator() {
         </div>
 
         {/* Intensity slider */}
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2">
-          <label className="text-sm font-medium text-gray-700 block">
+        <div className="bg-stone-50 border border-stone-200 rounded-lg p-4 space-y-2">
+          <label className="text-sm font-medium text-stone-700 block">
             Intensité <InlineMath math={`I`} />
           </label>
           <input
@@ -564,22 +564,22 @@ export function PhotoelectricSimulator() {
             step={1}
             value={intensity}
             onChange={(e) => setIntensity(Number(e.target.value))}
-            className="w-full accent-indigo-500"
+            className="w-full accent-gold-500"
           />
-          <p className="text-xs text-gray-600">
-            Nombre de photons/électrons : <strong className="text-gray-900">{intensity}</strong>
+          <p className="text-xs text-stone-600">
+            Nombre de photons/électrons : <strong className="text-stone-900">{intensity}</strong>
           </p>
         </div>
 
         {/* Metal selector */}
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2">
-          <label className="text-sm font-medium text-gray-700 block">
+        <div className="bg-stone-50 border border-stone-200 rounded-lg p-4 space-y-2">
+          <label className="text-sm font-medium text-stone-700 block">
             Métal (travail de sortie <InlineMath math={`\\phi`} />)
           </label>
           <select
             value={metalIdx}
             onChange={(e) => setMetalIdx(Number(e.target.value))}
-            className="w-full bg-white border border-gray-300 text-gray-900 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full bg-white border border-stone-300 text-stone-900 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500"
           >
             {METALS.map((m, i) => (
               <option key={m.name} value={i}>
@@ -587,7 +587,7 @@ export function PhotoelectricSimulator() {
               </option>
             ))}
           </select>
-          <p className="text-xs text-gray-600">
+          <p className="text-xs text-stone-600">
             <InlineMath math={`f_{\\text{seuil}} = ${(fSeuil / 1e15).toFixed(2)} \\times 10^{15}\\,\\text{Hz}`} />
           </p>
         </div>
@@ -597,8 +597,8 @@ export function PhotoelectricSimulator() {
       <div
         className={`rounded-lg px-4 py-3 text-center font-semibold text-sm ${
           aboveThreshold
-            ? 'bg-green-50 text-green-900 border border-green-300'
-            : 'bg-red-50 text-red-900 border border-red-300'
+            ? 'bg-olive-50 text-olive-900 border border-olive-300'
+            : 'bg-brun-50 text-brun-900 border border-brun-300'
         }`}
       >
         {aboveThreshold ? (
@@ -621,9 +621,9 @@ export function PhotoelectricSimulator() {
       {/* 1. Classical prediction */}
       <CollapsiblePanel
         title="Prédiction classique"
-        borderColor="border-orange-500"
-        bgColor="bg-orange-50"
-        textColor="text-orange-900"
+        borderColor="border-terre-500"
+        bgColor="bg-terre-50"
+        textColor="text-terre-900"
         defaultOpen={false}
       >
         <p>
@@ -644,12 +644,12 @@ export function PhotoelectricSimulator() {
             l&apos;énergie s&apos;accumule dans l&apos;électron.
           </li>
         </ul>
-        <div className="mt-2 bg-orange-100 border border-orange-300 rounded p-3 text-center">
-          <p className="text-orange-800 font-mono text-xs">
+        <div className="mt-2 bg-terre-100 border border-terre-300 rounded p-3 text-center">
+          <p className="text-terre-800 font-mono text-xs">
             Temps d&apos;accumulation classique : &infin; (l&apos;électron ne reçoit jamais assez
             d&apos;énergie d&apos;un seul coup)
           </p>
-          <p className="text-orange-700 mt-1 font-semibold text-xs">
+          <p className="text-terre-700 mt-1 font-semibold text-xs">
             &rarr; En contradiction avec l&apos;expérience !
           </p>
         </div>
@@ -658,9 +658,9 @@ export function PhotoelectricSimulator() {
       {/* 2. Quantum result */}
       <CollapsiblePanel
         title="Résultat quantique (Einstein)"
-        borderColor="border-green-500"
-        bgColor="bg-green-50"
-        textColor="text-green-900"
+        borderColor="border-olive-500"
+        bgColor="bg-olive-50"
+        textColor="text-olive-900"
         defaultOpen={true}
       >
         <p>
@@ -682,7 +682,7 @@ export function PhotoelectricSimulator() {
             <InlineMath math={`\\phi`} /> = travail de sortie
           </HoverTerm>
         </div>
-        <div className="mt-3 bg-green-100 border border-green-300 rounded p-3 text-xs space-y-1">
+        <div className="mt-3 bg-olive-100 border border-olive-300 rounded p-3 text-xs space-y-1">
           <p>
             <strong>Conséquences :</strong>
           </p>
@@ -703,8 +703,8 @@ export function PhotoelectricSimulator() {
       </CollapsiblePanel>
 
       {/* 3. Graph Ek vs f */}
-      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3">
-        <h3 className="font-semibold text-gray-900 text-sm">
+      <div className="bg-stone-50 border border-stone-200 rounded-lg p-4 space-y-3">
+        <h3 className="font-semibold text-stone-900 text-sm">
           Graphique{' '}
           <InlineMath math={`E_k`} /> vs <InlineMath math={`f`} />
         </h3>
@@ -713,10 +713,10 @@ export function PhotoelectricSimulator() {
             ref={graphCanvasRef}
             width={400}
             height={200}
-            className="rounded border border-gray-300 max-w-full"
+            className="rounded border border-stone-300 max-w-full"
           />
         </div>
-        <p className="text-xs text-gray-600 text-center">
+        <p className="text-xs text-stone-600 text-center">
           Droite de pente <InlineMath math={`h`} />, débutant à{' '}
           <InlineMath math={`f_{\\text{seuil}} = ${(fSeuil / 1e15).toFixed(2)} \\times 10^{15}\\,\\text{Hz}`} />.
           Le point jaune indique le point de fonctionnement actuel.
@@ -726,9 +726,9 @@ export function PhotoelectricSimulator() {
       {/* 4. Historical context */}
       <CollapsiblePanel
         title="Contexte historique"
-        borderColor="border-gray-500"
-        bgColor="bg-gray-50"
-        textColor="text-gray-900"
+        borderColor="border-stone-500"
+        bgColor="bg-stone-50"
+        textColor="text-stone-900"
         defaultOpen={false}
       >
         <p>

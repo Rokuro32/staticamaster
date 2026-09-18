@@ -183,7 +183,7 @@ export function CrankRodSimulator() {
     }
 
     // ---- Dessin ----
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.fillRect(0, 0, W, H);
 
     const isRefB = viewMode === 'refB';
@@ -194,7 +194,7 @@ export function CrankRodSimulator() {
     if (isRefB) ctx.translate(offX, offY);
 
     // Grille
-    ctx.strokeStyle = '#1e293b';
+    ctx.strokeStyle = '#2f2d2a';
     ctx.lineWidth = 0.5;
     const gsx = isRefB ? Math.floor((offX % 40) - 40) - offX - 400 : 0;
     const gsy = isRefB ? Math.floor((offY % 40) - 40) - offY - 400 : 0;
@@ -209,19 +209,19 @@ export function CrankRodSimulator() {
 
     // Glissière horizontale (piston C)
     const ext = isRefB ? 500 : 0;
-    ctx.strokeStyle = '#475569';
+    ctx.strokeStyle = '#5d5853';
     ctx.lineWidth = 4;
     ctx.beginPath();
     ctx.moveTo(Ox - 40 - ext, Oy);
     ctx.lineTo(W - 20 + ext, Oy);
     ctx.stroke();
-    ctx.strokeStyle = '#334155';
+    ctx.strokeStyle = '#484440';
     ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(Ox - 40 - ext, Oy - 14); ctx.lineTo(W - 20 + ext, Oy - 14); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(Ox - 40 - ext, Oy + 14); ctx.lineTo(W - 20 + ext, Oy + 14); ctx.stroke();
 
     // Cercle trajectoire de B (manivelle)
-    ctx.strokeStyle = 'rgba(96, 165, 250, 0.2)';
+    ctx.strokeStyle = 'rgba(203, 168, 108, 0.2)';
     ctx.lineWidth = 1;
     ctx.setLineDash([4, 4]);
     ctx.beginPath();
@@ -231,14 +231,14 @@ export function CrankRodSimulator() {
 
     // En mode refB : cercle trajectoire de C vu depuis B
     if (isRefB) {
-      ctx.strokeStyle = 'rgba(34, 197, 94, 0.2)';
+      ctx.strokeStyle = 'rgba(145, 164, 67, 0.2)';
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
       ctx.arc(Bx, By, rodL, 0, Math.PI * 2);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = 'rgba(34, 197, 94, 0.25)';
+      ctx.fillStyle = 'rgba(145, 164, 67, 0.25)';
       ctx.font = '10px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('Trajectoire de C vue depuis B', Bx, By - rodL - 8);
@@ -246,11 +246,11 @@ export function CrankRodSimulator() {
 
     // Repère global O
     if (showRefO) {
-      drawRefFrame(ctx, Ox, Oy, 0, '#94a3b8', 'O', 45);
+      drawRefFrame(ctx, Ox, Oy, 0, '#aba6a1', 'O', 45);
     }
 
     // ---- Manivelle OB ----
-    ctx.strokeStyle = '#60a5fa';
+    ctx.strokeStyle = '#cba86c';
     ctx.lineWidth = 5;
     ctx.beginPath();
     ctx.moveTo(Ox, Oy);
@@ -258,7 +258,7 @@ export function CrankRodSimulator() {
     ctx.stroke();
 
     // ---- Bielle BC ----
-    ctx.strokeStyle = '#e2e8f0';
+    ctx.strokeStyle = '#eae9e8';
     ctx.lineWidth = 4;
     ctx.beginPath();
     ctx.moveTo(Bx, By);
@@ -266,62 +266,62 @@ export function CrankRodSimulator() {
     ctx.stroke();
 
     // ---- Point O (pivot fixe) ----
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.beginPath();
     ctx.arc(Ox, Oy, 7, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = '#64748b';
+    ctx.strokeStyle = '#7e7871';
     ctx.lineWidth = 2;
     ctx.stroke();
-    ctx.fillStyle = '#cbd5e1';
+    ctx.fillStyle = '#d8d6d4';
     ctx.font = 'bold 12px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('O', Ox, Oy + 24);
 
     // ---- Point B (bout manivelle / tête de bielle) ----
-    ctx.fillStyle = '#3b82f6';
+    ctx.fillStyle = '#c29851';
     ctx.beginPath();
     ctx.arc(Bx, By, 8, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = '#1d4ed8';
+    ctx.strokeStyle = '#b58a40';
     ctx.lineWidth = 2;
     ctx.stroke();
-    ctx.fillStyle = '#93c5fd';
+    ctx.fillStyle = '#d8be90';
     ctx.font = 'bold 13px sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText('B', Bx + 12, By - 8);
 
     // Repère B
     if (showRefB || isRefB) {
-      drawRefFrame(ctx, Bx, By, 0, '#3b82f6', 'R_B', 35);
+      drawRefFrame(ctx, Bx, By, 0, '#c29851', 'R_B', 35);
     }
 
     // ---- Point C (piston / coulisseau) ----
-    ctx.fillStyle = '#22c55e';
+    ctx.fillStyle = '#91a443';
     ctx.fillRect(Cx - 18, Cy - 14, 36, 28);
-    ctx.strokeStyle = '#15803d';
+    ctx.strokeStyle = '#5d6a2b';
     ctx.lineWidth = 2;
     ctx.strokeRect(Cx - 18, Cy - 14, 36, 28);
     ctx.fillStyle = '#fff';
     ctx.beginPath();
     ctx.arc(Cx, Cy, 5, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = '#22c55e';
+    ctx.strokeStyle = '#91a443';
     ctx.stroke();
-    ctx.fillStyle = '#86efac';
+    ctx.fillStyle = '#becc83';
     ctx.font = 'bold 13px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('C', Cx, Cy + 30);
 
     // ---- Point P (milieu bielle) ----
-    ctx.fillStyle = '#fbbf24';
+    ctx.fillStyle = '#e8c61a';
     ctx.beginPath();
     ctx.arc(Px, Py, 5, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = '#f59e0b';
+    ctx.strokeStyle = '#e8c518';
     ctx.lineWidth = 1.5;
     ctx.stroke();
-    ctx.fillStyle = '#fde68a';
+    ctx.fillStyle = '#f1db6f';
     ctx.font = 'bold 11px sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText('P', Px + 8, Py - 6);
@@ -336,8 +336,8 @@ export function CrankRodSimulator() {
       for (let i = 1; i < trace.length; i++) ctx.lineTo(trace[i].x, trace[i].y);
       ctx.stroke();
     };
-    if (showTraceB) drawTrace(traceBRef.current, 'rgba(96, 165, 250, 0.35)');
-    if (showTraceP) drawTrace(tracePRef.current, 'rgba(251, 191, 36, 0.35)');
+    if (showTraceB) drawTrace(traceBRef.current, 'rgba(203, 168, 108, 0.35)');
+    if (showTraceP) drawTrace(tracePRef.current, 'rgba(232, 198, 26, 0.35)');
 
     // ---- Vecteurs vitesse ----
     if (showVelocities && running) {
@@ -346,23 +346,23 @@ export function CrankRodSimulator() {
       if (!isRefB) {
         // Vue globale
         // v_B (tangent au cercle)
-        drawArrow(ctx, Bx, By, Bx + vBx * vScale, By + vBy * vScale, '#60a5fa', 2);
-        ctx.fillStyle = '#93c5fd';
+        drawArrow(ctx, Bx, By, Bx + vBx * vScale, By + vBy * vScale, '#cba86c', 2);
+        ctx.fillStyle = '#d8be90';
         ctx.font = '10px sans-serif';
         ctx.textAlign = 'left';
         ctx.fillText('v_B', Bx + vBx * vScale + 6, By + vBy * vScale - 4);
 
         // v_C (horizontal)
         if (Math.abs(vCx * vScale) > 3) {
-          drawArrow(ctx, Cx, Cy - 22, Cx + vCx * vScale, Cy - 22, '#22c55e', 2);
-          ctx.fillStyle = '#86efac';
+          drawArrow(ctx, Cx, Cy - 22, Cx + vCx * vScale, Cy - 22, '#91a443', 2);
+          ctx.fillStyle = '#becc83';
           ctx.font = '10px sans-serif';
           ctx.textAlign = 'center';
           ctx.fillText('v_C', Cx + vCx * vScale / 2, Cy - 34);
         }
       } else {
         // Vue depuis B : v_B = 0
-        ctx.fillStyle = '#60a5fa';
+        ctx.fillStyle = '#cba86c';
         ctx.font = 'bold 11px sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText('v_B = 0', Bx, By - 20);
@@ -371,8 +371,8 @@ export function CrankRodSimulator() {
         const vCBx = (vCx - vBx) * vScale;
         const vCBy = (0 - vBy) * vScale; // vCy = 0 dans global
         if (Math.sqrt(vCBx * vCBx + vCBy * vCBy) > 3) {
-          drawArrow(ctx, Cx, Cy, Cx + vCBx, Cy + vCBy, '#22c55e', 2.5);
-          ctx.fillStyle = '#86efac';
+          drawArrow(ctx, Cx, Cy, Cx + vCBx, Cy + vCBy, '#91a443', 2.5);
+          ctx.fillStyle = '#becc83';
           ctx.font = 'bold 10px sans-serif';
           ctx.textAlign = 'left';
           ctx.fillText('v_{C/B}', Cx + vCBx + 6, Cy + vCBy - 4);
@@ -382,8 +382,8 @@ export function CrankRodSimulator() {
         const vOBx = -vBx * vScale;
         const vOBy = -vBy * vScale;
         if (Math.sqrt(vOBx * vOBx + vOBy * vOBy) > 3) {
-          drawArrow(ctx, Ox, Oy, Ox + vOBx, Oy + vOBy, '#94a3b8', 2);
-          ctx.fillStyle = '#cbd5e1';
+          drawArrow(ctx, Ox, Oy, Ox + vOBx, Oy + vOBy, '#aba6a1', 2);
+          ctx.fillStyle = '#d8d6d4';
           ctx.font = '10px sans-serif';
           ctx.textAlign = 'left';
           ctx.fillText('v_{O/B}', Ox + vOBx + 6, Oy + vOBy - 4);
@@ -392,7 +392,7 @@ export function CrankRodSimulator() {
     }
 
     // Cotations
-    ctx.fillStyle = '#64748b';
+    ctx.fillStyle = '#7e7871';
     ctx.font = '10px sans-serif';
     ctx.textAlign = 'center';
     const mOBx = (Ox + Bx) / 2;
@@ -406,7 +406,7 @@ export function CrankRodSimulator() {
 
     // ---- Infos (hors transformation) ----
     const thetaDeg = ((theta * 180 / Math.PI) % 360 + 360) % 360;
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = '#eae9e8';
     ctx.font = '12px sans-serif';
     ctx.textAlign = 'right';
     ctx.fillText(`θ = ${thetaDeg.toFixed(1)}°`, W - 14, 22);
@@ -414,12 +414,12 @@ export function CrankRodSimulator() {
     ctx.fillText(`|v_C| = ${(Math.abs(vCx) * 1000).toFixed(0)}`, W - 14, 62);
 
     // Badge vue
-    ctx.fillStyle = isRefB ? '#3b82f6' : '#94a3b8';
+    ctx.fillStyle = isRefB ? '#c29851' : '#aba6a1';
     ctx.font = 'bold 12px sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText(isRefB ? '👁 Vue depuis B (tête de bielle)' : '👁 Vue globale', 14, 22);
     if (isRefB) {
-      ctx.fillStyle = '#93c5fd';
+      ctx.fillStyle = '#d8be90';
       ctx.font = '10px sans-serif';
       ctx.fillText('B est fixe — manivelle et piston bougent', 14, 38);
     }
@@ -442,10 +442,10 @@ export function CrankRodSimulator() {
   return (
     <section className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-gray-900">
+        <h2 className="text-3xl font-bold text-stone-900">
           Système bielle-manivelle
         </h2>
-        <p className="text-gray-600">
+        <p className="text-stone-600">
           Transformation rotation ↔ translation &mdash; cinématique et référentiels
         </p>
       </div>
@@ -454,54 +454,54 @@ export function CrankRodSimulator() {
         <canvas
           ref={canvasRef}
           width={W} height={H}
-          className="w-full max-w-[700px] mx-auto rounded-lg border border-gray-300"
+          className="w-full max-w-[700px] mx-auto rounded-lg border border-stone-300"
         />
 
         <div className="w-full max-w-[700px] space-y-3">
           {/* Rayon manivelle */}
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium w-32">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium w-32">
               Manivelle <InlineMath math="R" />
             </label>
             <input type="range" min={40} max={150} step={5} value={crankR}
               onChange={(e) => setCrankR(Number(e.target.value))}
-              className="flex-1 accent-blue-500" />
-            <span className="text-sm font-mono text-gray-900 w-20 text-right">{crankR} px</span>
+              className="flex-1 accent-gold-500" />
+            <span className="text-sm font-mono text-stone-900 w-20 text-right">{crankR} px</span>
           </div>
 
           {/* Longueur bielle */}
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium w-32">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium w-32">
               Bielle <InlineMath math="L" />
             </label>
             <input type="range" min={100} max={350} step={5} value={rodL}
               onChange={(e) => setRodL(Number(e.target.value))}
-              className="flex-1 accent-gray-500" />
-            <span className="text-sm font-mono text-gray-900 w-20 text-right">{rodL} px</span>
+              className="flex-1 accent-stone-500" />
+            <span className="text-sm font-mono text-stone-900 w-20 text-right">{rodL} px</span>
           </div>
 
           {/* Vitesse angulaire */}
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium w-32">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium w-32">
               Vitesse <InlineMath math="\omega" />
             </label>
             <input type="range" min={0.3} max={4} step={0.1} value={omega}
               onChange={(e) => setOmega(Number(e.target.value))}
-              className="flex-1 accent-yellow-500" />
-            <span className="text-sm font-mono text-gray-900 w-20 text-right">×{omega.toFixed(1)}</span>
+              className="flex-1 accent-ocre-500" />
+            <span className="text-sm font-mono text-stone-900 w-20 text-right">×{omega.toFixed(1)}</span>
           </div>
 
           {/* Boutons */}
           <div className="flex items-center gap-3 flex-wrap">
             <button
               onClick={() => setRunning(r => !r)}
-              className="px-4 py-2 text-sm font-medium bg-gray-100 hover:bg-gray-200 rounded-lg border border-gray-300"
+              className="px-4 py-2 text-sm font-medium bg-stone-100 hover:bg-stone-200 rounded-lg border border-stone-300"
             >
               {running ? '⏸ Pause' : '▶ Reprendre'}
             </button>
             <button
               onClick={() => { traceBRef.current = []; tracePRef.current = []; }}
-              className="px-4 py-2 text-sm font-medium bg-gray-100 hover:bg-gray-200 rounded-lg border border-gray-300"
+              className="px-4 py-2 text-sm font-medium bg-stone-100 hover:bg-stone-200 rounded-lg border border-stone-300"
             >
               Effacer traces
             </button>
@@ -509,12 +509,12 @@ export function CrankRodSimulator() {
 
           {/* Mode de vue */}
           <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-sm text-gray-700 font-medium">Point de vue :</span>
-            <div className="flex rounded-lg overflow-hidden border border-gray-300">
+            <span className="text-sm text-stone-700 font-medium">Point de vue :</span>
+            <div className="flex rounded-lg overflow-hidden border border-stone-300">
               <button
                 onClick={() => { setViewMode('global'); traceBRef.current = []; tracePRef.current = []; }}
                 className={`px-4 py-2 text-sm font-medium transition-colors ${
-                  viewMode === 'global' ? 'bg-gray-700 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'
+                  viewMode === 'global' ? 'bg-stone-700 text-white' : 'bg-white text-stone-700 hover:bg-stone-50'
                 }`}
               >
                 Vue globale (R₀)
@@ -522,7 +522,7 @@ export function CrankRodSimulator() {
               <button
                 onClick={() => { setViewMode('refB'); traceBRef.current = []; tracePRef.current = []; }}
                 className={`px-4 py-2 text-sm font-medium transition-colors ${
-                  viewMode === 'refB' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'
+                  viewMode === 'refB' ? 'bg-gold-600 text-white' : 'bg-white text-stone-700 hover:bg-stone-50'
                 }`}
               >
                 Vue depuis B (tête de bielle)
@@ -532,15 +532,15 @@ export function CrankRodSimulator() {
 
           {/* Options */}
           <div className="flex items-center gap-4 flex-wrap">
-            <span className="text-sm text-gray-700 font-medium">Affichage :</span>
+            <span className="text-sm text-stone-700 font-medium">Affichage :</span>
             {[
-              { label: 'R₀', checked: showRefO, set: setShowRefO, c: 'accent-gray-500' },
-              { label: 'R_B', checked: showRefB, set: setShowRefB, c: 'accent-blue-500' },
-              { label: 'Trace B', checked: showTraceB, set: setShowTraceB, c: 'accent-blue-400' },
-              { label: 'Trace P', checked: showTraceP, set: setShowTraceP, c: 'accent-yellow-500' },
-              { label: 'Vitesses', checked: showVelocities, set: setShowVelocities, c: 'accent-green-500' },
+              { label: 'R₀', checked: showRefO, set: setShowRefO, c: 'accent-stone-500' },
+              { label: 'R_B', checked: showRefB, set: setShowRefB, c: 'accent-gold-500' },
+              { label: 'Trace B', checked: showTraceB, set: setShowTraceB, c: 'accent-gold-400' },
+              { label: 'Trace P', checked: showTraceP, set: setShowTraceP, c: 'accent-ocre-500' },
+              { label: 'Vitesses', checked: showVelocities, set: setShowVelocities, c: 'accent-olive-500' },
             ].map(r => (
-              <label key={r.label} className="flex items-center gap-1.5 cursor-pointer text-sm text-gray-700">
+              <label key={r.label} className="flex items-center gap-1.5 cursor-pointer text-sm text-stone-700">
                 <input type="checkbox" checked={r.checked}
                   onChange={(e) => r.set(e.target.checked)}
                   className={`w-4 h-4 ${r.c}`} />
@@ -550,7 +550,7 @@ export function CrankRodSimulator() {
           </div>
 
           {/* Résumé */}
-          <div className="p-3 bg-slate-100 rounded-lg border text-sm grid grid-cols-2 gap-x-6 gap-y-1">
+          <div className="p-3 bg-stone-100 rounded-lg border text-sm grid grid-cols-2 gap-x-6 gap-y-1">
             <div><strong>R</strong> = {crankR} px (manivelle)</div>
             <div><strong>L</strong> = {rodL} px (bielle)</div>
             <div><strong>λ = R/L</strong> = {lambda.toFixed(3)}</div>
@@ -563,23 +563,23 @@ export function CrankRodSimulator() {
       <div className="space-y-2">
         <CollapsiblePanel
           title="1. Description du mécanisme"
-          borderColor="border-blue-500"
-          bgColor="bg-blue-50"
-          textColor="text-blue-800"
+          borderColor="border-gold-500"
+          bgColor="bg-gold-50"
+          textColor="text-gold-800"
           defaultOpen
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Le système <strong>bielle-manivelle</strong> convertit un mouvement de
             rotation continue (manivelle OB) en translation alternative (piston C),
             ou inversement.
           </p>
-          <ul className="list-disc list-inside text-gray-700 space-y-1">
+          <ul className="list-disc list-inside text-stone-700 space-y-1">
             <li><strong>O</strong> : pivot fixe (vilebrequin).</li>
             <li><strong>B</strong> : bout de la manivelle, décrit un cercle de rayon <InlineMath math="R" />.</li>
             <li><strong>Bielle BC</strong> : barre rigide de longueur <InlineMath math="L" />, articulée en B et C.</li>
             <li><strong>C</strong> : piston, contraint à se déplacer sur l&apos;axe horizontal (glissière).</li>
           </ul>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Le rapport <InlineMath math={`\\lambda = R/L`} /> caractérise la géométrie.
             En pratique, <InlineMath math={`\\lambda \\approx 0{,}25`} /> à <InlineMath math="0{,}35" />.
           </p>
@@ -587,23 +587,23 @@ export function CrankRodSimulator() {
 
         <CollapsiblePanel
           title="2. Cinématique du piston"
-          borderColor="border-green-500"
-          bgColor="bg-green-50"
-          textColor="text-green-800"
+          borderColor="border-olive-500"
+          bgColor="bg-olive-50"
+          textColor="text-olive-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             La position du piston C en fonction de l&apos;angle manivelle <InlineMath math="\theta" /> :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`x_C = R\\cos\\theta + \\sqrt{L^2 - R^2\\sin^2\\theta}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             La vitesse du piston :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`\\dot{x}_C = -R\\omega\\left(\\sin\\theta + \\frac{\\lambda\\sin 2\\theta}{2\\sqrt{1 - \\lambda^2\\sin^2\\theta}}\\right)`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Le mouvement n&apos;est <strong>pas sinusoïdal pur</strong> : le terme en{' '}
             <InlineMath math="\sin 2\theta" /> crée une asymétrie (le piston va plus vite
             dans un sens que dans l&apos;autre).
@@ -612,19 +612,19 @@ export function CrankRodSimulator() {
 
         <CollapsiblePanel
           title="3. Vue depuis B (tête de bielle)"
-          borderColor="border-purple-500"
-          bgColor="bg-purple-50"
-          textColor="text-purple-800"
+          borderColor="border-prune-500"
+          bgColor="bg-prune-50"
+          textColor="text-prune-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             En se plaçant dans le <strong>référentiel de B</strong> :
           </p>
-          <ul className="list-disc list-inside text-gray-700 space-y-1">
+          <ul className="list-disc list-inside text-stone-700 space-y-1">
             <li>B est <strong>immobile</strong> (v_B = 0).</li>
             <li>Le point O décrit un cercle de rayon R autour de B (rotation inverse de la manivelle).</li>
             <li>Le piston C se déplace sur un cercle de rayon L centré en B, contraint par la glissière qui bouge.</li>
           </ul>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             On observe la <strong>vitesse relative</strong> :{' '}
             <InlineMath math={`\\vec{v}_{C/B} = \\vec{v}_C - \\vec{v}_B`} />.
             Cette décomposition est essentielle pour analyser les efforts dans la bielle.
@@ -633,14 +633,14 @@ export function CrankRodSimulator() {
 
         <CollapsiblePanel
           title="4. Applications"
-          borderColor="border-gray-500"
-          bgColor="bg-gray-50"
-          textColor="text-gray-700"
+          borderColor="border-stone-500"
+          bgColor="bg-stone-50"
+          textColor="text-stone-700"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Le système bielle-manivelle est l&apos;un des mécanismes les plus répandus :
           </p>
-          <ul className="list-disc list-inside text-gray-700 space-y-1">
+          <ul className="list-disc list-inside text-stone-700 space-y-1">
             <li><strong>Moteurs à combustion interne</strong> : piston → bielle → vilebrequin.</li>
             <li><strong>Compresseurs à piston</strong> : vilebrequin → bielle → piston.</li>
             <li><strong>Machines à vapeur</strong> et locomotives.</li>

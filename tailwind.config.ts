@@ -53,6 +53,88 @@ const config: Config = {
           nucleaire: { DEFAULT: '#c1705a', deep: '#73341f' },
           fluides: { DEFAULT: '#7fb0a4', deep: '#2f5c51' },
         },
+        // Famille de marque pour les simulations (thème clair).
+        // Toutes dérivées de l'or et du brun de l'écusson. On en garde
+        // plusieurs parce qu'un graphique a besoin de séries distinguables,
+        // mais elles restent sourdes et chaudes pour rester dans l'identité.
+        // prune sourde (remplace les violets)
+        prune: {
+          50: '#f9f6f7',
+          100: '#f0eaed',
+          200: '#e3d3db',
+          300: '#d2b2c2',
+          400: '#bf8da6',
+          500: '#a96687',
+          600: '#8e5270',
+          700: '#6f4359',
+          800: '#513342',
+          900: '#34232b',
+        },
+        // brun roux (remplace les rouges)
+        brun: {
+          50: '#faf6f5',
+          100: '#f4eae7',
+          200: '#ebd3cc',
+          300: '#e1b1a3',
+          400: '#d78c75',
+          500: '#c96445',
+          600: '#ab5136',
+          700: '#84422e',
+          800: '#5f3325',
+          900: '#3d221a',
+        },
+        // terre brûlée (remplace les oranges)
+        terre: {
+          50: '#faf7f4',
+          100: '#f5ede5',
+          200: '#efdbc7',
+          300: '#e9c29a',
+          400: '#e4a667',
+          500: '#db8733',
+          600: '#bb7026',
+          700: '#905922',
+          800: '#67421d',
+          900: '#412b16',
+        },
+        // ocre vif (remplace les ambres et jaunes)
+        ocre: {
+          50: '#fbfaf4',
+          100: '#f7f3e4',
+          200: '#f3ebc4',
+          300: '#f0e194',
+          400: '#efd75d',
+          500: '#e9c925',
+          600: '#c8aa19',
+          700: '#9a8419',
+          800: '#6e5f17',
+          900: '#453c12',
+        },
+        // olive (remplace les verts)
+        olive: {
+          50: '#f8f9f6',
+          100: '#f0f2e8',
+          200: '#e2e7cf',
+          300: '#d0d9aa',
+          400: '#bccb80',
+          500: '#a5b955',
+          600: '#8b9d43',
+          700: '#6d7a38',
+          800: '#50592c',
+          900: '#33381e',
+        },
+        // ardoise sourde (remplace les cyans)
+        ardoise: {
+          50: '#f6f8f9',
+          100: '#eaeef0',
+          200: '#d3dde3',
+          300: '#b2c4d2',
+          400: '#8daabf',
+          500: '#668da9',
+          600: '#52758e',
+          700: '#435d6f',
+          800: '#334551',
+          900: '#232d34',
+        },
         // Scène claire (pages de simulation)
         scene: {
           50: '#faf9f7',

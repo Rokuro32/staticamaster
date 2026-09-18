@@ -33,12 +33,12 @@ interface DotProductResult {
 }
 
 const VECTOR_COLORS = [
-  '#3b82f6',  // Bleu (A)
-  '#22c55e',  // Vert (B)
-  '#a855f7',  // Violet (C)
-  '#ef4444',  // Rouge (D)
-  '#f59e0b',  // Orange (E)
-  '#06b6d4'   // Cyan (F)
+  '#c29851',  // Bleu (A)
+  '#91a443',  // Vert (B)
+  '#b37895',  // Violet (C)
+  '#ca684a',  // Rouge (D)
+  '#e8c518',  // Orange (E)
+  '#4e728c'   // Cyan (F)
 ];
 
 export function VectorSimulator() {
@@ -333,7 +333,7 @@ export function VectorSimulator() {
     const centerY = height / 2;
 
     // Effacer le canvas
-    ctx.fillStyle = '#1e293b';
+    ctx.fillStyle = '#2f2d2a';
     ctx.fillRect(0, 0, width, height);
 
     // Échelle
@@ -347,7 +347,7 @@ export function VectorSimulator() {
     const scale = Math.min(width, height) / 2 / maxMag * 0.8;
 
     // Dessiner la grille
-    ctx.strokeStyle = '#334155';
+    ctx.strokeStyle = '#484440';
     ctx.lineWidth = 1;
     const gridStep = Math.ceil(maxMag / 5);
     for (let i = -Math.ceil(maxMag); i <= Math.ceil(maxMag); i += gridStep) {
@@ -362,7 +362,7 @@ export function VectorSimulator() {
     }
 
     // Dessiner les axes
-    ctx.strokeStyle = '#64748b';
+    ctx.strokeStyle = '#7e7871';
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(0, centerY);
@@ -374,7 +374,7 @@ export function VectorSimulator() {
     ctx.stroke();
 
     // Labels des axes
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.font = '14px system-ui';
     ctx.textAlign = 'center';
     ctx.fillText('x', width - 15, centerY + 20);
@@ -503,8 +503,8 @@ export function VectorSimulator() {
 
         // Point de jonction : la pointe d'un vecteur est la queue du suivant
         if (idx < chain.length - 1) {
-          ctx.fillStyle = '#e2e8f0';
-          ctx.strokeStyle = '#0f172a';
+          ctx.fillStyle = '#eae9e8';
+          ctx.strokeStyle = '#1e1d1b';
           ctx.lineWidth = 2;
           ctx.beginPath();
           ctx.arc(currentX, currentY, 4.5, 0, Math.PI * 2);
@@ -514,7 +514,7 @@ export function VectorSimulator() {
       });
 
       // Rappel de la méthode employée
-      ctx.fillStyle = '#94a3b8';
+      ctx.fillStyle = '#aba6a1';
       ctx.font = '12px system-ui';
       ctx.textAlign = 'left';
       const method = displayVectors.length > 2 ? 'Méthode du polygone' : 'Méthode du triangle';
@@ -536,8 +536,8 @@ export function VectorSimulator() {
     if (operation === 'cross' && displayVectors.length >= 2) {
       const vecA = getComponents(displayVectors[0]);
       const vecB = getComponents(displayVectors[1]);
-      ctx.fillStyle = 'rgba(59, 130, 246, 0.15)';
-      ctx.strokeStyle = 'rgba(59, 130, 246, 0.4)';
+      ctx.fillStyle = 'rgba(194, 152, 81, 0.15)';
+      ctx.strokeStyle = 'rgba(194, 152, 81, 0.4)';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(centerX, centerY);
@@ -553,7 +553,7 @@ export function VectorSimulator() {
     const finalResult = formulaMode && formulaResult ? formulaResult : resultComp;
     if (operation !== 'dot' && !('scalar' in finalResult)) {
       const label = operation === 'cross' ? 'C' : 'R';
-      drawVector(centerX, centerY, finalResult as VectorComponents, '#f97316', label, false);
+      drawVector(centerX, centerY, finalResult as VectorComponents, '#db8834', label, false);
     }
 
     // Arc pour l'angle entre les vecteurs (produit scalaire)
@@ -567,13 +567,13 @@ export function VectorSimulator() {
       while (angleDiff < -Math.PI) angleDiff += 2 * Math.PI;
 
       const arcRadius = 40;
-      ctx.strokeStyle = '#f97316';
+      ctx.strokeStyle = '#db8834';
       ctx.lineWidth = 2.5;
       ctx.beginPath();
       ctx.arc(centerX, centerY, arcRadius, -angleA, -angleB, angleDiff > 0);
       ctx.stroke();
 
-      ctx.fillStyle = '#f97316';
+      ctx.fillStyle = '#db8834';
       ctx.font = 'bold 13px system-ui';
       const midAngle = angleA + angleDiff / 2;
       const labelRadius = arcRadius + 20;
@@ -594,7 +594,7 @@ export function VectorSimulator() {
       ctx.fillText(chained, 50, legendY + idx * 25 + 5);
     });
     const resultY = legendY + displayVectors.length * 25;
-    ctx.fillStyle = '#f97316';
+    ctx.fillStyle = '#db8834';
     ctx.fillRect(20, resultY, 20, 3);
     ctx.fillText(operation === 'dot' ? 'Résultat (scalaire)' : operation === 'cross' ? 'C (produit vectoriel)' : 'R (résultant)', 50, resultY + 5);
 
@@ -618,21 +618,21 @@ export function VectorSimulator() {
     <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
       {/* Titre */}
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Calculatrice de Vecteurs</h2>
-        <p className="text-gray-600">Addition, soustraction, produit scalaire et produit vectoriel</p>
+        <h2 className="text-2xl font-bold text-stone-900 mb-2">Calculatrice de Vecteurs</h2>
+        <p className="text-stone-600">Addition, soustraction, produit scalaire et produit vectoriel</p>
       </div>
 
       {/* Sélecteur de dimension */}
       <div className="flex justify-center gap-2">
         <button
           onClick={() => setDimension('2D')}
-          className={`px-6 py-2 rounded-lg font-bold transition-colors ${dimension === '2D' ? 'bg-violet-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-violet-300'}`}
+          className={`px-6 py-2 rounded-lg font-bold transition-colors ${dimension === '2D' ? 'bg-prune-600 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200 border-2 border-prune-300'}`}
         >
           2D
         </button>
         <button
           onClick={() => setDimension('3D')}
-          className={`px-6 py-2 rounded-lg font-bold transition-colors ${dimension === '3D' ? 'bg-violet-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-violet-300'}`}
+          className={`px-6 py-2 rounded-lg font-bold transition-colors ${dimension === '3D' ? 'bg-prune-600 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200 border-2 border-prune-300'}`}
         >
           3D
         </button>
@@ -642,7 +642,7 @@ export function VectorSimulator() {
         {/* Panneau de contrôle */}
         <div className="space-y-4">
           {/* Mode formule */}
-          <div className="p-3 bg-violet-50 rounded-lg border border-violet-200">
+          <div className="p-3 bg-prune-50 rounded-lg border border-prune-200">
             <label className="flex items-center gap-3 cursor-pointer">
               <input
                 type="checkbox"
@@ -655,16 +655,16 @@ export function VectorSimulator() {
                     setFormulaError('');
                   }
                 }}
-                className="w-5 h-5 accent-violet-600"
+                className="w-5 h-5 accent-prune-600"
               />
-              <span className="font-medium text-violet-800">Mode formule</span>
+              <span className="font-medium text-prune-800">Mode formule</span>
             </label>
           </div>
 
           {formulaMode && (
-            <div className="p-4 bg-violet-50 rounded-lg border border-violet-200 space-y-3">
+            <div className="p-4 bg-prune-50 rounded-lg border border-prune-200 space-y-3">
               <div>
-                <label className="block text-sm font-medium text-violet-700 mb-2">Vecteurs disponibles</label>
+                <label className="block text-sm font-medium text-prune-700 mb-2">Vecteurs disponibles</label>
                 <div className="flex flex-wrap gap-2">
                   {vectors.map(vec => (
                     <label key={vec.id} className="flex items-center gap-1 px-2 py-1 bg-white rounded border cursor-pointer">
@@ -687,11 +687,11 @@ export function VectorSimulator() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-violet-700 mb-1">Formule vectorielle</label>
+                <label className="block text-sm font-medium text-prune-700 mb-1">Formule vectorielle</label>
                 <input
                   ref={formulaInputRef}
                   type="text"
-                  className={`w-full px-3 py-2 border-2 rounded-lg font-mono ${formulaError ? 'border-red-500' : 'border-violet-300'} focus:outline-none focus:border-violet-500`}
+                  className={`w-full px-3 py-2 border-2 rounded-lg font-mono ${formulaError ? 'border-brun-500' : 'border-prune-300'} focus:outline-none focus:border-prune-500`}
                   value={formula}
                   onChange={(e) => setFormula(e.target.value)}
                   placeholder="Ex: 2*A + B, A · B, A × B"
@@ -703,22 +703,22 @@ export function VectorSimulator() {
                   <button
                     key={label}
                     onClick={() => insertAtCursor(label)}
-                    className="px-3 py-1 bg-white border-2 rounded font-bold hover:bg-gray-50"
+                    className="px-3 py-1 bg-white border-2 rounded font-bold hover:bg-stone-50"
                     style={{ borderColor: vectors.find(v => v.label === label)?.color }}
                   >
                     {label}
                   </button>
                 ))}
-                <button onClick={() => insertAtCursor(' + ')} className="px-3 py-1 bg-green-100 border border-green-300 rounded hover:bg-green-200">+</button>
-                <button onClick={() => insertAtCursor(' - ')} className="px-3 py-1 bg-green-100 border border-green-300 rounded hover:bg-green-200">−</button>
-                <button onClick={() => insertAtCursor('*')} className="px-3 py-1 bg-green-100 border border-green-300 rounded hover:bg-green-200">×</button>
-                <button onClick={() => insertAtCursor(' · ')} className="px-3 py-1 bg-amber-100 border border-amber-300 rounded hover:bg-amber-200 text-xs">Scal.</button>
-                <button onClick={() => insertAtCursor(' × ')} className="px-3 py-1 bg-amber-100 border border-amber-300 rounded hover:bg-amber-200 text-xs">Vect.</button>
-                <button onClick={() => setFormula('')} className="px-3 py-1 bg-red-100 border border-red-300 rounded hover:bg-red-200 text-xs">Effacer</button>
+                <button onClick={() => insertAtCursor(' + ')} className="px-3 py-1 bg-olive-100 border border-olive-300 rounded hover:bg-olive-200">+</button>
+                <button onClick={() => insertAtCursor(' - ')} className="px-3 py-1 bg-olive-100 border border-olive-300 rounded hover:bg-olive-200">−</button>
+                <button onClick={() => insertAtCursor('*')} className="px-3 py-1 bg-olive-100 border border-olive-300 rounded hover:bg-olive-200">×</button>
+                <button onClick={() => insertAtCursor(' · ')} className="px-3 py-1 bg-ocre-100 border border-ocre-300 rounded hover:bg-ocre-200 text-xs">Scal.</button>
+                <button onClick={() => insertAtCursor(' × ')} className="px-3 py-1 bg-ocre-100 border border-ocre-300 rounded hover:bg-ocre-200 text-xs">Vect.</button>
+                <button onClick={() => setFormula('')} className="px-3 py-1 bg-brun-100 border border-brun-300 rounded hover:bg-brun-200 text-xs">Effacer</button>
               </div>
 
-              {formulaError && <p className="text-sm text-red-600">{formulaError}</p>}
-              {formulaResult && !formulaError && <p className="text-sm text-green-600">✓ Formule valide</p>}
+              {formulaError && <p className="text-sm text-brun-600">{formulaError}</p>}
+              {formulaResult && !formulaError && <p className="text-sm text-olive-600">✓ Formule valide</p>}
             </div>
           )}
 
@@ -726,11 +726,11 @@ export function VectorSimulator() {
             <>
               {/* Gestion du nombre de vecteurs */}
               <div className="flex items-center justify-between">
-                <span className="font-medium text-gray-700">Vecteurs: {vectors.length}</span>
+                <span className="font-medium text-stone-700">Vecteurs: {vectors.length}</span>
                 <button
                   onClick={addVector}
                   disabled={vectors.length >= 6}
-                  className="px-4 py-2 bg-violet-600 text-white rounded-lg font-medium hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-4 py-2 bg-prune-600 text-white rounded-lg font-medium hover:bg-prune-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   + Ajouter
                 </button>
@@ -740,13 +740,13 @@ export function VectorSimulator() {
               <div className="flex gap-2">
                 <button
                   onClick={() => setInputMode('polar')}
-                  className={`flex-1 py-2 rounded-lg font-medium transition-colors ${inputMode === 'polar' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`flex-1 py-2 rounded-lg font-medium transition-colors ${inputMode === 'polar' ? 'bg-gold-600 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}`}
                 >
                   {dimension === '3D' ? 'Sphérique' : 'Polaire'}
                 </button>
                 <button
                   onClick={() => setInputMode('cartesian')}
-                  className={`flex-1 py-2 rounded-lg font-medium transition-colors ${inputMode === 'cartesian' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`flex-1 py-2 rounded-lg font-medium transition-colors ${inputMode === 'cartesian' ? 'bg-gold-600 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}`}
                 >
                   Cartésien
                 </button>
@@ -761,13 +761,13 @@ export function VectorSimulator() {
                       <div className="flex items-center justify-between mb-2">
                         <h4 className="font-semibold" style={{ color: vec.color }}>Vecteur {vec.label}</h4>
                         {vectors.length > 2 && (
-                          <button onClick={() => removeVector(vec.id)} className="text-red-500 hover:text-red-700 font-bold">✕</button>
+                          <button onClick={() => removeVector(vec.id)} className="text-brun-500 hover:text-brun-700 font-bold">✕</button>
                         )}
                       </div>
                       {inputMode === 'polar' ? (
                         <div className="space-y-2">
                           <div>
-                            <label className="text-xs text-gray-600">Module |{vec.label}|: <strong>{vec.magnitude.toFixed(2)}</strong></label>
+                            <label className="text-xs text-stone-600">Module |{vec.label}|: <strong>{vec.magnitude.toFixed(2)}</strong></label>
                             <input
                               type="range" min="0" max="10" step="0.1" value={vec.magnitude}
                               onChange={(e) => updateVector(vec.id, { magnitude: parseFloat(e.target.value) })}
@@ -776,7 +776,7 @@ export function VectorSimulator() {
                             />
                           </div>
                           <div>
-                            <label className="text-xs text-gray-600">Angle θ: <strong>{vec.angle.toFixed(1)}°</strong></label>
+                            <label className="text-xs text-stone-600">Angle θ: <strong>{vec.angle.toFixed(1)}°</strong></label>
                             <input
                               type="range" min="0" max="360" step="1" value={vec.angle}
                               onChange={(e) => updateVector(vec.id, { angle: parseFloat(e.target.value) })}
@@ -786,7 +786,7 @@ export function VectorSimulator() {
                           </div>
                           {dimension === '3D' && (
                             <div>
-                              <label className="text-xs text-gray-600">Angle φ (vertical): <strong>{vec.phi.toFixed(1)}°</strong></label>
+                              <label className="text-xs text-stone-600">Angle φ (vertical): <strong>{vec.phi.toFixed(1)}°</strong></label>
                               <input
                                 type="range" min="0" max="180" step="1" value={vec.phi}
                                 onChange={(e) => updateVector(vec.id, { phi: parseFloat(e.target.value) })}
@@ -799,7 +799,7 @@ export function VectorSimulator() {
                       ) : (
                         <div className="space-y-2">
                           <div>
-                            <label className="text-xs text-gray-600">{vec.label}x: <strong>{comp.x.toFixed(2)}</strong></label>
+                            <label className="text-xs text-stone-600">{vec.label}x: <strong>{comp.x.toFixed(2)}</strong></label>
                             <input
                               type="range" min="-10" max="10" step="0.1" value={comp.x}
                               onChange={(e) => updateFromCartesian(vec.id, comp, 'x', parseFloat(e.target.value))}
@@ -808,7 +808,7 @@ export function VectorSimulator() {
                             />
                           </div>
                           <div>
-                            <label className="text-xs text-gray-600">{vec.label}y: <strong>{comp.y.toFixed(2)}</strong></label>
+                            <label className="text-xs text-stone-600">{vec.label}y: <strong>{comp.y.toFixed(2)}</strong></label>
                             <input
                               type="range" min="-10" max="10" step="0.1" value={comp.y}
                               onChange={(e) => updateFromCartesian(vec.id, comp, 'y', parseFloat(e.target.value))}
@@ -818,7 +818,7 @@ export function VectorSimulator() {
                           </div>
                           {dimension === '3D' && (
                             <div>
-                              <label className="text-xs text-gray-600">{vec.label}z: <strong>{(comp.z || 0).toFixed(2)}</strong></label>
+                              <label className="text-xs text-stone-600">{vec.label}z: <strong>{(comp.z || 0).toFixed(2)}</strong></label>
                               <input
                                 type="range" min="-10" max="10" step="0.1" value={comp.z || 0}
                                 onChange={(e) => updateFromCartesian(vec.id, comp, 'z', parseFloat(e.target.value))}
@@ -839,9 +839,9 @@ export function VectorSimulator() {
                   type="checkbox"
                   checked={showComponents}
                   onChange={(e) => setShowComponents(e.target.checked)}
-                  className="w-4 h-4 accent-blue-600"
+                  className="w-4 h-4 accent-gold-600"
                 />
-                <span className="text-sm text-gray-700">Afficher les composantes</span>
+                <span className="text-sm text-stone-700">Afficher les composantes</span>
               </label>
             </>
           )}
@@ -849,7 +849,7 @@ export function VectorSimulator() {
 
         {/* Canvas */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="border-2 border-slate-700 rounded-lg overflow-hidden" style={{ height: '500px' }}>
+          <div className="border-2 border-stone-700 rounded-lg overflow-hidden" style={{ height: '500px' }}>
             {dimension === '2D' ? (
               <canvas ref={canvasRef} width={600} height={500} className="w-full h-full" />
             ) : (
@@ -868,27 +868,27 @@ export function VectorSimulator() {
             <div className="grid grid-cols-4 gap-2">
               <button
                 onClick={() => setOperation('add')}
-                className={`py-2 px-3 rounded-lg font-medium transition-colors ${operation === 'add' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                className={`py-2 px-3 rounded-lg font-medium transition-colors ${operation === 'add' ? 'bg-terre-500 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}`}
               >
                 Σ Addition
               </button>
               <button
                 onClick={() => setOperation('subtract')}
-                className={`py-2 px-3 rounded-lg font-medium transition-colors ${operation === 'subtract' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                className={`py-2 px-3 rounded-lg font-medium transition-colors ${operation === 'subtract' ? 'bg-terre-500 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}`}
               >
                 Soustraction
               </button>
               <button
                 onClick={() => setOperation('dot')}
                 disabled={vectors.length !== 2}
-                className={`py-2 px-3 rounded-lg font-medium transition-colors ${operation === 'dot' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} disabled:opacity-50`}
+                className={`py-2 px-3 rounded-lg font-medium transition-colors ${operation === 'dot' ? 'bg-terre-500 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'} disabled:opacity-50`}
               >
                 A · B
               </button>
               <button
                 onClick={() => setOperation('cross')}
                 disabled={vectors.length !== 2}
-                className={`py-2 px-3 rounded-lg font-medium transition-colors ${operation === 'cross' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} disabled:opacity-50`}
+                className={`py-2 px-3 rounded-lg font-medium transition-colors ${operation === 'cross' ? 'bg-terre-500 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'} disabled:opacity-50`}
               >
                 A × B
               </button>
@@ -896,8 +896,8 @@ export function VectorSimulator() {
           )}
 
           {/* Résultat */}
-          <div className="p-4 bg-orange-50 rounded-lg border-l-4 border-orange-500">
-            <h3 className="font-semibold text-orange-800 mb-2">
+          <div className="p-4 bg-terre-50 rounded-lg border-l-4 border-terre-500">
+            <h3 className="font-semibold text-terre-800 mb-2">
               {formulaMode ? `Résultat: ${formula}` : operation === 'dot' ? 'Produit scalaire' : operation === 'cross' ? 'Produit vectoriel' : 'Résultant R'}
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
@@ -905,23 +905,23 @@ export function VectorSimulator() {
                 <>
                   {'magA' in resultComp && (
                     <>
-                      <div className="bg-white p-2 rounded"><span className="text-gray-500">|A|:</span> <strong>{(resultComp as DotProductResult).magA.toFixed(2)}</strong></div>
-                      <div className="bg-white p-2 rounded"><span className="text-gray-500">|B|:</span> <strong>{(resultComp as DotProductResult).magB.toFixed(2)}</strong></div>
-                      <div className="bg-white p-2 rounded"><span className="text-gray-500">θ:</span> <strong>{(resultComp as DotProductResult).angle.toFixed(1)}°</strong></div>
-                      <div className="bg-orange-100 p-2 rounded"><span className="text-gray-500">A·B:</span> <strong className="text-orange-700">{(resultComp as DotProductResult).scalar.toFixed(2)}</strong></div>
+                      <div className="bg-white p-2 rounded"><span className="text-stone-500">|A|:</span> <strong>{(resultComp as DotProductResult).magA.toFixed(2)}</strong></div>
+                      <div className="bg-white p-2 rounded"><span className="text-stone-500">|B|:</span> <strong>{(resultComp as DotProductResult).magB.toFixed(2)}</strong></div>
+                      <div className="bg-white p-2 rounded"><span className="text-stone-500">θ:</span> <strong>{(resultComp as DotProductResult).angle.toFixed(1)}°</strong></div>
+                      <div className="bg-terre-100 p-2 rounded"><span className="text-stone-500">A·B:</span> <strong className="text-terre-700">{(resultComp as DotProductResult).scalar.toFixed(2)}</strong></div>
                     </>
                   )}
                 </>
               ) : (
                 <>
-                  <div className="bg-white p-2 rounded"><span className="text-gray-500">{operation === 'cross' ? 'Cx' : 'Rx'}:</span> <strong>{((formulaMode && formulaResult) || resultComp as VectorComponents).x.toFixed(2)}</strong></div>
-                  <div className="bg-white p-2 rounded"><span className="text-gray-500">{operation === 'cross' ? 'Cy' : 'Ry'}:</span> <strong>{((formulaMode && formulaResult) || resultComp as VectorComponents).y.toFixed(2)}</strong></div>
+                  <div className="bg-white p-2 rounded"><span className="text-stone-500">{operation === 'cross' ? 'Cx' : 'Rx'}:</span> <strong>{((formulaMode && formulaResult) || resultComp as VectorComponents).x.toFixed(2)}</strong></div>
+                  <div className="bg-white p-2 rounded"><span className="text-stone-500">{operation === 'cross' ? 'Cy' : 'Ry'}:</span> <strong>{((formulaMode && formulaResult) || resultComp as VectorComponents).y.toFixed(2)}</strong></div>
                   {(dimension === '3D' || operation === 'cross') && (
-                    <div className="bg-white p-2 rounded"><span className="text-gray-500">{operation === 'cross' ? 'Cz' : 'Rz'}:</span> <strong>{(((formulaMode && formulaResult) || resultComp as VectorComponents).z || 0).toFixed(2)}</strong></div>
+                    <div className="bg-white p-2 rounded"><span className="text-stone-500">{operation === 'cross' ? 'Cz' : 'Rz'}:</span> <strong>{(((formulaMode && formulaResult) || resultComp as VectorComponents).z || 0).toFixed(2)}</strong></div>
                   )}
-                  <div className="bg-orange-100 p-2 rounded"><span className="text-gray-500">|{operation === 'cross' ? 'C' : 'R'}|:</span> <strong className="text-orange-700">{resultMagnitude?.toFixed(2)}</strong></div>
+                  <div className="bg-terre-100 p-2 rounded"><span className="text-stone-500">|{operation === 'cross' ? 'C' : 'R'}|:</span> <strong className="text-terre-700">{resultMagnitude?.toFixed(2)}</strong></div>
                   {operation !== 'cross' && dimension === '2D' && (
-                    <div className="bg-orange-100 p-2 rounded"><span className="text-gray-500">θ:</span> <strong className="text-orange-700">{resultAngle?.toFixed(1)}°</strong></div>
+                    <div className="bg-terre-100 p-2 rounded"><span className="text-stone-500">θ:</span> <strong className="text-terre-700">{resultAngle?.toFixed(1)}°</strong></div>
                   )}
                 </>
               )}
@@ -931,37 +931,37 @@ export function VectorSimulator() {
       </div>
 
       {/* Section théorie */}
-      <div className="border-t border-gray-200 pt-6">
-        <h3 className="font-semibold text-gray-800 mb-3">Théorie - Opérations vectorielles</h3>
+      <div className="border-t border-stone-200 pt-6">
+        <h3 className="font-semibold text-stone-800 mb-3">Théorie - Opérations vectorielles</h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
-          <div className="bg-blue-50 rounded-lg p-4">
-            <h4 className="font-medium text-blue-800 mb-2">Addition vectorielle</h4>
+          <div className="bg-gold-50 rounded-lg p-4">
+            <h4 className="font-medium text-gold-800 mb-2">Addition vectorielle</h4>
             <BlockMath math="\vec{R} = \vec{A} + \vec{B} = (A_x + B_x, A_y + B_y, A_z + B_z)" />
-            <p className="text-blue-700 mt-2">Visualisée par la méthode du triangle : les vecteurs sont mis bout à bout, et R ferme le triangle depuis l’origine. Au-delà de deux vecteurs, c’est la méthode du polygone.</p>
+            <p className="text-gold-700 mt-2">Visualisée par la méthode du triangle : les vecteurs sont mis bout à bout, et R ferme le triangle depuis l’origine. Au-delà de deux vecteurs, c’est la méthode du polygone.</p>
           </div>
-          <div className="bg-green-50 rounded-lg p-4">
-            <h4 className="font-medium text-green-800 mb-2">Soustraction</h4>
+          <div className="bg-olive-50 rounded-lg p-4">
+            <h4 className="font-medium text-olive-800 mb-2">Soustraction</h4>
             <BlockMath math="\vec{A} - \vec{B} = \vec{A} + (-\vec{B})" />
-            <p className="text-green-700 mt-2">On inverse B, puis on additionne bout à bout. B reste tracé en pointillé pour le comparer à −B.</p>
+            <p className="text-olive-700 mt-2">On inverse B, puis on additionne bout à bout. B reste tracé en pointillé pour le comparer à −B.</p>
           </div>
-          <div className="bg-purple-50 rounded-lg p-4">
-            <h4 className="font-medium text-purple-800 mb-2">Produit scalaire</h4>
+          <div className="bg-prune-50 rounded-lg p-4">
+            <h4 className="font-medium text-prune-800 mb-2">Produit scalaire</h4>
             <BlockMath math="\vec{A} \cdot \vec{B} = |\vec{A}||\vec{B}|\cos\theta" />
-            <p className="text-purple-700 mt-2">Résultat = nombre. Mesure l'alignement.</p>
+            <p className="text-prune-700 mt-2">Résultat = nombre. Mesure l'alignement.</p>
           </div>
-          <div className="bg-amber-50 rounded-lg p-4">
-            <h4 className="font-medium text-amber-800 mb-2">Produit vectoriel</h4>
+          <div className="bg-ocre-50 rounded-lg p-4">
+            <h4 className="font-medium text-ocre-800 mb-2">Produit vectoriel</h4>
             <BlockMath math="|\vec{A} \times \vec{B}| = |\vec{A}||\vec{B}|\sin\theta" />
-            <p className="text-amber-700 mt-2">Résultat ⊥ au plan. Aire du parallélogramme.</p>
+            <p className="text-ocre-700 mt-2">Résultat ⊥ au plan. Aire du parallélogramme.</p>
           </div>
-          <div className="bg-cyan-50 rounded-lg p-4">
-            <h4 className="font-medium text-cyan-800 mb-2">Moment de force</h4>
+          <div className="bg-ardoise-50 rounded-lg p-4">
+            <h4 className="font-medium text-ardoise-800 mb-2">Moment de force</h4>
             <BlockMath math="\vec{M} = \vec{r} \times \vec{F}" />
-            <p className="text-cyan-700 mt-2">Application importante en statique.</p>
+            <p className="text-ardoise-700 mt-2">Application importante en statique.</p>
           </div>
-          <div className="bg-rose-50 rounded-lg p-4">
-            <h4 className="font-medium text-rose-800 mb-2">Conversion</h4>
-            <p className="text-rose-700">Polaire → Cartésien:</p>
+          <div className="bg-brun-50 rounded-lg p-4">
+            <h4 className="font-medium text-brun-800 mb-2">Conversion</h4>
+            <p className="text-brun-700">Polaire → Cartésien:</p>
             <BlockMath math="x = r\cos\theta, \quad y = r\sin\theta" />
           </div>
         </div>

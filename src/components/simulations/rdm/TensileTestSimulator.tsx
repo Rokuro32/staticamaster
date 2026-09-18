@@ -62,7 +62,7 @@ const MATERIALS: MaterialDef[] = [
   {
     id: 'steel',
     label: 'Acier doux (S235)',
-    color: '#3b82f6',
+    color: '#c29851',
     E: 210,
     sigmaY: 235,
     sigmaU: 400,
@@ -74,7 +74,7 @@ const MATERIALS: MaterialDef[] = [
   {
     id: 'aluminium',
     label: 'Aluminium (6061-T6)',
-    color: '#10b981',
+    color: '#7e8f3a',
     E: 69,
     sigmaY: 276,
     sigmaU: 310,
@@ -86,7 +86,7 @@ const MATERIALS: MaterialDef[] = [
   {
     id: 'cast_iron',
     label: 'Fonte grise',
-    color: '#6b7280',
+    color: '#7c766f',
     E: 120,
     sigmaY: 150,
     sigmaU: 200,
@@ -98,7 +98,7 @@ const MATERIALS: MaterialDef[] = [
   {
     id: 'copper',
     label: 'Cuivre recuit',
-    color: '#f59e0b',
+    color: '#e8c518',
     E: 117,
     sigmaY: 70,
     sigmaU: 220,
@@ -194,10 +194,10 @@ export function TensileTestSimulator() {
   };
 
   const getZoneColor = (eps: number): string => {
-    if (eps <= material.epsY) return '#22c55e';
-    if (eps <= material.epsNeck) return '#f59e0b';
-    if (eps <= material.epsU) return '#ef4444';
-    return '#6b7280';
+    if (eps <= material.epsY) return '#91a443';
+    if (eps <= material.epsNeck) return '#e8c518';
+    if (eps <= material.epsU) return '#ca684a';
+    return '#7c766f';
   };
 
   const draw = useCallback(() => {
@@ -209,7 +209,7 @@ export function TensileTestSimulator() {
     const W = canvas.width;
     const H = canvas.height;
 
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.fillRect(0, 0, W, H);
 
     const ml = 70, mr = 30, mt = 30, mb = 60;
@@ -220,7 +220,7 @@ export function TensileTestSimulator() {
     const toY = (sig: number) => mt + plotH - (sig / sigmaMax) * plotH;
 
     // Grille
-    ctx.strokeStyle = '#1e293b';
+    ctx.strokeStyle = '#2f2d2a';
     ctx.lineWidth = 0.5;
     for (let i = 0; i <= 5; i++) {
       const x = ml + (i / 5) * plotW;
@@ -231,29 +231,29 @@ export function TensileTestSimulator() {
 
     // Zones colorées de fond
     // Élastique
-    ctx.fillStyle = 'rgba(34, 197, 94, 0.08)';
+    ctx.fillStyle = 'rgba(145, 164, 67, 0.08)';
     ctx.fillRect(ml, mt, toX(material.epsY) - ml, plotH);
     // Écrouissage
-    ctx.fillStyle = 'rgba(245, 158, 11, 0.08)';
+    ctx.fillStyle = 'rgba(232, 197, 24, 0.08)';
     ctx.fillRect(toX(material.epsY), mt, toX(material.epsNeck) - toX(material.epsY), plotH);
     // Striction
-    ctx.fillStyle = 'rgba(239, 68, 68, 0.08)';
+    ctx.fillStyle = 'rgba(202, 104, 74, 0.08)';
     ctx.fillRect(toX(material.epsNeck), mt, toX(material.epsU) - toX(material.epsNeck), plotH);
 
     // Labels zones
     ctx.font = '9px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillStyle = 'rgba(34, 197, 94, 0.5)';
+    ctx.fillStyle = 'rgba(145, 164, 67, 0.5)';
     if (toX(material.epsY) - ml > 30) {
       ctx.fillText('Élastique', (ml + toX(material.epsY)) / 2, mt + 14);
     }
-    ctx.fillStyle = 'rgba(245, 158, 11, 0.5)';
+    ctx.fillStyle = 'rgba(232, 197, 24, 0.5)';
     ctx.fillText('Écrouissage', (toX(material.epsY) + toX(material.epsNeck)) / 2, mt + 14);
-    ctx.fillStyle = 'rgba(239, 68, 68, 0.5)';
+    ctx.fillStyle = 'rgba(202, 104, 74, 0.5)';
     ctx.fillText('Striction', (toX(material.epsNeck) + toX(material.epsU)) / 2, mt + 14);
 
     // Axes
-    ctx.strokeStyle = '#94a3b8';
+    ctx.strokeStyle = '#aba6a1';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(ml, mt);
@@ -262,7 +262,7 @@ export function TensileTestSimulator() {
     ctx.stroke();
 
     // Labels axes
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('ε (déformation)', ml + plotW / 2, H - 10);
@@ -299,31 +299,31 @@ export function TensileTestSimulator() {
 
     // Ligne σ_Y
     ctx.setLineDash([4, 4]);
-    ctx.strokeStyle = '#22c55e80';
+    ctx.strokeStyle = '#91a44380';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(ml, toY(material.sigmaY));
     ctx.lineTo(ml + plotW, toY(material.sigmaY));
     ctx.stroke();
-    ctx.fillStyle = '#22c55e';
+    ctx.fillStyle = '#91a443';
     ctx.font = '10px sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText(`σ_Y = ${material.sigmaY} MPa`, ml + plotW - 100, toY(material.sigmaY) - 5);
 
     // Ligne σ_U
-    ctx.strokeStyle = '#ef444480';
+    ctx.strokeStyle = '#ca684a80';
     ctx.beginPath();
     ctx.moveTo(ml, toY(material.sigmaU));
     ctx.lineTo(ml + plotW, toY(material.sigmaU));
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = '#ef4444';
+    ctx.fillStyle = '#ca684a';
     ctx.fillText(`σ_U = ${material.sigmaU} MPa`, ml + plotW - 100, toY(material.sigmaU) - 5);
 
     // Curseur interactif
     const curX = toX(cursorEps);
     const curY = toY(cursorSigma);
-    ctx.strokeStyle = '#f8fafc';
+    ctx.strokeStyle = '#fafafa';
     ctx.lineWidth = 1;
     ctx.setLineDash([3, 3]);
     ctx.beginPath();
@@ -344,7 +344,7 @@ export function TensileTestSimulator() {
 
     // Pente E (droite de décharge)
     if (cursorEps > material.epsY) {
-      ctx.strokeStyle = 'rgba(34, 197, 94, 0.5)';
+      ctx.strokeStyle = 'rgba(145, 164, 67, 0.5)';
       ctx.lineWidth = 1;
       ctx.setLineDash([3, 4]);
       const unloadEps = cursorEps - cursorSigma / (material.E * 1000);
@@ -355,7 +355,7 @@ export function TensileTestSimulator() {
       ctx.setLineDash([]);
       // Label déformation permanente
       if (unloadEps > 0) {
-        ctx.fillStyle = '#fbbf24';
+        ctx.fillStyle = '#e8c61a';
         ctx.font = '9px sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(`ε_perm = ${(unloadEps * 100).toFixed(2)}%`, toX(unloadEps), toY(0) + 14);
@@ -376,10 +376,10 @@ export function TensileTestSimulator() {
   return (
     <section className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-gray-900">
+        <h2 className="text-3xl font-bold text-stone-900">
           Essai de traction
         </h2>
-        <p className="text-gray-600">
+        <p className="text-stone-600">
           Interpréter une courbe contrainte-déformation <InlineMath math="\sigma" />–<InlineMath math="\varepsilon" />
         </p>
       </div>
@@ -389,13 +389,13 @@ export function TensileTestSimulator() {
           ref={canvasRef}
           width={700}
           height={420}
-          className="w-full max-w-[700px] mx-auto rounded-lg border border-gray-300"
+          className="w-full max-w-[700px] mx-auto rounded-lg border border-stone-300"
         />
 
         <div className="w-full max-w-[700px] space-y-3">
           {/* Matériau */}
           <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-sm text-gray-700 font-medium">Matériau :</span>
+            <span className="text-sm text-stone-700 font-medium">Matériau :</span>
             {MATERIALS.map((m, i) => (
               <button
                 key={m.id}
@@ -403,7 +403,7 @@ export function TensileTestSimulator() {
                 className={`px-3 py-1.5 text-xs rounded border font-medium transition-colors ${
                   materialIdx === i
                     ? 'text-white border-transparent'
-                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                    : 'bg-white text-stone-700 border-stone-300 hover:bg-stone-50'
                 }`}
                 style={materialIdx === i ? { backgroundColor: m.color } : undefined}
               >
@@ -414,20 +414,20 @@ export function TensileTestSimulator() {
 
           {/* Curseur ε */}
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium w-28">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium w-28">
               Déformation <InlineMath math="\varepsilon" />
             </label>
             <input type="range" min={0} max={material.epsU} step={material.epsU / 200}
               value={cursorEps}
               onChange={(e) => setCursorEps(Number(e.target.value))}
               className="flex-1 accent-white" />
-            <span className="text-sm font-mono text-gray-900 w-24 text-right">
+            <span className="text-sm font-mono text-stone-900 w-24 text-right">
               {(cursorEps * 100).toFixed(2)} %
             </span>
           </div>
 
           {/* Info point courant */}
-          <div className="p-3 bg-slate-100 rounded-lg border text-sm flex gap-6 flex-wrap">
+          <div className="p-3 bg-stone-100 rounded-lg border text-sm flex gap-6 flex-wrap">
             <div>
               <strong>σ =</strong>{' '}
               <span className="font-mono">{cursorSigma.toFixed(1)} MPa</span>
@@ -450,24 +450,24 @@ export function TensileTestSimulator() {
       <div className="space-y-2">
         <CollapsiblePanel
           title="1. Les zones de la courbe"
-          borderColor="border-blue-500"
-          bgColor="bg-blue-50"
-          textColor="text-blue-800"
+          borderColor="border-gold-500"
+          bgColor="bg-gold-50"
+          textColor="text-gold-800"
           defaultOpen
         >
-          <ul className="list-disc list-inside text-gray-700 space-y-2">
+          <ul className="list-disc list-inside text-stone-700 space-y-2">
             <li>
-              <strong className="text-green-600">Domaine élastique</strong> :{' '}
+              <strong className="text-olive-600">Domaine élastique</strong> :{' '}
               <InlineMath math="\sigma = E \cdot \varepsilon" />. La déformation est
               réversible. La pente donne le module d&apos;Young <InlineMath math="E" />.
             </li>
             <li>
-              <strong className="text-yellow-600">Écrouissage</strong> : au-delà de la
+              <strong className="text-ocre-600">Écrouissage</strong> : au-delà de la
               limite élastique <InlineMath math="\sigma_Y" />, la déformation est{' '}
               <strong>permanente</strong> (plastique). Le matériau durcit.
             </li>
             <li>
-              <strong className="text-red-600">Striction</strong> : la section se réduit
+              <strong className="text-brun-600">Striction</strong> : la section se réduit
               localement. La contrainte <em>ingénieur</em> (F/A₀) diminue tandis que la
               contrainte <em>vraie</em> (F/A) continue d&apos;augmenter.
             </li>
@@ -479,19 +479,19 @@ export function TensileTestSimulator() {
 
         <CollapsiblePanel
           title="2. Grandeurs caractéristiques"
-          borderColor="border-green-500"
-          bgColor="bg-green-50"
-          textColor="text-green-800"
+          borderColor="border-olive-500"
+          bgColor="bg-olive-50"
+          textColor="text-olive-800"
         >
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`E = \\frac{\\sigma}{\\varepsilon}\\bigg|_{\\text{élast.}}, \\quad \\sigma_Y \\text{ (limite élastique)}, \\quad \\sigma_U \\text{ (résistance ultime)}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             <strong>Allongement à la rupture</strong>{' '}
             <InlineMath math={`A\\% = \\varepsilon_R \\times 100`} /> mesure la{' '}
             <strong>ductilité</strong>. Acier doux : ~25 %, fonte : &lt; 1 %.
           </p>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             <strong>Résilience</strong> = aire sous la courbe élastique.{' '}
             <strong>Ténacité</strong> = aire totale sous la courbe (énergie absorbée
             avant rupture).
@@ -500,17 +500,17 @@ export function TensileTestSimulator() {
 
         <CollapsiblePanel
           title="3. Ductile vs fragile"
-          borderColor="border-red-500"
-          bgColor="bg-red-50"
-          textColor="text-red-800"
+          borderColor="border-brun-500"
+          bgColor="bg-brun-50"
+          textColor="text-brun-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Un matériau <strong>ductile</strong> (acier, cuivre) se déforme plastiquement
             avant de rompre : la courbe présente un long plateau. Un matériau{' '}
             <strong>fragile</strong> (fonte, verre, céramique) rompt brutalement avec
             très peu de déformation plastique.
           </p>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             En ingénierie, on choisit souvent un coefficient de sécurité{' '}
             <InlineMath math={`n = \\sigma_Y / \\sigma_{\\text{service}}`} /> pour rester
             dans le domaine élastique (typiquement n = 1,5 à 3).
@@ -519,11 +519,11 @@ export function TensileTestSimulator() {
 
         <CollapsiblePanel
           title="4. Droite de décharge"
-          borderColor="border-yellow-500"
-          bgColor="bg-yellow-50"
-          textColor="text-yellow-800"
+          borderColor="border-ocre-500"
+          bgColor="bg-ocre-50"
+          textColor="text-ocre-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Si on décharge l&apos;éprouvette après déformation plastique, le retour se
             fait le long d&apos;une droite parallèle à la pente élastique{' '}
             <InlineMath math="E" />. La déformation restante est la{' '}

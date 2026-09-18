@@ -65,10 +65,10 @@ const SLOWDOWN_OPTIONS = [
   { value: 0.1, label: '1/10' },
 ];
 
-const COLOR_TANGENTIAL = '#2563eb';
-const COLOR_AXIAL = '#16a34a';
-const COLOR_TOTAL = '#f97316';
-const COLOR_HELIX = '#6366f1';
+const COLOR_TANGENTIAL = '#c1974f';
+const COLOR_AXIAL = '#748336';
+const COLOR_TOTAL = '#db8834';
+const COLOR_HELIX = '#caa668';
 
 /** Flèche 2D sur un canvas */
 function arrow(
@@ -188,7 +188,7 @@ export function HelicalMotionSimulator() {
     const W = canvas.width;
     const H = canvas.height;
 
-    ctx.fillStyle = '#f8fafc';
+    ctx.fillStyle = '#fafafa';
     ctx.fillRect(0, 0, W, H);
 
     const marginL = 70;
@@ -212,7 +212,7 @@ export function HelicalMotionSimulator() {
     const rPix = radius * rScale;
 
     // --- Enveloppe du cylindre
-    ctx.strokeStyle = '#cbd5e1';
+    ctx.strokeStyle = '#d8d6d4';
     ctx.lineWidth = 1;
     ctx.setLineDash([4, 4]);
     ctx.beginPath();
@@ -253,7 +253,7 @@ export function HelicalMotionSimulator() {
     ctx.restore();
 
     // Axe de rotation
-    ctx.strokeStyle = '#475569';
+    ctx.strokeStyle = '#5d5853';
     ctx.lineWidth = 1.8;
     ctx.setLineDash([9, 5]);
     ctx.beginPath();
@@ -261,7 +261,7 @@ export function HelicalMotionSimulator() {
     ctx.lineTo(marginL + span * zScale + 45, originY);
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = '#475569';
+    ctx.fillStyle = '#5d5853';
     ctx.font = '12px system-ui';
     ctx.textAlign = 'right';
     ctx.fillText('axe de rotation', marginL + span * zScale + 45, originY - 9);
@@ -278,7 +278,7 @@ export function HelicalMotionSimulator() {
     // --- Cotation du pas, sur la première spire
     if (span > 0.001) {
       const yPitch = originY + rPix + 26;
-      ctx.strokeStyle = '#0f172a';
+      ctx.strokeStyle = '#1e1d1b';
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.moveTo(marginL, yPitch - 6);
@@ -286,8 +286,8 @@ export function HelicalMotionSimulator() {
       ctx.moveTo(marginL + pitch * zScale, yPitch - 6);
       ctx.lineTo(marginL + pitch * zScale, yPitch + 6);
       ctx.stroke();
-      arrow(ctx, marginL, yPitch, marginL + pitch * zScale, yPitch, '#0f172a', 1.2, 7);
-      ctx.fillStyle = '#0f172a';
+      arrow(ctx, marginL, yPitch, marginL + pitch * zScale, yPitch, '#1e1d1b', 1.2, 7);
+      ctx.fillStyle = '#1e1d1b';
       ctx.font = 'bold 12px system-ui';
       ctx.textAlign = 'center';
       ctx.fillText(
@@ -305,7 +305,7 @@ export function HelicalMotionSimulator() {
     ctx.globalAlpha = inFront ? 1 : 0.45;
 
     // Rayon reliant l'axe au point : rend la rotation lisible
-    ctx.strokeStyle = '#94a3b8';
+    ctx.strokeStyle = '#aba6a1';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(marginL + advance * zScale, originY);
@@ -344,7 +344,7 @@ export function HelicalMotionSimulator() {
 
     ctx.font = '12px system-ui';
     ctx.textAlign = 'left';
-    ctx.fillStyle = '#64748b';
+    ctx.fillStyle = '#7e7871';
     ctx.fillText(`${turns} spires · rayon R = ${radius} mm`, 12, 20);
     ctx.textAlign = 'right';
     ctx.fillText(
@@ -364,7 +364,7 @@ export function HelicalMotionSimulator() {
     const W = canvas.width;
     const H = canvas.height;
 
-    ctx.fillStyle = '#f8fafc';
+    ctx.fillStyle = '#fafafa';
     ctx.fillRect(0, 0, W, H);
 
     const padL = 56;
@@ -388,7 +388,7 @@ export function HelicalMotionSimulator() {
     const ty = by - triH;
 
     // Triangle rectangle
-    ctx.fillStyle = 'rgba(99, 102, 241, 0.08)';
+    ctx.fillStyle = 'rgba(202, 166, 104, 0.08)';
     ctx.beginPath();
     ctx.moveTo(bx, by);
     ctx.lineTo(tx, by);
@@ -421,7 +421,7 @@ export function HelicalMotionSimulator() {
     const mx = bx + (tx - bx) * frac;
     const my = by + (ty - by) * frac;
     ctx.setLineDash([4, 4]);
-    ctx.strokeStyle = '#94a3b8';
+    ctx.strokeStyle = '#aba6a1';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(mx, my);
@@ -448,7 +448,7 @@ export function HelicalMotionSimulator() {
     const fitsRight = tx + 8 + ctx.measureText(pitchLabel).width < W - 4;
     ctx.textAlign = fitsRight ? 'left' : 'right';
     ctx.fillText(pitchLabel, fitsRight ? tx + 8 : tx - 8, (by + ty) / 2 - 4);
-    ctx.fillStyle = '#475569';
+    ctx.fillStyle = '#5d5853';
     ctx.textAlign = 'left';
     ctx.font = '12px system-ui';
     ctx.fillText('Une spire, déroulée à plat', 12, 18);
@@ -461,8 +461,8 @@ export function HelicalMotionSimulator() {
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
       <div>
-        <h3 className="text-lg font-semibold text-gray-800">Mouvement hélicoïdal</h3>
-        <p className="text-sm text-gray-600 mt-1">
+        <h3 className="text-lg font-semibold text-stone-800">Mouvement hélicoïdal</h3>
+        <p className="text-sm text-stone-600 mt-1">
           Une rotation autour d&apos;un axe qui entraîne une translation le long
           de ce même axe. Un tour complet fait avancer d&apos;exactement un pas.
         </p>
@@ -476,8 +476,8 @@ export function HelicalMotionSimulator() {
             onClick={() => applyPreset(p)}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               activePreset === p.id
-                ? 'bg-indigo-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-gold-600 text-white'
+                : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
             }`}
           >
             {p.label}
@@ -485,7 +485,7 @@ export function HelicalMotionSimulator() {
         ))}
       </div>
       {preset && (
-        <p className="text-sm text-indigo-800 bg-indigo-50 border-l-4 border-indigo-400 rounded-r-lg px-4 py-2 -mt-2">
+        <p className="text-sm text-gold-800 bg-gold-50 border-l-4 border-gold-400 rounded-r-lg px-4 py-2 -mt-2">
           {preset.note}
         </p>
       )}
@@ -494,9 +494,9 @@ export function HelicalMotionSimulator() {
         {/* Commandes */}
         <div className="space-y-4">
           <div>
-            <label className="flex justify-between text-sm font-medium text-gray-700 mb-1">
+            <label className="flex justify-between text-sm font-medium text-stone-700 mb-1">
               <span>Rayon R</span>
-              <span className="font-mono text-gray-900">{radius} mm</span>
+              <span className="font-mono text-stone-900">{radius} mm</span>
             </label>
             <input
               type="range"
@@ -508,14 +508,14 @@ export function HelicalMotionSimulator() {
                 setRadius(Number(e.target.value));
                 setActivePreset(null);
               }}
-              className="w-full accent-indigo-600"
+              className="w-full accent-gold-600"
             />
           </div>
 
           <div>
-            <label className="flex justify-between text-sm font-medium text-gray-700 mb-1">
+            <label className="flex justify-between text-sm font-medium text-stone-700 mb-1">
               <span>Pas p</span>
-              <span className="font-mono text-gray-900">{pitch} mm/tour</span>
+              <span className="font-mono text-stone-900">{pitch} mm/tour</span>
             </label>
             <input
               type="range"
@@ -527,17 +527,17 @@ export function HelicalMotionSimulator() {
                 setPitch(Number(e.target.value));
                 setActivePreset(null);
               }}
-              className="w-full accent-green-600"
+              className="w-full accent-olive-600"
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-stone-500 mt-1">
               À p = 0, il ne reste que la rotation : le point décrit un cercle.
             </p>
           </div>
 
           <div>
-            <label className="flex justify-between text-sm font-medium text-gray-700 mb-1">
+            <label className="flex justify-between text-sm font-medium text-stone-700 mb-1">
               <span>Vitesse de rotation N</span>
-              <span className="font-mono text-gray-900">{rpm} tr/min</span>
+              <span className="font-mono text-stone-900">{rpm} tr/min</span>
             </label>
             <input
               type="range"
@@ -549,14 +549,14 @@ export function HelicalMotionSimulator() {
                 setRpm(Number(e.target.value));
                 setActivePreset(null);
               }}
-              className="w-full accent-blue-600"
+              className="w-full accent-gold-600"
             />
           </div>
 
           <div>
-            <label className="flex justify-between text-sm font-medium text-gray-700 mb-1">
+            <label className="flex justify-between text-sm font-medium text-stone-700 mb-1">
               <span>Spires affichées</span>
-              <span className="font-mono text-gray-900">{turns}</span>
+              <span className="font-mono text-stone-900">{turns}</span>
             </label>
             <input
               type="range"
@@ -568,32 +568,32 @@ export function HelicalMotionSimulator() {
                 setTurns(Number(e.target.value));
                 setActivePreset(null);
               }}
-              className="w-full accent-gray-600"
+              className="w-full accent-stone-600"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={() => setRunning((v) => !v)}
-              className="py-2 px-3 rounded-lg font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
+              className="py-2 px-3 rounded-lg font-medium bg-gold-600 text-white hover:bg-gold-700 transition-colors"
             >
               {running ? '⏸ Pause' : '▶ Animer'}
             </button>
             <button
               onClick={reset}
-              className="py-2 px-3 rounded-lg font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
+              className="py-2 px-3 rounded-lg font-medium bg-stone-100 text-stone-700 hover:bg-stone-200 transition-colors"
             >
               ↺ Réinitialiser
             </button>
           </div>
 
           <div>
-            <span className="block text-sm font-medium text-gray-700 mb-1.5">Sens</span>
+            <span className="block text-sm font-medium text-stone-700 mb-1.5">Sens</span>
             <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={() => setClockwise(true)}
                 className={`py-1.5 px-3 rounded-lg text-sm font-medium transition-colors ${
-                  clockwise ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  clockwise ? 'bg-stone-800 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
                 }`}
               >
                 Vissage
@@ -601,7 +601,7 @@ export function HelicalMotionSimulator() {
               <button
                 onClick={() => setClockwise(false)}
                 className={`py-1.5 px-3 rounded-lg text-sm font-medium transition-colors ${
-                  !clockwise ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  !clockwise ? 'bg-stone-800 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
                 }`}
               >
                 Dévissage
@@ -610,7 +610,7 @@ export function HelicalMotionSimulator() {
           </div>
 
           <div>
-            <span className="block text-sm font-medium text-gray-700 mb-1.5">
+            <span className="block text-sm font-medium text-stone-700 mb-1.5">
               Vitesse d&apos;affichage
             </span>
             <div className="grid grid-cols-4 gap-1.5">
@@ -620,15 +620,15 @@ export function HelicalMotionSimulator() {
                   onClick={() => setSlowdown(opt.value)}
                   className={`py-1.5 rounded-lg text-xs font-medium transition-colors ${
                     slowdown === opt.value
-                      ? 'bg-gray-800 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-stone-800 text-white'
+                      : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
                   }`}
                 >
                   {opt.label}
                 </button>
               ))}
             </div>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-stone-500 mt-1">
               Ne change que l&apos;animation. Les valeurs affichées restent celles
               à {rpm} tr/min.
             </p>
@@ -639,52 +639,52 @@ export function HelicalMotionSimulator() {
               type="checkbox"
               checked={showVelocities}
               onChange={(e) => setShowVelocities(e.target.checked)}
-              className="w-4 h-4 accent-orange-500"
+              className="w-4 h-4 accent-terre-500"
             />
-            <span className="text-sm text-gray-700">Afficher la vitesse</span>
+            <span className="text-sm text-stone-700">Afficher la vitesse</span>
           </label>
         </div>
 
         {/* Vues */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="border-2 border-gray-200 rounded-lg overflow-hidden">
+          <div className="border-2 border-stone-200 rounded-lg overflow-hidden">
             <canvas ref={helixCanvasRef} width={700} height={380} className="w-full" />
           </div>
 
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="border-2 border-gray-200 rounded-lg overflow-hidden">
+            <div className="border-2 border-stone-200 rounded-lg overflow-hidden">
               <canvas ref={unrolledCanvasRef} width={420} height={260} className="w-full" />
             </div>
 
             <div className="space-y-2 text-sm">
-              <div className="bg-blue-50 rounded-lg p-3 flex justify-between items-baseline">
-                <span className="text-blue-800">Vitesse tangentielle <InlineMath math="v_t = \omega R" /></span>
-                <strong className="text-blue-900 font-mono">{vTangential.toFixed(1)} mm/s</strong>
+              <div className="bg-gold-50 rounded-lg p-3 flex justify-between items-baseline">
+                <span className="text-gold-800">Vitesse tangentielle <InlineMath math="v_t = \omega R" /></span>
+                <strong className="text-gold-900 font-mono">{vTangential.toFixed(1)} mm/s</strong>
               </div>
-              <div className="bg-green-50 rounded-lg p-3 flex justify-between items-baseline">
-                <span className="text-green-800">Vitesse axiale <InlineMath math="v_a = p\,N" /></span>
-                <strong className="text-green-900 font-mono">{vAxial.toFixed(1)} mm/s</strong>
+              <div className="bg-olive-50 rounded-lg p-3 flex justify-between items-baseline">
+                <span className="text-olive-800">Vitesse axiale <InlineMath math="v_a = p\,N" /></span>
+                <strong className="text-olive-900 font-mono">{vAxial.toFixed(1)} mm/s</strong>
               </div>
-              <div className="bg-orange-50 rounded-lg p-3 flex justify-between items-baseline">
-                <span className="text-orange-800">Vitesse réelle <InlineMath math="v" /></span>
-                <strong className="text-orange-900 font-mono">{vTotal.toFixed(1)} mm/s</strong>
+              <div className="bg-terre-50 rounded-lg p-3 flex justify-between items-baseline">
+                <span className="text-terre-800">Vitesse réelle <InlineMath math="v" /></span>
+                <strong className="text-terre-900 font-mono">{vTotal.toFixed(1)} mm/s</strong>
               </div>
               <div className="grid grid-cols-2 gap-2">
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <span className="text-gray-500 block text-xs">Angle d&apos;hélice λ</span>
-                  <strong className="text-gray-900 font-mono">{helixAngle.toFixed(1)}°</strong>
+                <div className="bg-stone-50 rounded-lg p-3">
+                  <span className="text-stone-500 block text-xs">Angle d&apos;hélice λ</span>
+                  <strong className="text-stone-900 font-mono">{helixAngle.toFixed(1)}°</strong>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <span className="text-gray-500 block text-xs">ω</span>
-                  <strong className="text-gray-900 font-mono">{omega.toFixed(2)} rad/s</strong>
+                <div className="bg-stone-50 rounded-lg p-3">
+                  <span className="text-stone-500 block text-xs">ω</span>
+                  <strong className="text-stone-900 font-mono">{omega.toFixed(2)} rad/s</strong>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <span className="text-gray-500 block text-xs">Tours effectués</span>
-                  <strong className="text-gray-900 font-mono">{turnsDone.toFixed(2)}</strong>
+                <div className="bg-stone-50 rounded-lg p-3">
+                  <span className="text-stone-500 block text-xs">Tours effectués</span>
+                  <strong className="text-stone-900 font-mono">{turnsDone.toFixed(2)}</strong>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <span className="text-gray-500 block text-xs">Chemin parcouru</span>
-                  <strong className="text-gray-900 font-mono">{pathLength.toFixed(1)} mm</strong>
+                <div className="bg-stone-50 rounded-lg p-3">
+                  <span className="text-stone-500 block text-xs">Chemin parcouru</span>
+                  <strong className="text-stone-900 font-mono">{pathLength.toFixed(1)} mm</strong>
                 </div>
               </div>
             </div>
@@ -692,14 +692,14 @@ export function HelicalMotionSimulator() {
 
           {/* Progression */}
           <div>
-            <div className="flex justify-between text-xs text-gray-500 mb-1">
+            <div className="flex justify-between text-xs text-stone-500 mb-1">
               <span>Départ</span>
               <span>{(progress * 100).toFixed(0)} % de la course affichée</span>
               <span>{turns} spires</span>
             </div>
-            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+            <div className="h-2 bg-stone-100 rounded-full overflow-hidden">
               <div
-                className="h-full bg-indigo-500 transition-none"
+                className="h-full bg-gold-500 transition-none"
                 style={{ width: `${Math.min(progress, 1) * 100}%` }}
               />
             </div>
@@ -708,52 +708,52 @@ export function HelicalMotionSimulator() {
       </div>
 
       {/* Théorie */}
-      <div className="border-t border-gray-200 pt-6">
-        <h3 className="font-semibold text-gray-800 mb-3">Théorie — Mouvement hélicoïdal</h3>
+      <div className="border-t border-stone-200 pt-6">
+        <h3 className="font-semibold text-stone-800 mb-3">Théorie — Mouvement hélicoïdal</h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
-          <div className="bg-indigo-50 rounded-lg p-4">
-            <h4 className="font-medium text-indigo-800 mb-2">Paramétrage</h4>
+          <div className="bg-gold-50 rounded-lg p-4">
+            <h4 className="font-medium text-gold-800 mb-2">Paramétrage</h4>
             <BlockMath math="x = R\cos\theta,\quad y = R\sin\theta,\quad z = \frac{p}{2\pi}\theta" />
-            <p className="text-indigo-700 mt-2">
+            <p className="text-gold-700 mt-2">
               La rotation et la translation avancent ensemble : c&apos;est le pas
               <InlineMath math="\,p\," /> qui les lie.
             </p>
           </div>
-          <div className="bg-blue-50 rounded-lg p-4">
-            <h4 className="font-medium text-blue-800 mb-2">Les deux vitesses</h4>
+          <div className="bg-gold-50 rounded-lg p-4">
+            <h4 className="font-medium text-gold-800 mb-2">Les deux vitesses</h4>
             <BlockMath math="v_t = \omega R \qquad v_a = \frac{p\,N}{60}" />
-            <p className="text-blue-700 mt-2">
+            <p className="text-gold-700 mt-2">
               L&apos;une contourne l&apos;axe, l&apos;autre le suit. Elles sont
               perpendiculaires.
             </p>
           </div>
-          <div className="bg-orange-50 rounded-lg p-4">
-            <h4 className="font-medium text-orange-800 mb-2">Vitesse réelle</h4>
+          <div className="bg-terre-50 rounded-lg p-4">
+            <h4 className="font-medium text-terre-800 mb-2">Vitesse réelle</h4>
             <BlockMath math="v = \sqrt{v_t^{\,2} + v_a^{\,2}}" />
-            <p className="text-orange-700 mt-2">
+            <p className="text-terre-700 mt-2">
               Les deux vitesses étant perpendiculaires, elles s&apos;additionnent
               comme les côtés d&apos;un triangle rectangle.
             </p>
           </div>
-          <div className="bg-green-50 rounded-lg p-4">
-            <h4 className="font-medium text-green-800 mb-2">Angle d&apos;hélice</h4>
+          <div className="bg-olive-50 rounded-lg p-4">
+            <h4 className="font-medium text-olive-800 mb-2">Angle d&apos;hélice</h4>
             <BlockMath math="\tan\lambda = \frac{p}{2\pi R}" />
-            <p className="text-green-700 mt-2">
+            <p className="text-olive-700 mt-2">
               Petit λ : hélice presque plate, on tourne beaucoup pour avancer peu.
               Grand λ : hélice raide.
             </p>
           </div>
-          <div className="bg-purple-50 rounded-lg p-4">
-            <h4 className="font-medium text-purple-800 mb-2">Longueur d&apos;une spire</h4>
+          <div className="bg-prune-50 rounded-lg p-4">
+            <h4 className="font-medium text-prune-800 mb-2">Longueur d&apos;une spire</h4>
             <BlockMath math="L = \sqrt{(2\pi R)^2 + p^2}" />
-            <p className="text-purple-700 mt-2">
+            <p className="text-prune-700 mt-2">
               C&apos;est l&apos;hypoténuse du triangle obtenu en déroulant une
               spire à plat.
             </p>
           </div>
-          <div className="bg-amber-50 rounded-lg p-4">
-            <h4 className="font-medium text-amber-800 mb-2">Où on le rencontre</h4>
-            <p className="text-amber-700">
+          <div className="bg-ocre-50 rounded-lg p-4">
+            <h4 className="font-medium text-ocre-800 mb-2">Où on le rencontre</h4>
+            <p className="text-ocre-700">
               Vis et écrous, vis-mère d&apos;un tour, forets, ressorts
               hélicoïdaux, vis d&apos;Archimède, extrudeuses à vis. Chaque fois
               qu&apos;on veut convertir une rotation en avance contrôlée.

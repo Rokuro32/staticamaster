@@ -77,7 +77,7 @@ export function EnergyBandsSimulator() {
     const H = canvas.height;
 
     // Fond
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.fillRect(0, 0, W, H);
 
     // Axes
@@ -90,7 +90,7 @@ export function EnergyBandsSimulator() {
     const toY = (e: number) => mt + plotH - ((e - eMin) / (eMax - eMin)) * plotH;
 
     // Axe vertical
-    ctx.strokeStyle = '#94a3b8';
+    ctx.strokeStyle = '#aba6a1';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(ml, mt);
@@ -99,7 +99,7 @@ export function EnergyBandsSimulator() {
     ctx.stroke();
 
     // Graduations
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'right';
     for (let e = eMin; e <= eMax; e += 2) {
@@ -147,22 +147,22 @@ export function EnergyBandsSimulator() {
     const colW = plotW * 0.35;
 
     // Bande basse (valence)
-    ctx.fillStyle = 'rgba(59, 130, 246, 0.25)';
+    ctx.fillStyle = 'rgba(194, 152, 81, 0.25)';
     ctx.fillRect(x0, toY(lowMax), colW, toY(lowMin) - toY(lowMax));
-    ctx.strokeStyle = '#3b82f6';
+    ctx.strokeStyle = '#c29851';
     ctx.lineWidth = 1;
     ctx.strokeRect(x0, toY(lowMax), colW, toY(lowMin) - toY(lowMax));
 
     // Bande haute (conduction)
-    const bandHighColor = materialType === 'conductor' ? 'rgba(234, 179, 8, 0.30)' : 'rgba(239, 68, 68, 0.25)';
-    const bandHighStroke = materialType === 'conductor' ? '#eab308' : '#ef4444';
+    const bandHighColor = materialType === 'conductor' ? 'rgba(220, 187, 22, 0.30)' : 'rgba(202, 104, 74, 0.25)';
+    const bandHighStroke = materialType === 'conductor' ? '#dcbb16' : '#ca684a';
     ctx.fillStyle = bandHighColor;
     ctx.fillRect(x0, toY(highMax), colW, toY(highMin) - toY(highMax));
     ctx.strokeStyle = bandHighStroke;
     ctx.strokeRect(x0, toY(highMax), colW, toY(highMin) - toY(highMax));
 
     // N niveaux discrets dans chaque bande
-    ctx.strokeStyle = '#60a5fa';
+    ctx.strokeStyle = '#cba86c';
     ctx.lineWidth = 1;
     for (let i = 0; i < N; i++) {
       const frac = N === 1 ? 0.5 : i / (N - 1);
@@ -177,28 +177,28 @@ export function EnergyBandsSimulator() {
       ctx.moveTo(x0 + 4, toY(eHigh));
       ctx.lineTo(x0 + colW - 4, toY(eHigh));
       ctx.stroke();
-      ctx.strokeStyle = '#60a5fa';
+      ctx.strokeStyle = '#cba86c';
     }
 
     // Annotations bandes
-    ctx.fillStyle = '#bfdbfe';
+    ctx.fillStyle = '#e3cfae';
     ctx.font = 'bold 12px sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText('Bande de valence', x0 + colW + 10, toY((lowMin + lowMax) / 2) + 4);
-    ctx.fillStyle = materialType === 'conductor' ? '#fde68a' : '#fca5a5';
+    ctx.fillStyle = materialType === 'conductor' ? '#f1db6f' : '#e1a897';
     ctx.fillText('Bande de conduction', x0 + colW + 10, toY((highMin + highMax) / 2) + 4);
 
     // Flèche gap
     if (currentGap > 0 && highMin > lowMax) {
       const gapX = x0 + colW / 2;
-      ctx.strokeStyle = '#f8fafc';
+      ctx.strokeStyle = '#fafafa';
       ctx.setLineDash([4, 3]);
       ctx.beginPath();
       ctx.moveTo(gapX, toY(lowMax));
       ctx.lineTo(gapX, toY(highMin));
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = '#f8fafc';
+      ctx.fillStyle = '#fafafa';
       ctx.font = 'bold 11px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(
@@ -207,14 +207,14 @@ export function EnergyBandsSimulator() {
         (toY(lowMax) + toY(highMin)) / 2 + 4,
       );
     } else if (highMin <= lowMax) {
-      ctx.fillStyle = '#fde68a';
+      ctx.fillStyle = '#f1db6f';
       ctx.font = 'bold 11px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('Recouvrement (conducteur)', x0 + colW / 2, toY(lowMax) - 8);
     }
 
     // Axe horizontal : distance interatomique
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(
@@ -224,7 +224,7 @@ export function EnergyBandsSimulator() {
     );
 
     // Titre type
-    ctx.fillStyle = '#f8fafc';
+    ctx.fillStyle = '#fafafa';
     ctx.font = 'bold 14px sans-serif';
     ctx.textAlign = 'left';
     const title =
@@ -240,10 +240,10 @@ export function EnergyBandsSimulator() {
   return (
     <section className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-gray-900">
+        <h2 className="text-3xl font-bold text-stone-900">
           Bandes d&apos;énergie dans les solides
         </h2>
-        <p className="text-gray-600">
+        <p className="text-stone-600">
           Du niveau atomique isolé à la structure de bandes &mdash; Bloch, 1928
         </p>
       </div>
@@ -254,12 +254,12 @@ export function EnergyBandsSimulator() {
           ref={canvasRef}
           width={700}
           height={400}
-          className="w-full max-w-[700px] mx-auto rounded-lg border border-gray-300"
+          className="w-full max-w-[700px] mx-auto rounded-lg border border-stone-300"
         />
 
         <div className="w-full max-w-[700px] space-y-3">
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium">
               Nombre d&apos;atomes <InlineMath math={`N`} />
             </label>
             <input
@@ -269,13 +269,13 @@ export function EnergyBandsSimulator() {
               step={1}
               value={N}
               onChange={(e) => setN(Number(e.target.value))}
-              className="flex-1 accent-blue-500"
+              className="flex-1 accent-gold-500"
             />
-            <span className="text-sm font-mono text-gray-900 w-20 text-right">{N}</span>
+            <span className="text-sm font-mono text-stone-900 w-20 text-right">{N}</span>
           </div>
 
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium">
               Distance <InlineMath math={`d`} />
             </label>
             <input
@@ -285,24 +285,24 @@ export function EnergyBandsSimulator() {
               step={0.05}
               value={distance}
               onChange={(e) => setDistance(Number(e.target.value))}
-              className="flex-1 accent-violet-500"
+              className="flex-1 accent-prune-500"
             />
-            <span className="text-sm font-mono text-gray-900 w-20 text-right">
+            <span className="text-sm font-mono text-stone-900 w-20 text-right">
               {distance.toFixed(2)}
             </span>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-sm text-gray-700 font-medium">Type :</span>
-            <div className="flex rounded-lg overflow-hidden border border-gray-300">
+            <span className="text-sm text-stone-700 font-medium">Type :</span>
+            <div className="flex rounded-lg overflow-hidden border border-stone-300">
               {(['conductor', 'semiconductor', 'insulator'] as const).map((m) => (
                 <button
                   key={m}
                   onClick={() => setMaterialType(m)}
                   className={`px-3 py-1.5 text-sm font-medium transition-colors ${
                     materialType === m
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-white text-gray-700 hover:bg-gray-50'
+                      ? 'bg-gold-600 text-white'
+                      : 'bg-white text-stone-700 hover:bg-stone-50'
                   }`}
                 >
                   {m === 'conductor' ? 'Conducteur' : m === 'semiconductor' ? 'Semi-cond.' : 'Isolant'}
@@ -317,12 +317,12 @@ export function EnergyBandsSimulator() {
       <div className="space-y-2">
         <CollapsiblePanel
           title="1. Du niveau discret à la bande"
-          borderColor="border-blue-500"
-          bgColor="bg-blue-50"
-          textColor="text-blue-800"
+          borderColor="border-gold-500"
+          bgColor="bg-gold-50"
+          textColor="text-gold-800"
           defaultOpen
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Un atome isolé possède des niveaux d&apos;énergie <strong>discrets</strong>.
             Lorsque <InlineMath math={`N`} /> atomes identiques se rapprochent pour former
             un solide, le principe de Pauli interdit que leurs électrons occupent les
@@ -330,10 +330,10 @@ export function EnergyBandsSimulator() {
             <InlineMath math={`N`} /> niveaux très proches qui forment, pour{' '}
             <InlineMath math={`N \\sim 10^{23}`} />, une <strong>bande continue</strong>.
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`w(d) \\sim w_0\\,e^{-d/d_0}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             La largeur <InlineMath math={`w`} /> de chaque bande croît avec le
             recouvrement des orbitales, donc décroît exponentiellement avec la distance
             interatomique.
@@ -342,18 +342,18 @@ export function EnergyBandsSimulator() {
 
         <CollapsiblePanel
           title="2. Théorème de Bloch"
-          borderColor="border-violet-500"
-          bgColor="bg-violet-50"
-          textColor="text-violet-800"
+          borderColor="border-prune-500"
+          bgColor="bg-prune-50"
+          textColor="text-prune-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Dans un potentiel périodique de période <InlineMath math={`\\mathbf{R}`} />,
             les états électroniques sont de la forme (<strong>Bloch, 1928</strong>) :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`\\psi_{n\\mathbf{k}}(\\mathbf{r}) = e^{i\\mathbf{k}\\cdot\\mathbf{r}}\\,u_{n\\mathbf{k}}(\\mathbf{r})`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             <InlineMath math={`u_{n\\mathbf{k}}`} /> est périodique comme le réseau, et{' '}
             <InlineMath math={`\\mathbf{k}`} /> parcourt la première zone de Brillouin.
             Les énergies <InlineMath math={`E_n(\\mathbf{k})`} /> forment la{' '}
@@ -363,28 +363,28 @@ export function EnergyBandsSimulator() {
 
         <CollapsiblePanel
           title="3. Bande de valence, bande de conduction, gap"
-          borderColor="border-green-500"
-          bgColor="bg-green-50"
-          textColor="text-green-800"
+          borderColor="border-olive-500"
+          bgColor="bg-olive-50"
+          textColor="text-olive-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             À T = 0 K, les électrons remplissent les bandes en respectant Pauli. La
             dernière bande pleine est la <strong>bande de valence</strong>, la première
             vide (ou partiellement remplie) est la <strong>bande de conduction</strong>.
             L&apos;écart entre elles est la <strong>bande interdite</strong> ou gap{' '}
             <InlineMath math={`E_g`} />.
           </p>
-          <ul className="list-disc list-inside text-gray-700 space-y-1">
+          <ul className="list-disc list-inside text-stone-700 space-y-1">
             <li>
-              <strong className="text-yellow-700">Conducteur</strong> : bandes se
+              <strong className="text-ocre-700">Conducteur</strong> : bandes se
               recouvrent, électrons libres de circuler (ex. Cu, Na).
             </li>
             <li>
-              <strong className="text-red-700">Isolant</strong> : gap large (
+              <strong className="text-brun-700">Isolant</strong> : gap large (
               <InlineMath math={`E_g > 3`} /> eV), aucun porteur thermique (ex. diamant).
             </li>
             <li>
-              <strong className="text-blue-700">Semi-conducteur</strong> : gap modéré
+              <strong className="text-gold-700">Semi-conducteur</strong> : gap modéré
               (<InlineMath math={`E_g \\sim 0.5 - 2`} /> eV), conduction activée
               thermiquement ou par dopage (Si, Ge, GaAs).
             </li>
@@ -393,11 +393,11 @@ export function EnergyBandsSimulator() {
 
         <CollapsiblePanel
           title="4. Applications"
-          borderColor="border-orange-500"
-          bgColor="bg-orange-50"
-          textColor="text-orange-800"
+          borderColor="border-terre-500"
+          bgColor="bg-terre-50"
+          textColor="text-terre-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             La théorie des bandes explique la conductivité électrique, la couleur des
             matériaux, l&apos;effet photoélectrique dans les solides, et surtout fonde
             toute l&apos;électronique moderne : diode, transistor, LED, cellule

@@ -292,15 +292,15 @@ export function FissionSimulator() {
     }
 
     // --- Draw ---
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.fillRect(0, 0, W, H);
 
     // Flashes
     for (const f of flashesRef.current) {
       const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r);
-      grad.addColorStop(0, `rgba(253, 224, 71, ${f.opacity})`);
-      grad.addColorStop(0.5, `rgba(251, 146, 60, ${f.opacity * 0.5})`);
-      grad.addColorStop(1, `rgba(239, 68, 68, 0)`);
+      grad.addColorStop(0, `rgba(235, 205, 56, ${f.opacity})`);
+      grad.addColorStop(0.5, `rgba(220, 140, 59, ${f.opacity * 0.5})`);
+      grad.addColorStop(1, `rgba(202, 104, 74, 0)`);
       ctx.fillStyle = grad;
       ctx.beginPath();
       ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
@@ -309,7 +309,7 @@ export function FissionSimulator() {
 
     // Noyau cible
     for (const n of nucleusRef.current) {
-      ctx.fillStyle = n.proton ? '#ef4444' : '#94a3b8';
+      ctx.fillStyle = n.proton ? '#ca684a' : '#aba6a1';
       ctx.beginPath();
       ctx.arc(n.x, n.y, 4.5, 0, Math.PI * 2);
       ctx.fill();
@@ -318,7 +318,7 @@ export function FissionSimulator() {
     // Fragments
     for (const frag of fragmentsRef.current) {
       for (const n of frag.nucleons) {
-        ctx.fillStyle = n.proton ? '#ef4444' : '#94a3b8';
+        ctx.fillStyle = n.proton ? '#ca684a' : '#aba6a1';
         ctx.beginPath();
         ctx.arc(n.x, n.y, 4, 0, Math.PI * 2);
         ctx.fill();
@@ -327,11 +327,11 @@ export function FissionSimulator() {
 
     // Neutron incident
     if (phase === 'incoming') {
-      ctx.fillStyle = '#22d3ee';
+      ctx.fillStyle = '#678ea9';
       ctx.beginPath();
       ctx.arc(incomingRef.current.x, incomingRef.current.y, 5, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = '#cffafe';
+      ctx.fillStyle = '#c2d2dd';
       ctx.font = '10px sans-serif';
       ctx.textAlign = 'left';
       ctx.fillText('n', incomingRef.current.x + 8, incomingRef.current.y + 3);
@@ -340,7 +340,7 @@ export function FissionSimulator() {
     // Neutrons émis
     for (const n of neutronsRef.current) {
       if (!n.active) continue;
-      ctx.fillStyle = '#22d3ee';
+      ctx.fillStyle = '#678ea9';
       ctx.beginPath();
       ctx.arc(n.x, n.y, 4, 0, Math.PI * 2);
       ctx.fill();
@@ -348,17 +348,17 @@ export function FissionSimulator() {
 
     // Labels
     if (phase === 'idle') {
-      ctx.fillStyle = '#fde68a';
+      ctx.fillStyle = '#f1db6f';
       ctx.font = 'bold 14px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(reaction.target.symbol, cx, cy + 55);
-      ctx.fillStyle = '#94a3b8';
+      ctx.fillStyle = '#aba6a1';
       ctx.font = '12px sans-serif';
       ctx.fillText('Cliquez « Lancer » pour envoyer un neutron', cx, H - 20);
     }
 
     if ((phase === 'fission' || phase === 'chain') && t > 30 && fragmentsRef.current.length >= 2) {
-      ctx.fillStyle = '#fde68a';
+      ctx.fillStyle = '#f1db6f';
       ctx.font = 'bold 12px sans-serif';
       ctx.textAlign = 'center';
       const f1 = fragmentsRef.current[0];
@@ -367,26 +367,26 @@ export function FissionSimulator() {
       ctx.fillText(reaction.frag2.symbol, f2.cx, f2.cy + 40);
 
       // Énergie
-      ctx.fillStyle = '#f59e0b';
+      ctx.fillStyle = '#e8c518';
       ctx.font = 'bold 14px sans-serif';
       ctx.fillText(`Énergie libérée : ${reaction.energy}`, cx, 28);
     }
 
     // Légende
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = '#eae9e8';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillStyle = '#ef4444';
+    ctx.fillStyle = '#ca684a';
     ctx.beginPath(); ctx.arc(14, 16, 5, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = '#eae9e8';
     ctx.fillText('Proton', 24, 20);
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.beginPath(); ctx.arc(14, 34, 5, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = '#eae9e8';
     ctx.fillText('Neutron', 24, 38);
-    ctx.fillStyle = '#22d3ee';
+    ctx.fillStyle = '#678ea9';
     ctx.beginPath(); ctx.arc(14, 52, 5, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = '#eae9e8';
     ctx.fillText('n incident/émis', 24, 56);
 
     animIdRef.current = requestAnimationFrame(step);
@@ -403,8 +403,8 @@ export function FissionSimulator() {
   return (
     <section className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-gray-900">Fission nucléaire</h2>
-        <p className="text-gray-600">
+        <h2 className="text-3xl font-bold text-stone-900">Fission nucléaire</h2>
+        <p className="text-stone-600">
           Capture d&apos;un neutron et fragmentation du noyau lourd
         </p>
       </div>
@@ -413,21 +413,21 @@ export function FissionSimulator() {
         <canvas
           ref={canvasRef}
           width={W} height={H}
-          className="w-full max-w-[700px] mx-auto rounded-lg border border-gray-300"
+          className="w-full max-w-[700px] mx-auto rounded-lg border border-stone-300"
         />
 
         <div className="w-full max-w-[700px] space-y-3">
           {/* Réaction */}
           <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-sm text-gray-700 font-medium">Réaction :</span>
+            <span className="text-sm text-stone-700 font-medium">Réaction :</span>
             {REACTIONS.map((r, i) => (
               <button
                 key={r.id}
                 onClick={() => { setReactionIdx(i); }}
                 className={`px-3 py-1.5 text-xs rounded border font-medium transition-colors ${
                   reactionIdx === i
-                    ? 'bg-orange-600 text-white border-orange-600'
-                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                    ? 'bg-terre-600 text-white border-terre-600'
+                    : 'bg-white text-stone-700 border-stone-300 hover:bg-stone-50'
                 }`}
               >
                 {r.label}
@@ -438,20 +438,20 @@ export function FissionSimulator() {
           <div className="flex items-center gap-3">
             <button
               onClick={fireFission}
-              className="px-5 py-2 text-sm font-semibold bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              className="px-5 py-2 text-sm font-semibold bg-brun-600 text-white rounded-lg hover:bg-brun-700 transition-colors"
             >
               Lancer un neutron
             </button>
             <button
               onClick={reset}
-              className="px-4 py-2 text-sm font-medium bg-gray-100 hover:bg-gray-200 rounded-lg border border-gray-300"
+              className="px-4 py-2 text-sm font-medium bg-stone-100 hover:bg-stone-200 rounded-lg border border-stone-300"
             >
               ↺ Réinitialiser
             </button>
           </div>
 
           {/* Équation */}
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={reaction.latex} />
           </div>
         </div>
@@ -461,39 +461,39 @@ export function FissionSimulator() {
       <div className="space-y-2">
         <CollapsiblePanel
           title="1. Principe de la fission"
-          borderColor="border-red-500"
-          bgColor="bg-red-50"
-          textColor="text-red-800"
+          borderColor="border-brun-500"
+          bgColor="bg-brun-50"
+          textColor="text-brun-800"
           defaultOpen
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Un neutron lent (<strong>thermique</strong>, ~0,025 eV) est capturé par un noyau
             lourd fissile (²³⁵U, ²³⁹Pu). Le noyau composé formé est instable : il se
             déforme et se scinde en <strong>deux fragments</strong> de masse intermédiaire,
             tout en libérant 2 à 3 neutrons et une énergie cinétique considérable.
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`^{235}_{\\,92}\\text{U} + n \\to \\text{Fragments} + 2\\text{-}3\\,n + \\sim 200\\,\\text{MeV}`} />
           </div>
         </CollapsiblePanel>
 
         <CollapsiblePanel
           title="2. Bilan énergétique"
-          borderColor="border-yellow-500"
-          bgColor="bg-yellow-50"
-          textColor="text-yellow-800"
+          borderColor="border-ocre-500"
+          bgColor="bg-ocre-50"
+          textColor="text-ocre-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             L&apos;énergie libérée provient du <strong>défaut de masse</strong>{' '}
             (<InlineMath math="E = \Delta m \cdot c^2" />). L&apos;énergie de liaison par
             nucléon est plus grande pour les fragments (~8,5 MeV/A) que pour l&apos;uranium
             (~7,6 MeV/A). La différence est convertie en énergie cinétique des fragments,
             des neutrons et des rayonnements γ.
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`\\Delta E = \\left[m(\\text{U}) + m(n) - m(\\text{frag}_1) - m(\\text{frag}_2) - k\\,m(n)\\right]\\,c^2`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             1 g d&apos;²³⁵U fissionné libère environ <strong>82 TJ</strong>, soit
             l&apos;équivalent de 20 tonnes de TNT.
           </p>
@@ -501,19 +501,19 @@ export function FissionSimulator() {
 
         <CollapsiblePanel
           title="3. Réaction en chaîne"
-          borderColor="border-orange-500"
-          bgColor="bg-orange-50"
-          textColor="text-orange-800"
+          borderColor="border-terre-500"
+          bgColor="bg-terre-50"
+          textColor="text-terre-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Chaque fission libère 2 à 3 neutrons. Si au moins un de ces neutrons provoque
             une nouvelle fission, la réaction s&apos;auto-entretient : c&apos;est la{' '}
             <strong>réaction en chaîne</strong>. Le facteur de multiplication est :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`k = \\frac{\\text{neutrons génération } n+1}{\\text{neutrons génération } n}`} />
           </div>
-          <ul className="list-disc list-inside text-gray-700 space-y-1">
+          <ul className="list-disc list-inside text-stone-700 space-y-1">
             <li><InlineMath math="k < 1" /> : réaction sous-critique (s&apos;éteint)</li>
             <li><InlineMath math="k = 1" /> : réaction critique (régime stationnaire — <strong>réacteur</strong>)</li>
             <li><InlineMath math="k > 1" /> : réaction surcritique (emballement — <strong>bombe</strong>)</li>
@@ -522,16 +522,16 @@ export function FissionSimulator() {
 
         <CollapsiblePanel
           title="4. Applications"
-          borderColor="border-gray-500"
-          bgColor="bg-gray-50"
-          textColor="text-gray-700"
+          borderColor="border-stone-500"
+          bgColor="bg-stone-50"
+          textColor="text-stone-700"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             <strong>Centrales nucléaires</strong> : fission contrôlée (k = 1) avec modérateur
             (eau, graphite) et barres de contrôle (cadmium, bore) pour absorber les neutrons
             en excès. ~440 réacteurs dans le monde, ~10 % de l&apos;électricité mondiale.
           </p>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             <strong>Sous-marins et porte-avions</strong> : propulsion nucléaire compacte.
             <strong> Médecine</strong> : production de radio-isotopes (⁹⁹Mo → ⁹⁹ᵐTc) dans
             les réacteurs de recherche.

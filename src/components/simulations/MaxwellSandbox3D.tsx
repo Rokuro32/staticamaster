@@ -89,7 +89,7 @@ function MagneticRing({
     <mesh position={center.toArray()} quaternion={quaternion}>
       <torusGeometry args={[radius, 0.02, 8, 32]} />
       <meshStandardMaterial
-        color="#3b82f6"
+        color="#c29851"
         transparent
         opacity={opacity}
         side={THREE.DoubleSide}
@@ -130,7 +130,7 @@ function Charge3D({
       <mesh scale={[1.5, 1.5, 1.5]}>
         <sphereGeometry args={[0.4, 16, 16]} />
         <meshStandardMaterial
-          color={charge.q > 0 ? '#ef4444' : '#3b82f6'}
+          color={charge.q > 0 ? '#ca684a' : '#c29851'}
           transparent
           opacity={0.2}
         />
@@ -145,8 +145,8 @@ function Charge3D({
       >
         <sphereGeometry args={[0.35, 32, 32]} />
         <meshStandardMaterial
-          color={charge.q > 0 ? '#ef4444' : '#3b82f6'}
-          emissive={charge.q > 0 ? '#ef4444' : '#3b82f6'}
+          color={charge.q > 0 ? '#ca684a' : '#c29851'}
+          emissive={charge.q > 0 ? '#ca684a' : '#c29851'}
           emissiveIntensity={hovered ? 0.5 : 0.2}
         />
       </mesh>
@@ -155,7 +155,7 @@ function Charge3D({
       {isSelected && (
         <mesh rotation={[Math.PI / 2, 0, 0]}>
           <torusGeometry args={[0.5, 0.03, 8, 32]} />
-          <meshStandardMaterial color="#fbbf24" emissive="#fbbf24" emissiveIntensity={0.5} />
+          <meshStandardMaterial color="#e8c61a" emissive="#e8c61a" emissiveIntensity={0.5} />
         </mesh>
       )}
 
@@ -239,7 +239,7 @@ function ElectricField({
           start={arrow.start}
           direction={arrow.direction}
           magnitude={arrow.magnitude}
-          color="#ef4444"
+          color="#ca684a"
         />
       ))}
     </group>
@@ -352,7 +352,7 @@ function RadiationWaves({
         <mesh key={idx} position={wave.center.toArray()}>
           <sphereGeometry args={[wave.radius, 32, 32]} />
           <meshStandardMaterial
-            color="#a855f7"
+            color="#b37895"
             transparent
             opacity={wave.opacity}
             side={THREE.BackSide}
@@ -372,19 +372,19 @@ function Grid3D() {
       <gridHelper args={[12, 12, '#333', '#222']} />
 
       {/* Axes */}
-      <Line points={[[0, 0, 0], [6, 0, 0]]} color="#ef4444" lineWidth={2} />
-      <Line points={[[0, 0, 0], [0, 6, 0]]} color="#22c55e" lineWidth={2} />
-      <Line points={[[0, 0, 0], [0, 0, 6]]} color="#3b82f6" lineWidth={2} />
+      <Line points={[[0, 0, 0], [6, 0, 0]]} color="#ca684a" lineWidth={2} />
+      <Line points={[[0, 0, 0], [0, 6, 0]]} color="#91a443" lineWidth={2} />
+      <Line points={[[0, 0, 0], [0, 0, 6]]} color="#c29851" lineWidth={2} />
 
       {/* Axis labels */}
       <Html position={[6.3, 0, 0]} center>
-        <div style={{ color: '#ef4444', fontWeight: 'bold' }}>X</div>
+        <div style={{ color: '#ca684a', fontWeight: 'bold' }}>X</div>
       </Html>
       <Html position={[0, 6.3, 0]} center>
-        <div style={{ color: '#22c55e', fontWeight: 'bold' }}>Y</div>
+        <div style={{ color: '#91a443', fontWeight: 'bold' }}>Y</div>
       </Html>
       <Html position={[0, 0, 6.3]} center>
-        <div style={{ color: '#3b82f6', fontWeight: 'bold' }}>Z</div>
+        <div style={{ color: '#c29851', fontWeight: 'bold' }}>Z</div>
       </Html>
     </group>
   );
@@ -556,9 +556,9 @@ export default function MaxwellSandbox3D({
 
   if (!mounted) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-slate-900 text-slate-400 rounded-xl">
+      <div className="w-full h-full flex items-center justify-center bg-stone-900 text-stone-400 rounded-xl">
         <div className="text-center">
-          <div className="animate-spin w-8 h-8 border-4 border-violet-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+          <div className="animate-spin w-8 h-8 border-4 border-prune-500 border-t-transparent rounded-full mx-auto mb-2"></div>
           Chargement de la vue 3D...
         </div>
       </div>
@@ -569,7 +569,7 @@ export default function MaxwellSandbox3D({
     <div className="w-full h-full relative">
       <Canvas
         camera={{ position: [8, 6, 8], fov: 50 }}
-        style={{ background: 'linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%)' }}
+        style={{ background: 'linear-gradient(180deg, #1e1d1b 0%, #4b3a1b 100%)' }}
       >
         <Scene
           charges={charges}
@@ -588,27 +588,27 @@ export default function MaxwellSandbox3D({
       <div className="absolute bottom-4 left-4 flex gap-2">
         <button
           onClick={() => addCharge(true)}
-          className="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-medium shadow-lg"
+          className="px-3 py-2 bg-brun-500 text-white rounded-lg hover:bg-brun-600 transition-colors text-sm font-medium shadow-lg"
         >
           + Charge +
         </button>
         <button
           onClick={() => addCharge(false)}
-          className="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium shadow-lg"
+          className="px-3 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors text-sm font-medium shadow-lg"
         >
           + Charge −
         </button>
         {selectedChargeId !== null && (
           <button
             onClick={removeCharge}
-            className="px-3 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm font-medium shadow-lg"
+            className="px-3 py-2 bg-stone-600 text-white rounded-lg hover:bg-stone-700 transition-colors text-sm font-medium shadow-lg"
           >
             Supprimer
           </button>
         )}
         <button
           onClick={clearCharges}
-          className="px-3 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors text-sm font-medium shadow-lg"
+          className="px-3 py-2 bg-stone-500 text-white rounded-lg hover:bg-stone-600 transition-colors text-sm font-medium shadow-lg"
         >
           Effacer tout
         </button>
@@ -617,16 +617,16 @@ export default function MaxwellSandbox3D({
       {/* Legend */}
       <div className="absolute top-4 right-4 bg-black/50 rounded-lg p-3 text-white text-sm">
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+          <div className="w-3 h-3 bg-brun-500 rounded-full"></div>
           <span>Champ E</span>
         </div>
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+          <div className="w-3 h-3 bg-gold-500 rounded-full"></div>
           <span>Champ B</span>
         </div>
         {chargeMode === 'dipole' && (
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+            <div className="w-3 h-3 bg-prune-500 rounded-full"></div>
             <span>Rayonnement</span>
           </div>
         )}

@@ -40,6 +40,15 @@
     --surface-text: #1c1b18;
   }
 
+  /* Curseurs et cases à cocher natifs : l'accent par défaut du navigateur est
+     bleu. On le pose sur l'or de la marque, dans @layer base pour que les
+     utilitaires accent-* de Tailwind puissent toujours le surcharger. */
+  input[type='range'],
+  input[type='checkbox'],
+  input[type='radio'] {
+    accent-color: #b79c5f;
+  }
+
   ::selection {
     background: rgba(201, 179, 124, 0.32);
   }

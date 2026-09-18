@@ -152,7 +152,7 @@ export function SoundWaveSimulator() {
     const centerY = height / 2;
 
     // Clear canvas
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.fillRect(0, 0, width, height);
 
     if (mode === 'doppler') {
@@ -161,7 +161,7 @@ export function SoundWaveSimulator() {
       const observerBackX = 80;
 
       // Draw observers
-      ctx.fillStyle = '#22c55e';
+      ctx.fillStyle = '#91a443';
       ctx.beginPath();
       ctx.arc(observerFrontX, centerY, 15, 0, 2 * Math.PI);
       ctx.fill();
@@ -170,7 +170,7 @@ export function SoundWaveSimulator() {
       ctx.textAlign = 'center';
       ctx.fillText('O₁', observerFrontX, centerY + 4);
 
-      ctx.fillStyle = '#f59e0b';
+      ctx.fillStyle = '#e8c518';
       ctx.beginPath();
       ctx.arc(observerBackX, centerY, 15, 0, 2 * Math.PI);
       ctx.fill();
@@ -190,7 +190,7 @@ export function SoundWaveSimulator() {
 
         if (baseRadius > 0 && baseRadius < 500) {
           const alpha = Math.max(0, 1 - baseRadius / 400);
-          ctx.strokeStyle = `rgba(147, 197, 253, ${alpha * 0.6})`;
+          ctx.strokeStyle = `rgba(216, 190, 144, ${alpha * 0.6})`;
           ctx.lineWidth = 2;
           ctx.beginPath();
           ctx.arc(emitX, centerY, baseRadius, 0, 2 * Math.PI);
@@ -199,7 +199,7 @@ export function SoundWaveSimulator() {
       }
 
       // Draw source
-      ctx.fillStyle = '#ef4444';
+      ctx.fillStyle = '#ca684a';
       ctx.beginPath();
       ctx.arc(srcX, centerY, 20, 0, 2 * Math.PI);
       ctx.fill();
@@ -213,7 +213,7 @@ export function SoundWaveSimulator() {
       if (sourceSpeed !== 0) {
         const arrowLen = Math.min(80, Math.abs(sourceSpeed) * 0.2);
         const direction = sourceSpeed > 0 ? 1 : -1;
-        ctx.strokeStyle = '#fbbf24';
+        ctx.strokeStyle = '#e8c61a';
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(srcX, centerY - 35);
@@ -221,7 +221,7 @@ export function SoundWaveSimulator() {
         ctx.stroke();
 
         // Arrow head
-        ctx.fillStyle = '#fbbf24';
+        ctx.fillStyle = '#e8c61a';
         ctx.beginPath();
         ctx.moveTo(srcX + arrowLen * direction, centerY - 35);
         ctx.lineTo(srcX + (arrowLen - 10) * direction, centerY - 40);
@@ -229,7 +229,7 @@ export function SoundWaveSimulator() {
         ctx.closePath();
         ctx.fill();
 
-        ctx.fillStyle = '#fbbf24';
+        ctx.fillStyle = '#e8c61a';
         ctx.font = '12px Inter';
         ctx.fillText(`v = ${sourceSpeed} m/s`, srcX + arrowLen * direction * 0.5, centerY - 45);
       }
@@ -238,18 +238,18 @@ export function SoundWaveSimulator() {
       const freqFront = getDopplerFrequency('front');
       const freqBack = getDopplerFrequency('back');
 
-      ctx.fillStyle = '#22c55e';
+      ctx.fillStyle = '#91a443';
       ctx.font = 'bold 14px Inter';
       ctx.textAlign = 'center';
       ctx.fillText(`f = ${freqFront.toFixed(0)} Hz`, observerFrontX, centerY + 40);
       ctx.fillText(freqFront > sourceFrequency ? '↑ Plus aigu' : (freqFront < sourceFrequency ? '↓ Plus grave' : ''), observerFrontX, centerY + 55);
 
-      ctx.fillStyle = '#f59e0b';
+      ctx.fillStyle = '#e8c518';
       ctx.fillText(`f = ${freqBack.toFixed(0)} Hz`, observerBackX, centerY + 40);
       ctx.fillText(freqBack < sourceFrequency ? '↓ Plus grave' : (freqBack > sourceFrequency ? '↑ Plus aigu' : ''), observerBackX, centerY + 55);
 
       // Source frequency
-      ctx.fillStyle = '#ef4444';
+      ctx.fillStyle = '#ca684a';
       ctx.fillText(`f₀ = ${sourceFrequency} Hz`, srcX, centerY + 45);
 
     } else if (mode === 'mach') {
@@ -260,7 +260,7 @@ export function SoundWaveSimulator() {
         const coneAngleRad = Math.asin(1 / machNumber);
 
         // Shock wave cone
-        ctx.strokeStyle = '#ef4444';
+        ctx.strokeStyle = '#ca684a';
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(srcX, centerY);
@@ -273,7 +273,7 @@ export function SoundWaveSimulator() {
         ctx.stroke();
 
         // Fill cone area
-        ctx.fillStyle = 'rgba(239, 68, 68, 0.1)';
+        ctx.fillStyle = 'rgba(202, 104, 74, 0.1)';
         ctx.beginPath();
         ctx.moveTo(srcX, centerY);
         ctx.lineTo(srcX - 600, centerY - 600 * Math.tan(coneAngleRad));
@@ -287,7 +287,7 @@ export function SoundWaveSimulator() {
           const startAngle = Math.PI - coneAngleRad;
           const endAngle = Math.PI + coneAngleRad;
 
-          ctx.strokeStyle = `rgba(147, 197, 253, ${0.5 - i * 0.08})`;
+          ctx.strokeStyle = `rgba(216, 190, 144, ${0.5 - i * 0.08})`;
           ctx.lineWidth = 2;
           ctx.beginPath();
           ctx.arc(srcX - r * 0.5, centerY, r, startAngle, endAngle);
@@ -295,7 +295,7 @@ export function SoundWaveSimulator() {
         }
 
         // Angle annotation
-        ctx.strokeStyle = '#fbbf24';
+        ctx.strokeStyle = '#e8c61a';
         ctx.lineWidth = 1;
         ctx.setLineDash([5, 5]);
         ctx.beginPath();
@@ -308,7 +308,7 @@ export function SoundWaveSimulator() {
         ctx.arc(srcX, centerY, 50, Math.PI, Math.PI + coneAngleRad, true);
         ctx.stroke();
 
-        ctx.fillStyle = '#fbbf24';
+        ctx.fillStyle = '#e8c61a';
         ctx.font = '14px Inter';
         ctx.fillText(`θ = ${machAngle.toFixed(1)}°`, srcX - 80, centerY - 30);
 
@@ -319,7 +319,7 @@ export function SoundWaveSimulator() {
           const emitX = srcX - machSpeed * 0.3 * (i * 0.05);
 
           if (radius < 400) {
-            ctx.strokeStyle = `rgba(147, 197, 253, ${0.6 - i * 0.08})`;
+            ctx.strokeStyle = `rgba(216, 190, 144, ${0.6 - i * 0.08})`;
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.arc(emitX, centerY, radius, 0, 2 * Math.PI);
@@ -329,7 +329,7 @@ export function SoundWaveSimulator() {
       }
 
       // Draw source (jet/object)
-      ctx.fillStyle = '#8b5cf6';
+      ctx.fillStyle = '#b57b98';
       ctx.beginPath();
       ctx.moveTo(srcX + 30, centerY);
       ctx.lineTo(srcX - 20, centerY - 15);
@@ -345,19 +345,19 @@ export function SoundWaveSimulator() {
       ctx.fillText(`Mach ${machNumber.toFixed(2)}`, srcX, centerY - 55);
 
       // Regime label
-      ctx.fillStyle = machNumber >= 1 ? '#ef4444' : '#22c55e';
+      ctx.fillStyle = machNumber >= 1 ? '#ca684a' : '#91a443';
       ctx.font = 'bold 16px Inter';
       ctx.fillText(machNumber >= 1 ? 'SUPERSONIQUE' : 'SUBSONIQUE', srcX, centerY + 50);
 
       if (machNumber >= 1) {
-        ctx.fillStyle = '#fbbf24';
+        ctx.fillStyle = '#e8c61a';
         ctx.font = '12px Inter';
         ctx.fillText('Onde de choc (bang sonique)', srcX, centerY + 70);
       }
 
     } else if (mode === 'intensity') {
       // Draw source
-      ctx.fillStyle = '#ef4444';
+      ctx.fillStyle = '#ca684a';
       ctx.beginPath();
       ctx.arc(centerX, centerY, 25, 0, 2 * Math.PI);
       ctx.fill();
@@ -376,7 +376,7 @@ export function SoundWaveSimulator() {
         const intensityAtR = power / (4 * Math.PI * (r / 50) * (r / 50));
         const alpha = Math.min(1, intensityAtR * 50);
 
-        ctx.strokeStyle = `rgba(147, 197, 253, ${alpha * 0.4})`;
+        ctx.strokeStyle = `rgba(216, 190, 144, ${alpha * 0.4})`;
         ctx.lineWidth = 2 + alpha * 3;
         ctx.beginPath();
         ctx.arc(centerX, centerY, r, 0, 2 * Math.PI);
@@ -384,7 +384,7 @@ export function SoundWaveSimulator() {
 
         // Distance label
         if (i % 2 === 0) {
-          ctx.fillStyle = '#94a3b8';
+          ctx.fillStyle = '#aba6a1';
           ctx.font = '11px Inter';
           ctx.fillText(`${(r / 50).toFixed(1)} m`, centerX + r + 15, centerY);
         }
@@ -392,13 +392,13 @@ export function SoundWaveSimulator() {
 
       // Draw measurement point
       const measureX = centerX + distance * 50;
-      ctx.fillStyle = '#22c55e';
+      ctx.fillStyle = '#91a443';
       ctx.beginPath();
       ctx.arc(measureX, centerY, 12, 0, 2 * Math.PI);
       ctx.fill();
 
       // Dashed line to measurement
-      ctx.strokeStyle = '#22c55e';
+      ctx.strokeStyle = '#91a443';
       ctx.lineWidth = 2;
       ctx.setLineDash([5, 5]);
       ctx.beginPath();
@@ -408,7 +408,7 @@ export function SoundWaveSimulator() {
       ctx.setLineDash([]);
 
       // Distance label
-      ctx.fillStyle = '#22c55e';
+      ctx.fillStyle = '#91a443';
       ctx.font = 'bold 14px Inter';
       ctx.fillText(`r = ${distance.toFixed(1)} m`, (centerX + measureX) / 2, centerY - 15);
 
@@ -419,7 +419,7 @@ export function SoundWaveSimulator() {
       ctx.fillText(`${intensityDB.toFixed(1)} dB`, measureX, centerY + 60);
 
       // Power label
-      ctx.fillStyle = '#ef4444';
+      ctx.fillStyle = '#ca684a';
       ctx.font = '14px Inter';
       ctx.fillText(`P = ${power.toFixed(1)} W`, centerX, centerY + 50);
 
@@ -428,15 +428,15 @@ export function SoundWaveSimulator() {
       const barY = height - 40;
       const barWidth = width - 100;
       const gradient = ctx.createLinearGradient(barX, 0, barX + barWidth, 0);
-      gradient.addColorStop(0, '#22c55e');
-      gradient.addColorStop(0.5, '#fbbf24');
-      gradient.addColorStop(1, '#ef4444');
+      gradient.addColorStop(0, '#91a443');
+      gradient.addColorStop(0.5, '#e8c61a');
+      gradient.addColorStop(1, '#ca684a');
 
       ctx.fillStyle = gradient;
       ctx.fillRect(barX, barY, barWidth, 15);
 
       // dB scale
-      ctx.fillStyle = '#94a3b8';
+      ctx.fillStyle = '#aba6a1';
       ctx.font = '10px Inter';
       ctx.fillText('0 dB', barX, barY + 28);
       ctx.fillText('60 dB', barX + barWidth / 2, barY + 28);
@@ -458,16 +458,16 @@ export function SoundWaveSimulator() {
       // Draw medium representation
       let bgColor, particleColor, mediumName;
       if (medium === 'air') {
-        bgColor = 'rgba(147, 197, 253, 0.1)';
-        particleColor = '#93c5fd';
+        bgColor = 'rgba(216, 190, 144, 0.1)';
+        particleColor = '#d8be90';
         mediumName = 'Air';
       } else if (medium === 'water') {
-        bgColor = 'rgba(34, 211, 238, 0.2)';
-        particleColor = '#22d3ee';
+        bgColor = 'rgba(103, 142, 169, 0.2)';
+        particleColor = '#678ea9';
         mediumName = 'Eau';
       } else {
-        bgColor = 'rgba(156, 163, 175, 0.3)';
-        particleColor = '#9ca3af';
+        bgColor = 'rgba(170, 166, 161, 0.3)';
+        particleColor = '#aaa6a1';
         mediumName = 'Acier';
       }
 
@@ -491,10 +491,10 @@ export function SoundWaveSimulator() {
 
       // Wave propagation visualization
       const waveX = 50 + ((time * calculatedSpeed * 0.3) % (width - 100));
-      ctx.fillStyle = 'rgba(239, 68, 68, 0.3)';
+      ctx.fillStyle = 'rgba(202, 104, 74, 0.3)';
       ctx.fillRect(waveX - 20, 50, 40, height - 100);
 
-      ctx.strokeStyle = '#ef4444';
+      ctx.strokeStyle = '#ca684a';
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(waveX, 50);
@@ -514,7 +514,7 @@ export function SoundWaveSimulator() {
 
       // Temperature effect (for air)
       if (medium === 'air') {
-        ctx.fillStyle = '#fbbf24';
+        ctx.fillStyle = '#e8c61a';
         ctx.font = '14px Inter';
         ctx.fillText(`T = ${temperature}°C`, centerX, height - 60);
       }
@@ -523,18 +523,18 @@ export function SoundWaveSimulator() {
       const barY = height - 90;
       const maxSpeed = 6000;
 
-      ctx.fillStyle = '#1e293b';
+      ctx.fillStyle = '#2f2d2a';
       ctx.fillRect(80, barY, width - 160, 20);
 
       const speedRatio = calculatedSpeed / maxSpeed;
       const gradient = ctx.createLinearGradient(80, 0, 80 + (width - 160) * speedRatio, 0);
-      gradient.addColorStop(0, '#22c55e');
-      gradient.addColorStop(1, '#3b82f6');
+      gradient.addColorStop(0, '#91a443');
+      gradient.addColorStop(1, '#c29851');
       ctx.fillStyle = gradient;
       ctx.fillRect(80, barY, (width - 160) * speedRatio, 20);
 
       // Speed markers
-      ctx.fillStyle = '#64748b';
+      ctx.fillStyle = '#7e7871';
       ctx.font = '10px Inter';
       ctx.textAlign = 'left';
       ctx.fillText('0', 80, barY + 32);
@@ -601,7 +601,7 @@ export function SoundWaveSimulator() {
             const alpha = Math.max(0, 0.4 - baseRadius / 1500);
 
             // Speaker 1 waves
-            ctx.strokeStyle = `rgba(147, 197, 253, ${alpha})`;
+            ctx.strokeStyle = `rgba(216, 190, 144, ${alpha})`;
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.arc(srcX, speaker1Y, baseRadius, -Math.PI / 2, Math.PI / 2);
@@ -611,7 +611,7 @@ export function SoundWaveSimulator() {
             const phaseOffset = (phaseDiff / (2 * Math.PI)) * interferenceWavelength * scale;
             const radius2 = baseRadius - phaseOffset;
             if (radius2 > 0) {
-              ctx.strokeStyle = `rgba(251, 191, 36, ${alpha})`;
+              ctx.strokeStyle = `rgba(232, 198, 26, ${alpha})`;
               ctx.beginPath();
               ctx.arc(srcX, speaker2Y, radius2, -Math.PI / 2, Math.PI / 2);
               ctx.stroke();
@@ -621,13 +621,13 @@ export function SoundWaveSimulator() {
       }
 
       // Draw speakers
-      ctx.fillStyle = '#3b82f6';
+      ctx.fillStyle = '#c29851';
       ctx.fillRect(srcX - 25, speaker1Y - 20, 30, 40);
-      ctx.fillStyle = '#f59e0b';
+      ctx.fillStyle = '#e8c518';
       ctx.fillRect(srcX - 25, speaker2Y - 20, 30, 40);
 
       // Speaker cones
-      ctx.fillStyle = '#1e293b';
+      ctx.fillStyle = '#2f2d2a';
       ctx.beginPath();
       ctx.arc(srcX - 10, speaker1Y, 12, 0, 2 * Math.PI);
       ctx.fill();
@@ -643,7 +643,7 @@ export function SoundWaveSimulator() {
       ctx.fillText('S₂', srcX - 10, speaker2Y + 40);
 
       // Distance annotation
-      ctx.strokeStyle = '#94a3b8';
+      ctx.strokeStyle = '#aba6a1';
       ctx.lineWidth = 1;
       ctx.setLineDash([5, 5]);
       ctx.beginPath();
@@ -652,7 +652,7 @@ export function SoundWaveSimulator() {
       ctx.stroke();
       ctx.setLineDash([]);
 
-      ctx.fillStyle = '#94a3b8';
+      ctx.fillStyle = '#aba6a1';
       ctx.font = '12px Inter';
       ctx.textAlign = 'right';
       ctx.fillText(`d = ${speakerDistance.toFixed(1)} m`, srcX - 45, centerY);
@@ -662,7 +662,7 @@ export function SoundWaveSimulator() {
       const obsY = centerY - observerY * scale;
 
       // Path lines to observer
-      ctx.strokeStyle = 'rgba(147, 197, 253, 0.5)';
+      ctx.strokeStyle = 'rgba(216, 190, 144, 0.5)';
       ctx.lineWidth = 1;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
@@ -670,7 +670,7 @@ export function SoundWaveSimulator() {
       ctx.lineTo(obsX, obsY);
       ctx.stroke();
 
-      ctx.strokeStyle = 'rgba(251, 191, 36, 0.5)';
+      ctx.strokeStyle = 'rgba(232, 198, 26, 0.5)';
       ctx.beginPath();
       ctx.moveTo(srcX, speaker2Y);
       ctx.lineTo(obsX, obsY);
@@ -679,8 +679,8 @@ export function SoundWaveSimulator() {
 
       // Observer point
       const interference = getInterference(observerX, observerY);
-      const obsColor = interference.isConstructive ? '#22c55e' :
-                       interference.isDestructive ? '#ef4444' : '#8b5cf6';
+      const obsColor = interference.isConstructive ? '#91a443' :
+                       interference.isDestructive ? '#ca684a' : '#b57b98';
 
       ctx.fillStyle = obsColor;
       ctx.beginPath();
@@ -693,29 +693,29 @@ export function SoundWaveSimulator() {
       ctx.fillText('P', obsX, obsY + 4);
 
       // Path lengths display
-      ctx.fillStyle = '#93c5fd';
+      ctx.fillStyle = '#d8be90';
       ctx.font = '11px Inter';
       ctx.textAlign = 'left';
       ctx.fillText(`r₁ = ${interference.r1.toFixed(2)} m`, obsX + 20, obsY - 15);
-      ctx.fillStyle = '#fcd34d';
+      ctx.fillStyle = '#eccf3c';
       ctx.fillText(`r₂ = ${interference.r2.toFixed(2)} m`, obsX + 20, obsY);
       ctx.fillStyle = 'white';
       ctx.fillText(`Δr = ${interference.pathDiff.toFixed(3)} m`, obsX + 20, obsY + 15);
 
       // Legend
-      ctx.fillStyle = '#22c55e';
+      ctx.fillStyle = '#91a443';
       ctx.fillRect(width - 150, 20, 15, 15);
       ctx.fillStyle = 'white';
       ctx.font = '11px Inter';
       ctx.textAlign = 'left';
       ctx.fillText('Constructive', width - 130, 32);
 
-      ctx.fillStyle = '#ef4444';
+      ctx.fillStyle = '#ca684a';
       ctx.fillRect(width - 150, 40, 15, 15);
       ctx.fillStyle = 'white';
       ctx.fillText('Destructive', width - 130, 52);
 
-      ctx.fillStyle = '#94a3b8';
+      ctx.fillStyle = '#aba6a1';
       ctx.font = '12px Inter';
       ctx.fillText(`λ = ${interferenceWavelength.toFixed(2)} m`, width - 150, 75);
     }
@@ -740,10 +740,10 @@ export function SoundWaveSimulator() {
     <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
       {/* Title */}
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <h2 className="text-2xl font-bold text-stone-900 mb-2">
           Ondes sonores
         </h2>
-        <p className="text-gray-600">
+        <p className="text-stone-600">
           Explorez l'effet Doppler, le mur du son et la propagation acoustique
         </p>
       </div>
@@ -754,8 +754,8 @@ export function SoundWaveSimulator() {
           onClick={() => setMode('doppler')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             mode === 'doppler'
-              ? 'bg-violet-600 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-prune-600 text-white'
+              : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
           }`}
         >
           Effet Doppler
@@ -764,8 +764,8 @@ export function SoundWaveSimulator() {
           onClick={() => setMode('mach')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             mode === 'mach'
-              ? 'bg-violet-600 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-prune-600 text-white'
+              : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
           }`}
         >
           Cône de Mach
@@ -774,8 +774,8 @@ export function SoundWaveSimulator() {
           onClick={() => setMode('intensity')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             mode === 'intensity'
-              ? 'bg-violet-600 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-prune-600 text-white'
+              : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
           }`}
         >
           Intensité sonore
@@ -784,8 +784,8 @@ export function SoundWaveSimulator() {
           onClick={() => setMode('speed')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             mode === 'speed'
-              ? 'bg-violet-600 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-prune-600 text-white'
+              : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
           }`}
         >
           Vitesse du son
@@ -794,8 +794,8 @@ export function SoundWaveSimulator() {
           onClick={() => setMode('interference')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             mode === 'interference'
-              ? 'bg-violet-600 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-prune-600 text-white'
+              : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
           }`}
         >
           Interférence
@@ -803,20 +803,20 @@ export function SoundWaveSimulator() {
       </div>
 
       {/* Mathematical Equation */}
-      <div className="bg-violet-50 rounded-lg p-4 text-center">
+      <div className="bg-prune-50 rounded-lg p-4 text-center">
         {mode === 'doppler' && (
           <>
-            <p className="text-sm text-violet-600 mb-2 font-medium">Effet Doppler</p>
+            <p className="text-sm text-prune-600 mb-2 font-medium">Effet Doppler</p>
             <div className="text-lg overflow-x-auto">
               <BlockMath math={`f' = f_0 \\cdot \\frac{v_{son}}{v_{son} \\mp v_{source}}`} />
             </div>
             <div className="mt-2 grid grid-cols-2 gap-4 text-sm">
-              <div className="bg-green-100 rounded p-2">
-                <span className="text-green-700">Approche: </span>
+              <div className="bg-olive-100 rounded p-2">
+                <span className="text-olive-700">Approche: </span>
                 <InlineMath math={`f' = ${freqFront.toFixed(0)} \\text{ Hz}`} />
               </div>
-              <div className="bg-orange-100 rounded p-2">
-                <span className="text-orange-700">Éloignement: </span>
+              <div className="bg-terre-100 rounded p-2">
+                <span className="text-terre-700">Éloignement: </span>
                 <InlineMath math={`f' = ${freqBack.toFixed(0)} \\text{ Hz}`} />
               </div>
             </div>
@@ -824,7 +824,7 @@ export function SoundWaveSimulator() {
         )}
         {mode === 'mach' && (
           <>
-            <p className="text-sm text-violet-600 mb-2 font-medium">Nombre de Mach et cône de choc</p>
+            <p className="text-sm text-prune-600 mb-2 font-medium">Nombre de Mach et cône de choc</p>
             <div className="text-lg overflow-x-auto">
               <BlockMath math={`M = \\frac{v_{objet}}{v_{son}} = \\frac{${machSpeed}}{${soundSpeed}} = ${machNumber.toFixed(2)}`} />
             </div>
@@ -837,7 +837,7 @@ export function SoundWaveSimulator() {
         )}
         {mode === 'intensity' && (
           <>
-            <p className="text-sm text-violet-600 mb-2 font-medium">Intensité sonore</p>
+            <p className="text-sm text-prune-600 mb-2 font-medium">Intensité sonore</p>
             <div className="text-lg overflow-x-auto">
               <BlockMath math={`I = \\frac{P}{4\\pi r^2} = \\frac{${power.toFixed(1)}}{4\\pi \\cdot ${distance.toFixed(1)}^2} = ${intensity.toExponential(2)} \\text{ W/m}^2`} />
             </div>
@@ -848,7 +848,7 @@ export function SoundWaveSimulator() {
         )}
         {mode === 'speed' && (
           <>
-            <p className="text-sm text-violet-600 mb-2 font-medium">Vitesse du son</p>
+            <p className="text-sm text-prune-600 mb-2 font-medium">Vitesse du son</p>
             <div className="text-lg overflow-x-auto">
               {medium === 'air' ? (
                 <BlockMath math={`v = 331.3 \\sqrt{1 + \\frac{T}{273.15}} = ${getSpeedOfSound().toFixed(0)} \\text{ m/s}`} />
@@ -865,23 +865,23 @@ export function SoundWaveSimulator() {
                                   intfData.isDestructive ? 'Destructive' : 'Partielle';
           return (
             <>
-              <p className="text-sm text-violet-600 mb-2 font-medium">Interférence de deux sources</p>
+              <p className="text-sm text-prune-600 mb-2 font-medium">Interférence de deux sources</p>
               <div className="grid md:grid-cols-2 gap-4 text-sm">
-                <div className="bg-green-100 rounded p-3">
-                  <p className="text-green-700 font-medium mb-1">Constructive (max)</p>
+                <div className="bg-olive-100 rounded p-3">
+                  <p className="text-olive-700 font-medium mb-1">Constructive (max)</p>
                   <BlockMath math={`\\Delta r = n\\lambda`} />
                 </div>
-                <div className="bg-red-100 rounded p-3">
-                  <p className="text-red-700 font-medium mb-1">Destructive (min)</p>
+                <div className="bg-brun-100 rounded p-3">
+                  <p className="text-brun-700 font-medium mb-1">Destructive (min)</p>
                   <BlockMath math={`\\Delta r = \\left(n + \\frac{1}{2}\\right)\\lambda`} />
                 </div>
               </div>
               <div className="mt-3 p-3 bg-white rounded">
-                <p className="text-gray-600 mb-1">Au point P:</p>
+                <p className="text-stone-600 mb-1">Au point P:</p>
                 <BlockMath math={`\\Delta r = ${intfData.pathDiff.toFixed(3)} \\text{ m} = ${pathDiffInWavelengths.toFixed(2)}\\lambda`} />
                 <p className={`font-bold mt-2 ${
-                  intfData.isConstructive ? 'text-green-600' :
-                  intfData.isDestructive ? 'text-red-600' : 'text-violet-600'
+                  intfData.isConstructive ? 'text-olive-600' :
+                  intfData.isDestructive ? 'text-brun-600' : 'text-prune-600'
                 }`}>
                   Interférence {interferenceType}
                 </p>
@@ -897,8 +897,8 @@ export function SoundWaveSimulator() {
           <>
             <div className="space-y-2">
               <label className="flex items-center justify-between">
-                <span className="font-medium text-gray-700">Fréquence source</span>
-                <span className="text-violet-600 font-mono">{sourceFrequency} Hz</span>
+                <span className="font-medium text-stone-700">Fréquence source</span>
+                <span className="text-prune-600 font-mono">{sourceFrequency} Hz</span>
               </label>
               <input
                 type="range"
@@ -907,14 +907,14 @@ export function SoundWaveSimulator() {
                 step="10"
                 value={sourceFrequency}
                 onChange={(e) => setSourceFrequency(parseInt(e.target.value))}
-                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                className="w-full h-2 bg-prune-200 rounded-lg appearance-none cursor-pointer accent-prune-600"
               />
             </div>
 
             <div className="space-y-2">
               <label className="flex items-center justify-between">
-                <span className="font-medium text-gray-700">Vitesse source</span>
-                <span className="text-violet-600 font-mono">{sourceSpeed} m/s</span>
+                <span className="font-medium text-stone-700">Vitesse source</span>
+                <span className="text-prune-600 font-mono">{sourceSpeed} m/s</span>
               </label>
               <input
                 type="range"
@@ -923,14 +923,14 @@ export function SoundWaveSimulator() {
                 step="10"
                 value={sourceSpeed}
                 onChange={(e) => setSourceSpeed(parseInt(e.target.value))}
-                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                className="w-full h-2 bg-prune-200 rounded-lg appearance-none cursor-pointer accent-prune-600"
               />
             </div>
 
             <div className="space-y-2">
               <label className="flex items-center justify-between">
-                <span className="font-medium text-gray-700">Vitesse du son</span>
-                <span className="text-violet-600 font-mono">{soundSpeed} m/s</span>
+                <span className="font-medium text-stone-700">Vitesse du son</span>
+                <span className="text-prune-600 font-mono">{soundSpeed} m/s</span>
               </label>
               <input
                 type="range"
@@ -939,7 +939,7 @@ export function SoundWaveSimulator() {
                 step="1"
                 value={soundSpeed}
                 onChange={(e) => setSoundSpeed(parseInt(e.target.value))}
-                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                className="w-full h-2 bg-prune-200 rounded-lg appearance-none cursor-pointer accent-prune-600"
               />
             </div>
           </>
@@ -949,8 +949,8 @@ export function SoundWaveSimulator() {
           <>
             <div className="space-y-2">
               <label className="flex items-center justify-between">
-                <span className="font-medium text-gray-700">Vitesse de l'objet</span>
-                <span className="text-violet-600 font-mono">{machSpeed} m/s</span>
+                <span className="font-medium text-stone-700">Vitesse de l'objet</span>
+                <span className="text-prune-600 font-mono">{machSpeed} m/s</span>
               </label>
               <input
                 type="range"
@@ -959,17 +959,17 @@ export function SoundWaveSimulator() {
                 step="10"
                 value={machSpeed}
                 onChange={(e) => setMachSpeed(parseInt(e.target.value))}
-                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                className="w-full h-2 bg-prune-200 rounded-lg appearance-none cursor-pointer accent-prune-600"
               />
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-stone-500">
                 Mach 1 = {soundSpeed} m/s (mur du son)
               </p>
             </div>
 
             <div className="space-y-2">
               <label className="flex items-center justify-between">
-                <span className="font-medium text-gray-700">Vitesse du son</span>
-                <span className="text-violet-600 font-mono">{soundSpeed} m/s</span>
+                <span className="font-medium text-stone-700">Vitesse du son</span>
+                <span className="text-prune-600 font-mono">{soundSpeed} m/s</span>
               </label>
               <input
                 type="range"
@@ -978,13 +978,13 @@ export function SoundWaveSimulator() {
                 step="1"
                 value={soundSpeed}
                 onChange={(e) => setSoundSpeed(parseInt(e.target.value))}
-                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                className="w-full h-2 bg-prune-200 rounded-lg appearance-none cursor-pointer accent-prune-600"
               />
             </div>
 
-            <div className="bg-gray-50 rounded-lg p-3">
-              <p className="font-medium text-gray-700 mb-2">Régime de vol</p>
-              <div className={`text-center py-2 rounded ${machNumber < 1 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+            <div className="bg-stone-50 rounded-lg p-3">
+              <p className="font-medium text-stone-700 mb-2">Régime de vol</p>
+              <div className={`text-center py-2 rounded ${machNumber < 1 ? 'bg-olive-100 text-olive-700' : 'bg-brun-100 text-brun-700'}`}>
                 {machNumber < 0.8 ? 'Subsonique' :
                  machNumber < 1.0 ? 'Transsonique' :
                  machNumber < 5 ? 'Supersonique' : 'Hypersonique'}
@@ -997,8 +997,8 @@ export function SoundWaveSimulator() {
           <>
             <div className="space-y-2">
               <label className="flex items-center justify-between">
-                <span className="font-medium text-gray-700">Puissance source</span>
-                <span className="text-violet-600 font-mono">{power.toFixed(1)} W</span>
+                <span className="font-medium text-stone-700">Puissance source</span>
+                <span className="text-prune-600 font-mono">{power.toFixed(1)} W</span>
               </label>
               <input
                 type="range"
@@ -1007,14 +1007,14 @@ export function SoundWaveSimulator() {
                 step="0.1"
                 value={power}
                 onChange={(e) => setPower(parseFloat(e.target.value))}
-                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                className="w-full h-2 bg-prune-200 rounded-lg appearance-none cursor-pointer accent-prune-600"
               />
             </div>
 
             <div className="space-y-2">
               <label className="flex items-center justify-between">
-                <span className="font-medium text-gray-700">Distance</span>
-                <span className="text-violet-600 font-mono">{distance.toFixed(1)} m</span>
+                <span className="font-medium text-stone-700">Distance</span>
+                <span className="text-prune-600 font-mono">{distance.toFixed(1)} m</span>
               </label>
               <input
                 type="range"
@@ -1023,20 +1023,20 @@ export function SoundWaveSimulator() {
                 step="0.1"
                 value={distance}
                 onChange={(e) => setDistance(parseFloat(e.target.value))}
-                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                className="w-full h-2 bg-prune-200 rounded-lg appearance-none cursor-pointer accent-prune-600"
               />
             </div>
 
-            <div className="bg-gray-50 rounded-lg p-3">
-              <p className="font-medium text-gray-700 mb-2">Niveau sonore</p>
+            <div className="bg-stone-50 rounded-lg p-3">
+              <p className="font-medium text-stone-700 mb-2">Niveau sonore</p>
               <div className="text-center">
                 <span className={`text-2xl font-bold ${
-                  intensityDB < 60 ? 'text-green-600' :
-                  intensityDB < 90 ? 'text-yellow-600' : 'text-red-600'
+                  intensityDB < 60 ? 'text-olive-600' :
+                  intensityDB < 90 ? 'text-ocre-600' : 'text-brun-600'
                 }`}>
                   {intensityDB.toFixed(0)} dB
                 </span>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-stone-500 mt-1">
                   {intensityDB < 30 ? 'Très calme (bibliothèque)' :
                    intensityDB < 60 ? 'Normal (conversation)' :
                    intensityDB < 90 ? 'Fort (trafic)' :
@@ -1050,14 +1050,14 @@ export function SoundWaveSimulator() {
         {mode === 'speed' && (
           <>
             <div className="space-y-2">
-              <label className="font-medium text-gray-700">Milieu de propagation</label>
+              <label className="font-medium text-stone-700">Milieu de propagation</label>
               <div className="flex gap-2">
                 <button
                   onClick={() => setMedium('air')}
                   className={`flex-1 px-3 py-2 rounded-lg font-medium text-sm transition-colors ${
                     medium === 'air'
-                      ? 'bg-blue-100 text-blue-700 border-2 border-blue-500'
-                      : 'bg-gray-100 text-gray-700 border-2 border-transparent'
+                      ? 'bg-gold-100 text-gold-700 border-2 border-gold-500'
+                      : 'bg-stone-100 text-stone-700 border-2 border-transparent'
                   }`}
                 >
                   Air
@@ -1066,8 +1066,8 @@ export function SoundWaveSimulator() {
                   onClick={() => setMedium('water')}
                   className={`flex-1 px-3 py-2 rounded-lg font-medium text-sm transition-colors ${
                     medium === 'water'
-                      ? 'bg-cyan-100 text-cyan-700 border-2 border-cyan-500'
-                      : 'bg-gray-100 text-gray-700 border-2 border-transparent'
+                      ? 'bg-ardoise-100 text-ardoise-700 border-2 border-ardoise-500'
+                      : 'bg-stone-100 text-stone-700 border-2 border-transparent'
                   }`}
                 >
                   Eau
@@ -1076,8 +1076,8 @@ export function SoundWaveSimulator() {
                   onClick={() => setMedium('steel')}
                   className={`flex-1 px-3 py-2 rounded-lg font-medium text-sm transition-colors ${
                     medium === 'steel'
-                      ? 'bg-gray-300 text-gray-700 border-2 border-gray-500'
-                      : 'bg-gray-100 text-gray-700 border-2 border-transparent'
+                      ? 'bg-stone-300 text-stone-700 border-2 border-stone-500'
+                      : 'bg-stone-100 text-stone-700 border-2 border-transparent'
                   }`}
                 >
                   Acier
@@ -1088,8 +1088,8 @@ export function SoundWaveSimulator() {
             {medium === 'air' && (
               <div className="space-y-2">
                 <label className="flex items-center justify-between">
-                  <span className="font-medium text-gray-700">Température</span>
-                  <span className="text-violet-600 font-mono">{temperature}°C</span>
+                  <span className="font-medium text-stone-700">Température</span>
+                  <span className="text-prune-600 font-mono">{temperature}°C</span>
                 </label>
                 <input
                   type="range"
@@ -1098,18 +1098,18 @@ export function SoundWaveSimulator() {
                   step="1"
                   value={temperature}
                   onChange={(e) => setTemperature(parseInt(e.target.value))}
-                  className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                  className="w-full h-2 bg-prune-200 rounded-lg appearance-none cursor-pointer accent-prune-600"
                 />
               </div>
             )}
 
-            <div className="bg-gray-50 rounded-lg p-3">
-              <p className="font-medium text-gray-700 mb-2">Vitesse calculée</p>
+            <div className="bg-stone-50 rounded-lg p-3">
+              <p className="font-medium text-stone-700 mb-2">Vitesse calculée</p>
               <div className="text-center">
-                <span className="text-2xl font-bold text-violet-600">
+                <span className="text-2xl font-bold text-prune-600">
                   {getSpeedOfSound().toFixed(0)} m/s
                 </span>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-stone-500 mt-1">
                   = {(getSpeedOfSound() * 3.6).toFixed(0)} km/h
                 </p>
               </div>
@@ -1121,8 +1121,8 @@ export function SoundWaveSimulator() {
           <>
             <div className="space-y-2">
               <label className="flex items-center justify-between">
-                <span className="font-medium text-gray-700">Fréquence</span>
-                <span className="text-violet-600 font-mono">{interferenceFreq} Hz</span>
+                <span className="font-medium text-stone-700">Fréquence</span>
+                <span className="text-prune-600 font-mono">{interferenceFreq} Hz</span>
               </label>
               <input
                 type="range"
@@ -1131,15 +1131,15 @@ export function SoundWaveSimulator() {
                 step="10"
                 value={interferenceFreq}
                 onChange={(e) => setInterferenceFreq(parseInt(e.target.value))}
-                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                className="w-full h-2 bg-prune-200 rounded-lg appearance-none cursor-pointer accent-prune-600"
               />
-              <p className="text-xs text-gray-500">λ = {interferenceWavelength.toFixed(2)} m</p>
+              <p className="text-xs text-stone-500">λ = {interferenceWavelength.toFixed(2)} m</p>
             </div>
 
             <div className="space-y-2">
               <label className="flex items-center justify-between">
-                <span className="font-medium text-gray-700">Distance entre sources</span>
-                <span className="text-violet-600 font-mono">{speakerDistance.toFixed(1)} m</span>
+                <span className="font-medium text-stone-700">Distance entre sources</span>
+                <span className="text-prune-600 font-mono">{speakerDistance.toFixed(1)} m</span>
               </label>
               <input
                 type="range"
@@ -1148,14 +1148,14 @@ export function SoundWaveSimulator() {
                 step="0.1"
                 value={speakerDistance}
                 onChange={(e) => setSpeakerDistance(parseFloat(e.target.value))}
-                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                className="w-full h-2 bg-prune-200 rounded-lg appearance-none cursor-pointer accent-prune-600"
               />
             </div>
 
             <div className="space-y-2">
               <label className="flex items-center justify-between">
-                <span className="font-medium text-gray-700">Déphasage initial</span>
-                <span className="text-violet-600 font-mono">{(phaseDiff / Math.PI).toFixed(2)}π</span>
+                <span className="font-medium text-stone-700">Déphasage initial</span>
+                <span className="text-prune-600 font-mono">{(phaseDiff / Math.PI).toFixed(2)}π</span>
               </label>
               <input
                 type="range"
@@ -1164,14 +1164,14 @@ export function SoundWaveSimulator() {
                 step="0.1"
                 value={phaseDiff}
                 onChange={(e) => setPhaseDiff(parseFloat(e.target.value))}
-                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                className="w-full h-2 bg-prune-200 rounded-lg appearance-none cursor-pointer accent-prune-600"
               />
             </div>
 
             <div className="space-y-2">
               <label className="flex items-center justify-between">
-                <span className="font-medium text-gray-700">Position X observateur</span>
-                <span className="text-violet-600 font-mono">{observerX.toFixed(1)} m</span>
+                <span className="font-medium text-stone-700">Position X observateur</span>
+                <span className="text-prune-600 font-mono">{observerX.toFixed(1)} m</span>
               </label>
               <input
                 type="range"
@@ -1180,14 +1180,14 @@ export function SoundWaveSimulator() {
                 step="0.1"
                 value={observerX}
                 onChange={(e) => setObserverX(parseFloat(e.target.value))}
-                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                className="w-full h-2 bg-prune-200 rounded-lg appearance-none cursor-pointer accent-prune-600"
               />
             </div>
 
             <div className="space-y-2">
               <label className="flex items-center justify-between">
-                <span className="font-medium text-gray-700">Position Y observateur</span>
-                <span className="text-violet-600 font-mono">{observerY.toFixed(1)} m</span>
+                <span className="font-medium text-stone-700">Position Y observateur</span>
+                <span className="text-prune-600 font-mono">{observerY.toFixed(1)} m</span>
               </label>
               <input
                 type="range"
@@ -1196,19 +1196,19 @@ export function SoundWaveSimulator() {
                 step="0.1"
                 value={observerY}
                 onChange={(e) => setObserverY(parseFloat(e.target.value))}
-                className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                className="w-full h-2 bg-prune-200 rounded-lg appearance-none cursor-pointer accent-prune-600"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="font-medium text-gray-700">Affichage</label>
+              <label className="font-medium text-stone-700">Affichage</label>
               <div className="space-y-1">
                 <label className="flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"
                     checked={showWaveFronts}
                     onChange={(e) => setShowWaveFronts(e.target.checked)}
-                    className="rounded text-violet-600"
+                    className="rounded text-prune-600"
                   />
                   <span>Fronts d'onde</span>
                 </label>
@@ -1217,7 +1217,7 @@ export function SoundWaveSimulator() {
                     type="checkbox"
                     checked={showInterferencePattern}
                     onChange={(e) => setShowInterferencePattern(e.target.checked)}
-                    className="rounded text-violet-600"
+                    className="rounded text-prune-600"
                   />
                   <span>Patron d'interférence</span>
                 </label>
@@ -1243,55 +1243,55 @@ export function SoundWaveSimulator() {
           onClick={() => setIsPlaying(!isPlaying)}
           className={`px-6 py-2 rounded-lg font-medium transition-colors ${
             isPlaying
-              ? 'bg-red-100 text-red-700 hover:bg-red-200'
-              : 'bg-green-100 text-green-700 hover:bg-green-200'
+              ? 'bg-brun-100 text-brun-700 hover:bg-brun-200'
+              : 'bg-olive-100 text-olive-700 hover:bg-olive-200'
           }`}
         >
           {isPlaying ? '⏸ Pause' : '▶ Lecture'}
         </button>
         <button
           onClick={handleReset}
-          className="px-6 py-2 rounded-lg font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
+          className="px-6 py-2 rounded-lg font-medium bg-stone-100 text-stone-700 hover:bg-stone-200 transition-colors"
         >
           ↺ Réinitialiser
         </button>
       </div>
 
       {/* Educational Notes */}
-      <div className="border-t border-gray-200 pt-6">
-        <h3 className="font-semibold text-gray-800 mb-3">Concepts clés</h3>
+      <div className="border-t border-stone-200 pt-6">
+        <h3 className="font-semibold text-stone-800 mb-3">Concepts clés</h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 text-sm">
-          <div className="bg-blue-50 rounded-lg p-4">
-            <h4 className="font-medium text-blue-800 mb-2">Effet Doppler</h4>
-            <p className="text-blue-700">
+          <div className="bg-gold-50 rounded-lg p-4">
+            <h4 className="font-medium text-gold-800 mb-2">Effet Doppler</h4>
+            <p className="text-gold-700">
               Le changement de fréquence perçue lorsque la source ou l'observateur est en mouvement.
               Approche → fréquence plus élevée.
             </p>
           </div>
-          <div className="bg-red-50 rounded-lg p-4">
-            <h4 className="font-medium text-red-800 mb-2">Cône de Mach</h4>
-            <p className="text-red-700">
+          <div className="bg-brun-50 rounded-lg p-4">
+            <h4 className="font-medium text-brun-800 mb-2">Cône de Mach</h4>
+            <p className="text-brun-700">
               À vitesse supersonique (M {">"} 1), les ondes forment un cône de choc.
               L'angle diminue quand la vitesse augmente.
             </p>
           </div>
-          <div className="bg-green-50 rounded-lg p-4">
-            <h4 className="font-medium text-green-800 mb-2">Loi en 1/r²</h4>
-            <p className="text-green-700">
+          <div className="bg-olive-50 rounded-lg p-4">
+            <h4 className="font-medium text-olive-800 mb-2">Loi en 1/r²</h4>
+            <p className="text-olive-700">
               L'intensité sonore diminue avec le carré de la distance.
               Doubler la distance divise l'intensité par 4.
             </p>
           </div>
-          <div className="bg-orange-50 rounded-lg p-4">
-            <h4 className="font-medium text-orange-800 mb-2">Vitesse du son</h4>
-            <p className="text-orange-700">
+          <div className="bg-terre-50 rounded-lg p-4">
+            <h4 className="font-medium text-terre-800 mb-2">Vitesse du son</h4>
+            <p className="text-terre-700">
               Dépend du milieu et de la température.
               Plus rapide dans les solides que dans les gaz.
             </p>
           </div>
-          <div className="bg-violet-50 rounded-lg p-4">
-            <h4 className="font-medium text-violet-800 mb-2">Interférence</h4>
-            <p className="text-violet-700">
+          <div className="bg-prune-50 rounded-lg p-4">
+            <h4 className="font-medium text-prune-800 mb-2">Interférence</h4>
+            <p className="text-prune-700">
               Deux sources cohérentes créent des zones de renforcement (Δr = nλ)
               et d'annulation (Δr = (n+½)λ).
             </p>

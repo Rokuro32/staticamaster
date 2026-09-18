@@ -64,7 +64,7 @@ function CollapsiblePanel({
         <span className="text-lg">{open ? '\u25B2' : '\u25BC'}</span>
       </button>
       {open && (
-        <div className={`px-4 py-4 ${bgColor} bg-opacity-30 text-sm leading-relaxed space-y-3 text-gray-700`}>
+        <div className={`px-4 py-4 ${bgColor} bg-opacity-30 text-sm leading-relaxed space-y-3 text-stone-700`}>
           {children}
         </div>
       )}
@@ -80,9 +80,9 @@ function ConstantTooltip({ symbol }: { symbol: string }) {
   const info = CONSTANTS_INFO[symbol];
   if (!info) return <InlineMath math={symbol} />;
   return (
-    <span className="relative group inline-block cursor-help border-b border-dashed border-gray-500">
+    <span className="relative group inline-block cursor-help border-b border-dashed border-stone-500">
       <InlineMath math={info.latex} />
-      <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block whitespace-nowrap bg-gray-900 text-white text-xs rounded px-2 py-1 shadow-lg z-50">
+      <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block whitespace-nowrap bg-stone-900 text-white text-xs rounded px-2 py-1 shadow-lg z-50">
         {info.name}: {info.value} {info.unit}
       </span>
     </span>
@@ -126,7 +126,7 @@ export function SchrodingerBoxSimulator() {
     const plotW = W - ml - mr;
 
     // Clear
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.fillRect(0, 0, W, H);
 
     // ===================================================================
@@ -142,7 +142,7 @@ export function SchrodingerBoxSimulator() {
     const wellH = wellBottom - wellTop;
 
     // --- Draw potential walls ---
-    ctx.strokeStyle = '#ef4444';
+    ctx.strokeStyle = '#ca684a';
     ctx.lineWidth = 3;
     // Left wall
     ctx.beginPath();
@@ -155,7 +155,7 @@ export function SchrodingerBoxSimulator() {
     ctx.lineTo(wellRight, wellBottom);
     ctx.stroke();
     // Bottom of well (V=0 region)
-    ctx.strokeStyle = '#ef4444';
+    ctx.strokeStyle = '#ca684a';
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(wellLeft, wellBottom);
@@ -163,26 +163,26 @@ export function SchrodingerBoxSimulator() {
     ctx.stroke();
 
     // V=∞ labels
-    ctx.fillStyle = '#ef4444';
+    ctx.fillStyle = '#ca684a';
     ctx.font = 'bold 13px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('V=\u221E', wellLeft - 20, wellTop + wellH / 2);
     ctx.fillText('V=\u221E', wellRight + 22, wellTop + wellH / 2);
 
     // V=0 label
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.font = '11px sans-serif';
     ctx.fillText('V=0', (wellLeft + wellRight) / 2, wellBottom + 14);
 
     // x=0, x=L labels
-    ctx.fillStyle = '#cbd5e1';
+    ctx.fillStyle = '#d8d6d4';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('x=0', wellLeft, wellBottom + 14);
     ctx.fillText('x=L', wellRight, wellBottom + 14);
 
     // Hatching outside well to indicate forbidden region
-    ctx.strokeStyle = 'rgba(239, 68, 68, 0.3)';
+    ctx.strokeStyle = 'rgba(202, 104, 74, 0.3)';
     ctx.lineWidth = 1;
     for (let y = wellTop - 10; y < wellBottom; y += 6) {
       // left side
@@ -227,7 +227,7 @@ export function SchrodingerBoxSimulator() {
     }
     ctx.lineTo(wellRight, baseline);
     ctx.closePath();
-    ctx.fillStyle = 'rgba(45, 212, 191, 0.2)';
+    ctx.fillStyle = 'rgba(160, 182, 75, 0.2)';
     ctx.fill();
 
     // |ψ|² outline
@@ -238,7 +238,7 @@ export function SchrodingerBoxSimulator() {
       if (i === 0) ctx.moveTo(px, py);
       else ctx.lineTo(px, py);
     }
-    ctx.strokeStyle = '#2dd4bf';
+    ctx.strokeStyle = '#a0b64b';
     ctx.lineWidth = 2;
     ctx.stroke();
 
@@ -250,7 +250,7 @@ export function SchrodingerBoxSimulator() {
       if (i === 0) ctx.moveTo(px, py);
       else ctx.lineTo(px, py);
     }
-    ctx.strokeStyle = '#3b82f6';
+    ctx.strokeStyle = '#c29851';
     ctx.lineWidth = 2.5;
     ctx.stroke();
 
@@ -262,13 +262,13 @@ export function SchrodingerBoxSimulator() {
       ctx.beginPath();
       ctx.moveTo(wellLeft, classicalY);
       ctx.lineTo(wellRight, classicalY);
-      ctx.strokeStyle = '#f59e0b';
+      ctx.strokeStyle = '#e8c518';
       ctx.lineWidth = 2;
       ctx.stroke();
       ctx.setLineDash([]);
 
       // Label
-      ctx.fillStyle = '#f59e0b';
+      ctx.fillStyle = '#e8c518';
       ctx.font = '11px sans-serif';
       ctx.textAlign = 'left';
       ctx.fillText('Classique: probabilité uniforme', wellLeft + 5, classicalY - 6);
@@ -281,14 +281,14 @@ export function SchrodingerBoxSimulator() {
       const px = wellLeft + xNode * wellW;
       ctx.beginPath();
       ctx.arc(px, baseline, 4, 0, 2 * Math.PI);
-      ctx.fillStyle = '#f87171';
+      ctx.fillStyle = '#d58770';
       ctx.fill();
-      ctx.strokeStyle = '#fca5a5';
+      ctx.strokeStyle = '#e1a897';
       ctx.lineWidth = 1;
       ctx.stroke();
     }
     if (numNodes > 0) {
-      ctx.fillStyle = '#f87171';
+      ctx.fillStyle = '#d58770';
       ctx.font = '10px sans-serif';
       ctx.textAlign = 'right';
       ctx.fillText(`${numNodes} nœud${numNodes > 1 ? 's' : ''}`, wellRight - 5, wellTop + 12);
@@ -299,15 +299,15 @@ export function SchrodingerBoxSimulator() {
     const legY = mt + 8;
     ctx.font = '12px sans-serif';
     // psi
-    ctx.fillStyle = '#3b82f6';
+    ctx.fillStyle = '#c29851';
     ctx.fillRect(legX, legY, 16, 3);
-    ctx.fillStyle = '#cbd5e1';
+    ctx.fillStyle = '#d8d6d4';
     ctx.textAlign = 'left';
     ctx.fillText('\u03C8\u2099(x)', legX + 22, legY + 5);
     // |psi|^2
-    ctx.fillStyle = '#2dd4bf';
+    ctx.fillStyle = '#a0b64b';
     ctx.fillRect(legX, legY + 16, 16, 3);
-    ctx.fillStyle = '#cbd5e1';
+    ctx.fillStyle = '#d8d6d4';
     ctx.fillText('|\u03C8\u2099(x)|\u00B2', legX + 22, legY + 21);
 
     // ===================================================================
@@ -322,7 +322,7 @@ export function SchrodingerBoxSimulator() {
     const eDiagW = eDiagRight - eDiagLeft;
 
     // Separator line
-    ctx.strokeStyle = '#334155';
+    ctx.strokeStyle = '#484440';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(ml, splitY);
@@ -337,7 +337,7 @@ export function SchrodingerBoxSimulator() {
     const maxE = energies[5]; // E_6
 
     // Vertical axis
-    ctx.strokeStyle = '#64748b';
+    ctx.strokeStyle = '#7e7871';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(eDiagLeft - 10, eDiagTop);
@@ -350,11 +350,11 @@ export function SchrodingerBoxSimulator() {
     ctx.lineTo(eDiagLeft - 14, eDiagTop + 8);
     ctx.lineTo(eDiagLeft - 6, eDiagTop + 8);
     ctx.closePath();
-    ctx.fillStyle = '#64748b';
+    ctx.fillStyle = '#7e7871';
     ctx.fill();
 
     // "E" label
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.font = 'italic 13px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('E', eDiagLeft - 10, eDiagTop - 8);
@@ -366,7 +366,7 @@ export function SchrodingerBoxSimulator() {
       const isSelected = level === n;
 
       // Horizontal line
-      ctx.strokeStyle = isSelected ? '#facc15' : '#475569';
+      ctx.strokeStyle = isSelected ? '#e9c926' : '#5d5853';
       ctx.lineWidth = isSelected ? 3 : 1.5;
       ctx.beginPath();
       ctx.moveTo(eDiagLeft, y);
@@ -375,7 +375,7 @@ export function SchrodingerBoxSimulator() {
 
       // Highlight glow for selected level
       if (isSelected) {
-        ctx.strokeStyle = 'rgba(250, 204, 21, 0.3)';
+        ctx.strokeStyle = 'rgba(233, 201, 38, 0.3)';
         ctx.lineWidth = 8;
         ctx.beginPath();
         ctx.moveTo(eDiagLeft, y);
@@ -384,13 +384,13 @@ export function SchrodingerBoxSimulator() {
       }
 
       // n label on the left
-      ctx.fillStyle = isSelected ? '#facc15' : '#94a3b8';
+      ctx.fillStyle = isSelected ? '#e9c926' : '#aba6a1';
       ctx.font = isSelected ? 'bold 12px sans-serif' : '11px sans-serif';
       ctx.textAlign = 'right';
       ctx.fillText(`n=${level}`, eDiagLeft - 15, y + 4);
 
       // Energy value on the right
-      ctx.fillStyle = isSelected ? '#facc15' : '#94a3b8';
+      ctx.fillStyle = isSelected ? '#e9c926' : '#aba6a1';
       ctx.font = '11px sans-serif';
       ctx.textAlign = 'left';
       ctx.fillText(`${formatEV(energies[level - 1])} eV`, eDiagRight + 8, y + 4);
@@ -402,7 +402,7 @@ export function SchrodingerBoxSimulator() {
       const y2 = eDiagBottom - (energies[n] / maxE) * (eDiagH - 15);
       const xArr = eDiagRight + 65;
 
-      ctx.strokeStyle = '#818cf8';
+      ctx.strokeStyle = '#d3b581';
       ctx.lineWidth = 1;
       ctx.setLineDash([3, 2]);
       ctx.beginPath();
@@ -412,7 +412,7 @@ export function SchrodingerBoxSimulator() {
       ctx.setLineDash([]);
 
       // Arrow heads
-      ctx.fillStyle = '#818cf8';
+      ctx.fillStyle = '#d3b581';
       ctx.beginPath();
       ctx.moveTo(xArr, y1);
       ctx.lineTo(xArr - 3, y1 - 5);
@@ -428,7 +428,7 @@ export function SchrodingerBoxSimulator() {
 
       // Delta E label
       const deltaE = energies[n] - energies[n - 1];
-      ctx.fillStyle = '#818cf8';
+      ctx.fillStyle = '#d3b581';
       ctx.font = '10px sans-serif';
       ctx.textAlign = 'left';
       ctx.fillText(`\u0394E = ${formatEV(deltaE)} eV`, xArr + 6, (y1 + y2) / 2 + 3);
@@ -469,16 +469,16 @@ export function SchrodingerBoxSimulator() {
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
       <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold text-gray-900">
+        <h2 className="text-2xl font-bold text-stone-900">
           Particule dans un puits de potentiel infini
         </h2>
-        <p className="text-gray-600 text-sm">
+        <p className="text-stone-600 text-sm">
           Schr&ouml;dinger, 1926 &mdash; M&eacute;canique ondulatoire
         </p>
       </div>
 
       {/* Canvas */}
-      <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+      <div className="bg-stone-50 rounded-xl p-4 border border-stone-200">
         <canvas
           ref={canvasRef}
           className="w-full rounded-lg"
@@ -489,10 +489,10 @@ export function SchrodingerBoxSimulator() {
       {/* Controls */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Quantum number slider */}
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <label className="flex items-center justify-between text-sm text-gray-700 mb-2">
+        <div className="bg-white rounded-lg p-4 border border-stone-200">
+          <label className="flex items-center justify-between text-sm text-stone-700 mb-2">
             <span>Nombre quantique <InlineMath math={`n`} /></span>
-            <span className="font-mono text-blue-600 font-bold text-lg">{n}</span>
+            <span className="font-mono text-gold-600 font-bold text-lg">{n}</span>
           </label>
           <input
             type="range"
@@ -501,9 +501,9 @@ export function SchrodingerBoxSimulator() {
             step={1}
             value={n}
             onChange={(e) => setN(Number(e.target.value))}
-            className="w-full accent-blue-500"
+            className="w-full accent-gold-500"
           />
-          <div className="flex justify-between text-xs text-gray-500 mt-1">
+          <div className="flex justify-between text-xs text-stone-500 mt-1">
             <span>1</span>
             <span>2</span>
             <span>3</span>
@@ -514,10 +514,10 @@ export function SchrodingerBoxSimulator() {
         </div>
 
         {/* Well width slider */}
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <label className="flex items-center justify-between text-sm text-gray-700 mb-2">
+        <div className="bg-white rounded-lg p-4 border border-stone-200">
+          <label className="flex items-center justify-between text-sm text-stone-700 mb-2">
             <span>Largeur du puits <InlineMath math={`L`} /></span>
-            <span className="font-mono text-teal-600 font-bold text-lg">{L_nm.toFixed(1)} nm</span>
+            <span className="font-mono text-ardoise-600 font-bold text-lg">{L_nm.toFixed(1)} nm</span>
           </label>
           <input
             type="range"
@@ -526,9 +526,9 @@ export function SchrodingerBoxSimulator() {
             step={0.1}
             value={L_nm}
             onChange={(e) => setL_nm(Number(e.target.value))}
-            className="w-full accent-teal-500"
+            className="w-full accent-ardoise-500"
           />
-          <div className="flex justify-between text-xs text-gray-500 mt-1">
+          <div className="flex justify-between text-xs text-stone-500 mt-1">
             <span>0.1 nm</span>
             <span>1.0 nm</span>
             <span>2.0 nm</span>
@@ -542,8 +542,8 @@ export function SchrodingerBoxSimulator() {
           onClick={() => setShowClassical(!showClassical)}
           className={`px-5 py-2.5 rounded-lg font-medium text-sm transition-all border ${
             showClassical
-              ? 'bg-amber-50 border-amber-500 text-amber-700'
-              : 'bg-white border-gray-300 text-gray-600 hover:border-amber-500/50 hover:text-amber-600'
+              ? 'bg-ocre-50 border-ocre-500 text-ocre-700'
+              : 'bg-white border-stone-300 text-stone-600 hover:border-ocre-500/50 hover:text-ocre-600'
           }`}
         >
           {showClassical ? '\u2713 ' : ''}Comparaison classique
@@ -551,46 +551,46 @@ export function SchrodingerBoxSimulator() {
       </div>
 
       {/* Energy display */}
-      <div className="bg-white rounded-xl p-5 border border-gray-200 space-y-4">
-        <h3 className="text-lg font-semibold text-gray-900">
+      <div className="bg-white rounded-xl p-5 border border-stone-200 space-y-4">
+        <h3 className="text-lg font-semibold text-stone-900">
           &Eacute;nergie du niveau <InlineMath math={`n = ${n}`} />
         </h3>
 
-        <div className="bg-gray-100 rounded-lg p-4">
+        <div className="bg-stone-100 rounded-lg p-4">
           <BlockMath math={`E_n = \\frac{n^2 \\pi^2 \\hbar^2}{2 m_e L^2}`} />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
-          <div className="bg-gray-50 rounded-lg p-3">
-            <p className="text-xs text-gray-500 mb-1">
+          <div className="bg-stone-50 rounded-lg p-3">
+            <p className="text-xs text-stone-500 mb-1">
               <InlineMath math={`E_{${n}}`} />
             </p>
-            <p className="text-xl font-bold text-yellow-600">
+            <p className="text-xl font-bold text-ocre-600">
               {formatEV(En)} eV
             </p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-3">
-            <p className="text-xs text-gray-500 mb-1">
+          <div className="bg-stone-50 rounded-lg p-3">
+            <p className="text-xs text-stone-500 mb-1">
               <InlineMath math={`E_1`} /> (fondamental)
             </p>
-            <p className="text-xl font-bold text-green-600">
+            <p className="text-xl font-bold text-olive-600">
               {formatEV(E1)} eV
             </p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-3">
-            <p className="text-xs text-gray-500 mb-1">
+          <div className="bg-stone-50 rounded-lg p-3">
+            <p className="text-xs text-stone-500 mb-1">
               <InlineMath math={`E_{${n}} / E_1`} />
             </p>
-            <p className="text-xl font-bold text-purple-600">
+            <p className="text-xl font-bold text-prune-600">
               {n * n}
             </p>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-stone-500">
               <InlineMath math={`= n^2 = ${n}^2`} />
             </p>
           </div>
         </div>
 
-        <div className="text-xs text-gray-500 flex flex-wrap gap-x-4 gap-y-1 justify-center">
+        <div className="text-xs text-stone-500 flex flex-wrap gap-x-4 gap-y-1 justify-center">
           <span>Constantes : <ConstantTooltip symbol="hbar" />,{' '}
             <ConstantTooltip symbol="me" />,{' '}
             <ConstantTooltip symbol="eV" />
@@ -606,28 +606,28 @@ export function SchrodingerBoxSimulator() {
         {/* 1. Quantification de l'energie */}
         <CollapsiblePanel
           title="Quantification de l'&eacute;nergie"
-          borderColor="border-green-500"
-          bgColor="bg-green-50"
-          textColor="text-green-900"
+          borderColor="border-olive-500"
+          bgColor="bg-olive-50"
+          textColor="text-olive-900"
           defaultOpen
         >
           <p>
-            Dans un puits de potentiel infini, seules des <strong className="text-green-700">&eacute;nergies discr&egrave;tes</strong> sont
+            Dans un puits de potentiel infini, seules des <strong className="text-olive-700">&eacute;nergies discr&egrave;tes</strong> sont
             permises. Le spectre d&rsquo;&eacute;nergie est quantifi&eacute; :
           </p>
-          <div className="bg-gray-100 rounded p-3">
+          <div className="bg-stone-100 rounded p-3">
             <BlockMath math={`E_n = \\frac{n^2 \\pi^2 \\hbar^2}{2 m L^2}, \\quad n = 1, 2, 3, \\ldots`} />
           </div>
           <p>
-            La particule <strong className="text-green-700">ne peut pas avoir une &eacute;nergie nulle</strong>.
+            La particule <strong className="text-olive-700">ne peut pas avoir une &eacute;nergie nulle</strong>.
             Le niveau fondamental <InlineMath math={`E_1 > 0`} /> est appel&eacute;{' '}
             <em>&eacute;nergie de point z&eacute;ro</em> (zero-point energy). C&rsquo;est une
             cons&eacute;quence directe du principe d&rsquo;incertitude de Heisenberg.
           </p>
           <p>
-            Cette quantification d&eacute;coule des <strong className="text-green-700">conditions aux limites</strong> :
+            Cette quantification d&eacute;coule des <strong className="text-olive-700">conditions aux limites</strong> :
           </p>
-          <div className="bg-gray-100 rounded p-3">
+          <div className="bg-stone-100 rounded p-3">
             <BlockMath math={`\\psi(0) = \\psi(L) = 0`} />
           </div>
           <p>
@@ -639,35 +639,35 @@ export function SchrodingerBoxSimulator() {
         {/* 2. Equation de Schrodinger */}
         <CollapsiblePanel
           title="&Eacute;quation de Schr&ouml;dinger"
-          borderColor="border-blue-500"
-          bgColor="bg-blue-50"
-          textColor="text-blue-900"
+          borderColor="border-gold-500"
+          bgColor="bg-gold-50"
+          textColor="text-gold-900"
         >
           <p>
-            L&rsquo;&eacute;quation de Schr&ouml;dinger <strong className="text-blue-700">d&eacute;pendante du temps</strong> :
+            L&rsquo;&eacute;quation de Schr&ouml;dinger <strong className="text-gold-700">d&eacute;pendante du temps</strong> :
           </p>
-          <div className="bg-gray-100 rounded p-3">
+          <div className="bg-stone-100 rounded p-3">
             <BlockMath math={`i\\hbar \\frac{\\partial \\Psi}{\\partial t} = \\hat{H} \\Psi`} />
           </div>
-          <p className="text-gray-600 text-xs">
+          <p className="text-stone-600 text-xs">
             <InlineMath math={`i\\hbar \\partial\\Psi/\\partial t`} /> : &eacute;volution temporelle &bull;{' '}
             <InlineMath math={`\\hat{H}`} /> : op&eacute;rateur hamiltonien (&eacute;nergie totale)
           </p>
 
           <p>
-            Pour les <strong className="text-blue-700">&eacute;tats stationnaires</strong>,
+            Pour les <strong className="text-gold-700">&eacute;tats stationnaires</strong>,
             on s&eacute;pare les variables et on obtient l&rsquo;&eacute;quation{' '}
             <strong>ind&eacute;pendante du temps</strong> :
           </p>
-          <div className="bg-gray-100 rounded p-3">
+          <div className="bg-stone-100 rounded p-3">
             <BlockMath math={`\\hat{H}\\psi = E\\psi`} />
           </div>
 
           <p>L&rsquo;op&eacute;rateur hamiltonien s&rsquo;&eacute;crit :</p>
-          <div className="bg-gray-100 rounded p-3">
+          <div className="bg-stone-100 rounded p-3">
             <BlockMath math={`\\hat{H} = \\underbrace{-\\frac{\\hbar^2}{2m}\\frac{d^2}{dx^2}}_{\\text{énergie cinétique}} + \\underbrace{V(x)}_{\\text{énergie potentielle}}`} />
           </div>
-          <p className="text-gray-600 text-xs">
+          <p className="text-stone-600 text-xs">
             Le premier terme repr&eacute;sente l&rsquo;&eacute;nergie cin&eacute;tique quantique
             (li&eacute;e &agrave; la courbure de <InlineMath math={`\\psi`} />).
             Le second est le potentiel dans lequel se trouve la particule
@@ -679,24 +679,24 @@ export function SchrodingerBoxSimulator() {
         {/* 3. Noeuds et probabilite */}
         <CollapsiblePanel
           title="Nœuds et probabilit&eacute;"
-          borderColor="border-purple-500"
-          bgColor="bg-purple-50"
-          textColor="text-purple-900"
+          borderColor="border-prune-500"
+          bgColor="bg-prune-50"
+          textColor="text-prune-900"
         >
           <p>
-            Le nombre de <strong className="text-purple-700">nœuds</strong> (z&eacute;ros
+            Le nombre de <strong className="text-prune-700">nœuds</strong> (z&eacute;ros
             int&eacute;rieurs) de la fonction d&rsquo;onde est :
           </p>
-          <div className="bg-gray-100 rounded p-3">
+          <div className="bg-stone-100 rounded p-3">
             <BlockMath math={`\\text{nombre de noeuds} = n - 1`} />
           </div>
           <p>
             Pour <InlineMath math={`n = ${n}`} />, il y a{' '}
-            <strong className="text-purple-700">{n - 1} nœud{n - 1 !== 1 ? 's' : ''}</strong>.
+            <strong className="text-prune-700">{n - 1} nœud{n - 1 !== 1 ? 's' : ''}</strong>.
           </p>
           <p>
             &Agrave; chaque nœud, <InlineMath math={`|\\psi(x)|^2 = 0`} /> : la particule a une{' '}
-            <strong className="text-purple-700">probabilit&eacute; nulle</strong> d&rsquo;&ecirc;tre
+            <strong className="text-prune-700">probabilit&eacute; nulle</strong> d&rsquo;&ecirc;tre
             trouv&eacute;e &agrave; cette position. C&rsquo;est un ph&eacute;nom&egrave;ne purement quantique
             qui <em>n&rsquo;a aucun analogue classique</em>.
           </p>
@@ -710,24 +710,24 @@ export function SchrodingerBoxSimulator() {
         {/* 4. Contexte historique */}
         <CollapsiblePanel
           title="Contexte historique"
-          borderColor="border-gray-500"
-          bgColor="bg-gray-50"
-          textColor="text-gray-900"
+          borderColor="border-stone-500"
+          bgColor="bg-stone-50"
+          textColor="text-stone-900"
         >
           <p>
-            En <strong className="text-gray-900">1926</strong>, Erwin{' '}
-            <strong className="text-gray-900">Schr&ouml;dinger</strong> publie une s&eacute;rie
+            En <strong className="text-stone-900">1926</strong>, Erwin{' '}
+            <strong className="text-stone-900">Schr&ouml;dinger</strong> publie une s&eacute;rie
             d&rsquo;articles fondateurs introduisant la <em>m&eacute;canique ondulatoire</em>.
             Il propose que les particules soient d&eacute;crites par une fonction d&rsquo;onde{' '}
             <InlineMath math={`\\Psi`} /> ob&eacute;issant &agrave; une &eacute;quation aux
             d&eacute;riv&eacute;es partielles.
           </p>
           <p>
-            Ind&eacute;pendamment, Werner <strong className="text-gray-900">Heisenberg</strong> avait
+            Ind&eacute;pendamment, Werner <strong className="text-stone-900">Heisenberg</strong> avait
             d&eacute;velopp&eacute; en 1925 la <em>m&eacute;canique matricielle</em>, une
             formulation &eacute;quivalente mais math&eacute;matiquement tr&egrave;s diff&eacute;rente.
             Schr&ouml;dinger d&eacute;montra lui-m&ecirc;me l&rsquo;
-            <strong className="text-gray-900">&eacute;quivalence</strong> des deux approches.
+            <strong className="text-stone-900">&eacute;quivalence</strong> des deux approches.
           </p>
           <p>
             Le mod&egrave;le de la particule dans une bo&icirc;te, bien que simplifi&eacute;,

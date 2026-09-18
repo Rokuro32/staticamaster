@@ -347,17 +347,17 @@ export function TrussSimulator() {
     return max || 1;
   }, [memberForces]);
 
-  // Get color for member based on force
+  // Couleur d'une barre selon sa force interne. La teinte dit le signe
+  // (or = traction, brun = compression), l'intensité dit l'amplitude : plus la
+  // barre est chargée, plus la couleur fonce.
   const getMemberColor = (force: number) => {
     const intensity = Math.min(Math.abs(force) / maxForce, 1);
-    if (force > 10) {
-      // Tension - blue
-      return `rgb(${Math.round(59 - intensity * 59)}, ${Math.round(130 - intensity * 30)}, ${Math.round(246)})`;
-    } else if (force < -10) {
-      // Compression - red
-      return `rgb(${Math.round(220)}, ${Math.round(38 + intensity * 20)}, ${Math.round(38)})`;
-    }
-    return '#6b7280'; // Neutral gray for zero force
+    const mix = (from: number[], to: number[]) =>
+      `rgb(${from.map((c, i) => Math.round(c + (to[i] - c) * intensity)).join(', ')})`;
+
+    if (force > 10) return mix([193, 150, 78], [127, 99, 52]);   // traction : or
+    if (force < -10) return mix([201, 100, 69], [132, 66, 46]);  // compression : brun
+    return '#7c766f'; // force nulle : gris neutre
   };
 
   const getMemberWidth = (force: number) => {
@@ -370,22 +370,22 @@ export function TrussSimulator() {
     if (node.supportType === 'pin') {
       return (
         <g key={`support-${node.id}`} transform={`translate(${node.x}, ${node.y})`}>
-          <polygon points="0,0 -15,25 15,25" fill="none" stroke="#374151" strokeWidth="2" />
-          <circle cx="0" cy="0" r="6" fill="#4f46e5" />
-          <line x1="-20" y1="28" x2="20" y2="28" stroke="#374151" strokeWidth="2" />
+          <polygon points="0,0 -15,25 15,25" fill="none" stroke="#484440" strokeWidth="2" />
+          <circle cx="0" cy="0" r="6" fill="#c0964d" />
+          <line x1="-20" y1="28" x2="20" y2="28" stroke="#484440" strokeWidth="2" />
           {[-12, -4, 4, 12].map((x, i) => (
-            <line key={i} x1={x} y1="28" x2={x - 6} y2="38" stroke="#374151" strokeWidth="1.5" />
+            <line key={i} x1={x} y1="28" x2={x - 6} y2="38" stroke="#484440" strokeWidth="1.5" />
           ))}
         </g>
       );
     } else if (node.supportType === 'roller') {
       return (
         <g key={`support-${node.id}`} transform={`translate(${node.x}, ${node.y})`}>
-          <polygon points="0,0 -12,20 12,20" fill="none" stroke="#374151" strokeWidth="2" />
-          <circle cx="0" cy="0" r="6" fill="#10b981" />
-          <circle cx="-6" cy="26" r="5" fill="none" stroke="#374151" strokeWidth="2" />
-          <circle cx="6" cy="26" r="5" fill="none" stroke="#374151" strokeWidth="2" />
-          <line x1="-18" y1="34" x2="18" y2="34" stroke="#374151" strokeWidth="2" />
+          <polygon points="0,0 -12,20 12,20" fill="none" stroke="#484440" strokeWidth="2" />
+          <circle cx="0" cy="0" r="6" fill="#7e8f3a" />
+          <circle cx="-6" cy="26" r="5" fill="none" stroke="#484440" strokeWidth="2" />
+          <circle cx="6" cy="26" r="5" fill="none" stroke="#484440" strokeWidth="2" />
+          <line x1="-18" y1="34" x2="18" y2="34" stroke="#484440" strokeWidth="2" />
         </g>
       );
     }
@@ -411,7 +411,7 @@ export function TrussSimulator() {
             y1={node.y + 40}
             x2={node.x}
             y2={node.y + 40 + direction * arrowLength}
-            stroke="#10b981"
+            stroke="#7e8f3a"
             strokeWidth="3"
           />
           <polygon
@@ -419,13 +419,13 @@ export function TrussSimulator() {
               ? `${node.x},${node.y + 40 + direction * arrowLength} ${node.x - 6},${node.y + 40 + direction * (arrowLength - 12)} ${node.x + 6},${node.y + 40 + direction * (arrowLength - 12)}`
               : `${node.x},${node.y + 40 + direction * arrowLength} ${node.x - 6},${node.y + 40 + direction * (arrowLength - 12)} ${node.x + 6},${node.y + 40 + direction * (arrowLength - 12)}`
             }
-            fill="#10b981"
+            fill="#7e8f3a"
           />
           {showForceValues && (
             <text
               x={node.x + 10}
               y={node.y + 40 + direction * arrowLength / 2}
-              className="text-xs fill-emerald-600 font-medium"
+              className="text-xs fill-olive-600 font-medium"
             >
               {Math.abs(reaction.ry).toFixed(0)} N
             </text>
@@ -444,19 +444,19 @@ export function TrussSimulator() {
             y1={node.y}
             x2={node.x - 30 + direction * arrowLength}
             y2={node.y}
-            stroke="#3b82f6"
+            stroke="#c29851"
             strokeWidth="3"
           />
           <polygon
             points={`${node.x - 30 + direction * arrowLength},${node.y} ${node.x - 30 + direction * (arrowLength - 12)},${node.y - 6} ${node.x - 30 + direction * (arrowLength - 12)},${node.y + 6}`}
-            fill="#3b82f6"
+            fill="#c29851"
           />
           {showForceValues && (
             <text
               x={node.x - 30 + direction * arrowLength / 2}
               y={node.y - 10}
               textAnchor="middle"
-              className="text-xs fill-blue-600 font-medium"
+              className="text-xs fill-gold-600 font-medium"
             >
               {Math.abs(reaction.rx).toFixed(0)} N
             </text>
@@ -471,7 +471,7 @@ export function TrussSimulator() {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
       {/* Header */}
-      <div className="border-b border-gray-200 bg-gray-50 p-4">
+      <div className="border-b border-stone-200 bg-stone-50 p-4">
         <div className="flex flex-wrap gap-2 mb-3">
           {TRUSS_CONFIGS.map((c) => (
             <button
@@ -480,26 +480,26 @@ export function TrussSimulator() {
               className={cn(
                 "px-4 py-2 rounded-lg text-sm font-medium transition-colors",
                 selectedConfig === c.id
-                  ? "bg-blue-600 text-white"
-                  : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
+                  ? "bg-gold-600 text-white"
+                  : "bg-white text-stone-700 hover:bg-stone-100 border border-stone-300"
               )}
             >
               {c.name}
             </button>
           ))}
         </div>
-        <p className="text-sm text-gray-600">{config.description}</p>
+        <p className="text-sm text-stone-600">{config.description}</p>
       </div>
 
       <div className="p-6">
         <div className="grid lg:grid-cols-[1fr_280px] gap-6">
           {/* Canvas */}
-          <div className="border-2 border-blue-200 rounded-lg overflow-hidden bg-gradient-to-b from-blue-50 to-white">
+          <div className="border-2 border-gold-200 rounded-lg overflow-hidden bg-gradient-to-b from-gold-50 to-white">
             <svg width={canvasSize.width} height={canvasSize.height}>
               {/* Grid */}
               <defs>
                 <pattern id="trussGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#dbeafe" strokeWidth="0.5" />
+                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#eeedeb" strokeWidth="0.5" />
                 </pattern>
               </defs>
               <rect width="100%" height="100%" fill="url(#trussGrid)" />
@@ -561,13 +561,13 @@ export function TrussSimulator() {
                     cx={node.x}
                     cy={node.y}
                     r="8"
-                    fill={node.supportType ? (node.supportType === 'pin' ? '#4f46e5' : '#10b981') : '#374151'}
+                    fill={node.supportType ? (node.supportType === 'pin' ? '#c0964d' : '#7e8f3a') : '#484440'}
                   />
                   <text
                     x={node.x}
                     y={node.y - 15}
                     textAnchor="middle"
-                    className="text-sm font-bold fill-gray-700"
+                    className="text-sm font-bold fill-stone-700"
                   >
                     {node.id}
                   </text>
@@ -584,17 +584,17 @@ export function TrussSimulator() {
                         y1={nodeMap.get(forceNodeId)!.y - 10}
                         x2={nodeMap.get(forceNodeId)!.x}
                         y2={nodeMap.get(forceNodeId)!.y - 70}
-                        stroke="#dc2626"
+                        stroke="#c65c3c"
                         strokeWidth="4"
                       />
                       <polygon
                         points={`${nodeMap.get(forceNodeId)!.x},${nodeMap.get(forceNodeId)!.y - 10} ${nodeMap.get(forceNodeId)!.x - 8},${nodeMap.get(forceNodeId)!.y - 25} ${nodeMap.get(forceNodeId)!.x + 8},${nodeMap.get(forceNodeId)!.y - 25}`}
-                        fill="#dc2626"
+                        fill="#c65c3c"
                       />
                       <text
                         x={nodeMap.get(forceNodeId)!.x + 15}
                         y={nodeMap.get(forceNodeId)!.y - 40}
-                        className="text-sm font-bold fill-red-600"
+                        className="text-sm font-bold fill-brun-600"
                       >
                         F = {appliedForceY} N
                       </text>
@@ -607,18 +607,18 @@ export function TrussSimulator() {
                         y1={nodeMap.get(forceNodeId)!.y}
                         x2={nodeMap.get(forceNodeId)!.x + 70}
                         y2={nodeMap.get(forceNodeId)!.y}
-                        stroke="#dc2626"
+                        stroke="#c65c3c"
                         strokeWidth="4"
                       />
                       <polygon
                         points={`${nodeMap.get(forceNodeId)!.x + 70},${nodeMap.get(forceNodeId)!.y} ${nodeMap.get(forceNodeId)!.x + 55},${nodeMap.get(forceNodeId)!.y - 8} ${nodeMap.get(forceNodeId)!.x + 55},${nodeMap.get(forceNodeId)!.y + 8}`}
-                        fill="#dc2626"
+                        fill="#c65c3c"
                       />
                       <text
                         x={nodeMap.get(forceNodeId)!.x + 40}
                         y={nodeMap.get(forceNodeId)!.y - 10}
                         textAnchor="middle"
-                        className="text-sm font-bold fill-red-600"
+                        className="text-sm font-bold fill-brun-600"
                       >
                         Fx = {appliedForceX} N
                       </text>
@@ -634,11 +634,11 @@ export function TrussSimulator() {
 
               {/* Legend */}
               <g transform="translate(10, 360)">
-                <rect x="0" y="-5" width="140" height="35" rx="4" fill="white" fillOpacity="0.9" stroke="#e5e7eb" />
-                <line x1="10" y1="5" x2="40" y2="5" stroke="#3b82f6" strokeWidth="4" />
-                <text x="45" y="9" className="text-xs fill-gray-600">Tension (+)</text>
-                <line x1="10" y1="20" x2="40" y2="20" stroke="#dc2626" strokeWidth="4" />
-                <text x="45" y="24" className="text-xs fill-gray-600">Compression (-)</text>
+                <rect x="0" y="-5" width="140" height="35" rx="4" fill="white" fillOpacity="0.9" stroke="#e9e8e7" />
+                <line x1="10" y1="5" x2="40" y2="5" stroke="#c29851" strokeWidth="4" />
+                <text x="45" y="9" className="text-xs fill-stone-600">Tension (+)</text>
+                <line x1="10" y1="20" x2="40" y2="20" stroke="#c65c3c" strokeWidth="4" />
+                <text x="45" y="24" className="text-xs fill-stone-600">Compression (-)</text>
               </g>
             </svg>
           </div>
@@ -646,11 +646,11 @@ export function TrussSimulator() {
           {/* Controls */}
           <div className="space-y-4">
             {/* Applied Force */}
-            <div className="p-4 bg-red-50 rounded-lg border border-red-200">
-              <h3 className="font-semibold text-red-800 mb-3">Force appliquée</h3>
+            <div className="p-4 bg-brun-50 rounded-lg border border-brun-200">
+              <h3 className="font-semibold text-brun-800 mb-3">Force appliquée</h3>
               <div className="space-y-3">
                 <div>
-                  <label className="block text-sm text-red-700 mb-1">
+                  <label className="block text-sm text-brun-700 mb-1">
                     Force verticale Fy: {appliedForceY} N
                   </label>
                   <input
@@ -660,11 +660,11 @@ export function TrussSimulator() {
                     step="100"
                     value={appliedForceY}
                     onChange={(e) => setAppliedForceY(parseInt(e.target.value))}
-                    className="w-full accent-red-600"
+                    className="w-full accent-brun-600"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-red-700 mb-1">
+                  <label className="block text-sm text-brun-700 mb-1">
                     Force horizontale Fx: {appliedForceX} N
                   </label>
                   <input
@@ -674,45 +674,45 @@ export function TrussSimulator() {
                     step="100"
                     value={appliedForceX}
                     onChange={(e) => setAppliedForceX(parseInt(e.target.value))}
-                    className="w-full accent-red-600"
+                    className="w-full accent-brun-600"
                   />
                 </div>
               </div>
             </div>
 
             {/* Display options */}
-            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <h3 className="font-semibold text-gray-800 mb-3">Affichage</h3>
+            <div className="p-4 bg-stone-50 rounded-lg border border-stone-200">
+              <h3 className="font-semibold text-stone-800 mb-3">Affichage</h3>
               <div className="space-y-2">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={showForceValues}
                     onChange={(e) => setShowForceValues(e.target.checked)}
-                    className="w-4 h-4 accent-blue-600"
+                    className="w-4 h-4 accent-gold-600"
                   />
-                  <span className="text-sm text-gray-700">Valeurs des forces internes</span>
+                  <span className="text-sm text-stone-700">Valeurs des forces internes</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={showReactions}
                     onChange={(e) => setShowReactions(e.target.checked)}
-                    className="w-4 h-4 accent-blue-600"
+                    className="w-4 h-4 accent-gold-600"
                   />
-                  <span className="text-sm text-gray-700">Réactions aux appuis</span>
+                  <span className="text-sm text-stone-700">Réactions aux appuis</span>
                 </label>
               </div>
             </div>
 
             {/* Reactions summary */}
-            <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-200">
-              <h3 className="font-semibold text-emerald-800 mb-2">Réactions aux appuis</h3>
+            <div className="p-4 bg-olive-50 rounded-lg border border-olive-200">
+              <h3 className="font-semibold text-olive-800 mb-2">Réactions aux appuis</h3>
               <div className="space-y-2 text-sm">
                 {Array.from(reactions.entries()).map(([nodeId, r]) => (
                   <div key={nodeId} className="flex justify-between">
-                    <span className="text-emerald-700">Noeud {nodeId}:</span>
-                    <span className="font-mono text-emerald-800">
+                    <span className="text-olive-700">Noeud {nodeId}:</span>
+                    <span className="font-mono text-olive-800">
                       {Math.abs(r.rx) > 1 && `Rx=${r.rx.toFixed(0)}N `}
                       Ry={r.ry.toFixed(0)}N
                     </span>
@@ -722,11 +722,11 @@ export function TrussSimulator() {
             </div>
 
             {/* Member forces table */}
-            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <h3 className="font-semibold text-blue-800 mb-2">Forces internes</h3>
+            <div className="p-4 bg-gold-50 rounded-lg border border-gold-200">
+              <h3 className="font-semibold text-gold-800 mb-2">Forces internes</h3>
               <div className="max-h-48 overflow-y-auto">
                 <table className="w-full text-sm">
-                  <thead className="sticky top-0 bg-blue-100">
+                  <thead className="sticky top-0 bg-gold-100">
                     <tr>
                       <th className="text-left py-1 px-2">Barre</th>
                       <th className="text-right py-1 px-2">Force (N)</th>
@@ -737,14 +737,14 @@ export function TrussSimulator() {
                     {config.members.map((m) => {
                       const force = memberForces.get(m.id) || 0;
                       return (
-                        <tr key={m.id} className="border-t border-blue-200">
+                        <tr key={m.id} className="border-t border-gold-200">
                           <td className="py-1 px-2 font-mono">{m.startNode}-{m.endNode}</td>
                           <td className="py-1 px-2 text-right font-mono">
                             {Math.abs(force).toFixed(0)}
                           </td>
                           <td className={cn(
                             "py-1 px-2 text-center text-xs font-medium",
-                            force > 10 ? "text-blue-600" : force < -10 ? "text-red-600" : "text-gray-500"
+                            force > 10 ? "text-gold-600" : force < -10 ? "text-brun-600" : "text-stone-500"
                           )}>
                             {force > 10 ? 'T' : force < -10 ? 'C' : '-'}
                           </td>
@@ -754,18 +754,18 @@ export function TrussSimulator() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-blue-600 mt-2">T = Tension, C = Compression</p>
+              <p className="text-xs text-gold-600 mt-2">T = Tension, C = Compression</p>
             </div>
           </div>
         </div>
 
         {/* Theory section */}
-        <div className="mt-6 bg-gray-50 rounded-lg p-4">
-          <h3 className="font-semibold text-gray-800 mb-3">Analyse des treillis</h3>
+        <div className="mt-6 bg-stone-50 rounded-lg p-4">
+          <h3 className="font-semibold text-stone-800 mb-3">Analyse des treillis</h3>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="p-3 bg-white rounded-lg">
-              <p className="text-sm text-gray-600 mb-2">Hypothèses simplificatrices:</p>
-              <ul className="text-sm text-gray-700 list-disc list-inside space-y-1">
+              <p className="text-sm text-stone-600 mb-2">Hypothèses simplificatrices:</p>
+              <ul className="text-sm text-stone-700 list-disc list-inside space-y-1">
                 <li>Les barres sont connectées par des articulations parfaites</li>
                 <li>Les charges sont appliquées uniquement aux noeuds</li>
                 <li>Le poids propre des barres est négligeable</li>
@@ -773,17 +773,17 @@ export function TrussSimulator() {
               </ul>
             </div>
             <div className="p-3 bg-white rounded-lg">
-              <p className="text-sm text-gray-600 mb-2">Méthode des noeuds:</p>
+              <p className="text-sm text-stone-600 mb-2">Méthode des noeuds:</p>
               <BlockMath math="\sum F_x = 0 \quad \sum F_y = 0" />
-              <p className="text-sm text-gray-600 mt-2">
+              <p className="text-sm text-stone-600 mt-2">
                 À chaque noeud, l'équilibre des forces permet de déterminer les forces internes dans les barres.
               </p>
             </div>
           </div>
-          <div className="mt-4 p-3 bg-amber-50 rounded-lg border border-amber-200">
-            <p className="text-sm text-amber-800">
-              <strong>Convention de signe:</strong> Une force positive indique une <span className="text-blue-600 font-semibold">tension</span> (la barre est étirée),
-              une force négative indique une <span className="text-red-600 font-semibold">compression</span> (la barre est comprimée).
+          <div className="mt-4 p-3 bg-ocre-50 rounded-lg border border-ocre-200">
+            <p className="text-sm text-ocre-800">
+              <strong>Convention de signe:</strong> Une force positive indique une <span className="text-gold-600 font-semibold">tension</span> (la barre est étirée),
+              une force négative indique une <span className="text-brun-600 font-semibold">compression</span> (la barre est comprimée).
             </p>
           </div>
         </div>

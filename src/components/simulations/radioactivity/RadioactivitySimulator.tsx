@@ -23,17 +23,17 @@ export function RadioactivitySimulator() {
   const [activeSection, setActiveSection] = useState<Section>('decay');
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+    <div className="bg-white rounded-xl border border-stone-200 shadow-sm overflow-hidden">
       {/* Tab bar */}
-      <div className="flex border-b border-gray-200 overflow-x-auto">
+      <div className="flex border-b border-stone-200 overflow-x-auto">
         {SECTIONS.map((s) => (
           <button
             key={s.id}
             onClick={() => setActiveSection(s.id)}
             className={`px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors flex items-center gap-1.5 ${
               activeSection === s.id
-                ? 'bg-orange-50 text-orange-700 border-b-2 border-orange-500'
-                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                ? 'bg-terre-50 text-terre-700 border-b-2 border-terre-500'
+                : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50'
             }`}
           >
             <span>{s.icon}</span>

@@ -195,18 +195,18 @@ export function ProjectileMotionSimulator() {
 
     // Background with gradient
     const gradient = ctx.createLinearGradient(0, 0, 0, trajCanvasHeight);
-    gradient.addColorStop(0, '#e0f2fe');
-    gradient.addColorStop(0.7, '#f0f9ff');
-    gradient.addColorStop(1, '#dcfce7');
+    gradient.addColorStop(0, '#f0efee');
+    gradient.addColorStop(0.7, '#f8f8f7');
+    gradient.addColorStop(1, '#edeceb');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, trajCanvasWidth, trajCanvasHeight);
 
     // Ground line
     if (minY <= 0 && maxY >= 0) {
       const groundY = toCanvasY(0);
-      ctx.fillStyle = '#86efac';
+      ctx.fillStyle = '#becc83';
       ctx.fillRect(0, groundY, trajCanvasWidth, trajCanvasHeight - groundY);
-      ctx.strokeStyle = '#166534';
+      ctx.strokeStyle = '#4d5724';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(0, groundY);
@@ -216,7 +216,7 @@ export function ProjectileMotionSimulator() {
 
     // Grid
     if (showGrid) {
-      ctx.strokeStyle = 'rgba(148, 163, 184, 0.3)';
+      ctx.strokeStyle = 'rgba(171, 166, 161, 0.3)';
       ctx.lineWidth = 1;
 
       // Vertical grid lines
@@ -228,7 +228,7 @@ export function ProjectileMotionSimulator() {
         ctx.lineTo(cx, trajCanvasHeight - padding.bottom);
         ctx.stroke();
 
-        ctx.fillStyle = '#64748b';
+        ctx.fillStyle = '#7e7871';
         ctx.font = '10px system-ui';
         ctx.textAlign = 'center';
         ctx.fillText(x.toFixed(1), cx, trajCanvasHeight - padding.bottom + 15);
@@ -243,7 +243,7 @@ export function ProjectileMotionSimulator() {
         ctx.lineTo(trajCanvasWidth - padding.right, cy);
         ctx.stroke();
 
-        ctx.fillStyle = '#64748b';
+        ctx.fillStyle = '#7e7871';
         ctx.font = '10px system-ui';
         ctx.textAlign = 'right';
         ctx.fillText(y.toFixed(1), padding.left - 5, cy + 4);
@@ -252,7 +252,7 @@ export function ProjectileMotionSimulator() {
 
     // Trajectory path
     if (showTrajectory) {
-      ctx.strokeStyle = mode === 'circular' ? '#3b82f6' : '#8b5cf6';
+      ctx.strokeStyle = mode === 'circular' ? '#c29851' : '#b57b98';
       ctx.lineWidth = 2;
       ctx.setLineDash([]);
       ctx.beginPath();
@@ -275,7 +275,7 @@ export function ProjectileMotionSimulator() {
     // Velocity components (dashed lines)
     if (showComponents) {
       // X component
-      ctx.strokeStyle = '#22c55e';
+      ctx.strokeStyle = '#91a443';
       ctx.lineWidth = 2;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
@@ -284,7 +284,7 @@ export function ProjectileMotionSimulator() {
       ctx.stroke();
 
       // Y component
-      ctx.strokeStyle = '#ef4444';
+      ctx.strokeStyle = '#ca684a';
       ctx.beginPath();
       ctx.moveTo(objX, objY);
       ctx.lineTo(objX, objY - current.vy * 3);
@@ -299,7 +299,7 @@ export function ProjectileMotionSimulator() {
       const vEndX = objX + current.vx * vScale;
       const vEndY = objY - current.vy * vScale;
 
-      ctx.strokeStyle = '#2563eb';
+      ctx.strokeStyle = '#c1974f';
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(objX, objY);
@@ -309,7 +309,7 @@ export function ProjectileMotionSimulator() {
       // Arrow head
       if (vMag > 0.5) {
         const vAngle = Math.atan2(-current.vy, current.vx);
-        ctx.fillStyle = '#2563eb';
+        ctx.fillStyle = '#c1974f';
         ctx.beginPath();
         ctx.moveTo(vEndX, vEndY);
         ctx.lineTo(vEndX - 10 * Math.cos(vAngle - 0.3), vEndY - 10 * Math.sin(vAngle - 0.3));
@@ -319,7 +319,7 @@ export function ProjectileMotionSimulator() {
       }
 
       // Label
-      ctx.fillStyle = '#2563eb';
+      ctx.fillStyle = '#c1974f';
       ctx.font = 'bold 11px system-ui';
       ctx.fillText('v⃗', vEndX + 5, vEndY - 5);
     }
@@ -331,7 +331,7 @@ export function ProjectileMotionSimulator() {
       const aEndX = objX + current.ax * aScale;
       const aEndY = objY - current.ay * aScale;
 
-      ctx.strokeStyle = '#dc2626';
+      ctx.strokeStyle = '#c65c3c';
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(objX, objY);
@@ -341,7 +341,7 @@ export function ProjectileMotionSimulator() {
       // Arrow head
       if (aMag > 0.5) {
         const aAngle = Math.atan2(-current.ay, current.ax);
-        ctx.fillStyle = '#dc2626';
+        ctx.fillStyle = '#c65c3c';
         ctx.beginPath();
         ctx.moveTo(aEndX, aEndY);
         ctx.lineTo(aEndX - 8 * Math.cos(aAngle - 0.3), aEndY - 8 * Math.sin(aAngle - 0.3));
@@ -351,7 +351,7 @@ export function ProjectileMotionSimulator() {
       }
 
       // Label
-      ctx.fillStyle = '#dc2626';
+      ctx.fillStyle = '#c65c3c';
       ctx.font = 'bold 11px system-ui';
       const labelText = mode === 'circular' && showCentripetal ? 'a⃗c' : 'a⃗';
       ctx.fillText(labelText, aEndX + 5, aEndY + 5);
@@ -363,9 +363,9 @@ export function ProjectileMotionSimulator() {
     ctx.shadowOffsetY = 3;
 
     const ballGradient = ctx.createRadialGradient(objX - 3, objY - 3, 0, objX, objY, 12);
-    ballGradient.addColorStop(0, '#fbbf24');
-    ballGradient.addColorStop(0.7, '#f59e0b');
-    ballGradient.addColorStop(1, '#d97706');
+    ballGradient.addColorStop(0, '#e8c61a');
+    ballGradient.addColorStop(0.7, '#e8c518');
+    ballGradient.addColorStop(1, '#be7021');
 
     ctx.fillStyle = ballGradient;
     ctx.beginPath();
@@ -382,7 +382,7 @@ export function ProjectileMotionSimulator() {
     ctx.fill();
 
     // Axis labels
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.font = 'bold 12px system-ui';
     ctx.textAlign = 'center';
     ctx.fillText('x (m)', trajCanvasWidth / 2, trajCanvasHeight - 5);
@@ -396,11 +396,11 @@ export function ProjectileMotionSimulator() {
     // Info panel
     ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
     ctx.fillRect(trajCanvasWidth - 140, 10, 130, 95);
-    ctx.strokeStyle = '#d1d5db';
+    ctx.strokeStyle = '#d8d6d4';
     ctx.lineWidth = 1;
     ctx.strokeRect(trajCanvasWidth - 140, 10, 130, 95);
 
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.font = '11px system-ui';
     ctx.textAlign = 'left';
     ctx.fillText(`t = ${currentTime.toFixed(2)} s`, trajCanvasWidth - 130, 28);
@@ -408,11 +408,11 @@ export function ProjectileMotionSimulator() {
     ctx.fillText(`y = ${current.y.toFixed(2)} m`, trajCanvasWidth - 130, 62);
 
     const vMag = Math.sqrt(current.vx * current.vx + current.vy * current.vy);
-    ctx.fillStyle = '#2563eb';
+    ctx.fillStyle = '#c1974f';
     ctx.fillText(`|v| = ${vMag.toFixed(2)} m/s`, trajCanvasWidth - 130, 79);
 
     const aMag = Math.sqrt(current.ax * current.ax + current.ay * current.ay);
-    ctx.fillStyle = '#dc2626';
+    ctx.fillStyle = '#c65c3c';
     ctx.fillText(`|a| = ${aMag.toFixed(2)} m/s²`, trajCanvasWidth - 130, 96);
 
   }, [mode, currentTime, getKinematics, getEffectiveMaxTime, showVelocityVector, showAccelerationVector,
@@ -455,7 +455,7 @@ export function ProjectileMotionSimulator() {
     ctx.fillRect(0, 0, graphCanvasWidth, graphCanvasHeight);
 
     // Grid
-    ctx.strokeStyle = '#e5e7eb';
+    ctx.strokeStyle = '#e9e8e7';
     ctx.lineWidth = 1;
     for (let i = 0; i <= 4; i++) {
       const t = (i / 4) * effectiveMax;
@@ -468,7 +468,7 @@ export function ProjectileMotionSimulator() {
 
     // Zero line
     if (minVal < 0 && maxVal > 0) {
-      ctx.strokeStyle = '#9ca3af';
+      ctx.strokeStyle = '#aaa6a1';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(padding.left, toCanvasY(0));
@@ -506,7 +506,7 @@ export function ProjectileMotionSimulator() {
 
     // Current time marker
     const markerX = toCanvasX(currentTime);
-    ctx.strokeStyle = '#374151';
+    ctx.strokeStyle = '#484440';
     ctx.lineWidth = 1;
     ctx.setLineDash([3, 3]);
     ctx.beginPath();
@@ -530,14 +530,14 @@ export function ProjectileMotionSimulator() {
     ctx.fill();
 
     // Title and legend
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.font = 'bold 11px system-ui';
     ctx.textAlign = 'left';
     ctx.fillText(label, 5, 14);
 
     ctx.fillStyle = colorX;
     ctx.fillRect(graphCanvasWidth - 70, 5, 10, 10);
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.font = '9px system-ui';
     ctx.fillText(`${label.toLowerCase()}(t)`, graphCanvasWidth - 57, 13);
 
@@ -546,7 +546,7 @@ export function ProjectileMotionSimulator() {
     ctx.fillText(`v${label.toLowerCase()}(t)`, graphCanvasWidth - 57, 23);
 
     // Axis labels
-    ctx.fillStyle = '#6b7280';
+    ctx.fillStyle = '#7c766f';
     ctx.font = '9px system-ui';
     ctx.textAlign = 'center';
     ctx.fillText('t (s)', graphCanvasWidth / 2, graphCanvasHeight - 3);
@@ -561,16 +561,16 @@ export function ProjectileMotionSimulator() {
       (t) => getKinematics(t).x,
       (t) => getKinematics(t).vx,
       'X',
-      '#22c55e',
-      '#16a34a'
+      '#91a443',
+      '#748336'
     );
     drawComponentGraph(
       yGraphCanvasRef.current,
       (t) => getKinematics(t).y,
       (t) => getKinematics(t).vy,
       'Y',
-      '#ef4444',
-      '#dc2626'
+      '#ca684a',
+      '#c65c3c'
     );
   }, [drawTrajectory, drawComponentGraph, getKinematics]);
 
@@ -590,7 +590,7 @@ export function ProjectileMotionSimulator() {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
       {/* Header with mode selector */}
-      <div className="border-b border-gray-200 bg-gradient-to-r from-emerald-50 via-blue-50 to-purple-50 p-3">
+      <div className="border-b border-stone-200 bg-gradient-to-r from-olive-50 via-gold-50 to-prune-50 p-3">
         <div className="flex flex-wrap items-center gap-2 mb-2">
           {MOTION_MODES.map((m) => (
             <button
@@ -600,11 +600,11 @@ export function ProjectileMotionSimulator() {
                 "px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5",
                 mode === m.id
                   ? "text-white shadow-md"
-                  : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
+                  : "bg-white text-stone-700 hover:bg-stone-100 border border-stone-300"
               )}
               style={mode === m.id ? {
-                backgroundColor: m.color === 'emerald' ? '#059669' :
-                                 m.color === 'blue' ? '#2563eb' : '#9333ea'
+                backgroundColor: m.color === 'emerald' ? '#616e2d' :
+                                 m.color === 'blue' ? '#c1974f' : '#a45d80'
               } : {}}
             >
               <span>{m.emoji}</span>
@@ -612,14 +612,14 @@ export function ProjectileMotionSimulator() {
             </button>
           ))}
         </div>
-        <p className="text-xs text-gray-600">{currentConfig?.description}</p>
+        <p className="text-xs text-stone-600">{currentConfig?.description}</p>
       </div>
 
       <div className="p-4">
         <div className="flex flex-col lg:flex-row gap-4">
           {/* Left: Trajectory canvas */}
           <div className="flex-1">
-            <div className="border border-gray-200 rounded-lg overflow-hidden">
+            <div className="border border-stone-200 rounded-lg overflow-hidden">
               <canvas
                 ref={trajectoryCanvasRef}
                 width={trajCanvasWidth}
@@ -634,14 +634,14 @@ export function ProjectileMotionSimulator() {
                 onClick={() => setIsPlaying(!isPlaying)}
                 className={cn(
                   "px-4 py-2 rounded-lg text-sm font-semibold transition-colors",
-                  isPlaying ? "bg-amber-500 text-white" : "bg-emerald-500 text-white"
+                  isPlaying ? "bg-ocre-500 text-white" : "bg-olive-500 text-white"
                 )}
               >
                 {isPlaying ? '⏸ Pause' : '▶ Lecture'}
               </button>
               <button
                 onClick={handleReset}
-                className="px-3 py-2 rounded-lg text-sm font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300"
+                className="px-3 py-2 rounded-lg text-sm font-semibold bg-stone-200 text-stone-700 hover:bg-stone-300"
               >
                 ↺ Reset
               </button>
@@ -653,10 +653,10 @@ export function ProjectileMotionSimulator() {
                   step="0.01"
                   value={currentTime}
                   onChange={(e) => setCurrentTime(parseFloat(e.target.value))}
-                  className="w-full accent-emerald-600"
+                  className="w-full accent-olive-600"
                 />
               </div>
-              <span className="text-sm font-mono text-gray-600 w-16">
+              <span className="text-sm font-mono text-stone-600 w-16">
                 {currentTime.toFixed(2)}s
               </span>
             </div>
@@ -665,8 +665,8 @@ export function ProjectileMotionSimulator() {
           {/* Right: Component graphs and controls */}
           <div className="lg:w-64 space-y-3">
             {/* X component graph */}
-            <div className="border border-green-200 rounded-lg overflow-hidden bg-green-50">
-              <div className="px-2 py-1 bg-green-100 text-xs font-bold text-green-800 flex justify-between">
+            <div className="border border-olive-200 rounded-lg overflow-hidden bg-olive-50">
+              <div className="px-2 py-1 bg-olive-100 text-xs font-bold text-olive-800 flex justify-between">
                 <span>Composante X (MRU)</span>
                 <span className="font-mono">{current.x.toFixed(2)} m</span>
               </div>
@@ -674,8 +674,8 @@ export function ProjectileMotionSimulator() {
             </div>
 
             {/* Y component graph */}
-            <div className="border border-red-200 rounded-lg overflow-hidden bg-red-50">
-              <div className="px-2 py-1 bg-red-100 text-xs font-bold text-red-800 flex justify-between">
+            <div className="border border-brun-200 rounded-lg overflow-hidden bg-brun-50">
+              <div className="px-2 py-1 bg-brun-100 text-xs font-bold text-brun-800 flex justify-between">
                 <span>Composante Y (MRUA)</span>
                 <span className="font-mono">{current.y.toFixed(2)} m</span>
               </div>
@@ -683,16 +683,16 @@ export function ProjectileMotionSimulator() {
             </div>
 
             {/* Display options */}
-            <div className="bg-gray-50 rounded-lg p-2 border border-gray-200">
-              <p className="text-xs font-semibold text-gray-700 mb-2">Affichage</p>
+            <div className="bg-stone-50 rounded-lg p-2 border border-stone-200">
+              <p className="text-xs font-semibold text-stone-700 mb-2">Affichage</p>
               <div className="grid grid-cols-2 gap-1 text-xs">
                 <label className="flex items-center gap-1 cursor-pointer">
                   <input type="checkbox" checked={showVelocityVector} onChange={(e) => setShowVelocityVector(e.target.checked)} className="w-3 h-3" />
-                  <span className="text-blue-600">v⃗</span>
+                  <span className="text-gold-600">v⃗</span>
                 </label>
                 <label className="flex items-center gap-1 cursor-pointer">
                   <input type="checkbox" checked={showAccelerationVector} onChange={(e) => setShowAccelerationVector(e.target.checked)} className="w-3 h-3" />
-                  <span className="text-red-600">a⃗</span>
+                  <span className="text-brun-600">a⃗</span>
                 </label>
                 <label className="flex items-center gap-1 cursor-pointer">
                   <input type="checkbox" checked={showComponents} onChange={(e) => setShowComponents(e.target.checked)} className="w-3 h-3" />
@@ -708,13 +708,13 @@ export function ProjectileMotionSimulator() {
         </div>
 
         {/* Parameters panel */}
-        <div className="mt-4 bg-gray-50 rounded-lg p-4 border border-gray-200">
-          <h4 className="text-sm font-bold text-gray-700 mb-3">Paramètres</h4>
+        <div className="mt-4 bg-stone-50 rounded-lg p-4 border border-stone-200">
+          <h4 className="text-sm font-bold text-stone-700 mb-3">Paramètres</h4>
 
           {mode === 'projectile' && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">
+                <label className="block text-xs font-medium text-stone-600 mb-1">
                   v₀ = {v0} m/s
                 </label>
                 <input
@@ -724,11 +724,11 @@ export function ProjectileMotionSimulator() {
                   step="1"
                   value={v0}
                   onChange={(e) => { setV0(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-blue-600"
+                  className="w-full accent-gold-600"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">
+                <label className="block text-xs font-medium text-stone-600 mb-1">
                   θ = {angle}°
                 </label>
                 <input
@@ -738,11 +738,11 @@ export function ProjectileMotionSimulator() {
                   step="5"
                   value={angle}
                   onChange={(e) => { setAngle(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-orange-600"
+                  className="w-full accent-terre-600"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">
+                <label className="block text-xs font-medium text-stone-600 mb-1">
                   y₀ = {y0} m
                 </label>
                 <input
@@ -752,11 +752,11 @@ export function ProjectileMotionSimulator() {
                   step="1"
                   value={y0}
                   onChange={(e) => { setY0(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-green-600"
+                  className="w-full accent-olive-600"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">
+                <label className="block text-xs font-medium text-stone-600 mb-1">
                   g = {g} m/s²
                 </label>
                 <input
@@ -766,7 +766,7 @@ export function ProjectileMotionSimulator() {
                   step="0.5"
                   value={g}
                   onChange={(e) => { setG(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-red-600"
+                  className="w-full accent-brun-600"
                 />
               </div>
             </div>
@@ -775,7 +775,7 @@ export function ProjectileMotionSimulator() {
           {mode === 'circular' && (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">
+                <label className="block text-xs font-medium text-stone-600 mb-1">
                   R = {radius} m
                 </label>
                 <input
@@ -785,11 +785,11 @@ export function ProjectileMotionSimulator() {
                   step="0.5"
                   value={radius}
                   onChange={(e) => { setRadius(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-blue-600"
+                  className="w-full accent-gold-600"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">
+                <label className="block text-xs font-medium text-stone-600 mb-1">
                   ω = {omega} rad/s
                 </label>
                 <input
@@ -799,11 +799,11 @@ export function ProjectileMotionSimulator() {
                   step="0.25"
                   value={omega}
                   onChange={(e) => { setOmega(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-purple-600"
+                  className="w-full accent-prune-600"
                 />
               </div>
               <div>
-                <label className="flex items-center gap-2 text-xs font-medium text-gray-600 cursor-pointer">
+                <label className="flex items-center gap-2 text-xs font-medium text-stone-600 cursor-pointer">
                   <input type="checkbox" checked={showCentripetal} onChange={(e) => setShowCentripetal(e.target.checked)} />
                   Montrer acc. centripète
                 </label>
@@ -814,7 +814,7 @@ export function ProjectileMotionSimulator() {
           {mode === 'custom2d' && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
-                <label className="block text-xs font-medium text-green-700 mb-1">
+                <label className="block text-xs font-medium text-olive-700 mb-1">
                   vx₀ = {customVx0} m/s
                 </label>
                 <input
@@ -824,11 +824,11 @@ export function ProjectileMotionSimulator() {
                   step="1"
                   value={customVx0}
                   onChange={(e) => { setCustomVx0(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-green-600"
+                  className="w-full accent-olive-600"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-red-700 mb-1">
+                <label className="block text-xs font-medium text-brun-700 mb-1">
                   vy₀ = {customVy0} m/s
                 </label>
                 <input
@@ -838,11 +838,11 @@ export function ProjectileMotionSimulator() {
                   step="1"
                   value={customVy0}
                   onChange={(e) => { setCustomVy0(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-red-600"
+                  className="w-full accent-brun-600"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-green-700 mb-1">
+                <label className="block text-xs font-medium text-olive-700 mb-1">
                   ax = {customAx} m/s²
                 </label>
                 <input
@@ -852,11 +852,11 @@ export function ProjectileMotionSimulator() {
                   step="0.5"
                   value={customAx}
                   onChange={(e) => { setCustomAx(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-green-600"
+                  className="w-full accent-olive-600"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-red-700 mb-1">
+                <label className="block text-xs font-medium text-brun-700 mb-1">
                   ay = {customAy} m/s²
                 </label>
                 <input
@@ -866,7 +866,7 @@ export function ProjectileMotionSimulator() {
                   step="0.5"
                   value={customAy}
                   onChange={(e) => { setCustomAy(parseFloat(e.target.value)); handleReset(); }}
-                  className="w-full accent-red-600"
+                  className="w-full accent-brun-600"
                 />
               </div>
             </div>
@@ -874,13 +874,13 @@ export function ProjectileMotionSimulator() {
         </div>
 
         {/* Formulas */}
-        <div className="mt-4 bg-gradient-to-r from-emerald-50 to-blue-50 rounded-lg p-4 border border-emerald-200">
-          <h4 className="text-sm font-bold text-gray-700 mb-3">Équations du mouvement</h4>
+        <div className="mt-4 bg-gradient-to-r from-olive-50 to-gold-50 rounded-lg p-4 border border-olive-200">
+          <h4 className="text-sm font-bold text-stone-700 mb-3">Équations du mouvement</h4>
 
           {mode === 'projectile' && (
             <div className="grid md:grid-cols-2 gap-4">
               <div className="bg-white/80 rounded-lg p-3">
-                <p className="text-xs font-semibold text-green-700 mb-2">Composante X (MRU)</p>
+                <p className="text-xs font-semibold text-olive-700 mb-2">Composante X (MRU)</p>
                 <div className="text-sm space-y-1">
                   <BlockMath math="v_{x0} = v_0 \cos\theta" />
                   <BlockMath math="x(t) = v_{x0} \cdot t" />
@@ -889,7 +889,7 @@ export function ProjectileMotionSimulator() {
                 </div>
               </div>
               <div className="bg-white/80 rounded-lg p-3">
-                <p className="text-xs font-semibold text-red-700 mb-2">Composante Y (MRUA)</p>
+                <p className="text-xs font-semibold text-brun-700 mb-2">Composante Y (MRUA)</p>
                 <div className="text-sm space-y-1">
                   <BlockMath math="v_{y0} = v_0 \sin\theta" />
                   <BlockMath math="y(t) = y_0 + v_{y0}t - \frac{1}{2}gt^2" />
@@ -903,7 +903,7 @@ export function ProjectileMotionSimulator() {
           {mode === 'circular' && (
             <div className="grid md:grid-cols-2 gap-4">
               <div className="bg-white/80 rounded-lg p-3">
-                <p className="text-xs font-semibold text-blue-700 mb-2">Position et vitesse</p>
+                <p className="text-xs font-semibold text-gold-700 mb-2">Position et vitesse</p>
                 <div className="text-sm space-y-1">
                   <BlockMath math="x(t) = R\cos(\omega t)" />
                   <BlockMath math="y(t) = R\sin(\omega t)" />
@@ -911,7 +911,7 @@ export function ProjectileMotionSimulator() {
                 </div>
               </div>
               <div className="bg-white/80 rounded-lg p-3">
-                <p className="text-xs font-semibold text-red-700 mb-2">Accélération centripète</p>
+                <p className="text-xs font-semibold text-brun-700 mb-2">Accélération centripète</p>
                 <div className="text-sm space-y-1">
                   <BlockMath math="a_c = \frac{v^2}{R} = R\omega^2" />
                   <BlockMath math="\vec{a}_c \text{ pointe vers le centre}" />
@@ -924,14 +924,14 @@ export function ProjectileMotionSimulator() {
           {mode === 'custom2d' && (
             <div className="grid md:grid-cols-2 gap-4">
               <div className="bg-white/80 rounded-lg p-3">
-                <p className="text-xs font-semibold text-green-700 mb-2">Composante X</p>
+                <p className="text-xs font-semibold text-olive-700 mb-2">Composante X</p>
                 <div className="text-sm space-y-1">
                   <BlockMath math="x(t) = v_{x0}t + \frac{1}{2}a_x t^2" />
                   <BlockMath math="v_x(t) = v_{x0} + a_x t" />
                 </div>
               </div>
               <div className="bg-white/80 rounded-lg p-3">
-                <p className="text-xs font-semibold text-red-700 mb-2">Composante Y</p>
+                <p className="text-xs font-semibold text-brun-700 mb-2">Composante Y</p>
                 <div className="text-sm space-y-1">
                   <BlockMath math="y(t) = v_{y0}t + \frac{1}{2}a_y t^2" />
                   <BlockMath math="v_y(t) = v_{y0} + a_y t" />
@@ -942,19 +942,19 @@ export function ProjectileMotionSimulator() {
 
           {/* Current values */}
           <div className="mt-3 p-2 bg-white/60 rounded-lg">
-            <p className="text-xs font-semibold text-gray-600 mb-1">Valeurs actuelles (t = {currentTime.toFixed(2)}s)</p>
+            <p className="text-xs font-semibold text-stone-600 mb-1">Valeurs actuelles (t = {currentTime.toFixed(2)}s)</p>
             <div className="flex flex-wrap gap-3 text-xs">
-              <span className="px-2 py-1 bg-green-100 rounded">
+              <span className="px-2 py-1 bg-olive-100 rounded">
                 <InlineMath math={`v_x = ${current.vx.toFixed(2)} \\text{ m/s}`} />
               </span>
-              <span className="px-2 py-1 bg-red-100 rounded">
+              <span className="px-2 py-1 bg-brun-100 rounded">
                 <InlineMath math={`v_y = ${current.vy.toFixed(2)} \\text{ m/s}`} />
               </span>
-              <span className="px-2 py-1 bg-blue-100 rounded">
+              <span className="px-2 py-1 bg-gold-100 rounded">
                 <InlineMath math={`|v| = ${Math.sqrt(current.vx**2 + current.vy**2).toFixed(2)} \\text{ m/s}`} />
               </span>
               {mode === 'projectile' && (
-                <span className="px-2 py-1 bg-amber-100 rounded">
+                <span className="px-2 py-1 bg-ocre-100 rounded">
                   <InlineMath math={`\\theta_v = ${(Math.atan2(current.vy, current.vx) * 180 / Math.PI).toFixed(1)}°`} />
                 </span>
               )}

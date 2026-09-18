@@ -21,7 +21,7 @@ function EFieldWave({
   amplitude,
   wavelength,
   timeRef,
-  color = '#ef4444'
+  color = '#ca684a'
 }: {
   amplitude: number;
   wavelength: number;
@@ -164,7 +164,7 @@ function BFieldWave({
   amplitude,
   wavelength,
   timeRef,
-  color = '#3b82f6'
+  color = '#c29851'
 }: {
   amplitude: number;
   wavelength: number;
@@ -298,7 +298,7 @@ function BFieldArrow({
 }
 
 // Poynting vector (propagation direction)
-function PoyntingVector({ color = '#22c55e' }: { color?: string }) {
+function PoyntingVector({ color = '#91a443' }: { color?: string }) {
   return (
     <group position={[0, -3, 0]}>
       {/* Main arrow shaft */}
@@ -358,7 +358,7 @@ function Wavefronts({ timeRef, amplitude }: { timeRef: React.MutableRefObject<nu
         <mesh key={idx} position={[0, 0, 0]} rotation={[0, 0, 0]}>
           <planeGeometry args={[amplitude * 4, amplitude * 5]} />
           <meshStandardMaterial
-            color="#8b5cf6"
+            color="#b57b98"
             transparent
             opacity={0.15}
             side={THREE.DoubleSide}
@@ -376,21 +376,21 @@ function Axes() {
   return (
     <group position={[-6, -2, -8]}>
       {/* X axis */}
-      <Line points={[[0, 0, 0], [axisLength, 0, 0]]} color="#ef4444" lineWidth={2} />
+      <Line points={[[0, 0, 0], [axisLength, 0, 0]]} color="#ca684a" lineWidth={2} />
       <Html position={[axisLength + 0.3, 0, 0]} center>
-        <div style={{ color: '#ef4444', fontWeight: 'bold', fontSize: '12px' }}>x</div>
+        <div style={{ color: '#ca684a', fontWeight: 'bold', fontSize: '12px' }}>x</div>
       </Html>
 
       {/* Y axis */}
-      <Line points={[[0, 0, 0], [0, axisLength, 0]]} color="#22c55e" lineWidth={2} />
+      <Line points={[[0, 0, 0], [0, axisLength, 0]]} color="#91a443" lineWidth={2} />
       <Html position={[0, axisLength + 0.3, 0]} center>
-        <div style={{ color: '#22c55e', fontWeight: 'bold', fontSize: '12px' }}>y</div>
+        <div style={{ color: '#91a443', fontWeight: 'bold', fontSize: '12px' }}>y</div>
       </Html>
 
       {/* Z axis */}
-      <Line points={[[0, 0, 0], [0, 0, axisLength]]} color="#3b82f6" lineWidth={2} />
+      <Line points={[[0, 0, 0], [0, 0, axisLength]]} color="#c29851" lineWidth={2} />
       <Html position={[0, 0, axisLength + 0.3]} center>
-        <div style={{ color: '#3b82f6', fontWeight: 'bold', fontSize: '12px' }}>z</div>
+        <div style={{ color: '#c29851', fontWeight: 'bold', fontSize: '12px' }}>z</div>
       </Html>
     </group>
   );
@@ -468,7 +468,7 @@ function EMWaveScene({
       {/* Propagation axis (Z) */}
       <Line
         points={[[-8, 0, 0], [8, 0, 0]].map(p => [0, 0, p[0]] as [number, number, number])}
-        color="#94a3b8"
+        color="#aba6a1"
         lineWidth={1}
         dashed
         dashSize={0.3}
@@ -498,9 +498,9 @@ export default function EMWave3DView(props: EMWave3DViewProps) {
 
   if (!mounted) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-slate-900 text-slate-400 rounded-xl">
+      <div className="w-full h-full flex items-center justify-center bg-stone-900 text-stone-400 rounded-xl">
         <div className="text-center">
-          <div className="animate-spin w-8 h-8 border-4 border-violet-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+          <div className="animate-spin w-8 h-8 border-4 border-prune-500 border-t-transparent rounded-full mx-auto mb-2"></div>
           Chargement de la vue 3D...
         </div>
       </div>
@@ -511,7 +511,7 @@ export default function EMWave3DView(props: EMWave3DViewProps) {
     <div className="w-full h-full">
       <Canvas
         camera={{ position: [12, 8, 12], fov: 50 }}
-        style={{ background: 'linear-gradient(180deg, #1e293b 0%, #0f172a 100%)' }}
+        style={{ background: 'linear-gradient(180deg, #2f2d2a 0%, #1e1d1b 100%)' }}
       >
         <EMWaveScene {...props} />
       </Canvas>

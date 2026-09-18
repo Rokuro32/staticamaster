@@ -6,8 +6,8 @@ import { cn } from '@/lib/utils';
 
 const NUM_MODES = 12; // Number of harmonics to consider
 const MODE_COLORS = [
-  '#ef4444', '#f97316', '#eab308', '#84cc16', '#22c55e', '#14b8a6',
-  '#06b6d4', '#3b82f6', '#6366f1', '#8b5cf6', '#a855f7', '#ec4899'
+  '#ca684a', '#db8834', '#dcbb16', '#b7b22b', '#91a443', '#80913b',
+  '#4e728c', '#c29851', '#caa668', '#b57b98', '#b37895', '#ab6a8b'
 ];
 
 export function GuitarStringSimulator() {
@@ -112,7 +112,7 @@ export function GuitarStringSimulator() {
     ctx.fillRect(0, 0, stringCanvasWidth, stringCanvasHeight);
 
     // Draw guitar body hints
-    ctx.fillStyle = '#92400e';
+    ctx.fillStyle = '#885018';
     ctx.beginPath();
     ctx.ellipse(padding.left - 10, centerY, 15, 40, 0, 0, Math.PI * 2);
     ctx.fill();
@@ -121,12 +121,12 @@ export function GuitarStringSimulator() {
     ctx.fill();
 
     // Draw bridge markers
-    ctx.fillStyle = '#78350f';
+    ctx.fillStyle = '#734414';
     ctx.fillRect(padding.left - 5, centerY - 50, 10, 100);
     ctx.fillRect(stringCanvasWidth - padding.right - 5, centerY - 50, 10, 100);
 
     // Draw equilibrium line
-    ctx.strokeStyle = '#d1d5db';
+    ctx.strokeStyle = '#d8d6d4';
     ctx.lineWidth = 1;
     ctx.setLineDash([5, 5]);
     ctx.beginPath();
@@ -137,7 +137,7 @@ export function GuitarStringSimulator() {
 
     // Draw pluck position marker
     const pluckX = padding.left + pluckPosition * width;
-    ctx.strokeStyle = '#ef4444';
+    ctx.strokeStyle = '#ca684a';
     ctx.lineWidth = 2;
     ctx.setLineDash([4, 4]);
     ctx.beginPath();
@@ -147,7 +147,7 @@ export function GuitarStringSimulator() {
     ctx.setLineDash([]);
 
     // Pluck position label
-    ctx.fillStyle = '#ef4444';
+    ctx.fillStyle = '#ca684a';
     ctx.font = 'bold 11px system-ui';
     ctx.textAlign = 'center';
     ctx.fillText(`Pincement: ${(pluckPosition * 100).toFixed(0)}%`, pluckX, padding.top - 8);
@@ -188,7 +188,7 @@ export function GuitarStringSimulator() {
     }
 
     // Draw total string displacement
-    ctx.strokeStyle = '#1e3a8a';
+    ctx.strokeStyle = '#7c5f2c';
     ctx.lineWidth = 3;
     ctx.beginPath();
     for (let i = 0; i <= 300; i++) {
@@ -202,7 +202,7 @@ export function GuitarStringSimulator() {
     ctx.stroke();
 
     // Draw fixed endpoints
-    ctx.fillStyle = '#1e3a8a';
+    ctx.fillStyle = '#7c5f2c';
     ctx.beginPath();
     ctx.arc(padding.left, centerY, 6, 0, Math.PI * 2);
     ctx.fill();
@@ -211,7 +211,7 @@ export function GuitarStringSimulator() {
     ctx.fill();
 
     // Labels
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.font = '11px system-ui';
     ctx.textAlign = 'center';
     ctx.fillText('0', padding.left, stringCanvasHeight - 10);
@@ -219,7 +219,7 @@ export function GuitarStringSimulator() {
     ctx.fillText('L/2', padding.left + width / 2, stringCanvasHeight - 10);
 
     // Title
-    ctx.fillStyle = '#1e3a8a';
+    ctx.fillStyle = '#7c5f2c';
     ctx.font = 'bold 12px system-ui';
     ctx.textAlign = 'left';
     ctx.fillText('Vibration de la corde', 10, 18);
@@ -246,7 +246,7 @@ export function GuitarStringSimulator() {
     const dampingFactor = Math.exp(-damping * time);
 
     // Grid
-    ctx.strokeStyle = '#e5e7eb';
+    ctx.strokeStyle = '#e9e8e7';
     ctx.lineWidth = 1;
     for (let i = 0; i <= 4; i++) {
       const y = padding.top + (i / 4) * height;
@@ -277,19 +277,19 @@ export function GuitarStringSimulator() {
       }
 
       // Mode number
-      ctx.fillStyle = selectedMode === n || selectedMode === null ? '#374151' : '#9ca3af';
+      ctx.fillStyle = selectedMode === n || selectedMode === null ? '#484440' : '#aaa6a1';
       ctx.font = '9px system-ui';
       ctx.textAlign = 'center';
       ctx.fillText(`${n}`, x + barWidth / 2, fourierCanvasHeight - padding.bottom + 12);
 
       // Frequency
-      ctx.fillStyle = '#6b7280';
+      ctx.fillStyle = '#7c766f';
       ctx.font = '8px system-ui';
       ctx.fillText(`${(fundamentalFreq * n).toFixed(0)}`, x + barWidth / 2, fourierCanvasHeight - padding.bottom + 24);
     }
 
     // Y axis label
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.font = '10px system-ui';
     ctx.save();
     ctx.translate(12, padding.top + height / 2);
@@ -299,13 +299,13 @@ export function GuitarStringSimulator() {
     ctx.restore();
 
     // X axis label
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.font = '10px system-ui';
     ctx.textAlign = 'center';
     ctx.fillText('Mode n (fréquence Hz)', fourierCanvasWidth / 2, fourierCanvasHeight - 5);
 
     // Title
-    ctx.fillStyle = '#6366f1';
+    ctx.fillStyle = '#caa668';
     ctx.font = 'bold 12px system-ui';
     ctx.textAlign = 'left';
     ctx.fillText('Spectre de Fourier', 10, 18);
@@ -335,13 +335,13 @@ export function GuitarStringSimulator() {
       const color = MODE_COLORS[(n - 1) % MODE_COLORS.length];
 
       // Mode label
-      ctx.fillStyle = selectedMode === n || selectedMode === null ? color : '#9ca3af';
+      ctx.fillStyle = selectedMode === n || selectedMode === null ? color : '#aaa6a1';
       ctx.font = 'bold 10px system-ui';
       ctx.textAlign = 'right';
       ctx.fillText(`n=${n}`, padding.left - 5, centerY + 4);
 
       // Equilibrium line
-      ctx.strokeStyle = '#e5e7eb';
+      ctx.strokeStyle = '#e9e8e7';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(padding.left, centerY);
@@ -367,7 +367,7 @@ export function GuitarStringSimulator() {
       ctx.stroke();
 
       // Draw nodes
-      ctx.fillStyle = '#374151';
+      ctx.fillStyle = '#484440';
       for (let k = 0; k <= n; k++) {
         const nodeX = padding.left + (k / n) * width;
         ctx.beginPath();
@@ -377,7 +377,7 @@ export function GuitarStringSimulator() {
 
       // Amplitude indicator
       const ampPercent = Math.abs(amplitudes[n - 1]) / Math.max(...amplitudes.map(Math.abs), 0.01) * 100;
-      ctx.fillStyle = '#6b7280';
+      ctx.fillStyle = '#7c766f';
       ctx.font = '8px system-ui';
       ctx.textAlign = 'left';
       ctx.fillText(`${ampPercent.toFixed(0)}%`, modesCanvasWidth - padding.right + 3, centerY + 3);
@@ -385,7 +385,7 @@ export function GuitarStringSimulator() {
 
     // Pluck position indicator on each mode
     const pluckX = padding.left + pluckPosition * width;
-    ctx.strokeStyle = '#ef4444';
+    ctx.strokeStyle = '#ca684a';
     ctx.lineWidth = 1;
     ctx.setLineDash([2, 2]);
     ctx.beginPath();
@@ -395,7 +395,7 @@ export function GuitarStringSimulator() {
     ctx.setLineDash([]);
 
     // Title
-    ctx.fillStyle = '#059669';
+    ctx.fillStyle = '#616e2d';
     ctx.font = 'bold 12px system-ui';
     ctx.textAlign = 'left';
     ctx.fillText('Modes propres', 10, 16);
@@ -423,12 +423,12 @@ export function GuitarStringSimulator() {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
       {/* Header */}
-      <div className="border-b border-gray-200 bg-gradient-to-r from-amber-50 to-orange-50 p-4">
+      <div className="border-b border-stone-200 bg-gradient-to-r from-ocre-50 to-terre-50 p-4">
         <div className="flex items-center gap-3">
           <span className="text-2xl">🎸</span>
           <div>
-            <h3 className="font-bold text-gray-800">Vibration d'une corde de guitare</h3>
-            <p className="text-xs text-gray-600">
+            <h3 className="font-bold text-stone-800">Vibration d'une corde de guitare</h3>
+            <p className="text-xs text-stone-600">
               Observez comment la position du pincement affecte les harmoniques de la corde
             </p>
           </div>
@@ -438,7 +438,7 @@ export function GuitarStringSimulator() {
       <div className="p-4">
         {/* Main string visualization */}
         <div className="mb-4">
-          <div className="border border-gray-200 rounded-lg overflow-hidden">
+          <div className="border border-stone-200 rounded-lg overflow-hidden">
             <canvas
               ref={stringCanvasRef}
               width={stringCanvasWidth}
@@ -456,7 +456,7 @@ export function GuitarStringSimulator() {
               }}
             />
           </div>
-          <p className="text-xs text-gray-500 text-center mt-1">
+          <p className="text-xs text-stone-500 text-center mt-1">
             Cliquez sur la corde pour changer la position du pincement
           </p>
         </div>
@@ -464,12 +464,12 @@ export function GuitarStringSimulator() {
         {/* Controls */}
         <div className="grid grid-cols-2 gap-4 mb-4">
           {/* Left: Pluck controls */}
-          <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
-            <h4 className="text-xs font-bold text-gray-700 mb-2">Contrôles</h4>
+          <div className="border border-stone-200 rounded-lg p-3 bg-stone-50">
+            <h4 className="text-xs font-bold text-stone-700 mb-2">Contrôles</h4>
 
             <div className="space-y-3">
               <div>
-                <label className="block text-[10px] font-medium text-amber-700 mb-1">
+                <label className="block text-[10px] font-medium text-ocre-700 mb-1">
                   Position du pincement: {(pluckPosition * 100).toFixed(0)}% de L
                 </label>
                 <input
@@ -479,9 +479,9 @@ export function GuitarStringSimulator() {
                   step="0.01"
                   value={pluckPosition}
                   onChange={(e) => { setPluckPosition(parseFloat(e.target.value)); handlePluck(); }}
-                  className="w-full accent-amber-500 h-4"
+                  className="w-full accent-ocre-500 h-4"
                 />
-                <div className="flex justify-between text-[9px] text-gray-500">
+                <div className="flex justify-between text-[9px] text-stone-500">
                   <span>Chevalet</span>
                   <span>Milieu</span>
                   <span>Sillet</span>
@@ -489,7 +489,7 @@ export function GuitarStringSimulator() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-medium text-blue-700 mb-1">
+                <label className="block text-[10px] font-medium text-gold-700 mb-1">
                   Fréquence fondamentale: {fundamentalFreq} Hz
                 </label>
                 <input
@@ -499,9 +499,9 @@ export function GuitarStringSimulator() {
                   step="1"
                   value={fundamentalFreq}
                   onChange={(e) => setFundamentalFreq(parseFloat(e.target.value))}
-                  className="w-full accent-blue-500 h-4"
+                  className="w-full accent-gold-500 h-4"
                 />
-                <div className="flex justify-between text-[9px] text-gray-500">
+                <div className="flex justify-between text-[9px] text-stone-500">
                   <span>A1 (55Hz)</span>
                   <span>A2 (110Hz)</span>
                   <span>A4 (440Hz)</span>
@@ -509,7 +509,7 @@ export function GuitarStringSimulator() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-medium text-purple-700 mb-1">
+                <label className="block text-[10px] font-medium text-prune-700 mb-1">
                   Amortissement: {damping.toFixed(2)}
                 </label>
                 <input
@@ -519,14 +519,14 @@ export function GuitarStringSimulator() {
                   step="0.1"
                   value={damping}
                   onChange={(e) => setDamping(parseFloat(e.target.value))}
-                  className="w-full accent-purple-500 h-4"
+                  className="w-full accent-prune-500 h-4"
                 />
               </div>
 
               <div className="flex gap-2">
                 <button
                   onClick={handlePluck}
-                  className="flex-1 px-3 py-2 bg-amber-500 text-white text-xs font-semibold rounded hover:bg-amber-600 transition-colors"
+                  className="flex-1 px-3 py-2 bg-ocre-500 text-white text-xs font-semibold rounded hover:bg-ocre-600 transition-colors"
                 >
                   🎵 Pincer la corde
                 </button>
@@ -534,14 +534,14 @@ export function GuitarStringSimulator() {
                   onClick={() => setIsPlaying(!isPlaying)}
                   className={cn(
                     "px-3 py-2 text-xs font-semibold rounded transition-colors",
-                    isPlaying ? "bg-red-500 text-white" : "bg-gray-200 text-gray-700"
+                    isPlaying ? "bg-brun-500 text-white" : "bg-stone-200 text-stone-700"
                   )}
                 >
                   {isPlaying ? '⏸' : '▶'}
                 </button>
                 <button
                   onClick={handleReset}
-                  className="px-3 py-2 bg-gray-200 text-gray-700 text-xs font-semibold rounded hover:bg-gray-300 transition-colors"
+                  className="px-3 py-2 bg-stone-200 text-stone-700 text-xs font-semibold rounded hover:bg-stone-300 transition-colors"
                 >
                   ↺
                 </button>
@@ -550,8 +550,8 @@ export function GuitarStringSimulator() {
           </div>
 
           {/* Right: Display options */}
-          <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
-            <h4 className="text-xs font-bold text-gray-700 mb-2">Affichage des modes</h4>
+          <div className="border border-stone-200 rounded-lg p-3 bg-stone-50">
+            <h4 className="text-xs font-bold text-stone-700 mb-2">Affichage des modes</h4>
 
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-xs cursor-pointer">
@@ -559,13 +559,13 @@ export function GuitarStringSimulator() {
                   type="checkbox"
                   checked={showModes}
                   onChange={(e) => setShowModes(e.target.checked)}
-                  className="accent-emerald-500"
+                  className="accent-olive-500"
                 />
                 Superposer les modes individuels
               </label>
 
               <div>
-                <label className="block text-[10px] font-medium text-gray-600 mb-1">
+                <label className="block text-[10px] font-medium text-stone-600 mb-1">
                   Nombre de modes affichés: {numVisibleModes}
                 </label>
                 <input
@@ -575,12 +575,12 @@ export function GuitarStringSimulator() {
                   step="1"
                   value={numVisibleModes}
                   onChange={(e) => setNumVisibleModes(parseInt(e.target.value))}
-                  className="w-full accent-emerald-500 h-4"
+                  className="w-full accent-olive-500 h-4"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-medium text-gray-600 mb-1">
+                <label className="block text-[10px] font-medium text-stone-600 mb-1">
                   Isoler un mode:
                 </label>
                 <div className="flex flex-wrap gap-1">
@@ -589,8 +589,8 @@ export function GuitarStringSimulator() {
                     className={cn(
                       "px-2 py-1 text-[10px] rounded transition-colors",
                       selectedMode === null
-                        ? "bg-gray-700 text-white"
-                        : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+                        ? "bg-stone-700 text-white"
+                        : "bg-stone-200 text-stone-600 hover:bg-stone-300"
                     )}
                   >
                     Tous
@@ -603,7 +603,7 @@ export function GuitarStringSimulator() {
                         "w-6 h-6 text-[10px] rounded transition-colors font-medium",
                         selectedMode === n
                           ? "text-white"
-                          : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+                          : "bg-stone-200 text-stone-600 hover:bg-stone-300"
                       )}
                       style={selectedMode === n ? { backgroundColor: MODE_COLORS[(n - 1) % MODE_COLORS.length] } : {}}
                     >
@@ -618,10 +618,10 @@ export function GuitarStringSimulator() {
                   <p className="font-medium" style={{ color: MODE_COLORS[(selectedMode - 1) % MODE_COLORS.length] }}>
                     Mode n = {selectedMode}
                   </p>
-                  <p className="text-gray-600">
+                  <p className="text-stone-600">
                     Fréquence: {(fundamentalFreq * selectedMode).toFixed(0)} Hz
                   </p>
-                  <p className="text-gray-600">
+                  <p className="text-stone-600">
                     {selectedMode} ventres, {selectedMode + 1} nœuds
                   </p>
                 </div>
@@ -632,7 +632,7 @@ export function GuitarStringSimulator() {
 
         {/* Fourier and Modes visualization */}
         <div className="grid grid-cols-2 gap-4 mb-4">
-          <div className="border border-indigo-200 rounded-lg overflow-hidden">
+          <div className="border border-gold-200 rounded-lg overflow-hidden">
             <canvas
               ref={fourierCanvasRef}
               width={fourierCanvasWidth}
@@ -650,7 +650,7 @@ export function GuitarStringSimulator() {
               }}
             />
           </div>
-          <div className="border border-emerald-200 rounded-lg overflow-hidden">
+          <div className="border border-olive-200 rounded-lg overflow-hidden">
             <canvas
               ref={modesCanvasRef}
               width={modesCanvasWidth}
@@ -661,37 +661,37 @@ export function GuitarStringSimulator() {
         </div>
 
         {/* Physics explanation */}
-        <div className="bg-gradient-to-r from-slate-50 to-gray-50 rounded-lg p-4 border border-gray-200">
-          <h4 className="text-sm font-bold text-gray-700 mb-3">Physique du pincement</h4>
+        <div className="bg-gradient-to-r from-stone-50 to-stone-50 rounded-lg p-4 border border-stone-200">
+          <h4 className="text-sm font-bold text-stone-700 mb-3">Physique du pincement</h4>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-xs text-gray-600 mb-2">
+              <p className="text-xs text-stone-600 mb-2">
                 Quand on pince une corde à la position <InlineMath math="x_p" />, l'amplitude du mode <InlineMath math="n" /> est:
               </p>
               <div className="bg-white px-3 py-2 rounded border shadow-sm text-center mb-2">
                 <InlineMath math="A_n \propto \frac{\sin(n\pi x_p/L)}{n^2}" />
               </div>
-              <p className="text-[10px] text-gray-500">
+              <p className="text-[10px] text-stone-500">
                 Les modes dont un nœud coïncide avec le point de pincement ont une amplitude nulle.
               </p>
             </div>
 
             <div>
-              <p className="text-xs text-gray-600 mb-2">
+              <p className="text-xs text-stone-600 mb-2">
                 La forme de la corde est la somme de tous les modes:
               </p>
               <div className="bg-white px-3 py-2 rounded border shadow-sm text-center mb-2">
                 <InlineMath math="y(x,t) = \sum_{n=1}^{\infty} A_n \sin\left(\frac{n\pi x}{L}\right) \cos(n\omega_1 t)" />
               </div>
-              <p className="text-[10px] text-gray-500">
+              <p className="text-[10px] text-stone-500">
                 où <InlineMath math="\omega_1 = 2\pi f_1" /> est la pulsation fondamentale.
               </p>
             </div>
           </div>
 
-          <div className="mt-3 p-2 bg-amber-50 rounded border border-amber-200">
-            <p className="text-xs text-amber-800">
+          <div className="mt-3 p-2 bg-ocre-50 rounded border border-ocre-200">
+            <p className="text-xs text-ocre-800">
               <strong>💡 Astuce:</strong> Pincez au milieu (50%) pour n'exciter que les harmoniques impairs.
               Pincez à 1/3 (33%) pour supprimer le 3ème harmonique et ses multiples.
             </p>

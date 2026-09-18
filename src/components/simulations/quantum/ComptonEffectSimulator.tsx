@@ -65,9 +65,9 @@ function HoverTerm({
   tooltip: string;
 }) {
   return (
-    <span className="relative group inline-block cursor-help border-b border-dashed border-gray-500">
+    <span className="relative group inline-block cursor-help border-b border-dashed border-stone-500">
       {children}
-      <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block whitespace-nowrap bg-gray-900 text-white text-xs rounded px-2 py-1 shadow-lg z-50">
+      <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block whitespace-nowrap bg-stone-900 text-white text-xs rounded px-2 py-1 shadow-lg z-50">
         {tooltip}
       </span>
     </span>
@@ -134,7 +134,7 @@ export function ComptonEffectSimulator() {
     timeRef.current = now;
 
     // Clear
-    ctx.fillStyle = '#111827';
+    ctx.fillStyle = '#1e1c1a';
     ctx.fillRect(0, 0, W, H);
 
     // --- Interaction point ---
@@ -144,13 +144,13 @@ export function ComptonEffectSimulator() {
     // Draw electron at rest (target)
     ctx.beginPath();
     ctx.arc(cx, cy, 14, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(96,165,250,0.15)';
+    ctx.fillStyle = 'rgba(203, 168, 108,0.15)';
     ctx.fill();
     ctx.beginPath();
     ctx.arc(cx, cy, 8, 0, Math.PI * 2);
-    ctx.fillStyle = '#60A5FA';
+    ctx.fillStyle = '#cba86c';
     ctx.fill();
-    ctx.fillStyle = '#D1D5DB';
+    ctx.fillStyle = '#d8d6d4';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('e\u207B', cx, cy - 20);
@@ -168,7 +168,7 @@ export function ComptonEffectSimulator() {
 
     // Arc for angle theta
     if (angleDeg > 0 && angleDeg < 180) {
-      ctx.strokeStyle = '#FBBF24';
+      ctx.strokeStyle = '#e8c61a';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.arc(cx, cy, 40, -angleRad, 0);
@@ -176,7 +176,7 @@ export function ComptonEffectSimulator() {
 
       // Label theta
       const labelAngle = -angleRad / 2;
-      ctx.fillStyle = '#FBBF24';
+      ctx.fillStyle = '#e8c61a';
       ctx.font = '12px sans-serif';
       ctx.textAlign = 'left';
       ctx.fillText('\u03B8', cx + 46 * Math.cos(labelAngle), cy + 46 * Math.sin(labelAngle) + 4);
@@ -238,11 +238,11 @@ export function ComptonEffectSimulator() {
       // Draw incoming photon (yellow/golden)
       ctx.beginPath();
       ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
-      ctx.fillStyle = '#FBBF24';
+      ctx.fillStyle = '#e8c61a';
       ctx.fill();
 
       // Wavy trail
-      ctx.strokeStyle = 'rgba(251,191,36,0.4)';
+      ctx.strokeStyle = 'rgba(232, 198, 26,0.4)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       for (let t = 0; t < 20; t++) {
@@ -272,11 +272,11 @@ export function ComptonEffectSimulator() {
       // Draw scattered photon (red-orange — lower energy)
       ctx.beginPath();
       ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
-      ctx.fillStyle = '#F87171';
+      ctx.fillStyle = '#d58770';
       ctx.fill();
 
       // Wavy trail
-      ctx.strokeStyle = 'rgba(248,113,113,0.4)';
+      ctx.strokeStyle = 'rgba(213, 135, 112,0.4)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       for (let t = 0; t < 15; t++) {
@@ -305,18 +305,18 @@ export function ComptonEffectSimulator() {
 
       ctx.beginPath();
       ctx.arc(e.x, e.y, 4, 0, Math.PI * 2);
-      ctx.fillStyle = '#60A5FA';
+      ctx.fillStyle = '#cba86c';
       ctx.fill();
 
       // Glow
       ctx.beginPath();
       ctx.arc(e.x, e.y, 8, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(96,165,250,0.2)';
+      ctx.fillStyle = 'rgba(203, 168, 108,0.2)';
       ctx.fill();
     }
 
     // --- Labels ---
-    ctx.fillStyle = '#FBBF24';
+    ctx.fillStyle = '#e8c61a';
     ctx.font = 'bold 12px sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText('\u03B3 incident', 20, cy - 16);
@@ -324,18 +324,18 @@ export function ComptonEffectSimulator() {
     // Scattered photon label
     const labelScX = cx + 80 * Math.cos(-angleRad);
     const labelScY = cy + 80 * Math.sin(-angleRad);
-    ctx.fillStyle = '#F87171';
+    ctx.fillStyle = '#d58770';
     ctx.fillText("\u03B3' diffusé", labelScX, labelScY - 10);
 
     // Electron recoil label
     const labelElX = cx + 70 * Math.cos(electronAngleRad);
     const labelElY = cy + 70 * Math.sin(electronAngleRad);
-    ctx.fillStyle = '#60A5FA';
+    ctx.fillStyle = '#cba86c';
     ctx.font = 'bold 12px sans-serif';
     ctx.fillText('e\u207B recul', labelElX, labelElY + 16);
 
     // --- HUD ---
-    ctx.fillStyle = '#E5E7EB';
+    ctx.fillStyle = '#e9e8e7';
     ctx.font = '12px monospace';
     ctx.textAlign = 'left';
     ctx.fillText(`E_i = ${energyKeV.toFixed(0)} keV`, W - 240, H - 56);
@@ -376,11 +376,11 @@ export function ComptonEffectSimulator() {
     const plotH = H - pad.top - pad.bottom;
 
     // Clear
-    ctx.fillStyle = '#1F2937';
+    ctx.fillStyle = '#2d2b29';
     ctx.fillRect(0, 0, W, H);
 
     // Axes
-    ctx.strokeStyle = '#9CA3AF';
+    ctx.strokeStyle = '#aaa6a1';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(pad.left, pad.top);
@@ -396,7 +396,7 @@ export function ComptonEffectSimulator() {
     const toY = (dl: number) => pad.top + plotH - (dl / dlMax) * plotH;
 
     // Grid lines
-    ctx.strokeStyle = 'rgba(156,163,175,0.2)';
+    ctx.strokeStyle = 'rgba(170, 166, 161,0.2)';
     ctx.setLineDash([4, 4]);
     for (let dl = 1; dl <= 4; dl++) {
       const y = toY(dl);
@@ -417,7 +417,7 @@ export function ComptonEffectSimulator() {
     ctx.setLineDash([]);
 
     // Δλ curve
-    ctx.strokeStyle = '#34D399';
+    ctx.strokeStyle = '#a3b750';
     ctx.lineWidth = 2;
     ctx.beginPath();
     for (let theta = 0; theta <= Math.PI; theta += 0.02) {
@@ -431,7 +431,7 @@ export function ComptonEffectSimulator() {
 
     // Compton wavelength reference line
     const comptonPm = COMPTON_WAVELENGTH * 1e12;
-    ctx.strokeStyle = '#F87171';
+    ctx.strokeStyle = '#d58770';
     ctx.lineWidth = 1;
     ctx.setLineDash([6, 3]);
     ctx.beginPath();
@@ -440,7 +440,7 @@ export function ComptonEffectSimulator() {
     ctx.stroke();
     ctx.setLineDash([]);
 
-    ctx.fillStyle = '#F87171';
+    ctx.fillStyle = '#d58770';
     ctx.font = '10px sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText('\u03BB_C = 2.43 pm', pad.left + plotW - 80, toY(comptonPm) - 5);
@@ -451,20 +451,20 @@ export function ComptonEffectSimulator() {
     const ptY = toY(currentDl);
     ctx.beginPath();
     ctx.arc(ptX, ptY, 6, 0, Math.PI * 2);
-    ctx.fillStyle = '#FBBF24';
+    ctx.fillStyle = '#e8c61a';
     ctx.fill();
-    ctx.strokeStyle = '#FDE68A';
+    ctx.strokeStyle = '#f1db6f';
     ctx.lineWidth = 2;
     ctx.stroke();
 
     // Label
-    ctx.fillStyle = '#FDE68A';
+    ctx.fillStyle = '#f1db6f';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText(`(${angleDeg}\u00B0, ${currentDl.toFixed(2)} pm)`, ptX + 10, ptY - 6);
 
     // Axis labels
-    ctx.fillStyle = '#D1D5DB';
+    ctx.fillStyle = '#d8d6d4';
     ctx.font = '12px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('Angle de diffusion \u03B8 (\u00B0)', pad.left + plotW / 2, H - 4);
@@ -476,7 +476,7 @@ export function ComptonEffectSimulator() {
     ctx.restore();
 
     // X-axis tick labels
-    ctx.fillStyle = '#9CA3AF';
+    ctx.fillStyle = '#aaa6a1';
     ctx.font = '10px sans-serif';
     ctx.textAlign = 'center';
     for (let deg = 0; deg <= 180; deg += 30) {
@@ -501,10 +501,10 @@ export function ComptonEffectSimulator() {
     <div className="max-w-4xl mx-auto p-4 space-y-6">
       {/* Title */}
       <div className="text-center space-y-1">
-        <h2 className="text-2xl font-bold text-gray-900">
+        <h2 className="text-2xl font-bold text-stone-900">
           Effet Compton
         </h2>
-        <p className="text-gray-600 text-sm">
+        <p className="text-stone-600 text-sm">
           Simulation de la diffusion Compton (1923)
         </p>
       </div>
@@ -515,16 +515,16 @@ export function ComptonEffectSimulator() {
           ref={canvasRef}
           width={700}
           height={400}
-          className="rounded-lg border border-gray-300 max-w-full"
-          style={{ background: '#111827' }}
+          className="rounded-lg border border-stone-300 max-w-full"
+          style={{ background: '#1e1c1a' }}
         />
       </div>
 
       {/* Controls */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Energy slider */}
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2">
-          <label className="text-sm font-medium text-gray-700 block">
+        <div className="bg-stone-50 border border-stone-200 rounded-lg p-4 space-y-2">
+          <label className="text-sm font-medium text-stone-700 block">
             Énergie du photon incident <InlineMath math={`E_\\gamma`} />
           </label>
           <input
@@ -534,9 +534,9 @@ export function ComptonEffectSimulator() {
             step={5}
             value={energyKeV}
             onChange={(e) => setEnergyKeV(Number(e.target.value))}
-            className="w-full accent-indigo-500"
+            className="w-full accent-gold-500"
           />
-          <div className="text-xs text-gray-600 space-y-0.5">
+          <div className="text-xs text-stone-600 space-y-0.5">
             <p>
               <InlineMath math={`E_\\gamma = ${energyKeV}\\,\\text{keV}`} />
             </p>
@@ -547,8 +547,8 @@ export function ComptonEffectSimulator() {
         </div>
 
         {/* Angle slider */}
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2">
-          <label className="text-sm font-medium text-gray-700 block">
+        <div className="bg-stone-50 border border-stone-200 rounded-lg p-4 space-y-2">
+          <label className="text-sm font-medium text-stone-700 block">
             Angle de diffusion <InlineMath math={`\\theta`} />
           </label>
           <input
@@ -558,9 +558,9 @@ export function ComptonEffectSimulator() {
             step={1}
             value={angleDeg}
             onChange={(e) => setAngleDeg(Number(e.target.value))}
-            className="w-full accent-indigo-500"
+            className="w-full accent-gold-500"
           />
-          <div className="text-xs text-gray-600 space-y-0.5">
+          <div className="text-xs text-stone-600 space-y-0.5">
             <p>
               <InlineMath math={`\\theta = ${angleDeg}^\\circ`} />
             </p>
@@ -572,7 +572,7 @@ export function ComptonEffectSimulator() {
       </div>
 
       {/* Status bar */}
-      <div className="rounded-lg px-4 py-3 text-center font-semibold text-sm bg-violet-50 text-violet-900 border border-violet-300">
+      <div className="rounded-lg px-4 py-3 text-center font-semibold text-sm bg-prune-50 text-prune-900 border border-prune-300">
         <InlineMath math={`E'_\\gamma = ${energyFKeV.toFixed(1)}\\,\\text{keV}`} />
         {' '}&mdash;{' '}
         <InlineMath math={`E_k(e^-) = ${ekElectronKeV.toFixed(1)}\\,\\text{keV}`} />
@@ -585,9 +585,9 @@ export function ComptonEffectSimulator() {
       {/* 1. Classical prediction */}
       <CollapsiblePanel
         title="Prédiction classique (Thomson)"
-        borderColor="border-orange-500"
-        bgColor="bg-orange-50"
-        textColor="text-orange-900"
+        borderColor="border-terre-500"
+        bgColor="bg-terre-50"
+        textColor="text-terre-900"
         defaultOpen={false}
       >
         <p>
@@ -609,11 +609,11 @@ export function ComptonEffectSimulator() {
             L&apos;intensité diffusée dépend de l&apos;angle, mais pas la fréquence.
           </li>
         </ul>
-        <div className="mt-2 bg-orange-100 border border-orange-300 rounded p-3 text-center">
-          <p className="text-orange-800 font-mono text-xs">
+        <div className="mt-2 bg-terre-100 border border-terre-300 rounded p-3 text-center">
+          <p className="text-terre-800 font-mono text-xs">
             Prédiction classique : <InlineMath math={`\\Delta\\lambda = 0`} /> pour tout angle
           </p>
-          <p className="text-orange-700 mt-1 font-semibold text-xs">
+          <p className="text-terre-700 mt-1 font-semibold text-xs">
             &rarr; En contradiction avec les mesures de Compton !
           </p>
         </div>
@@ -622,9 +622,9 @@ export function ComptonEffectSimulator() {
       {/* 2. Quantum result */}
       <CollapsiblePanel
         title="Résultat quantique (Compton)"
-        borderColor="border-green-500"
-        bgColor="bg-green-50"
-        textColor="text-green-900"
+        borderColor="border-olive-500"
+        bgColor="bg-olive-50"
+        textColor="text-olive-900"
         defaultOpen={true}
       >
         <p>
@@ -646,7 +646,7 @@ export function ComptonEffectSimulator() {
             <InlineMath math={`\\theta`} /> = angle de diffusion
           </HoverTerm>
         </div>
-        <div className="mt-3 bg-green-100 border border-green-300 rounded p-3 text-xs space-y-1">
+        <div className="mt-3 bg-olive-100 border border-olive-300 rounded p-3 text-xs space-y-1">
           <p>
             <strong>Conséquences :</strong>
           </p>
@@ -668,8 +668,8 @@ export function ComptonEffectSimulator() {
       </CollapsiblePanel>
 
       {/* 3. Graph Δλ vs θ */}
-      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3">
-        <h3 className="font-semibold text-gray-900 text-sm">
+      <div className="bg-stone-50 border border-stone-200 rounded-lg p-4 space-y-3">
+        <h3 className="font-semibold text-stone-900 text-sm">
           Graphique{' '}
           <InlineMath math={`\\Delta\\lambda`} /> vs <InlineMath math={`\\theta`} />
         </h3>
@@ -678,12 +678,12 @@ export function ComptonEffectSimulator() {
             ref={graphCanvasRef}
             width={400}
             height={200}
-            className="rounded border border-gray-300 max-w-full"
+            className="rounded border border-stone-300 max-w-full"
           />
         </div>
-        <p className="text-xs text-gray-600 text-center">
+        <p className="text-xs text-stone-600 text-center">
           Courbe <InlineMath math={`\\Delta\\lambda = \\lambda_C(1 - \\cos\\theta)`} />.
-          La ligne rouge indique la longueur d&apos;onde de Compton{' '}
+          La ligne brune indique la longueur d&apos;onde de Compton{' '}
           <InlineMath math={`\\lambda_C = 2{,}43\\,\\text{pm}`} />.
           Le point jaune indique le point de fonctionnement actuel.
         </p>
@@ -692,9 +692,9 @@ export function ComptonEffectSimulator() {
       {/* 4. Historical context */}
       <CollapsiblePanel
         title="Contexte historique"
-        borderColor="border-gray-500"
-        bgColor="bg-gray-50"
-        textColor="text-gray-900"
+        borderColor="border-stone-500"
+        bgColor="bg-stone-50"
+        textColor="text-stone-900"
         defaultOpen={false}
       >
         <p>

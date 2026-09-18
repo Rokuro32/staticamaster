@@ -36,9 +36,9 @@ interface Snapshot {
 
 const TRACK_MIN = -5; // m
 const TRACK_MAX = 5; // m
-const CART_COLOR_1 = '#2563eb';
-const CART_COLOR_2 = '#dc2626';
-const COM_COLOR = '#cf8a4e';
+const CART_COLOR_1 = '#c1974f';
+const CART_COLOR_2 = '#c65c3c';
+const COM_COLOR = '#d98028';
 
 interface Preset {
   id: string;
@@ -214,7 +214,7 @@ export function MomentumSimulator() {
     const W = canvas.width;
     const H = canvas.height;
 
-    ctx.fillStyle = '#f8fafc';
+    ctx.fillStyle = '#fafafa';
     ctx.fillRect(0, 0, W, H);
 
     const pad = 30;
@@ -223,7 +223,7 @@ export function MomentumSimulator() {
     const trackY = H - 74;
 
     // --- Piste
-    ctx.strokeStyle = '#94a3b8';
+    ctx.strokeStyle = '#aba6a1';
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(pad - 12, trackY);
@@ -231,8 +231,8 @@ export function MomentumSimulator() {
     ctx.stroke();
 
     // Graduations
-    ctx.strokeStyle = '#cbd5e1';
-    ctx.fillStyle = '#94a3b8';
+    ctx.strokeStyle = '#d8d6d4';
+    ctx.fillStyle = '#aba6a1';
     ctx.font = '11px system-ui';
     ctx.textAlign = 'center';
     ctx.lineWidth = 1;
@@ -265,7 +265,7 @@ export function MomentumSimulator() {
       ctx.fill();
 
       // Roues
-      ctx.fillStyle = '#475569';
+      ctx.fillStyle = '#5d5853';
       [left + h * 0.5, left + h * 1.5].forEach((wx) => {
         ctx.beginPath();
         ctx.arc(wx, trackY - 5, 5, 0, Math.PI * 2);
@@ -277,7 +277,7 @@ export function MomentumSimulator() {
       ctx.font = 'bold 13px system-ui';
       ctx.textAlign = 'center';
       ctx.fillText(`${mass} kg`, toPx(x), top + bodyH / 2 + 5);
-      ctx.fillStyle = '#334155';
+      ctx.fillStyle = '#484440';
       ctx.font = '12px system-ui';
       ctx.fillText(name, toPx(x), top - 28);
 
@@ -333,10 +333,10 @@ export function MomentumSimulator() {
     // --- Bandeau de phase
     ctx.textAlign = 'left';
     ctx.font = '12px system-ui';
-    ctx.fillStyle = phase === 'before' ? '#475569' : '#7a4a18';
+    ctx.fillStyle = phase === 'before' ? '#5d5853' : '#7c4916';
     ctx.fillText(phase === 'before' ? 'Avant le choc' : 'Après le choc', 12, H - 12);
     ctx.textAlign = 'right';
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.fillText('position (m)', W - 12, H - 12);
   }, [x1, x2, v1, v2, m1, m2, phase, vCom]);
 
@@ -352,10 +352,10 @@ export function MomentumSimulator() {
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
       <div>
-        <h3 className="text-lg font-semibold text-gray-800">
+        <h3 className="text-lg font-semibold text-stone-800">
           Conservation de la quantité de mouvement
         </h3>
-        <p className="text-sm text-gray-600 mt-1">
+        <p className="text-sm text-stone-600 mt-1">
           Deux chariots sur une piste sans frottement. Quoi qu&apos;il arrive au
           choc, la quantité de mouvement totale reste la même — l&apos;énergie
           cinétique, non.
@@ -369,8 +369,8 @@ export function MomentumSimulator() {
             onClick={() => applyPreset(p)}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               activePreset === p.id
-                ? 'bg-amber-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-ocre-600 text-white'
+                : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
             }`}
           >
             {p.label}
@@ -378,7 +378,7 @@ export function MomentumSimulator() {
         ))}
       </div>
       {preset && (
-        <p className="text-sm text-amber-900 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg px-4 py-2 -mt-2">
+        <p className="text-sm text-ocre-900 bg-ocre-50 border-l-4 border-ocre-400 rounded-r-lg px-4 py-2 -mt-2">
           {preset.note}
         </p>
       )}
@@ -386,81 +386,81 @@ export function MomentumSimulator() {
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Commandes */}
         <div className="space-y-4">
-          <div className="rounded-lg border-l-4 border-blue-500 bg-blue-50 p-3 space-y-3">
-            <h4 className="font-semibold text-blue-800 text-sm">Chariot 1</h4>
+          <div className="rounded-lg border-l-4 border-gold-500 bg-gold-50 p-3 space-y-3">
+            <h4 className="font-semibold text-gold-800 text-sm">Chariot 1</h4>
             <div>
-              <label className="flex justify-between text-sm text-blue-900 mb-1">
+              <label className="flex justify-between text-sm text-gold-900 mb-1">
                 <span>Masse m₁</span>
                 <span className="font-mono">{m1} kg</span>
               </label>
               <input
                 type="range" min={0.5} max={10} step={0.5} value={m1}
                 onChange={(e) => { setM1(Number(e.target.value)); setActivePreset(null); }}
-                className="w-full accent-blue-600"
+                className="w-full accent-gold-600"
               />
             </div>
             <div>
-              <label className="flex justify-between text-sm text-blue-900 mb-1">
+              <label className="flex justify-between text-sm text-gold-900 mb-1">
                 <span>Vitesse v₁</span>
                 <span className="font-mono">{v1Init.toFixed(1)} m/s</span>
               </label>
               <input
                 type="range" min={-6} max={6} step={0.5} value={v1Init}
                 onChange={(e) => { setV1Init(Number(e.target.value)); setActivePreset(null); }}
-                className="w-full accent-blue-600"
+                className="w-full accent-gold-600"
               />
             </div>
           </div>
 
-          <div className="rounded-lg border-l-4 border-red-500 bg-red-50 p-3 space-y-3">
-            <h4 className="font-semibold text-red-800 text-sm">Chariot 2</h4>
+          <div className="rounded-lg border-l-4 border-brun-500 bg-brun-50 p-3 space-y-3">
+            <h4 className="font-semibold text-brun-800 text-sm">Chariot 2</h4>
             <div>
-              <label className="flex justify-between text-sm text-red-900 mb-1">
+              <label className="flex justify-between text-sm text-brun-900 mb-1">
                 <span>Masse m₂</span>
                 <span className="font-mono">{m2} kg</span>
               </label>
               <input
                 type="range" min={0.5} max={10} step={0.5} value={m2}
                 onChange={(e) => { setM2(Number(e.target.value)); setActivePreset(null); }}
-                className="w-full accent-red-600"
+                className="w-full accent-brun-600"
               />
             </div>
             <div>
-              <label className="flex justify-between text-sm text-red-900 mb-1">
+              <label className="flex justify-between text-sm text-brun-900 mb-1">
                 <span>Vitesse v₂</span>
                 <span className="font-mono">{v2Init.toFixed(1)} m/s</span>
               </label>
               <input
                 type="range" min={-6} max={6} step={0.5} value={v2Init}
                 onChange={(e) => { setV2Init(Number(e.target.value)); setActivePreset(null); }}
-                className="w-full accent-red-600"
+                className="w-full accent-brun-600"
               />
             </div>
           </div>
 
           <div>
-            <label className="flex justify-between text-sm font-medium text-gray-700 mb-1">
+            <label className="flex justify-between text-sm font-medium text-stone-700 mb-1">
               <span>Coefficient de restitution e</span>
-              <span className="font-mono text-gray-900">{restitution.toFixed(2)}</span>
+              <span className="font-mono text-stone-900">{restitution.toFixed(2)}</span>
             </label>
             <input
               type="range" min={0} max={1} step={0.05} value={restitution}
               onChange={(e) => { setRestitution(Number(e.target.value)); setActivePreset(null); }}
-              className="w-full accent-amber-600"
+              className="w-full accent-ocre-600"
             />
-            <p className="text-xs text-gray-500 mt-1">{collisionLabel}</p>
+            <p className="text-xs text-stone-500 mt-1">{collisionLabel}</p>
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={() => setRunning((v) => !v)}
-              className="py-2 px-3 rounded-lg font-medium bg-amber-600 text-white hover:bg-amber-700 transition-colors"
+              className="py-2 px-3 rounded-lg font-medium bg-ocre-600 text-white hover:bg-ocre-700 transition-colors"
             >
               {running ? '⏸ Pause' : '▶ Animer'}
             </button>
             <button
               onClick={reset}
-              className="py-2 px-3 rounded-lg font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
+              className="py-2 px-3 rounded-lg font-medium bg-stone-100 text-stone-700 hover:bg-stone-200 transition-colors"
             >
               ↺ Rejouer
             </button>
@@ -469,7 +469,7 @@ export function MomentumSimulator() {
 
         {/* Scène et bilans */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="border-2 border-gray-200 rounded-lg overflow-hidden">
+          <div className="border-2 border-stone-200 rounded-lg overflow-hidden">
             <canvas ref={canvasRef} width={720} height={340} className="w-full" />
           </div>
 
@@ -477,7 +477,7 @@ export function MomentumSimulator() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-gray-500 border-b border-gray-200">
+                <tr className="text-left text-stone-500 border-b border-stone-200">
                   <th className="py-2 font-medium">Grandeur</th>
                   <th className="py-2 font-medium text-right">Avant</th>
                   <th className="py-2 font-medium text-right">Après</th>
@@ -485,63 +485,63 @@ export function MomentumSimulator() {
                 </tr>
               </thead>
               <tbody className="font-mono">
-                <tr className="border-b border-gray-100">
-                  <td className="py-2 font-sans text-blue-700">v₁</td>
+                <tr className="border-b border-stone-100">
+                  <td className="py-2 font-sans text-gold-700">v₁</td>
                   <td className="py-2 text-right">{before.v1.toFixed(2)}</td>
                   <td className="py-2 text-right">{after.v1.toFixed(2)}</td>
-                  <td className="py-2 text-right text-gray-400">
+                  <td className="py-2 text-right text-stone-400">
                     {(after.v1 - before.v1).toFixed(2)} m/s
                   </td>
                 </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="py-2 font-sans text-red-700">v₂</td>
+                <tr className="border-b border-stone-100">
+                  <td className="py-2 font-sans text-brun-700">v₂</td>
                   <td className="py-2 text-right">{before.v2.toFixed(2)}</td>
                   <td className="py-2 text-right">{after.v2.toFixed(2)}</td>
-                  <td className="py-2 text-right text-gray-400">
+                  <td className="py-2 text-right text-stone-400">
                     {(after.v2 - before.v2).toFixed(2)} m/s
                   </td>
                 </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="py-2 font-sans text-blue-700">p₁ = m₁v₁</td>
+                <tr className="border-b border-stone-100">
+                  <td className="py-2 font-sans text-gold-700">p₁ = m₁v₁</td>
                   <td className="py-2 text-right">{before.p1.toFixed(2)}</td>
                   <td className="py-2 text-right">{after.p1.toFixed(2)}</td>
-                  <td className="py-2 text-right text-gray-400">
+                  <td className="py-2 text-right text-stone-400">
                     {(after.p1 - before.p1).toFixed(2)} kg·m/s
                   </td>
                 </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="py-2 font-sans text-red-700">p₂ = m₂v₂</td>
+                <tr className="border-b border-stone-100">
+                  <td className="py-2 font-sans text-brun-700">p₂ = m₂v₂</td>
                   <td className="py-2 text-right">{before.p2.toFixed(2)}</td>
                   <td className="py-2 text-right">{after.p2.toFixed(2)}</td>
-                  <td className="py-2 text-right text-gray-400">
+                  <td className="py-2 text-right text-stone-400">
                     {(after.p2 - before.p2).toFixed(2)} kg·m/s
                   </td>
                 </tr>
-                <tr className="border-b-2 border-amber-300 bg-amber-50">
-                  <td className="py-2 font-sans font-semibold text-amber-900">
+                <tr className="border-b-2 border-ocre-300 bg-ocre-50">
+                  <td className="py-2 font-sans font-semibold text-ocre-900">
                     p total
                   </td>
-                  <td className="py-2 text-right font-semibold text-amber-900">
+                  <td className="py-2 text-right font-semibold text-ocre-900">
                     {before.pTotal.toFixed(2)}
                   </td>
-                  <td className="py-2 text-right font-semibold text-amber-900">
+                  <td className="py-2 text-right font-semibold text-ocre-900">
                     {after.pTotal.toFixed(2)}
                   </td>
-                  <td className="py-2 text-right font-semibold text-green-700">
+                  <td className="py-2 text-right font-semibold text-olive-700">
                     {Math.abs(after.pTotal - before.pTotal) < 1e-9
                       ? '0 — conservée'
                       : `${(after.pTotal - before.pTotal).toFixed(2)} kg·m/s`}
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-2 font-sans font-semibold text-gray-700">
+                  <td className="py-2 font-sans font-semibold text-stone-700">
                     Énergie cinétique
                   </td>
                   <td className="py-2 text-right">{before.keTotal.toFixed(2)}</td>
                   <td className="py-2 text-right">{after.keTotal.toFixed(2)}</td>
                   <td
                     className={`py-2 text-right font-semibold ${
-                      energyLost > 1e-6 ? 'text-red-600' : 'text-green-700'
+                      energyLost > 1e-6 ? 'text-brun-600' : 'text-olive-700'
                     }`}
                   >
                     {energyLost > 1e-6
@@ -554,24 +554,24 @@ export function MomentumSimulator() {
           </div>
 
           <div className="grid sm:grid-cols-3 gap-3 text-sm">
-            <div className="bg-amber-50 rounded-lg p-3">
-              <span className="text-amber-700 block text-xs">Vitesse du centre de masse</span>
-              <strong className="text-amber-900 font-mono">{vCom.toFixed(2)} m/s</strong>
-              <p className="text-xs text-amber-700 mt-1">Identique avant et après.</p>
+            <div className="bg-ocre-50 rounded-lg p-3">
+              <span className="text-ocre-700 block text-xs">Vitesse du centre de masse</span>
+              <strong className="text-ocre-900 font-mono">{vCom.toFixed(2)} m/s</strong>
+              <p className="text-xs text-ocre-700 mt-1">Identique avant et après.</p>
             </div>
-            <div className="bg-gray-50 rounded-lg p-3">
-              <span className="text-gray-500 block text-xs">Impulsion sur le chariot 1</span>
-              <strong className="text-gray-900 font-mono">
+            <div className="bg-stone-50 rounded-lg p-3">
+              <span className="text-stone-500 block text-xs">Impulsion sur le chariot 1</span>
+              <strong className="text-stone-900 font-mono">
                 {(after.p1 - before.p1).toFixed(2)} N·s
               </strong>
-              <p className="text-xs text-gray-500 mt-1">Opposée à celle sur le 2.</p>
+              <p className="text-xs text-stone-500 mt-1">Opposée à celle sur le 2.</p>
             </div>
-            <div className="bg-gray-50 rounded-lg p-3">
-              <span className="text-gray-500 block text-xs">Vitesse relative</span>
-              <strong className="text-gray-900 font-mono">
+            <div className="bg-stone-50 rounded-lg p-3">
+              <span className="text-stone-500 block text-xs">Vitesse relative</span>
+              <strong className="text-stone-900 font-mono">
                 {Math.abs(after.v2 - after.v1).toFixed(2)} m/s
               </strong>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-stone-500 mt-1">
                 = e × {Math.abs(before.v1 - before.v2).toFixed(2)} m/s
               </p>
             </div>
@@ -580,56 +580,56 @@ export function MomentumSimulator() {
       </div>
 
       {/* Théorie */}
-      <div className="border-t border-gray-200 pt-6">
-        <h3 className="font-semibold text-gray-800 mb-3">
+      <div className="border-t border-stone-200 pt-6">
+        <h3 className="font-semibold text-stone-800 mb-3">
           Théorie — Quantité de mouvement
         </h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
-          <div className="bg-amber-50 rounded-lg p-4">
-            <h4 className="font-medium text-amber-800 mb-2">Conservation</h4>
+          <div className="bg-ocre-50 rounded-lg p-4">
+            <h4 className="font-medium text-ocre-800 mb-2">Conservation</h4>
             <BlockMath math="m_1v_1 + m_2v_2 = m_1v_1' + m_2v_2'" />
-            <p className="text-amber-700 mt-2">
+            <p className="text-ocre-700 mt-2">
               Sans force extérieure, la quantité de mouvement totale d&apos;un
               système ne change jamais — quel que soit le type de choc.
             </p>
           </div>
-          <div className="bg-blue-50 rounded-lg p-4">
-            <h4 className="font-medium text-blue-800 mb-2">Impulsion</h4>
+          <div className="bg-gold-50 rounded-lg p-4">
+            <h4 className="font-medium text-gold-800 mb-2">Impulsion</h4>
             <BlockMath math="\vec{J} = \int \vec{F}\,dt = \Delta \vec{p}" />
-            <p className="text-blue-700 mt-2">
+            <p className="text-gold-700 mt-2">
               Par la 3ᵉ loi de Newton, les deux chariots reçoivent des impulsions
               égales et opposées : les variations de <InlineMath math="p" /> se
               compensent exactement.
             </p>
           </div>
-          <div className="bg-green-50 rounded-lg p-4">
-            <h4 className="font-medium text-green-800 mb-2">Choc élastique</h4>
+          <div className="bg-olive-50 rounded-lg p-4">
+            <h4 className="font-medium text-olive-800 mb-2">Choc élastique</h4>
             <BlockMath math="e = 1 \quad\Rightarrow\quad \sum \tfrac{1}{2}mv^2 = \text{cte}" />
-            <p className="text-green-700 mt-2">
+            <p className="text-olive-700 mt-2">
               Seul cas où l&apos;énergie cinétique est aussi conservée. À masses
               égales, les vitesses s&apos;échangent.
             </p>
           </div>
-          <div className="bg-red-50 rounded-lg p-4">
-            <h4 className="font-medium text-red-800 mb-2">Choc mou</h4>
+          <div className="bg-brun-50 rounded-lg p-4">
+            <h4 className="font-medium text-brun-800 mb-2">Choc mou</h4>
             <BlockMath math="e = 0 \quad\Rightarrow\quad v_1' = v_2' = v_{cm}" />
-            <p className="text-red-700 mt-2">
+            <p className="text-brun-700 mt-2">
               Les corps repartent ensemble. L&apos;énergie perdue part en
               déformation, chaleur et son.
             </p>
           </div>
-          <div className="bg-purple-50 rounded-lg p-4">
-            <h4 className="font-medium text-purple-800 mb-2">Coefficient de restitution</h4>
+          <div className="bg-prune-50 rounded-lg p-4">
+            <h4 className="font-medium text-prune-800 mb-2">Coefficient de restitution</h4>
             <BlockMath math="e = \frac{|v_2' - v_1'|}{|v_1 - v_2|}" />
-            <p className="text-purple-700 mt-2">
+            <p className="text-prune-700 mt-2">
               Le rapport des vitesses de séparation et d&apos;approche. Entre 0
               et 1 dans la réalité.
             </p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-4">
-            <h4 className="font-medium text-gray-800 mb-2">Énergie perdue</h4>
+          <div className="bg-stone-50 rounded-lg p-4">
+            <h4 className="font-medium text-stone-800 mb-2">Énergie perdue</h4>
             <BlockMath math="\Delta E = \tfrac{1}{2}\mu\,(1 - e^2)(v_1 - v_2)^2" />
-            <p className="text-gray-700 mt-2">
+            <p className="text-stone-700 mt-2">
               Avec <InlineMath math="\mu = \frac{m_1 m_2}{m_1 + m_2}" />, la masse
               réduite. Nulle si <InlineMath math="e = 1" />.
             </p>

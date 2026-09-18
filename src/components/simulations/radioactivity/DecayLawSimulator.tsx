@@ -89,11 +89,11 @@ export function DecayLawSimulator() {
     const plotH = H - mt - mb;
 
     // Fond
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.fillRect(0, 0, W, H);
 
     // Axes
-    ctx.strokeStyle = '#94a3b8';
+    ctx.strokeStyle = '#aba6a1';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(ml, mt);
@@ -102,7 +102,7 @@ export function DecayLawSimulator() {
     ctx.stroke();
 
     // Grille
-    ctx.strokeStyle = '#1e293b';
+    ctx.strokeStyle = '#2f2d2a';
     ctx.lineWidth = 0.5;
     const nGridX = nHalfLives;
     const nGridY = 5;
@@ -127,7 +127,7 @@ export function DecayLawSimulator() {
     const toY = (n: number) => mt + plotH - (n / N0) * plotH;
 
     // Courbe N(t) = N0 * exp(-λt)
-    ctx.strokeStyle = '#22c55e';
+    ctx.strokeStyle = '#91a443';
     ctx.lineWidth = 2.5;
     ctx.beginPath();
     const steps = 400;
@@ -143,7 +143,7 @@ export function DecayLawSimulator() {
 
     // Courbe activité A(t) = λN(t) — échelle normalisée
     const A0 = lambda * N0;
-    ctx.strokeStyle = '#f59e0b';
+    ctx.strokeStyle = '#e8c518';
     ctx.lineWidth = 2;
     ctx.setLineDash([6, 4]);
     ctx.beginPath();
@@ -165,7 +165,7 @@ export function DecayLawSimulator() {
       const x = toX(t);
       const y = toY(n);
 
-      ctx.strokeStyle = '#475569';
+      ctx.strokeStyle = '#5d5853';
       ctx.setLineDash([3, 3]);
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -176,13 +176,13 @@ export function DecayLawSimulator() {
       ctx.setLineDash([]);
 
       // Point
-      ctx.fillStyle = '#22c55e';
+      ctx.fillStyle = '#91a443';
       ctx.beginPath();
       ctx.arc(x, y, 4, 0, Math.PI * 2);
       ctx.fill();
 
       // Label demi-vie
-      ctx.fillStyle = '#cbd5e1';
+      ctx.fillStyle = '#d8d6d4';
       ctx.font = '10px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(`${k}t½`, x, mt + plotH + 15);
@@ -193,7 +193,7 @@ export function DecayLawSimulator() {
     }
 
     // Labels axes
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('Temps (en demi-vies)', ml + plotW / 2, mt + plotH + 42);
@@ -207,7 +207,7 @@ export function DecayLawSimulator() {
 
     // Label N0
     ctx.textAlign = 'right';
-    ctx.fillStyle = '#cbd5e1';
+    ctx.fillStyle = '#d8d6d4';
     ctx.font = '10px sans-serif';
     ctx.fillText('N₀', ml - 5, toY(N0) + 3);
 
@@ -216,17 +216,17 @@ export function DecayLawSimulator() {
     const ly = mt + 14;
     ctx.font = '12px sans-serif';
 
-    ctx.strokeStyle = '#22c55e';
+    ctx.strokeStyle = '#91a443';
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(lx, ly);
     ctx.lineTo(lx + 24, ly);
     ctx.stroke();
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = '#eae9e8';
     ctx.textAlign = 'left';
     ctx.fillText('N(t) noyaux restants', lx + 30, ly + 4);
 
-    ctx.strokeStyle = '#f59e0b';
+    ctx.strokeStyle = '#e8c518';
     ctx.lineWidth = 2;
     ctx.setLineDash([6, 4]);
     ctx.beginPath();
@@ -234,11 +234,11 @@ export function DecayLawSimulator() {
     ctx.lineTo(lx + 24, ly + 20);
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = '#eae9e8';
     ctx.fillText('A(t) activité', lx + 30, ly + 24);
 
     // Titre
-    ctx.fillStyle = '#f8fafc';
+    ctx.fillStyle = '#fafafa';
     ctx.font = 'bold 13px sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText(`${isotope.label}  —  t½ = ${isotope.halfLifeStr}`, ml + 8, mt + 18);
@@ -251,10 +251,10 @@ export function DecayLawSimulator() {
   return (
     <section className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-gray-900">
+        <h2 className="text-3xl font-bold text-stone-900">
           Loi de décroissance radioactive
         </h2>
-        <p className="text-gray-600">
+        <p className="text-stone-600">
           Loi exponentielle, demi-vie et activité &mdash; Rutherford &amp; Soddy, 1903
         </p>
       </div>
@@ -264,13 +264,13 @@ export function DecayLawSimulator() {
           ref={canvasRef}
           width={700}
           height={400}
-          className="w-full max-w-[700px] mx-auto rounded-lg border border-gray-300"
+          className="w-full max-w-[700px] mx-auto rounded-lg border border-stone-300"
         />
 
         <div className="w-full max-w-[700px] space-y-3">
           {/* Choix isotope */}
           <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-sm text-gray-700 font-medium">Isotope :</span>
+            <span className="text-sm text-stone-700 font-medium">Isotope :</span>
             <div className="flex gap-1 flex-wrap">
               {ISOTOPES.map((iso, i) => (
                 <button
@@ -278,8 +278,8 @@ export function DecayLawSimulator() {
                   onClick={() => setIsotopeIdx(i)}
                   className={`px-3 py-1.5 text-xs rounded border font-medium transition-colors ${
                     isotopeIdx === i
-                      ? 'bg-green-600 text-white border-green-600'
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                      ? 'bg-olive-600 text-white border-olive-600'
+                      : 'bg-white text-stone-700 border-stone-300 hover:bg-stone-50'
                   }`}
                 >
                   {iso.label}
@@ -290,30 +290,30 @@ export function DecayLawSimulator() {
 
           {/* N0 */}
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium">
               <InlineMath math="N_0" /> initial
             </label>
             <input
               type="range" min={100} max={5000} step={100}
               value={N0}
               onChange={(e) => setN0(Number(e.target.value))}
-              className="flex-1 accent-green-500"
+              className="flex-1 accent-olive-500"
             />
-            <span className="text-sm font-mono text-gray-900 w-20 text-right">{N0}</span>
+            <span className="text-sm font-mono text-stone-900 w-20 text-right">{N0}</span>
           </div>
 
           {/* Nombre de demi-vies */}
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium">
               Demi-vies affichées
             </label>
             <input
               type="range" min={1} max={10} step={1}
               value={nHalfLives}
               onChange={(e) => setNHalfLives(Number(e.target.value))}
-              className="flex-1 accent-violet-500"
+              className="flex-1 accent-prune-500"
             />
-            <span className="text-sm font-mono text-gray-900 w-20 text-right">{nHalfLives}</span>
+            <span className="text-sm font-mono text-stone-900 w-20 text-right">{nHalfLives}</span>
           </div>
         </div>
       </div>
@@ -322,20 +322,20 @@ export function DecayLawSimulator() {
       <div className="space-y-2">
         <CollapsiblePanel
           title="1. La loi de décroissance"
-          borderColor="border-green-500"
-          bgColor="bg-green-50"
-          textColor="text-green-800"
+          borderColor="border-olive-500"
+          bgColor="bg-olive-50"
+          textColor="text-olive-800"
           defaultOpen
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Un noyau radioactif a une probabilité constante <InlineMath math="\lambda" /> de
             se désintégrer par unité de temps. Pour un échantillon de{' '}
             <InlineMath math="N" /> noyaux identiques :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`\\frac{dN}{dt} = -\\lambda\\,N \\quad \\Longrightarrow \\quad N(t) = N_0\\,e^{-\\lambda t}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             C&apos;est une loi <strong>statistique</strong> : on ne peut prédire quand un
             noyau donné se désintègre, mais le comportement collectif est parfaitement
             déterministe.
@@ -344,18 +344,18 @@ export function DecayLawSimulator() {
 
         <CollapsiblePanel
           title="2. Demi-vie et constante de désintégration"
-          borderColor="border-blue-500"
-          bgColor="bg-blue-50"
-          textColor="text-blue-800"
+          borderColor="border-gold-500"
+          bgColor="bg-gold-50"
+          textColor="text-gold-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             La <strong>demi-vie</strong> <InlineMath math="t_{1/2}" /> est le temps au bout
             duquel la moitié des noyaux se sont désintégrés :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`t_{1/2} = \\frac{\\ln 2}{\\lambda} \\approx \\frac{0{,}693}{\\lambda}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Après <InlineMath math="n" /> demi-vies, il reste{' '}
             <InlineMath math={`N_0 / 2^n`} /> noyaux. La durée de vie moyenne est{' '}
             <InlineMath math={`\\tau = 1/\\lambda = t_{1/2}/\\ln 2 \\approx 1{,}443\\,t_{1/2}`} />.
@@ -364,19 +364,19 @@ export function DecayLawSimulator() {
 
         <CollapsiblePanel
           title="3. Activité"
-          borderColor="border-yellow-500"
-          bgColor="bg-yellow-50"
-          textColor="text-yellow-800"
+          borderColor="border-ocre-500"
+          bgColor="bg-ocre-50"
+          textColor="text-ocre-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             L&apos;<strong>activité</strong> <InlineMath math="A(t)" /> mesure le nombre de
             désintégrations par seconde (unité SI : <strong>becquerel</strong>, 1 Bq = 1
             désintégration/s) :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`A(t) = \\lambda\\,N(t) = A_0\\,e^{-\\lambda t}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             L&apos;ancienne unité est le <strong>curie</strong> :{' '}
             <InlineMath math={`1\\,\\text{Ci} = 3{,}7 \\times 10^{10}\\,\\text{Bq}`} />,
             correspondant à l&apos;activité d&apos;un gramme de radium-226.
@@ -385,11 +385,11 @@ export function DecayLawSimulator() {
 
         <CollapsiblePanel
           title="4. Applications"
-          borderColor="border-gray-500"
-          bgColor="bg-gray-50"
-          textColor="text-gray-700"
+          borderColor="border-stone-500"
+          bgColor="bg-stone-50"
+          textColor="text-stone-700"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             La décroissance radioactive est utilisée en <strong>datation</strong> (carbone-14
             pour l&apos;archéologie, uranium-plomb pour la géologie), en{' '}
             <strong>médecine nucléaire</strong> (iode-131 pour la thyroïde, cobalt-60 pour

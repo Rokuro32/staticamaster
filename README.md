@@ -93,6 +93,33 @@ Jetons (`tailwind.config.ts`) :
 | `sec-<section>` | accent d'une section, `sec-<section>-deep` pour fond clair |
 | `scene-50…200` | fonds de la scène claire |
 
+### Couleurs des simulations
+
+Les simulations gardent leur fond clair, mais leurs couleurs sont rabattues sur
+la famille de la marque. Sept échelles dérivées de l'or et du brun de l'écusson
+remplacent les couleurs vives de Tailwind :
+
+| Échelle | Remplace | Rôle |
+|---|---|---|
+| `gold` | bleu, indigo | accent primaire |
+| `brun` | rouge, rose | seconde série |
+| `terre` | orange | alertes, chaleur |
+| `ocre` | ambre, jaune | mises en évidence |
+| `olive` | vert, émeraude | validations, troisième série |
+| `prune` | violet, pourpre | quatrième série |
+| `ardoise` | cyan, ciel | série froide d'appoint |
+| `stone` | gris, slate | axes, grilles, textes |
+
+Plus de quatre teintes sont nécessaires parce qu'un graphique doit rester
+lisible : avec seulement brun/or/noir/blanc, deux courbes superposées
+deviennent indiscernables. Les quatre dernières échelles sont volontairement
+sourdes pour rester dans l'identité.
+
+**Exception** : là où la couleur *encode* une grandeur physique — spectre
+visible, couleur d'un corps noir, franges d'interférence — elle est calculée
+depuis la longueur d'onde ou la température et reste inchangée. La recolorer
+serait faux.
+
 Les thèmes de section vivent dans `CATEGORY_THEMES` (`src/lib/catalog.ts`).
 **`src/lib/**` doit rester dans les globs `content` de Tailwind**, sinon
 aucune de ces classes n'est générée.

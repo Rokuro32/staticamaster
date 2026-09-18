@@ -122,7 +122,7 @@ export function DecayChainSimulator() {
     const W = canvas.width;
     const H = canvas.height;
 
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.fillRect(0, 0, W, H);
 
     const steps = chain.steps;
@@ -143,7 +143,7 @@ export function DecayChainSimulator() {
     const toY = (a: number) => mt + plotH - ((a - Amin) / (Amax - Amin)) * plotH;
 
     // Grille
-    ctx.strokeStyle = '#1e293b';
+    ctx.strokeStyle = '#2f2d2a';
     ctx.lineWidth = 0.5;
     for (let z = Zmin; z <= Zmax; z++) {
       const x = toX(z);
@@ -161,7 +161,7 @@ export function DecayChainSimulator() {
     }
 
     // Axes
-    ctx.strokeStyle = '#94a3b8';
+    ctx.strokeStyle = '#aba6a1';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(ml, mt);
@@ -170,7 +170,7 @@ export function DecayChainSimulator() {
     ctx.stroke();
 
     // Labels axes
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#aba6a1';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('Z (numéro atomique)', ml + plotW / 2, H - 8);
@@ -202,7 +202,7 @@ export function DecayChainSimulator() {
         const nx = toX(next.Z);
         const ny = toY(next.A);
 
-        ctx.strokeStyle = s.decayType === 'α' ? '#ef4444' : s.decayType === 'β⁻' ? '#3b82f6' : '#a855f7';
+        ctx.strokeStyle = s.decayType === 'α' ? '#ca684a' : s.decayType === 'β⁻' ? '#c29851' : '#b37895';
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(x, y);
@@ -240,17 +240,17 @@ export function DecayChainSimulator() {
       ctx.beginPath();
       ctx.arc(x, y, isHighlight ? 16 : 12, 0, Math.PI * 2);
       ctx.fillStyle = isStable
-        ? '#22c55e'
+        ? '#91a443'
         : isHighlight
-          ? '#fbbf24'
-          : '#334155';
+          ? '#e8c61a'
+          : '#484440';
       ctx.fill();
-      ctx.strokeStyle = isHighlight ? '#f59e0b' : '#64748b';
+      ctx.strokeStyle = isHighlight ? '#e8c518' : '#7e7871';
       ctx.lineWidth = isHighlight ? 2.5 : 1;
       ctx.stroke();
 
       // Symbole
-      ctx.fillStyle = '#f8fafc';
+      ctx.fillStyle = '#fafafa';
       ctx.font = `${isHighlight ? 'bold 11px' : '10px'} sans-serif`;
       ctx.textAlign = 'center';
       ctx.fillText(s.symbol, x, y + 3);
@@ -261,18 +261,18 @@ export function DecayChainSimulator() {
     ctx.textAlign = 'left';
     const lx = ml + plotW - 130;
     const ly = mt + 14;
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#1e1d1b';
     ctx.globalAlpha = 0.8;
     ctx.fillRect(lx - 6, ly - 12, 140, 55);
     ctx.globalAlpha = 1;
-    ctx.strokeStyle = '#334155';
+    ctx.strokeStyle = '#484440';
     ctx.strokeRect(lx - 6, ly - 12, 140, 55);
 
-    ctx.fillStyle = '#ef4444';
+    ctx.fillStyle = '#ca684a';
     ctx.fillText('→ α (Z−2, A−4)', lx, ly);
-    ctx.fillStyle = '#3b82f6';
+    ctx.fillStyle = '#c29851';
     ctx.fillText('→ β⁻ (Z+1, A=)', lx, ly + 18);
-    ctx.fillStyle = '#22c55e';
+    ctx.fillStyle = '#91a443';
     ctx.fillText('● stable', lx, ly + 36);
   }, [chain, highlightIdx]);
 
@@ -285,10 +285,10 @@ export function DecayChainSimulator() {
   return (
     <section className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-gray-900">
+        <h2 className="text-3xl font-bold text-stone-900">
           Chaînes de désintégration
         </h2>
-        <p className="text-gray-600">
+        <p className="text-stone-600">
           Filiation radioactive &mdash; de l&apos;uranium ou du thorium au plomb stable
         </p>
       </div>
@@ -298,21 +298,21 @@ export function DecayChainSimulator() {
           ref={canvasRef}
           width={700}
           height={420}
-          className="w-full max-w-[700px] mx-auto rounded-lg border border-gray-300"
+          className="w-full max-w-[700px] mx-auto rounded-lg border border-stone-300"
         />
 
         <div className="w-full max-w-[700px] space-y-3">
           {/* Choix famille */}
           <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-sm text-gray-700 font-medium">Famille :</span>
+            <span className="text-sm text-stone-700 font-medium">Famille :</span>
             {CHAINS.map((ch, i) => (
               <button
                 key={ch.id}
                 onClick={() => { setChainIdx(i); setHighlightIdx(0); }}
                 className={`px-4 py-1.5 text-sm rounded border font-medium transition-colors ${
                   chainIdx === i
-                    ? 'bg-amber-600 text-white border-amber-600'
-                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                    ? 'bg-ocre-600 text-white border-ocre-600'
+                    : 'bg-white text-stone-700 border-stone-300 hover:bg-stone-50'
                 }`}
               >
                 {ch.label}
@@ -322,7 +322,7 @@ export function DecayChainSimulator() {
 
           {/* Slider étape */}
           <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-700 whitespace-nowrap font-medium">
+            <label className="text-sm text-stone-700 whitespace-nowrap font-medium">
               Étape
             </label>
             <input
@@ -332,15 +332,15 @@ export function DecayChainSimulator() {
               step={1}
               value={highlightIdx}
               onChange={(e) => setHighlightIdx(Number(e.target.value))}
-              className="flex-1 accent-amber-500"
+              className="flex-1 accent-ocre-500"
             />
-            <span className="text-sm font-mono text-gray-900 w-28 text-right">
+            <span className="text-sm font-mono text-stone-900 w-28 text-right">
               {step.symbol} ({step.name})
             </span>
           </div>
 
           {/* Info étape */}
-          <div className="p-3 bg-slate-100 rounded-lg border text-sm space-y-1">
+          <div className="p-3 bg-stone-100 rounded-lg border text-sm space-y-1">
             <div className="flex gap-6 flex-wrap">
               <div><strong>Noyau :</strong> {step.symbol} ({step.name})</div>
               <div><strong>Z =</strong> {step.Z}, <strong>A =</strong> {step.A}</div>
@@ -348,9 +348,9 @@ export function DecayChainSimulator() {
               <div>
                 <strong>Décroissance :</strong>{' '}
                 <span className={
-                  step.decayType === 'α' ? 'text-red-600 font-bold' :
-                  step.decayType === 'β⁻' ? 'text-blue-600 font-bold' :
-                  'text-green-600 font-bold'
+                  step.decayType === 'α' ? 'text-brun-600 font-bold' :
+                  step.decayType === 'β⁻' ? 'text-gold-600 font-bold' :
+                  'text-olive-600 font-bold'
                 }>
                   {step.decayType}
                 </span>
@@ -364,21 +364,21 @@ export function DecayChainSimulator() {
       <div className="space-y-2">
         <CollapsiblePanel
           title="1. Familles radioactives naturelles"
-          borderColor="border-amber-500"
-          bgColor="bg-amber-50"
-          textColor="text-amber-800"
+          borderColor="border-ocre-500"
+          bgColor="bg-ocre-50"
+          textColor="text-ocre-800"
           defaultOpen
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Les noyaux lourds naturels (<InlineMath math="Z > 82" />) sont instables. Ils
             se désintègrent en cascade par une succession de décroissances{' '}
             <InlineMath math="\alpha" /> et <InlineMath math="\beta" /> jusqu&apos;à
             atteindre un <strong>noyau stable de plomb</strong>.
           </p>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Il existe 4 familles selon le reste de <InlineMath math="A" /> modulo 4 :
           </p>
-          <ul className="list-disc list-inside text-gray-700 space-y-1">
+          <ul className="list-disc list-inside text-stone-700 space-y-1">
             <li>
               <strong>4n</strong> : thorium-232 → plomb-208
             </li>
@@ -396,45 +396,45 @@ export function DecayChainSimulator() {
 
         <CollapsiblePanel
           title="2. Diagramme (Z, A)"
-          borderColor="border-blue-500"
-          bgColor="bg-blue-50"
-          textColor="text-blue-800"
+          borderColor="border-gold-500"
+          bgColor="bg-gold-50"
+          textColor="text-gold-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Sur le diagramme, chaque flèche correspond à une désintégration :
           </p>
-          <ul className="list-disc list-inside text-gray-700 space-y-1">
+          <ul className="list-disc list-inside text-stone-700 space-y-1">
             <li>
-              <strong className="text-red-600">α</strong> :{' '}
+              <strong className="text-brun-600">α</strong> :{' '}
               <InlineMath math="\Delta Z = -2, \; \Delta A = -4" /> — déplacement en
               diagonale vers le bas-gauche.
             </li>
             <li>
-              <strong className="text-blue-600">β⁻</strong> :{' '}
+              <strong className="text-gold-600">β⁻</strong> :{' '}
               <InlineMath math="\Delta Z = +1, \; \Delta A = 0" /> — déplacement
               horizontal vers la droite.
             </li>
           </ul>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             On peut ainsi reconstituer visuellement tout le chemin de la filiation.
           </p>
         </CollapsiblePanel>
 
         <CollapsiblePanel
           title="3. Équilibre séculaire"
-          borderColor="border-green-500"
-          bgColor="bg-green-50"
-          textColor="text-green-800"
+          borderColor="border-olive-500"
+          bgColor="bg-olive-50"
+          textColor="text-olive-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Lorsque le noyau père a une demi-vie très longue devant celle du fils
             (<InlineMath math="t_{1/2}^{\text{père}} \gg t_{1/2}^{\text{fils}}" />),
             l&apos;activité du fils atteint un <strong>équilibre séculaire</strong> :
           </p>
-          <div className="bg-gray-100 rounded p-3 overflow-x-auto">
+          <div className="bg-stone-100 rounded p-3 overflow-x-auto">
             <BlockMath math={`A_{\\text{fils}} \\approx A_{\\text{père}} \\quad \\Longleftrightarrow \\quad \\lambda_{\\text{fils}}\\,N_{\\text{fils}} = \\lambda_{\\text{père}}\\,N_{\\text{père}}`} />
           </div>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Exemple : dans un minerai d&apos;uranium ancien, tous les descendants ont la
             même activité que l&apos;²³⁸U. C&apos;est ce principe qui permet la{' '}
             <strong>datation uranium-plomb</strong>.
@@ -443,17 +443,17 @@ export function DecayChainSimulator() {
 
         <CollapsiblePanel
           title="4. Le radon : un risque sanitaire"
-          borderColor="border-red-500"
-          bgColor="bg-red-50"
-          textColor="text-red-800"
+          borderColor="border-brun-500"
+          bgColor="bg-brun-50"
+          textColor="text-brun-800"
         >
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Le <strong>radon-222</strong> (t½ = 3,82 jours) est un gaz noble radioactif
             qui s&apos;échappe du sol et s&apos;accumule dans les bâtiments mal ventilés.
             Ses descendants à courte durée de vie (²¹⁸Po, ²¹⁴Pb, ²¹⁴Bi, ²¹⁴Po) se
             déposent dans les poumons et émettent des particules α très ionisantes.
           </p>
-          <p className="text-gray-700">
+          <p className="text-stone-700">
             Le radon est la <strong>deuxième cause de cancer du poumon</strong> après le
             tabac, et la première source d&apos;exposition aux rayonnements ionisants
             d&apos;origine naturelle.

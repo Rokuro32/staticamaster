@@ -35,17 +35,17 @@ export function QuantumPhysicsSimulator() {
   const [activeSection, setActiveSection] = useState<Section>('blackbody');
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+    <div className="bg-white rounded-xl border border-stone-200 shadow-sm overflow-hidden">
       {/* Tab bar */}
-      <div className="flex border-b border-gray-200 overflow-x-auto">
+      <div className="flex border-b border-stone-200 overflow-x-auto">
         {SECTIONS.map((s) => (
           <button
             key={s.id}
             onClick={() => setActiveSection(s.id)}
             className={`px-3 py-3 text-sm font-medium whitespace-nowrap transition-colors flex items-center gap-1.5 ${
               activeSection === s.id
-                ? 'bg-violet-50 text-violet-700 border-b-2 border-violet-500'
-                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                ? 'bg-prune-50 text-prune-700 border-b-2 border-prune-500'
+                : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50'
             }`}
           >
             <span>{s.icon}</span>

@@ -165,7 +165,7 @@ export function RelativeMotionSimulator() {
     const { vAx, vAy, vBx, vBy, labels } = velocities;
 
     // Background
-    ctx.fillStyle = '#f8fafc';
+    ctx.fillStyle = '#fafafa';
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
     if (scenario === 'train') {
@@ -176,25 +176,25 @@ export function RelativeMotionSimulator() {
       const trainY = canvasHeight / 2;
 
       // Ground
-      ctx.fillStyle = '#d1d5db';
+      ctx.fillStyle = '#d8d6d4';
       ctx.fillRect(0, trainY + trainHeight / 2 + 20, canvasWidth, 30);
 
       // Rails
-      ctx.fillStyle = '#6b7280';
+      ctx.fillStyle = '#7c766f';
       ctx.fillRect(0, trainY + trainHeight / 2 + 15, canvasWidth, 8);
 
       // Train body
-      ctx.fillStyle = '#3b82f6';
+      ctx.fillStyle = '#c29851';
       ctx.fillRect(trainBaseX, trainY - trainHeight / 2, trainWidth, trainHeight);
 
       // Windows
-      ctx.fillStyle = '#bfdbfe';
+      ctx.fillStyle = '#e3cfae';
       for (let i = 0; i < 4; i++) {
         ctx.fillRect(trainBaseX + 30 + i * 65, trainY - trainHeight / 2 + 15, 40, 30);
       }
 
       // Wheels
-      ctx.fillStyle = '#1f2937';
+      ctx.fillStyle = '#2d2b29';
       for (let i = 0; i < 3; i++) {
         ctx.beginPath();
         ctx.arc(trainBaseX + 50 + i * 100, trainY + trainHeight / 2 + 10, 15, 0, Math.PI * 2);
@@ -207,7 +207,7 @@ export function RelativeMotionSimulator() {
       const personY = trainY - 5;
 
       // Person body
-      ctx.fillStyle = '#ef4444';
+      ctx.fillStyle = '#ca684a';
       ctx.beginPath();
       ctx.arc(personX, personY - 25, 12, 0, Math.PI * 2);
       ctx.fill();
@@ -216,13 +216,13 @@ export function RelativeMotionSimulator() {
       // Arrow showing person's velocity relative to ground
       if (referenceFrame === 'ground') {
         const vScale = 2;
-        ctx.strokeStyle = '#22c55e';
+        ctx.strokeStyle = '#91a443';
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(personX, personY - 40);
         ctx.lineTo(personX + vAx * vScale, personY - 40);
         ctx.stroke();
-        ctx.fillStyle = '#22c55e';
+        ctx.fillStyle = '#91a443';
         ctx.beginPath();
         const arrowDir = vAx > 0 ? 1 : -1;
         ctx.moveTo(personX + vAx * vScale, personY - 40);
@@ -230,7 +230,7 @@ export function RelativeMotionSimulator() {
         ctx.lineTo(personX + vAx * vScale - 8 * arrowDir, personY - 35);
         ctx.closePath();
         ctx.fill();
-        ctx.fillStyle = '#22c55e';
+        ctx.fillStyle = '#91a443';
         ctx.font = 'bold 12px system-ui';
         ctx.textAlign = 'center';
         ctx.fillText(`v = ${vAx.toFixed(1)} m/s`, personX + vAx * vScale / 2, personY - 50);
@@ -238,13 +238,13 @@ export function RelativeMotionSimulator() {
         // Velocity relative to train
         const vRel = personDirection === 'same' ? personSpeedInTrain : -personSpeedInTrain;
         const vScale = 5;
-        ctx.strokeStyle = '#f59e0b';
+        ctx.strokeStyle = '#e8c518';
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(personX, personY - 40);
         ctx.lineTo(personX + vRel * vScale, personY - 40);
         ctx.stroke();
-        ctx.fillStyle = '#f59e0b';
+        ctx.fillStyle = '#e8c518';
         ctx.beginPath();
         const arrowDir = vRel > 0 ? 1 : -1;
         ctx.moveTo(personX + vRel * vScale, personY - 40);
@@ -252,21 +252,21 @@ export function RelativeMotionSimulator() {
         ctx.lineTo(personX + vRel * vScale - 8 * arrowDir, personY - 35);
         ctx.closePath();
         ctx.fill();
-        ctx.fillStyle = '#f59e0b';
+        ctx.fillStyle = '#e8c518';
         ctx.font = 'bold 12px system-ui';
         ctx.textAlign = 'center';
         ctx.fillText(`v = ${vRel.toFixed(1)} m/s`, personX + vRel * vScale / 2, personY - 50);
       }
 
       // Train velocity arrow
-      ctx.strokeStyle = '#3b82f6';
+      ctx.strokeStyle = '#c29851';
       ctx.lineWidth = 3;
       const trainArrowX = trainBaseX + trainWidth / 2;
       ctx.beginPath();
       ctx.moveTo(trainArrowX, trainY + trainHeight / 2 + 45);
       ctx.lineTo(trainArrowX + trainSpeed * 2, trainY + trainHeight / 2 + 45);
       ctx.stroke();
-      ctx.fillStyle = '#3b82f6';
+      ctx.fillStyle = '#c29851';
       ctx.beginPath();
       ctx.moveTo(trainArrowX + trainSpeed * 2, trainY + trainHeight / 2 + 45);
       ctx.lineTo(trainArrowX + trainSpeed * 2 - 8, trainY + trainHeight / 2 + 40);
@@ -283,15 +283,15 @@ export function RelativeMotionSimulator() {
       const riverHeight = 150;
 
       // Banks
-      ctx.fillStyle = '#86efac';
+      ctx.fillStyle = '#becc83';
       ctx.fillRect(0, 0, canvasWidth, riverY - riverHeight / 2);
       ctx.fillRect(0, riverY + riverHeight / 2, canvasWidth, canvasHeight - riverY - riverHeight / 2);
 
       // River
       const riverGradient = ctx.createLinearGradient(0, riverY - riverHeight / 2, 0, riverY + riverHeight / 2);
-      riverGradient.addColorStop(0, '#38bdf8');
-      riverGradient.addColorStop(0.5, '#0ea5e9');
-      riverGradient.addColorStop(1, '#0284c7');
+      riverGradient.addColorStop(0, '#688eaa');
+      riverGradient.addColorStop(0.5, '#59819e');
+      riverGradient.addColorStop(1, '#957134');
       ctx.fillStyle = riverGradient;
       ctx.fillRect(0, riverY - riverHeight / 2, canvasWidth, riverHeight);
 
@@ -322,7 +322,7 @@ export function RelativeMotionSimulator() {
       ctx.translate(boatX, boatY);
 
       // Boat hull
-      ctx.fillStyle = '#92400e';
+      ctx.fillStyle = '#885018';
       ctx.beginPath();
       ctx.moveTo(-20, 10);
       ctx.lineTo(20, 10);
@@ -334,7 +334,7 @@ export function RelativeMotionSimulator() {
       ctx.fill();
 
       // Person in boat
-      ctx.fillStyle = '#f59e0b';
+      ctx.fillStyle = '#e8c518';
       ctx.beginPath();
       ctx.arc(0, -5, 8, 0, Math.PI * 2);
       ctx.fill();
@@ -345,37 +345,37 @@ export function RelativeMotionSimulator() {
       const vScale = 4;
       if (referenceFrame === 'ground') {
         // Resultant velocity
-        ctx.strokeStyle = '#22c55e';
+        ctx.strokeStyle = '#91a443';
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(boatX, boatY);
         ctx.lineTo(boatX + vBoatGroundX * vScale, boatY - vBoatGroundY * vScale);
         ctx.stroke();
-        ctx.fillStyle = '#22c55e';
+        ctx.fillStyle = '#91a443';
         const mag = Math.sqrt(vBoatGroundX ** 2 + vBoatGroundY ** 2);
         ctx.font = 'bold 11px system-ui';
         ctx.fillText(`v = ${mag.toFixed(1)} m/s`, boatX + vBoatGroundX * vScale / 2 + 20, boatY - vBoatGroundY * vScale / 2);
       } else {
         // Velocity relative to water
-        ctx.strokeStyle = '#f59e0b';
+        ctx.strokeStyle = '#e8c518';
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(boatX, boatY);
         ctx.lineTo(boatX + vBoatWaterX * vScale, boatY - vBoatWaterY * vScale);
         ctx.stroke();
-        ctx.fillStyle = '#f59e0b';
+        ctx.fillStyle = '#e8c518';
         ctx.font = 'bold 11px system-ui';
         ctx.fillText(`v = ${boatSpeedInWater.toFixed(1)} m/s`, boatX + vBoatWaterX * vScale / 2 + 20, boatY - vBoatWaterY * vScale / 2);
       }
 
       // Current arrow
-      ctx.strokeStyle = '#0ea5e9';
+      ctx.strokeStyle = '#59819e';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(50, riverY + riverHeight / 2 - 20);
       ctx.lineTo(50 + riverCurrentSpeed * 8, riverY + riverHeight / 2 - 20);
       ctx.stroke();
-      ctx.fillStyle = '#0ea5e9';
+      ctx.fillStyle = '#59819e';
       ctx.font = '11px system-ui';
       ctx.fillText(`Courant: ${riverCurrentSpeed} m/s`, 50 + riverCurrentSpeed * 4, riverY + riverHeight / 2 - 5);
 
@@ -385,15 +385,15 @@ export function RelativeMotionSimulator() {
       const roadHeight = 80;
 
       // Sky
-      ctx.fillStyle = '#e0f2fe';
+      ctx.fillStyle = '#f0efee';
       ctx.fillRect(0, 0, canvasWidth, roadY - roadHeight / 2);
 
       // Road
-      ctx.fillStyle = '#4b5563';
+      ctx.fillStyle = '#5c5752';
       ctx.fillRect(0, roadY - roadHeight / 2, canvasWidth, roadHeight);
 
       // Road markings
-      ctx.strokeStyle = '#fbbf24';
+      ctx.strokeStyle = '#e8c61a';
       ctx.lineWidth = 3;
       ctx.setLineDash([30, 20]);
       ctx.beginPath();
@@ -403,21 +403,21 @@ export function RelativeMotionSimulator() {
       ctx.setLineDash([]);
 
       // Grass
-      ctx.fillStyle = '#86efac';
+      ctx.fillStyle = '#becc83';
       ctx.fillRect(0, roadY + roadHeight / 2, canvasWidth, canvasHeight - roadY - roadHeight / 2);
 
       // Car 1 (red)
       const car1X = ((time * car1Speed * 3) % (canvasWidth + 100)) - 50;
       const car1Y = roadY - 25;
 
-      ctx.fillStyle = '#ef4444';
+      ctx.fillStyle = '#ca684a';
       ctx.beginPath();
       ctx.roundRect(car1X - 30, car1Y - 15, 60, 25, 5);
       ctx.fill();
-      ctx.fillStyle = '#fecaca';
+      ctx.fillStyle = '#e9bfb2';
       ctx.fillRect(car1X - 20, car1Y - 12, 15, 12);
       ctx.fillRect(car1X + 5, car1Y - 12, 15, 12);
-      ctx.fillStyle = '#1f2937';
+      ctx.fillStyle = '#2d2b29';
       ctx.beginPath();
       ctx.arc(car1X - 15, car1Y + 12, 8, 0, Math.PI * 2);
       ctx.arc(car1X + 15, car1Y + 12, 8, 0, Math.PI * 2);
@@ -430,14 +430,14 @@ export function RelativeMotionSimulator() {
         : canvasWidth - ((time * car2Speed * 3) % (canvasWidth + 100)) + 50;
       const car2Y = roadY + 25;
 
-      ctx.fillStyle = '#3b82f6';
+      ctx.fillStyle = '#c29851';
       ctx.beginPath();
       ctx.roundRect(car2X - 30, car2Y - 15, 60, 25, 5);
       ctx.fill();
-      ctx.fillStyle = '#bfdbfe';
+      ctx.fillStyle = '#e3cfae';
       ctx.fillRect(car2X - 20, car2Y - 12, 15, 12);
       ctx.fillRect(car2X + 5, car2Y - 12, 15, 12);
-      ctx.fillStyle = '#1f2937';
+      ctx.fillStyle = '#2d2b29';
       ctx.beginPath();
       ctx.arc(car2X - 15, car2Y + 12, 8, 0, Math.PI * 2);
       ctx.arc(car2X + 15, car2Y + 12, 8, 0, Math.PI * 2);
@@ -447,34 +447,34 @@ export function RelativeMotionSimulator() {
       const vScale = 1.5;
       if (referenceFrame === 'ground') {
         // Car 1 velocity
-        ctx.strokeStyle = '#ef4444';
+        ctx.strokeStyle = '#ca684a';
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(car1X, car1Y - 30);
         ctx.lineTo(car1X + car1Speed * vScale, car1Y - 30);
         ctx.stroke();
-        ctx.fillStyle = '#ef4444';
+        ctx.fillStyle = '#ca684a';
         ctx.font = '11px system-ui';
         ctx.fillText(`v₁ = ${car1Speed} m/s`, car1X + car1Speed * vScale / 2, car1Y - 40);
 
         // Car 2 velocity
-        ctx.strokeStyle = '#3b82f6';
+        ctx.strokeStyle = '#c29851';
         ctx.beginPath();
         ctx.moveTo(car2X, car2Y + 35);
         ctx.lineTo(car2X + car2Speed * car2Dir * vScale, car2Y + 35);
         ctx.stroke();
-        ctx.fillStyle = '#3b82f6';
+        ctx.fillStyle = '#c29851';
         ctx.fillText(`v₂ = ${car2Speed * car2Dir} m/s`, car2X + car2Speed * car2Dir * vScale / 2, car2Y + 50);
       } else {
         // Relative velocity of car 1 seen from car 2
         const vRel = car1Speed - car2Speed * car2Dir;
-        ctx.strokeStyle = '#22c55e';
+        ctx.strokeStyle = '#91a443';
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(car1X, car1Y - 30);
         ctx.lineTo(car1X + vRel * vScale, car1Y - 30);
         ctx.stroke();
-        ctx.fillStyle = '#22c55e';
+        ctx.fillStyle = '#91a443';
         ctx.font = 'bold 11px system-ui';
         ctx.fillText(`v₁/₂ = ${vRel} m/s`, car1X + vRel * vScale / 2, car1Y - 40);
       }
@@ -485,7 +485,7 @@ export function RelativeMotionSimulator() {
       const centerY = canvasHeight / 2;
 
       // Grid
-      ctx.strokeStyle = '#e5e7eb';
+      ctx.strokeStyle = '#e9e8e7';
       ctx.lineWidth = 1;
       for (let x = 0; x < canvasWidth; x += 40) {
         ctx.beginPath();
@@ -504,12 +504,12 @@ export function RelativeMotionSimulator() {
       const bX = (time * customVbx * 5 + 200) % canvasWidth;
       const bY = centerY + (time * customVby * 5) % 100 - 50;
 
-      ctx.strokeStyle = '#3b82f6';
+      ctx.strokeStyle = '#c29851';
       ctx.lineWidth = 2;
       ctx.strokeRect(bX - 60, bY - 40, 120, 80);
-      ctx.fillStyle = 'rgba(59, 130, 246, 0.1)';
+      ctx.fillStyle = 'rgba(194, 152, 81, 0.1)';
       ctx.fillRect(bX - 60, bY - 40, 120, 80);
-      ctx.fillStyle = '#3b82f6';
+      ctx.fillStyle = '#c29851';
       ctx.font = 'bold 12px system-ui';
       ctx.textAlign = 'center';
       ctx.fillText('Référentiel B', bX, bY - 50);
@@ -520,7 +520,7 @@ export function RelativeMotionSimulator() {
       const aX = bX + aRelX;
       const aY = bY + aRelY;
 
-      ctx.fillStyle = '#ef4444';
+      ctx.fillStyle = '#ca684a';
       ctx.beginPath();
       ctx.arc(aX, aY, 12, 0, Math.PI * 2);
       ctx.fill();
@@ -533,24 +533,24 @@ export function RelativeMotionSimulator() {
       if (referenceFrame === 'ground') {
         const vTotalX = customVax + customVbx;
         const vTotalY = customVay + customVby;
-        ctx.strokeStyle = '#22c55e';
+        ctx.strokeStyle = '#91a443';
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(aX, aY);
         ctx.lineTo(aX + vTotalX * vScale, aY + vTotalY * vScale);
         ctx.stroke();
-        ctx.fillStyle = '#22c55e';
+        ctx.fillStyle = '#91a443';
         ctx.font = '11px system-ui';
         const mag = Math.sqrt(vTotalX ** 2 + vTotalY ** 2);
         ctx.fillText(`v_A/Sol = ${mag.toFixed(1)} m/s`, aX + vTotalX * vScale + 10, aY + vTotalY * vScale);
       } else {
-        ctx.strokeStyle = '#f59e0b';
+        ctx.strokeStyle = '#e8c518';
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(aX, aY);
         ctx.lineTo(aX + customVax * vScale, aY + customVay * vScale);
         ctx.stroke();
-        ctx.fillStyle = '#f59e0b';
+        ctx.fillStyle = '#e8c518';
         ctx.font = '11px system-ui';
         const mag = Math.sqrt(customVax ** 2 + customVay ** 2);
         ctx.fillText(`v_A/B = ${mag.toFixed(1)} m/s`, aX + customVax * vScale + 10, aY + customVay * vScale);
@@ -580,7 +580,7 @@ export function RelativeMotionSimulator() {
     const { vAx, vAy, vBx, vBy, vABx, vABy, labels } = velocities;
 
     // Background
-    ctx.fillStyle = '#f8fafc';
+    ctx.fillStyle = '#fafafa';
     ctx.fillRect(0, 0, vectorCanvasWidth, vectorCanvasHeight);
 
     const centerX = vectorCanvasWidth / 2;
@@ -595,7 +595,7 @@ export function RelativeMotionSimulator() {
     const scale = maxV > 0 ? Math.min(50 / maxV, 8) : 1;
 
     // Draw axes
-    ctx.strokeStyle = '#d1d5db';
+    ctx.strokeStyle = '#d8d6d4';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(20, centerY);
@@ -605,14 +605,14 @@ export function RelativeMotionSimulator() {
     ctx.stroke();
 
     // Origin
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.beginPath();
     ctx.arc(centerX, centerY, 4, 0, Math.PI * 2);
     ctx.fill();
 
     // Draw v_B (reference frame velocity) - blue
-    ctx.strokeStyle = '#3b82f6';
-    ctx.fillStyle = '#3b82f6';
+    ctx.strokeStyle = '#c29851';
+    ctx.fillStyle = '#c29851';
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(centerX, centerY);
@@ -635,8 +635,8 @@ export function RelativeMotionSimulator() {
     ctx.fillText(`v_${labels.B}`, bEndX + 5, bEndY - 5);
 
     // Draw v_A/B (relative velocity) - orange, starting from end of v_B
-    ctx.strokeStyle = '#f59e0b';
-    ctx.fillStyle = '#f59e0b';
+    ctx.strokeStyle = '#e8c518';
+    ctx.fillStyle = '#e8c518';
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(bEndX, bEndY);
@@ -658,8 +658,8 @@ export function RelativeMotionSimulator() {
     ctx.fillText(`v_${labels.A}/${labels.B}`, abEndX + 5, abEndY - 5);
 
     // Draw v_A (resultant) - green, from origin
-    ctx.strokeStyle = '#22c55e';
-    ctx.fillStyle = '#22c55e';
+    ctx.strokeStyle = '#91a443';
+    ctx.fillStyle = '#91a443';
     ctx.lineWidth = 3;
     ctx.setLineDash([]);
     ctx.beginPath();
@@ -682,7 +682,7 @@ export function RelativeMotionSimulator() {
     ctx.fillText(`v_${labels.A}/${labels.C}`, aEndX + 5, aEndY + 15);
 
     // Title
-    ctx.fillStyle = '#374151';
+    ctx.fillStyle = '#484440';
     ctx.font = 'bold 11px system-ui';
     ctx.textAlign = 'center';
     ctx.fillText('Addition des vitesses', vectorCanvasWidth / 2, 15);
@@ -704,7 +704,7 @@ export function RelativeMotionSimulator() {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
       {/* Header with scenario selector */}
-      <div className="border-b border-gray-200 bg-gradient-to-r from-cyan-50 via-blue-50 to-indigo-50 p-3">
+      <div className="border-b border-stone-200 bg-gradient-to-r from-ardoise-50 via-gold-50 to-gold-50 p-3">
         <div className="flex flex-wrap items-center gap-2 mb-2">
           {SCENARIOS.map((s) => (
             <button
@@ -713,8 +713,8 @@ export function RelativeMotionSimulator() {
               className={cn(
                 "px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5",
                 scenario === s.id
-                  ? "bg-blue-600 text-white shadow-md"
-                  : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
+                  ? "bg-gold-600 text-white shadow-md"
+                  : "bg-white text-stone-700 hover:bg-stone-100 border border-stone-300"
               )}
             >
               <span>{s.emoji}</span>
@@ -722,21 +722,21 @@ export function RelativeMotionSimulator() {
             </button>
           ))}
         </div>
-        <p className="text-xs text-gray-600">{SCENARIOS.find(s => s.id === scenario)?.description}</p>
+        <p className="text-xs text-stone-600">{SCENARIOS.find(s => s.id === scenario)?.description}</p>
       </div>
 
       <div className="p-4">
         {/* Reference frame toggle */}
         <div className="mb-4 flex items-center gap-4">
-          <span className="text-sm font-medium text-gray-700">Observer depuis:</span>
-          <div className="flex bg-gray-100 rounded-lg p-1">
+          <span className="text-sm font-medium text-stone-700">Observer depuis:</span>
+          <div className="flex bg-stone-100 rounded-lg p-1">
             <button
               onClick={() => setReferenceFrame('ground')}
               className={cn(
                 "px-4 py-1.5 rounded-md text-sm font-medium transition-all",
                 referenceFrame === 'ground'
-                  ? "bg-white shadow text-blue-700"
-                  : "text-gray-600 hover:text-gray-900"
+                  ? "bg-white shadow text-gold-700"
+                  : "text-stone-600 hover:text-stone-900"
               )}
             >
               {velocities.labels.C} (fixe)
@@ -746,8 +746,8 @@ export function RelativeMotionSimulator() {
               className={cn(
                 "px-4 py-1.5 rounded-md text-sm font-medium transition-all",
                 referenceFrame === 'moving'
-                  ? "bg-white shadow text-orange-700"
-                  : "text-gray-600 hover:text-gray-900"
+                  ? "bg-white shadow text-terre-700"
+                  : "text-stone-600 hover:text-stone-900"
               )}
             >
               {velocities.labels.B} (mobile)
@@ -758,7 +758,7 @@ export function RelativeMotionSimulator() {
         <div className="flex flex-col lg:flex-row gap-4">
           {/* Main animation */}
           <div className="flex-1">
-            <div className="border border-gray-200 rounded-lg overflow-hidden">
+            <div className="border border-stone-200 rounded-lg overflow-hidden">
               <canvas
                 ref={mainCanvasRef}
                 width={canvasWidth}
@@ -773,14 +773,14 @@ export function RelativeMotionSimulator() {
                 onClick={() => setIsPlaying(!isPlaying)}
                 className={cn(
                   "px-4 py-2 rounded-lg text-sm font-semibold transition-colors",
-                  isPlaying ? "bg-amber-500 text-white" : "bg-emerald-500 text-white"
+                  isPlaying ? "bg-ocre-500 text-white" : "bg-olive-500 text-white"
                 )}
               >
                 {isPlaying ? '⏸ Pause' : '▶ Lecture'}
               </button>
               <button
                 onClick={handleReset}
-                className="px-3 py-2 rounded-lg text-sm font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300"
+                className="px-3 py-2 rounded-lg text-sm font-semibold bg-stone-200 text-stone-700 hover:bg-stone-300"
               >
                 ↺ Reset
               </button>
@@ -789,7 +789,7 @@ export function RelativeMotionSimulator() {
 
           {/* Vector diagram */}
           <div className="lg:w-80">
-            <div className="border border-gray-200 rounded-lg overflow-hidden">
+            <div className="border border-stone-200 rounded-lg overflow-hidden">
               <canvas
                 ref={vectorCanvasRef}
                 width={vectorCanvasWidth}
@@ -799,18 +799,18 @@ export function RelativeMotionSimulator() {
             </div>
 
             {/* Velocity values */}
-            <div className="mt-3 bg-gray-50 rounded-lg p-3 text-sm">
+            <div className="mt-3 bg-stone-50 rounded-lg p-3 text-sm">
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <span className="text-blue-600 font-medium">v_{velocities.labels.B}/{velocities.labels.C}</span>
+                  <span className="text-gold-600 font-medium">v_{velocities.labels.B}/{velocities.labels.C}</span>
                   <span className="font-mono">{Math.sqrt(velocities.vBx ** 2 + velocities.vBy ** 2).toFixed(1)} m/s</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-orange-600 font-medium">v_{velocities.labels.A}/{velocities.labels.B}</span>
+                  <span className="text-terre-600 font-medium">v_{velocities.labels.A}/{velocities.labels.B}</span>
                   <span className="font-mono">{Math.sqrt(velocities.vABx ** 2 + velocities.vABy ** 2).toFixed(1)} m/s</span>
                 </div>
-                <div className="flex justify-between border-t border-gray-200 pt-2">
-                  <span className="text-green-600 font-bold">v_{velocities.labels.A}/{velocities.labels.C}</span>
+                <div className="flex justify-between border-t border-stone-200 pt-2">
+                  <span className="text-olive-600 font-bold">v_{velocities.labels.A}/{velocities.labels.C}</span>
                   <span className="font-mono font-bold">{Math.sqrt(velocities.vAx ** 2 + velocities.vAy ** 2).toFixed(1)} m/s</span>
                 </div>
               </div>
@@ -819,35 +819,35 @@ export function RelativeMotionSimulator() {
         </div>
 
         {/* Parameters */}
-        <div className="mt-4 bg-gray-50 rounded-lg p-4 border border-gray-200">
-          <h4 className="text-sm font-bold text-gray-700 mb-3">Paramètres</h4>
+        <div className="mt-4 bg-stone-50 rounded-lg p-4 border border-stone-200">
+          <h4 className="text-sm font-bold text-stone-700 mb-3">Paramètres</h4>
 
           {scenario === 'train' && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">
+                <label className="block text-xs font-medium text-stone-600 mb-1">
                   Vitesse du train: {trainSpeed} m/s
                 </label>
                 <input
                   type="range" min="5" max="40" step="1"
                   value={trainSpeed}
                   onChange={(e) => setTrainSpeed(parseFloat(e.target.value))}
-                  className="w-full accent-blue-600"
+                  className="w-full accent-gold-600"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">
+                <label className="block text-xs font-medium text-stone-600 mb-1">
                   Vitesse de la personne (dans le train): {personSpeedInTrain} m/s
                 </label>
                 <input
                   type="range" min="0.5" max="5" step="0.5"
                   value={personSpeedInTrain}
                   onChange={(e) => setPersonSpeedInTrain(parseFloat(e.target.value))}
-                  className="w-full accent-red-600"
+                  className="w-full accent-brun-600"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Direction</label>
+                <label className="block text-xs font-medium text-stone-600 mb-1">Direction</label>
                 <select
                   value={personDirection}
                   onChange={(e) => setPersonDirection(e.target.value as 'same' | 'opposite')}
@@ -863,36 +863,36 @@ export function RelativeMotionSimulator() {
           {scenario === 'river' && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">
+                <label className="block text-xs font-medium text-stone-600 mb-1">
                   Vitesse du bateau (dans l'eau): {boatSpeedInWater} m/s
                 </label>
                 <input
                   type="range" min="1" max="10" step="0.5"
                   value={boatSpeedInWater}
                   onChange={(e) => setBoatSpeedInWater(parseFloat(e.target.value))}
-                  className="w-full accent-orange-600"
+                  className="w-full accent-terre-600"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">
+                <label className="block text-xs font-medium text-stone-600 mb-1">
                   Vitesse du courant: {riverCurrentSpeed} m/s
                 </label>
                 <input
                   type="range" min="0" max="8" step="0.5"
                   value={riverCurrentSpeed}
                   onChange={(e) => setRiverCurrentSpeed(parseFloat(e.target.value))}
-                  className="w-full accent-blue-600"
+                  className="w-full accent-gold-600"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">
+                <label className="block text-xs font-medium text-stone-600 mb-1">
                   Angle du bateau: {boatAngle}°
                 </label>
                 <input
                   type="range" min="0" max="180" step="5"
                   value={boatAngle}
                   onChange={(e) => setBoatAngle(parseFloat(e.target.value))}
-                  className="w-full accent-green-600"
+                  className="w-full accent-olive-600"
                 />
               </div>
             </div>
@@ -901,29 +901,29 @@ export function RelativeMotionSimulator() {
           {scenario === 'cars' && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-medium text-red-600 mb-1">
+                <label className="block text-xs font-medium text-brun-600 mb-1">
                   Voiture 1: {car1Speed} m/s
                 </label>
                 <input
                   type="range" min="5" max="40" step="1"
                   value={car1Speed}
                   onChange={(e) => setCar1Speed(parseFloat(e.target.value))}
-                  className="w-full accent-red-600"
+                  className="w-full accent-brun-600"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-blue-600 mb-1">
+                <label className="block text-xs font-medium text-gold-600 mb-1">
                   Voiture 2: {car2Speed} m/s
                 </label>
                 <input
                   type="range" min="5" max="40" step="1"
                   value={car2Speed}
                   onChange={(e) => setCar2Speed(parseFloat(e.target.value))}
-                  className="w-full accent-blue-600"
+                  className="w-full accent-gold-600"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Direction</label>
+                <label className="block text-xs font-medium text-stone-600 mb-1">Direction</label>
                 <select
                   value={carsDirection}
                   onChange={(e) => setCarsDirection(e.target.value as 'same' | 'opposite')}
@@ -939,47 +939,47 @@ export function RelativeMotionSimulator() {
           {scenario === 'custom' && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
-                <label className="block text-xs font-medium text-orange-600 mb-1">
+                <label className="block text-xs font-medium text-terre-600 mb-1">
                   v_Ax (A/B): {customVax} m/s
                 </label>
                 <input
                   type="range" min="-10" max="10" step="0.5"
                   value={customVax}
                   onChange={(e) => setCustomVax(parseFloat(e.target.value))}
-                  className="w-full accent-orange-600"
+                  className="w-full accent-terre-600"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-orange-600 mb-1">
+                <label className="block text-xs font-medium text-terre-600 mb-1">
                   v_Ay (A/B): {customVay} m/s
                 </label>
                 <input
                   type="range" min="-10" max="10" step="0.5"
                   value={customVay}
                   onChange={(e) => setCustomVay(parseFloat(e.target.value))}
-                  className="w-full accent-orange-600"
+                  className="w-full accent-terre-600"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-blue-600 mb-1">
+                <label className="block text-xs font-medium text-gold-600 mb-1">
                   v_Bx (B/Sol): {customVbx} m/s
                 </label>
                 <input
                   type="range" min="-10" max="20" step="0.5"
                   value={customVbx}
                   onChange={(e) => setCustomVbx(parseFloat(e.target.value))}
-                  className="w-full accent-blue-600"
+                  className="w-full accent-gold-600"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-blue-600 mb-1">
+                <label className="block text-xs font-medium text-gold-600 mb-1">
                   v_By (B/Sol): {customVby} m/s
                 </label>
                 <input
                   type="range" min="-10" max="10" step="0.5"
                   value={customVby}
                   onChange={(e) => setCustomVby(parseFloat(e.target.value))}
-                  className="w-full accent-blue-600"
+                  className="w-full accent-gold-600"
                 />
               </div>
             </div>
@@ -987,26 +987,26 @@ export function RelativeMotionSimulator() {
         </div>
 
         {/* Formula section */}
-        <div className="mt-4 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-lg p-4 border border-cyan-200">
-          <h4 className="text-sm font-bold text-gray-700 mb-3">Loi de composition des vitesses</h4>
+        <div className="mt-4 bg-gradient-to-r from-ardoise-50 to-gold-50 rounded-lg p-4 border border-ardoise-200">
+          <h4 className="text-sm font-bold text-stone-700 mb-3">Loi de composition des vitesses</h4>
 
           <div className="grid md:grid-cols-2 gap-4">
             <div className="bg-white/80 rounded-lg p-3">
-              <p className="text-xs font-semibold text-gray-600 mb-2">Formule générale</p>
+              <p className="text-xs font-semibold text-stone-600 mb-2">Formule générale</p>
               <BlockMath math="\vec{v}_{A/C} = \vec{v}_{A/B} + \vec{v}_{B/C}" />
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-stone-500 mt-2">
                 La vitesse de A par rapport à C = vitesse de A par rapport à B + vitesse de B par rapport à C
               </p>
             </div>
 
             <div className="bg-white/80 rounded-lg p-3">
-              <p className="text-xs font-semibold text-gray-600 mb-2">Application actuelle</p>
+              <p className="text-xs font-semibold text-stone-600 mb-2">Application actuelle</p>
               <div className="text-sm space-y-1">
                 <p><InlineMath math={`\\vec{v}_{${velocities.labels.A}/${velocities.labels.C}} = \\vec{v}_{${velocities.labels.A}/${velocities.labels.B}} + \\vec{v}_{${velocities.labels.B}/${velocities.labels.C}}`} /></p>
-                <p className="text-xs text-gray-600 mt-2">
-                  <span className="text-green-600 font-medium">{Math.sqrt(velocities.vAx ** 2 + velocities.vAy ** 2).toFixed(1)}</span> =
-                  <span className="text-orange-600 font-medium"> {Math.sqrt(velocities.vABx ** 2 + velocities.vABy ** 2).toFixed(1)}</span> +
-                  <span className="text-blue-600 font-medium"> {Math.sqrt(velocities.vBx ** 2 + velocities.vBy ** 2).toFixed(1)}</span>
+                <p className="text-xs text-stone-600 mt-2">
+                  <span className="text-olive-600 font-medium">{Math.sqrt(velocities.vAx ** 2 + velocities.vAy ** 2).toFixed(1)}</span> =
+                  <span className="text-terre-600 font-medium"> {Math.sqrt(velocities.vABx ** 2 + velocities.vABy ** 2).toFixed(1)}</span> +
+                  <span className="text-gold-600 font-medium"> {Math.sqrt(velocities.vBx ** 2 + velocities.vBy ** 2).toFixed(1)}</span>
                   {scenario !== 'river' && ' (1D)'}
                 </p>
               </div>
@@ -1015,15 +1015,15 @@ export function RelativeMotionSimulator() {
 
           {scenario === 'river' && (
             <div className="mt-3 bg-white/80 rounded-lg p-3">
-              <p className="text-xs font-semibold text-gray-600 mb-2">Composantes vectorielles</p>
+              <p className="text-xs font-semibold text-stone-600 mb-2">Composantes vectorielles</p>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <BlockMath math={`v_x = v_{bateau} \\cos\\theta + v_{courant}`} />
-                  <p className="text-xs text-gray-500">= {velocities.vAx.toFixed(2)} m/s</p>
+                  <p className="text-xs text-stone-500">= {velocities.vAx.toFixed(2)} m/s</p>
                 </div>
                 <div>
                   <BlockMath math={`v_y = v_{bateau} \\sin\\theta`} />
-                  <p className="text-xs text-gray-500">= {velocities.vAy.toFixed(2)} m/s</p>
+                  <p className="text-xs text-stone-500">= {velocities.vAy.toFixed(2)} m/s</p>
                 </div>
               </div>
             </div>
