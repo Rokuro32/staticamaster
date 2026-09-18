@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { InfoPage, InfoSection } from '@/components/layout/InfoPage';
+import { EmailLink } from '@/components/layout/EmailLink';
 import { CATEGORIES, TOTAL_SIMULATIONS } from '@/lib/catalog';
 
 export const metadata: Metadata = {
@@ -82,12 +83,7 @@ export default function AboutPage() {
           affichée, une idée de sujet à ajouter : écrivez-moi.
         </p>
         <p>
-          <a
-            href="mailto:araxav2@gmail.com"
-            className="text-gold-300 hover:text-gold-200 underline underline-offset-2"
-          >
-            araxav2@gmail.com
-          </a>
+          <EmailLink className="text-gold-300 hover:text-gold-200 underline underline-offset-2" />
         </p>
       </InfoSection>
 
