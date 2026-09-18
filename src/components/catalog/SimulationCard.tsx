@@ -3,6 +3,7 @@ import { getThemeByCategory } from '@/lib/catalog';
 import { cn } from '@/lib/utils';
 import type { CSSProperties } from 'react';
 import type { Simulation } from '@/types/simulation';
+import { Icon } from '@/components/icons/Icon';
 
 export function SimulationCard({ simulation }: { simulation: Simulation }) {
   const theme = getThemeByCategory(simulation.categoryId);
@@ -28,12 +29,12 @@ export function SimulationCard({ simulation }: { simulation: Simulation }) {
       <div className="flex items-start gap-3.5 mb-3.5">
         <span
           className={cn(
-            'w-11 h-11 shrink-0 rounded-xl flex items-center justify-center text-xl',
+            'w-11 h-11 shrink-0 rounded-xl flex items-center justify-center text-ink-950',
             'bg-gradient-to-br transition-transform duration-300 group-hover:scale-105',
             theme.gradient
           )}
         >
-          {simulation.icon}
+          <Icon name={simulation.icon} size={22} />
         </span>
         <h3 className="font-display font-semibold text-white leading-snug mt-1.5 text-[15px]">
           {simulation.title}

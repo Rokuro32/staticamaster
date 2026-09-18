@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Icon } from '@/components/icons/Icon';
 
 export default function NotFound() {
   return (
@@ -9,7 +10,7 @@ export default function NotFound() {
       </div>
 
       <div className="relative max-w-xl mx-auto px-4 py-28 text-center animate-fade-up">
-        <p className="text-5xl mb-5">🔭</p>
+        <Icon name="recherche-vide" size={44} className="mx-auto mb-5 text-gold-500" />
         <p className="text-[11px] font-mono uppercase tracking-[0.2em] text-gold-600 mb-3">
           Erreur 404
         </p>

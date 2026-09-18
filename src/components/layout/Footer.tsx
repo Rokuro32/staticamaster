@@ -9,7 +9,8 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-[1.2fr_2fr_auto]">
           <div>
             <Link href="/" className="inline-flex items-center gap-2 group">
-              <span className="text-lg">🔬</span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo-cegep.svg" alt="" width={20} height={23} className="h-[23px] w-auto" />
               <span className="font-display text-lg font-semibold text-white">
                 Phet-ford
               </span>

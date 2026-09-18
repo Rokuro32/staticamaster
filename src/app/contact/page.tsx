@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { InfoPage, InfoSection } from '@/components/layout/InfoPage';
 import { EmailLink } from '@/components/layout/EmailLink';
+import { Icon } from '@/components/icons/Icon';
 
 export const metadata: Metadata = {
   title: 'Contact — Phet-ford',
@@ -13,14 +14,14 @@ const LINKS = [
     handle: '@la_boite_a_feur',
     href: 'https://www.instagram.com/la_boite_a_feur/',
     note: 'Les courses, les entraînements et le reste de la saison.',
-    icon: '🎿',
+    icon: 'biathlon',
   },
   {
     label: 'GitHub — code du site',
     handle: 'Rokuro32/staticamaster',
     href: 'https://github.com/Rokuro32/staticamaster',
     note: 'Le dépôt de Phet-ford, si vous voulez voir comment une simulation est faite.',
-    icon: '💻',
+    icon: 'code',
   },
 ];
 
@@ -53,7 +54,7 @@ export default function ContactPage() {
                 className="group flex items-start gap-3.5 panel panel-hover rounded-2xl p-4 hover:border-gold-400/40"
               >
                 <span className="w-10 h-10 shrink-0 rounded-xl flex items-center justify-center text-lg bg-gold-400/10 ring-1 ring-inset ring-gold-400/20">
-                  {link.icon}
+                  <Icon name={link.icon} size={20} />
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="flex items-baseline gap-2 flex-wrap">

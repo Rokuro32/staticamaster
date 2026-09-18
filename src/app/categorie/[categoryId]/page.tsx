@@ -10,6 +10,7 @@ import {
 } from '@/lib/catalog';
 import { SimulationCard } from '@/components/catalog/SimulationCard';
 import { cn } from '@/lib/utils';
+import { Icon } from '@/components/icons/Icon';
 
 interface PageProps {
   params: { categoryId: string };
@@ -61,11 +62,11 @@ export default function CategoryPage({ params }: PageProps) {
         <header className="mt-6 mb-10 flex items-start gap-5 animate-fade-up">
           <span
             className={cn(
-              'w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center text-3xl bg-gradient-to-br',
+              'w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center text-ink-950 bg-gradient-to-br',
               theme.gradient
             )}
           >
-            {category.icon}
+            <Icon name={category.icon} size={30} />
           </span>
           <div className="min-w-0">
             <p
@@ -109,7 +110,11 @@ export default function CategoryPage({ params }: PageProps) {
                     'hover:text-white hover:ring-gold-400/35'
                   )}
                 >
-                  <span className={otherTheme.text}>{other.icon}</span>{' '}
+                  <Icon
+                    name={other.icon}
+                    size={13}
+                    className={cn('inline-block -mt-px mr-1.5 align-middle', otherTheme.text)}
+                  />
                   {other.title}
                 </Link>
               );

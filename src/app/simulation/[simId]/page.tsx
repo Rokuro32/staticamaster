@@ -12,6 +12,7 @@ import {
 import { SimulationRenderer } from '@/components/simulations/SimulationRenderer';
 import { SurfaceMode } from '@/components/layout/SurfaceMode';
 import { cn } from '@/lib/utils';
+import { Icon } from '@/components/icons/Icon';
 
 interface PageProps {
   params: { simId: string };
@@ -77,11 +78,11 @@ export default function SimulationPage({ params }: PageProps) {
           <header className="flex items-start gap-5 animate-fade-up">
             <span
               className={cn(
-                'w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center text-3xl bg-gradient-to-br',
+                'w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center text-ink-950 bg-gradient-to-br',
                 theme.gradient
               )}
             >
-              {simulation.icon}
+              <Icon name={simulation.icon} size={30} />
             </span>
             <div className="min-w-0">
               <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-[-0.02em] text-white">
@@ -129,7 +130,8 @@ export default function SimulationPage({ params }: PageProps) {
                       'hover:brightness-95'
                     )}
                   >
-                    {sibling.icon} {sibling.title}
+                    <Icon name={sibling.icon} size={13} className="inline-block -mt-px mr-1.5 align-middle" />
+                    {sibling.title}
                   </Link>
                 ))}
               </div>

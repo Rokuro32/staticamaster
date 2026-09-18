@@ -11,6 +11,7 @@ import {
 } from '@/lib/catalog';
 import { INFO_LINKS } from '@/lib/siteNav';
 import { cn } from '@/lib/utils';
+import { Icon } from '@/components/icons/Icon';
 
 type MenuId = 'sections' | 'about';
 
@@ -134,7 +135,7 @@ export function Header() {
                               theme.chip
                             )}
                           >
-                            {category.icon}
+                            <Icon name={category.icon} size={16} />
                           </span>
                           <span className="min-w-0 flex-1">
                             <span className="block text-sm text-stone-200 truncate">
@@ -187,7 +188,7 @@ export function Header() {
                         )}
                       >
                         <span className="w-7 h-7 shrink-0 rounded-md flex items-center justify-center text-sm bg-gold-400/10 ring-1 ring-inset ring-gold-400/20">
-                          {link.icon}
+                          <Icon name={link.icon} size={16} />
                         </span>
                         <span className="min-w-0">
                           <span className="block text-sm text-stone-200">

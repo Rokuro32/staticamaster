@@ -17,7 +17,7 @@ export const CATEGORIES: Category[] = [
     tagline: 'Trigonométrie et vecteurs',
     description:
       "Les outils mathématiques de base de la physique : cercle trigonométrique, décomposition en composantes et opérations vectorielles en 2D et 3D.",
-    icon: '📐',
+    icon: 'mathematiques',
   },
   {
     id: 'statique',
@@ -25,7 +25,7 @@ export const CATEGORIES: Category[] = [
     tagline: 'Forces, moments et structures',
     description:
       "Équilibre des corps rigides : addition de forces, moments et couples, analyse de treillis et résistance des matériaux.",
-    icon: '⚖️',
+    icon: 'statique',
   },
   {
     id: 'cinematique',
@@ -33,7 +33,7 @@ export const CATEGORIES: Category[] = [
     tagline: 'Mouvement des corps',
     description:
       "Description du mouvement : position, vitesse et accélération en 1D et 2D, tir balistique, mouvement circulaire, mouvement relatif et mouvement hélicoïdal.",
-    icon: '🚀',
+    icon: 'cinematique',
   },
   {
     id: 'dynamique',
@@ -41,7 +41,7 @@ export const CATEGORIES: Category[] = [
     tagline: 'Chocs et quantité de mouvement',
     description:
       "Ce qui se conserve quand des corps interagissent : quantité de mouvement, impulsion, énergie cinétique, et ce qui distingue un choc élastique d'un choc mou.",
-    icon: '💥',
+    icon: 'dynamique',
   },
   {
     id: 'mecanismes',
@@ -49,7 +49,7 @@ export const CATEGORIES: Category[] = [
     tagline: 'Engrenages et liaisons',
     description:
       "Transmission du mouvement dans les machines : trains d'engrenages planétaires, coulisseaux croisés et systèmes bielle-manivelle.",
-    icon: '⚙️',
+    icon: 'mecanismes',
   },
   {
     id: 'ondes',
@@ -57,7 +57,7 @@ export const CATEGORIES: Category[] = [
     tagline: 'Du ressort à la lumière',
     description:
       "Mouvement harmonique simple, ondes mécaniques, son et ondes électromagnétiques : superposition, interférence, résonance et diffraction.",
-    icon: '〰️',
+    icon: 'ondes',
   },
   {
     id: 'electricite',
@@ -65,7 +65,7 @@ export const CATEGORIES: Category[] = [
     tagline: 'Circuits et signaux',
     description:
       "Circuits à courant continu, loi d'Ohm, associations série et parallèle, résistance interne, et signaux bioélectriques.",
-    icon: '⚡',
+    icon: 'electricite',
   },
   {
     id: 'moderne',
@@ -73,7 +73,7 @@ export const CATEGORIES: Category[] = [
     tagline: 'Relativité et quantique',
     description:
       "Relativité restreinte, naissance de la physique quantique et structure de l'atome : les idées qui ont refondé la physique du 20ᵉ siècle.",
-    icon: '⚛️',
+    icon: 'moderne',
   },
   {
     id: 'nucleaire',
@@ -81,7 +81,7 @@ export const CATEGORIES: Category[] = [
     tagline: 'Noyaux et rayonnements',
     description:
       "Décroissance radioactive, rayonnements α, β et γ, chaînes de désintégration, fission, fusion et accélération de particules.",
-    icon: '☢️',
+    icon: 'nucleaire',
   },
   {
     id: 'thermo-fluides',
@@ -89,7 +89,7 @@ export const CATEGORIES: Category[] = [
     tagline: 'Chaleur et écoulements',
     description:
       "Rayonnement thermique des corps, bilan radiatif de l'atmosphère et écoulement des fluides incompressibles.",
-    icon: '🌡️',
+    icon: 'thermo-fluides',
   },
 ];
 
@@ -102,7 +102,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Sinus, cosinus et tangente construits directement sur le cercle unité.",
     description:
       "Déplacez l'angle sur le cercle unité et voyez se construire en temps réel le sinus, le cosinus et la tangente, ainsi que les courbes associées. Idéal pour ancrer les identités remarquables et les signes par quadrant.",
-    icon: '🔵',
+    icon: 'cercle-trigonometrique',
     topics: ['Cercle unité', 'sin, cos, tan', 'Quadrants', 'Angles remarquables'],
   },
   {
@@ -112,7 +112,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Addition, soustraction, produit scalaire et produit vectoriel en 2D et 3D.",
     description:
       "Créez des vecteurs, modifiez leur module et leur orientation, puis observez la résultante, les composantes, le produit scalaire et le produit vectoriel. L'addition et la soustraction sont construites par la méthode du triangle : les vecteurs sont mis bout à bout, et A − B est montré comme A + (−B). Une vue 3D permet de visualiser l'orientation du produit vectoriel.",
-    icon: '📐',
+    icon: 'operations-vectorielles',
     topics: [
       'Méthode du triangle',
       'Composantes',
@@ -131,7 +131,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Placez des forces sur un corps et obtenez la résultante et l'équilibrante.",
     description:
       "Ajoutez des forces sur une boîte ou librement sur le canevas, ajustez leur module et leur direction, et suivez le calcul de la force résultante et de la force équilibrante, composante par composante.",
-    icon: '⚖️',
+    icon: 'addition-de-forces',
     topics: ['Force résultante', 'Équilibrante', 'Décomposition', 'Équilibre au point'],
   },
   {
@@ -141,7 +141,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Moment de force, bras de levier, moment d'inertie et conditions d'équilibre.",
     description:
       "Huit modules interactifs autour de la rotation : moment d'une force, couple, bras de levier, moment d'inertie selon la géométrie, relation M = Iα, énergie de rotation, types d'appuis et équilibre du corps rigide.",
-    icon: '🔄',
+    icon: 'moments-et-rotation',
     topics: ['Moment de force', 'Couple', 'Bras de levier', "Moment d'inertie", 'Types d’appui'],
   },
   {
@@ -151,7 +151,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Méthode des nœuds et méthode des sections sur des treillis 2D.",
     description:
       "Construisez ou chargez un treillis, appliquez des charges et résolvez-le pas à pas par la méthode des nœuds ou par la méthode des sections. Les barres en traction et en compression sont identifiées visuellement.",
-    icon: '🏗️',
+    icon: 'analyse-de-treillis',
     topics: ['Méthode des nœuds', 'Méthode des sections', 'Traction / compression', 'Réactions d’appui'],
   },
   {
@@ -161,7 +161,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Contraintes, déformations et essai de traction jusqu'à la rupture.",
     description:
       "Explorez la relation contrainte-déformation, le module de Young, la limite élastique et le coefficient de sécurité, puis menez un essai de traction virtuel sur différents matériaux jusqu'à la rupture.",
-    icon: '🔩',
+    icon: 'resistance-des-materiaux',
     topics: ['Contrainte', 'Déformation', 'Module de Young', 'Essai de traction', 'Coefficient de sécurité'],
   },
 
@@ -173,7 +173,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "MRU, MRUA, chute libre et mouvement harmonique, avec les trois graphiques.",
     description:
       "Choisissez un type de mouvement et lisez simultanément les graphiques position-temps, vitesse-temps et accélération-temps. Les liens entre pente, aire sous la courbe et équations du mouvement deviennent visibles.",
-    icon: '📈',
+    icon: 'cinematique-1d',
     topics: ['MRU', 'MRUA', 'Chute libre', 'Graphiques x-t, v-t, a-t'],
   },
   {
@@ -183,7 +183,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Tir balistique et mouvement circulaire : trajectoire, portée et vecteurs.",
     description:
       "Lancez un projectile en réglant la vitesse initiale, l'angle et la hauteur de départ, et suivez la décomposition du mouvement en composantes indépendantes, la portée, la flèche et le temps de vol.",
-    icon: '🎯',
+    icon: 'cinematique-2d',
     topics: ['Tir balistique', 'Portée et flèche', 'Composantes x et y', 'Mouvement circulaire'],
   },
   {
@@ -193,7 +193,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Changement de référentiel et composition des vitesses.",
     description:
       "Comparez le mouvement d'un objet vu de deux référentiels différents et construisez la composition des vitesses. Utile pour les problèmes de bateau dans un courant ou d'avion dans le vent.",
-    icon: '🚂',
+    icon: 'mouvement-relatif',
     topics: ['Référentiels', 'Composition des vitesses', 'Vitesse relative'],
   },
   {
@@ -203,7 +203,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Une rotation qui entraîne une translation le long du même axe.",
     description:
       "Réglez le rayon, le pas et la vitesse de rotation, et suivez le point qui décrit l'hélice. Une seconde vue déroule une spire à plat : le triangle rectangle qui apparaît donne d'un coup l'angle d'hélice, la longueur réelle parcourue et la composition des deux vitesses. Préréglages : vis-mère de tour, ressort, foret, vis d'Archimède.",
-    icon: '🌀',
+    icon: 'mouvement-helicoidal',
     topics: [
       'Pas et avance',
       "Angle d'hélice",
@@ -221,7 +221,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Deux chariots se percutent : p se conserve, l'énergie pas toujours.",
     description:
       "Réglez les masses et les vitesses de deux chariots, choisissez le type de choc, et comparez l'avant et l'après. La quantité de mouvement totale ne bouge jamais ; l'énergie cinétique, elle, ne se conserve que dans un choc parfaitement élastique. Le centre de masse, marqué sur la piste, avance à vitesse constante même pendant la collision — c'est la conservation rendue visible.",
-    icon: '🎱',
+    icon: 'quantite-de-mouvement',
     topics: [
       'Quantité de mouvement',
       'Impulsion',
@@ -240,7 +240,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Train épicycloïdal : planétaire, satellites et couronne.",
     description:
       "Animez un train d'engrenages épicycloïdal et observez les rapports de vitesse selon l'élément bloqué. La formule de Willis est appliquée en direct sur la configuration choisie.",
-    icon: '⚙️',
+    icon: 'train-planetaire',
     topics: ['Train épicycloïdal', 'Formule de Willis', 'Rapport de transmission'],
   },
   {
@@ -250,7 +250,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Conversion d'un mouvement circulaire en mouvement alternatif.",
     description:
       "Suivez un système de coulisseaux croisés qui transforme la rotation en translation sinusoïdale, avec les courbes de position, de vitesse et d'accélération du coulisseau.",
-    icon: '↔️',
+    icon: 'coulisseaux-croises',
     topics: ['Mouvement alternatif', 'Rotation vers translation', 'Courbes cinématiques'],
   },
   {
@@ -260,7 +260,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Le mécanisme du moteur à pistons, analysé en direct.",
     description:
       "Réglez le rayon de manivelle et la longueur de bielle, puis observez la course du piston, sa vitesse et son accélération. L'écart avec un mouvement purement sinusoïdal apparaît clairement quand la bielle raccourcit.",
-    icon: '🔧',
+    icon: 'bielle-manivelle',
     topics: ['Manivelle et bielle', 'Course du piston', 'Vitesse et accélération'],
   },
 
@@ -272,7 +272,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "MHS, énergie, amortissement, résonance et superposition.",
     description:
       "Explorez le mouvement harmonique simple d'un ressort ou d'un pendule, le partage entre énergie cinétique et potentielle, l'amortissement, la résonance, puis la propagation et la superposition d'ondes sur une corde.",
-    icon: '〰️',
+    icon: 'oscillations-et-ondes',
     topics: ['MHS', 'Énergie', 'Amortissement', 'Résonance', 'Superposition'],
   },
   {
@@ -282,7 +282,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Compression de l'air, intensité, battements et effet Doppler.",
     description:
       "Visualisez une onde sonore comme une succession de compressions et de raréfactions, et manipulez fréquence, amplitude et vitesse de la source pour comprendre l'intensité, les battements et l'effet Doppler.",
-    icon: '🔊',
+    icon: 'ondes-sonores',
     topics: ['Onde longitudinale', 'Intensité et décibels', 'Battements', 'Effet Doppler'],
   },
   {
@@ -292,7 +292,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Ondes stationnaires, modes propres et timbre d'un instrument.",
     description:
       "Pincez une corde, changez sa tension et sa longueur, et observez les modes propres qui s'installent. La superposition des harmoniques montre d'où vient le timbre d'un instrument.",
-    icon: '🎸',
+    icon: 'corde-de-guitare',
     topics: ['Ondes stationnaires', 'Fondamentale et harmoniques', 'Nœuds et ventres', 'Timbre'],
   },
   {
@@ -302,7 +302,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Champs E et B, polarisation, spectre, interférence et diffraction.",
     description:
       "Huit modules sur la lumière : propagation des champs E et B en 3D, polarisation et loi de Malus, spectre électromagnétique, champs créés par des charges, réfraction, expérience de Young, diffraction et loi de Bragg.",
-    icon: '💡',
+    icon: 'ondes-electromagnetiques',
     topics: ['Champs E et B', 'Polarisation', 'Spectre EM', 'Fentes de Young', 'Diffraction', 'Loi de Bragg'],
   },
 
@@ -314,7 +314,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Loi d'Ohm, série, parallèle, circuits mixtes et pile réelle.",
     description:
       "Montez un circuit, ajustez les résistances et la tension de la source, et suivez le recalcul instantané des courants, tensions et puissances. La résistance interne de la pile montre l'écart entre f.é.m. et tension aux bornes.",
-    icon: '🔋',
+    icon: 'circuits-dc',
     topics: ["Loi d'Ohm", 'Série et parallèle', 'Circuits mixtes', 'Résistance interne', 'Puissance'],
   },
   {
@@ -324,7 +324,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Le signal électrique du cœur, onde par onde.",
     description:
       "Suivez la genèse du tracé ECG : onde P, complexe QRS et onde T mis en relation avec la dépolarisation et la repolarisation du muscle cardiaque, avec plusieurs rythmes à comparer.",
-    icon: '💓',
+    icon: 'electrocardiogramme',
     topics: ['Onde P, QRS, T', 'Dépolarisation', 'Rythme cardiaque', 'Biopotentiels'],
   },
 
@@ -336,7 +336,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Dilatation du temps, contraction des longueurs et facteur de Lorentz.",
     description:
       "Poussez la vitesse vers c et observez le facteur de Lorentz s'emballer : horloges qui ralentissent, longueurs qui se contractent, masse relativiste et énergie totale.",
-    icon: '🚀',
+    icon: 'relativite-restreinte',
     topics: ['Facteur de Lorentz', 'Dilatation du temps', 'Contraction des longueurs', 'E = mc²'],
   },
   {
@@ -346,7 +346,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Deux jumeaux, deux lignes d'univers, deux temps propres.",
     description:
       "Envoyez un jumeau en voyage à vitesse relativiste et comparez les âges au retour. La dissymétrie du paradoxe apparaît au moment du demi-tour, quand le voyageur change de référentiel.",
-    icon: '👥',
+    icon: 'paradoxe-des-jumeaux',
     topics: ['Temps propre', 'Ligne d’univers', 'Changement de référentiel'],
   },
   {
@@ -356,7 +356,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Corps noir, photoélectrique, Compton, Bohr, dualité, incertitude, Schrödinger, spin.",
     description:
       "Huit expériences fondatrices présentées en ordre chronologique, de la catastrophe ultraviolette (1900) au spin (1922) en passant par l'effet photoélectrique, l'effet Compton, le modèle de Bohr, la dualité onde-corpuscule, le principe d'incertitude et la particule dans une boîte.",
-    icon: '⚛️',
+    icon: 'physique-quantique',
     topics: ['Corps noir', 'Effet photoélectrique', 'Effet Compton', 'Modèle de Bohr', 'Incertitude', 'Schrödinger'],
   },
   {
@@ -366,7 +366,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Notation isotopique, principe d'exclusion et bandes d'énergie.",
     description:
       "Construisez la notation d'un isotope à partir de A et Z, remplissez les couches électroniques selon le principe d'exclusion de Pauli, puis voyez naître les bandes d'énergie des solides — et la différence entre conducteur, semi-conducteur et isolant.",
-    icon: '🧪',
+    icon: 'physique-atomique',
     topics: ['Isotopes (A, Z)', 'Principe de Pauli', 'Configuration électronique', 'Bandes d’énergie'],
   },
 
@@ -378,7 +378,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Décroissance, rayonnements α β γ, chaînes, fission, fusion et cyclotron.",
     description:
       "Six modules : loi de décroissance et demi-vie, pouvoir de pénétration des rayonnements α, β et γ, chaînes de désintégration, fission en réaction en chaîne, fusion stellaire, et accélération de particules dans un cyclotron.",
-    icon: '☢️',
+    icon: 'radioactivite',
     topics: ['Demi-vie', 'Rayonnements α β γ', 'Chaînes de désintégration', 'Fission', 'Fusion', 'Cyclotron'],
   },
 
@@ -390,7 +390,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Corps noir, loi de Wien et loi de Stefan-Boltzmann.",
     description:
       "Chauffez un corps et suivez le déplacement du pic d'émission vers le bleu (loi de Wien) ainsi que la croissance en T⁴ de la puissance rayonnée (loi de Stefan-Boltzmann).",
-    icon: '🌡️',
+    icon: 'rayonnement-thermique',
     topics: ['Corps noir', 'Loi de Wien', 'Stefan-Boltzmann', 'Émissivité'],
   },
   {
@@ -400,7 +400,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Bilan radiatif de l'atmosphère et température d'équilibre.",
     description:
       "Faites varier la concentration de gaz à effet de serre et l'albédo, puis suivez le bilan entre rayonnement solaire entrant et rayonnement infrarouge sortant jusqu'à la nouvelle température d'équilibre.",
-    icon: '🌍',
+    icon: 'effet-de-serre',
     topics: ['Bilan radiatif', 'Albédo', 'Infrarouge', 'Température d’équilibre'],
   },
   {
@@ -410,7 +410,7 @@ export const SIMULATIONS: Simulation[] = [
     summary: "Conservation du débit et théorème de Bernoulli.",
     description:
       "Rétrécissez la section d'un tube et observez la vitesse augmenter pendant que la pression chute. L'équation de continuité et le théorème de Bernoulli sont calculés en direct sur chaque section.",
-    icon: '💧',
+    icon: 'tube-de-venturi',
     topics: ['Équation de continuité', 'Théorème de Bernoulli', 'Débit', 'Pression dynamique'],
   },
 ];

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { INFO_LINKS } from '@/lib/siteNav';
 import { cn } from '@/lib/utils';
+import { Icon } from '@/components/icons/Icon';
 
 /** Gabarit commun aux pages d'information (à propos, fonctionnalités, etc.) */
 export function InfoPage({
@@ -54,7 +55,8 @@ export function InfoPage({
                   : 'text-stone-400 ring-1 ring-inset ring-white/10 hover:text-white hover:ring-gold-400/35'
               )}
             >
-              {link.icon} {link.label}
+              <Icon name={link.icon} size={13} className="inline-block -mt-px mr-1.5 align-middle" />
+              {link.label}
             </Link>
           ))}
         </nav>

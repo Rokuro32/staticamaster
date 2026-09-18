@@ -8,6 +8,7 @@ import {
   getThemeByCategory,
 } from '@/lib/catalog';
 import { cn } from '@/lib/utils';
+import { Icon } from '@/components/icons/Icon';
 
 export default function HomePage() {
   return (
@@ -95,12 +96,12 @@ export default function HomePage() {
                   <div className="flex items-start justify-between mb-3">
                     <span
                       className={cn(
-                        'w-10 h-10 rounded-xl flex items-center justify-center text-xl bg-gradient-to-br',
+                        'w-10 h-10 rounded-xl flex items-center justify-center text-ink-950 bg-gradient-to-br',
                         'transition-transform duration-300 group-hover:scale-105',
                         theme.gradient
                       )}
                     >
-                      {category.icon}
+                      <Icon name={category.icon} size={20} />
                     </span>
                     <span className="text-[11px] font-mono text-ink-500 mt-1">
                       {count}

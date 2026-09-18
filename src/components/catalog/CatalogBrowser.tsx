@@ -6,6 +6,7 @@ import { CATEGORIES, SIMULATIONS, getThemeByCategory } from '@/lib/catalog';
 import { SimulationCard } from './SimulationCard';
 import { cn } from '@/lib/utils';
 import type { CategoryId } from '@/types/simulation';
+import { Icon } from '@/components/icons/Icon';
 
 function normalize(value: string): string {
   return value
@@ -96,7 +97,8 @@ export function CatalogBrowser() {
                     : 'text-stone-400 ring-1 ring-inset ring-white/10 hover:text-white hover:ring-gold-400/35'
                 )}
               >
-                {category.icon} {category.title} · {counts.get(category.id) ?? 0}
+                <Icon name={category.icon} size={13} className="inline-block -mt-px mr-1.5 align-middle" />
+                {category.title} · {counts.get(category.id) ?? 0}
               </button>
             );
           })}
@@ -105,7 +107,7 @@ export function CatalogBrowser() {
 
       {totalShown === 0 && (
         <div className="text-center py-20">
-          <p className="text-4xl mb-3">🔭</p>
+          <Icon name="recherche-vide" size={40} className="mx-auto mb-4 text-stone-600" />
           <p className="text-stone-400">
             Aucune simulation ne correspond à «&nbsp;{query}&nbsp;».
           </p>
@@ -130,11 +132,11 @@ export function CatalogBrowser() {
                 <div className="flex items-start gap-3.5 min-w-0">
                   <span
                     className={cn(
-                      'w-10 h-10 shrink-0 rounded-xl flex items-center justify-center text-xl bg-gradient-to-br',
+                      'w-10 h-10 shrink-0 rounded-xl flex items-center justify-center text-ink-950 bg-gradient-to-br',
                       theme.gradient
                     )}
                   >
-                    {category.icon}
+                    <Icon name={category.icon} size={20} />
                   </span>
                   <div className="min-w-0">
                     <div className="flex items-baseline gap-2.5 flex-wrap">

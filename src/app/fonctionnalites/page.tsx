@@ -9,52 +9,42 @@ export const metadata: Metadata = {
 
 const FEATURES = [
   {
-    icon: '🔍',
     title: 'Recherche et filtres',
     body: "La page d'accueil cherche dans les titres, les descriptions et les concepts couverts. La recherche ignore les accents, donc « helicoidal » trouve « hélicoïdal ». Les filtres par section restreignent le catalogue d'un clic.",
   },
   {
-    icon: '🎛️',
     title: 'Paramètres en temps réel',
     body: 'Chaque simulation se pilote au curseur. Les grandeurs dérivées se recalculent à chaque image : on voit tout de suite quelle variable compte et laquelle ne change presque rien.',
   },
   {
-    icon: '📐',
     title: 'Formules affichées',
     body: "Les relations utilisées sont écrites en notation mathématique sous chaque simulation, avec les valeurs courantes. Rien n'est calculé dans une boîte noire.",
   },
   {
-    icon: '🧭',
     title: 'Préréglages',
     body: "Plusieurs simulations proposent des cas concrets prêts à charger — vis-mère de tour, foret, choc parfaitement mou — avec une phrase qui dit ce qu'il faut regarder.",
   },
   {
-    icon: '🧊',
     title: 'Vues 3D',
     body: "Les opérations vectorielles et les ondes électromagnétiques offrent une vue 3D orientable, utile quand la géométrie ne tient pas dans un plan (produit vectoriel, champs E et B).",
   },
   {
-    icon: '🗂️',
     title: 'Simulations à onglets',
     body: "Les gros sujets regroupent plusieurs modules sous forme d'onglets : la physique quantique en couvre huit, la radioactivité six.",
   },
   {
-    icon: '⚡',
     title: 'Chargement à la demande',
     body: "Seule la simulation ouverte est téléchargée. Les pages du catalogue sont pré-générées en statique, donc elles s'affichent immédiatement.",
   },
   {
-    icon: '📱',
     title: 'Utilisable sur téléphone',
     body: 'La mise en page se réorganise sur petit écran. Les simulations qui reposent sur un canevas large restent lisibles en tenant le téléphone à l’horizontale.',
   },
   {
-    icon: '🔒',
     title: 'Aucun compte, aucun suivi',
     body: "Pas d'inscription, pas de cookie de suivi, aucune donnée d'usage collectée. Tout tourne sur votre appareil.",
   },
   {
-    icon: '♿',
     title: 'Confort de lecture',
     body: "Les animations sont désactivées si le système est réglé sur « réduire les animations ». Le contraste des textes et les cibles de clic ont été vérifiés.",
   },
@@ -77,8 +67,7 @@ export default function FeaturesPage() {
             key={feature.title}
             className="panel rounded-2xl p-5"
           >
-            <span className="text-xl">{feature.icon}</span>
-            <h2 className="font-display font-semibold text-white mt-3 mb-1.5">
+            <h2 className="font-display font-semibold text-white mb-1.5">
               {feature.title}
             </h2>
             <p className="text-sm text-stone-400 leading-relaxed">{feature.body}</p>
