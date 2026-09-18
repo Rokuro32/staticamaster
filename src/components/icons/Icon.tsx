@@ -58,6 +58,7 @@ const GLYPHS: Record<string, ReactNode> = {
   'contact': <><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.8 6.8 12 13l8.2-6.2"/></>,
   'biathlon': <><circle cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="4.4"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><path d="M12 1.5v3"/><path d="M12 19.5v3"/><path d="M1.5 12h3"/><path d="M19.5 12h3"/></>,
   'code': <><path d="M8.5 7.5 3 12l5.5 4.5"/><path d="M15.5 7.5 21 12l-5.5 4.5"/><path d="M13.5 4.5 10.5 19.5"/></>,
+  'modele-standard': <><rect x="2.5" y="5" width="6" height="6" rx="1"/><rect x="2.5" y="13" width="6" height="6" rx="1"/><rect x="9.5" y="5" width="6" height="6" rx="1"/><rect x="9.5" y="13" width="6" height="6" rx="1"/><rect x="16.5" y="5" width="5" height="14" rx="1"/></>,
   'recherche-vide': <><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.2 15.2 20.5 20.5"/><path d="M8 10.5h5"/></>,
 };
 

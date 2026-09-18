@@ -133,6 +133,11 @@ const REGISTRY: Record<SimulationId, ComponentType> = {
     { ssr: false, loading: Loading }
   ),
 
+  'modele-standard': dynamic(
+    () => import('./StandardModelSimulator').then((m) => m.StandardModelSimulator),
+    { ssr: false, loading: Loading }
+  ),
+
   // Physique nucléaire
   'radioactivite': dynamic(
     () => import('./radioactivity/RadioactivitySimulator').then((m) => m.RadioactivitySimulator),

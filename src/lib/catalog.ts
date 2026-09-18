@@ -370,6 +370,24 @@ export const SIMULATIONS: Simulation[] = [
     topics: ['Isotopes (A, Z)', 'Principe de Pauli', 'Configuration électronique', 'Bandes d’énergie'],
   },
 
+  {
+    id: 'modele-standard',
+    categoryId: 'moderne',
+    title: 'Le Modèle standard',
+    summary: "Les 17 particules élémentaires, et ce qui sépare vraiment leurs familles.",
+    description:
+      "Le tableau habituel du Modèle standard : trois générations de fermions, les bosons de jauge, le boson de Higgs. Cliquez sur une particule pour sa masse, sa charge, son spin, sa charge de couleur et les interactions qu'elle ressent. Six modes de lecture recolorent le tableau selon le critère qui vous intéresse — c'est là qu'on voit pourquoi un quark n'est pas un lepton, et pourquoi la couleur n'existe que chez les quarks et les gluons.",
+    icon: 'modele-standard',
+    topics: [
+      'Fermions et bosons',
+      'Quarks et leptons',
+      'Charge de couleur',
+      'Spin',
+      'Générations',
+      'Bosons de jauge',
+    ],
+  },
+
   // ------------------------------------------------------------ Nucléaire
   {
     id: 'radioactivite',

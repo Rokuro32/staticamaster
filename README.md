@@ -17,7 +17,7 @@ simulations, classées par section.
 | ⚙️ Mécanismes et machines | Train planétaire, Coulisseaux croisés, Bielle-manivelle |
 | 〰️ Ondes et oscillations | Oscillations et ondes mécaniques, Ondes sonores, Corde de guitare, Ondes électromagnétiques |
 | ⚡ Électricité | Circuits à courant continu, Électrocardiogramme |
-| ⚛️ Physique moderne | Relativité restreinte, Paradoxe des jumeaux, Naissance de la physique quantique, Physique atomique |
+| ⚛️ Physique moderne | Relativité restreinte, Paradoxe des jumeaux, Naissance de la physique quantique, Physique atomique, Le Modèle standard |
 | ☢️ Physique nucléaire | Radioactivité et réactions nucléaires |
 | 🌡️ Thermodynamique et fluides | Rayonnement thermique, Effet de serre, Tube de Venturi |
 
@@ -38,6 +38,14 @@ npm run dev      # http://localhost:3000
 
 ```bash
 npm run build && npm run start   # production
+```
+
+Si le build se fait tuer (SIGKILL) ou reste figé sans avancer, c'est la
+mémoire : Next compile en parallèle sur tous les cœurs. Un seul worker suffit
+à débloquer :
+
+```bash
+NEXT_BUILD_LOW_MEM=1 npm run build
 ```
 
 ## Structure
