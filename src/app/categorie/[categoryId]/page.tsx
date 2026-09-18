@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import type { CSSProperties } from 'react';
 import type { Metadata } from 'next';
 import {
   CATEGORIES,
@@ -36,54 +37,86 @@ export default function CategoryPage({ params }: PageProps) {
   const others = CATEGORIES.filter((c) => c.id !== category.id);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <Link
-        href="/"
-        className="text-sm text-gray-500 hover:text-gray-800 transition-colors"
-      >
-        ← Toutes les simulations
-      </Link>
-
-      <header className="mt-4 mb-8 flex items-start gap-4">
+    <div
+      className="relative"
+      style={{ '--accent': theme.accent } as CSSProperties}
+    >
+      {/* Décor */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-80 overflow-hidden">
+        <div className="absolute inset-0 bg-grid bg-grid mask-fade-b" />
         <div
-          className={cn(
-            'w-14 h-14 shrink-0 rounded-xl flex items-center justify-center text-2xl text-white bg-gradient-to-br',
-            theme.gradient
-          )}
-        >
-          {category.icon}
-        </div>
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">{category.title}</h1>
-          <p className="text-gray-600 mt-1 max-w-3xl">{category.description}</p>
-          <p className="text-sm text-gray-400 mt-2">
-            {simulations.length} simulation{simulations.length > 1 ? 's' : ''}
-          </p>
-        </div>
-      </header>
-
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {simulations.map((simulation) => (
-          <SimulationCard key={simulation.id} simulation={simulation} />
-        ))}
+          className="absolute -top-32 left-1/3 w-[34rem] h-[34rem] rounded-full blur-[110px] opacity-[0.13]"
+          style={{ background: theme.accent }}
+        />
       </div>
 
-      <section className="mt-14 pt-8 border-t border-gray-200">
-        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
-          Autres sections
-        </h2>
-        <div className="flex flex-wrap gap-2">
-          {others.map((other) => (
-            <Link
-              key={other.id}
-              href={`/categorie/${other.id}`}
-              className="px-3 py-1.5 rounded-full text-sm font-medium bg-white border border-gray-200 text-gray-600 hover:bg-gray-100 transition-colors"
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-gold-300 transition-colors"
+        >
+          <span aria-hidden>←</span> Toutes les simulations
+        </Link>
+
+        <header className="mt-6 mb-10 flex items-start gap-5 animate-fade-up">
+          <span
+            className={cn(
+              'w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center text-3xl bg-gradient-to-br',
+              theme.gradient
+            )}
+          >
+            {category.icon}
+          </span>
+          <div className="min-w-0">
+            <p
+              className={cn(
+                'text-[11px] font-semibold uppercase tracking-[0.16em] mb-1.5',
+                theme.text
+              )}
             >
-              {other.icon} {other.title}
-            </Link>
+              Section · {simulations.length} simulation
+              {simulations.length > 1 ? 's' : ''}
+            </p>
+            <h1 className="font-display text-4xl font-bold tracking-[-0.02em] text-white">
+              {category.title}
+            </h1>
+            <p className="text-stone-400 mt-3 max-w-3xl leading-relaxed">
+              {category.description}
+            </p>
+          </div>
+        </header>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {simulations.map((simulation) => (
+            <SimulationCard key={simulation.id} simulation={simulation} />
           ))}
         </div>
-      </section>
+
+        <section className="mt-16 pt-8 border-t border-gold-400/[0.14]">
+          <h2 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gold-600 mb-4">
+            Autres sections
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {others.map((other) => {
+              const otherTheme = getThemeByCategory(other.id);
+              return (
+                <Link
+                  key={other.id}
+                  href={`/categorie/${other.id}`}
+                  className={cn(
+                    'px-3 py-1.5 rounded-full text-xs font-medium transition-colors',
+                    'text-stone-400 ring-1 ring-inset ring-white/10',
+                    'hover:text-white hover:ring-gold-400/35'
+                  )}
+                >
+                  <span className={otherTheme.text}>{other.icon}</span>{' '}
+                  {other.title}
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

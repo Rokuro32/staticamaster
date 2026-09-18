@@ -61,6 +61,36 @@ src/
 └── types/simulation.ts
 ```
 
+## Identité visuelle
+
+La palette est dérivée du blason du Cégep de Thetford : noir profond, or/kaki
+et blanc.
+
+Le site a **deux ambiances**, parce que les simulations peignent elles-mêmes
+leurs surfaces en clair (`bg-white`, `border-gray-200`, couleurs de canevas
+codées en dur) :
+
+- le **chrome sombre** — en-tête, accueil, pages de section, pied de page,
+  bande de titre d'une simulation ;
+- la **scène claire** — le corps d'une page de simulation, pour que le
+  simulateur s'y pose naturellement.
+
+Aucune simulation n'a été modifiée par la refonte ; elles n'importent que
+`cn`, `physics-constants` et le type `Simulation`.
+
+Jetons (`tailwind.config.ts`) :
+
+| Jeton | Rôle |
+|---|---|
+| `ink-500…950` | noirs chauds du chrome |
+| `gold-50…900` | or du blason, accent de la marque (`gold-400` = teinte du blason) |
+| `sec-<section>` | accent d'une section, `sec-<section>-deep` pour fond clair |
+| `scene-50…200` | fonds de la scène claire |
+
+Les thèmes de section vivent dans `CATEGORY_THEMES` (`src/lib/catalog.ts`).
+**`src/lib/**` doit rester dans les globs `content` de Tailwind**, sinon
+aucune de ces classes n'est générée.
+
 ## Ajouter une simulation
 
 1. Créer le composant dans `src/components/simulations/` (`'use client'`).

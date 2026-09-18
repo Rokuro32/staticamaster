@@ -18,6 +18,14 @@ export function CatalogBrowser() {
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<CategoryId | 'all'>('all');
 
+  const counts = useMemo(() => {
+    const map = new Map<CategoryId, number>();
+    for (const sim of SIMULATIONS) {
+      map.set(sim.categoryId, (map.get(sim.categoryId) ?? 0) + 1);
+    }
+    return map;
+  }, []);
+
   const results = useMemo(() => {
     const q = normalize(query.trim());
 
@@ -40,31 +48,39 @@ export function CatalogBrowser() {
 
   return (
     <div>
-      {/* Barre de recherche + filtres */}
-      <div className="md:sticky md:top-16 z-30 -mx-4 px-4 py-4 bg-gray-50/95 backdrop-blur border-b border-gray-200 mb-8">
+      {/* Recherche et filtres */}
+      <div className="md:sticky md:top-16 z-30 -mx-4 px-4 py-4 mb-10 glass border-y border-gold-400/[0.14]">
         <div className="relative mb-3">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+          <span
+            aria-hidden
+            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gold-600 text-sm"
+          >
+            ⌕
+          </span>
           <input
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Rechercher une simulation (vecteurs, Doppler, treillis…)"
-            className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white text-sm
-                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Rechercher : vecteurs, Doppler, treillis, demi-vie…"
+            aria-label="Rechercher une simulation"
+            className="w-full pl-9 pr-4 py-2.5 rounded-xl text-sm text-white placeholder:text-stone-500
+                       bg-ink-900/80 border border-gold-400/15
+                       focus:outline-none focus:border-gold-400/60 focus:ring-2 focus:ring-gold-400/20
+                       transition-colors"
           />
         </div>
 
-        <div className="flex gap-2 overflow-x-auto pb-1">
+        <div className="flex gap-2 overflow-x-auto pb-1 -mb-1">
           <button
             onClick={() => setActiveCategory('all')}
             className={cn(
-              'px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors',
+              'px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors',
               activeCategory === 'all'
-                ? 'bg-gray-900 text-white'
-                : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-100'
+                ? 'bg-gold-400 text-ink-950'
+                : 'text-stone-400 ring-1 ring-inset ring-white/10 hover:text-white hover:ring-gold-400/35'
             )}
           >
-            Toutes ({SIMULATIONS.length})
+            Toutes · {SIMULATIONS.length}
           </button>
           {CATEGORIES.map((category) => {
             const theme = getThemeByCategory(category.id);
@@ -74,13 +90,13 @@ export function CatalogBrowser() {
                 key={category.id}
                 onClick={() => setActiveCategory(category.id)}
                 className={cn(
-                  'px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors',
+                  'px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors',
                   isActive
-                    ? `${theme.bg} text-white`
-                    : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-100'
+                    ? theme.solid
+                    : 'text-stone-400 ring-1 ring-inset ring-white/10 hover:text-white hover:ring-gold-400/35'
                 )}
               >
-                {category.icon} {category.title}
+                {category.icon} {category.title} · {counts.get(category.id) ?? 0}
               </button>
             );
           })}
@@ -88,41 +104,69 @@ export function CatalogBrowser() {
       </div>
 
       {totalShown === 0 && (
-        <div className="text-center py-16 text-gray-500">
+        <div className="text-center py-20">
           <p className="text-4xl mb-3">🔭</p>
-          <p>Aucune simulation ne correspond à « {query} ».</p>
+          <p className="text-stone-400">
+            Aucune simulation ne correspond à «&nbsp;{query}&nbsp;».
+          </p>
+          <button
+            onClick={() => {
+              setQuery('');
+              setActiveCategory('all');
+            }}
+            className="mt-4 text-sm text-gold-300 hover:text-gold-200 transition-colors"
+          >
+            Réinitialiser la recherche
+          </button>
         </div>
       )}
 
-      <div className="space-y-12">
+      <div className="space-y-16">
         {results.map(({ category, simulations }) => {
           const theme = getThemeByCategory(category.id);
           return (
-            <section key={category.id} id={category.id} className="scroll-mt-32">
-              <div className="flex items-baseline justify-between gap-4 mb-1">
-                <div className="flex items-center gap-3">
+            <section key={category.id} id={category.id} className="scroll-mt-36">
+              <div className="flex items-start justify-between gap-4 mb-6">
+                <div className="flex items-start gap-3.5 min-w-0">
                   <span
                     className={cn(
-                      'w-10 h-10 rounded-lg flex items-center justify-center text-xl',
-                      theme.bgSoft
+                      'w-10 h-10 shrink-0 rounded-xl flex items-center justify-center text-xl bg-gradient-to-br',
+                      theme.gradient
                     )}
                   >
                     {category.icon}
                   </span>
-                  <h2 className="text-2xl font-bold text-gray-900">{category.title}</h2>
-                  <span className="text-sm text-gray-400">
-                    {simulations.length} simulation{simulations.length > 1 ? 's' : ''}
-                  </span>
+                  <div className="min-w-0">
+                    <div className="flex items-baseline gap-2.5 flex-wrap">
+                      <h2 className="font-display text-2xl font-bold text-white tracking-tight">
+                        {category.title}
+                      </h2>
+                      <span className="text-xs font-mono text-gold-600">
+                        {simulations.length}
+                      </span>
+                    </div>
+                    <p className="text-sm text-stone-400 mt-1.5 max-w-2xl leading-relaxed">
+                      {category.description}
+                    </p>
+                  </div>
                 </div>
+
                 <Link
                   href={`/categorie/${category.id}`}
-                  className={cn('text-sm font-medium hidden sm:inline', theme.text)}
+                  className={cn(
+                    'hidden sm:inline-flex shrink-0 items-center gap-1 text-sm font-medium mt-1.5 group',
+                    theme.text
+                  )}
                 >
-                  Voir la section →
+                  Section
+                  <span
+                    aria-hidden
+                    className="transition-transform duration-200 group-hover:translate-x-1"
+                  >
+                    →
+                  </span>
                 </Link>
               </div>
-
-              <p className="text-gray-600 mb-5 ml-[3.25rem]">{category.description}</p>
 
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {simulations.map((simulation) => (

@@ -1,9 +1,26 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+const display = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-display-face',
+  display: 'swap',
+});
+
+const mono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono-face',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Phet-ford — Simulations interactives de physique',
@@ -30,36 +47,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr">
+    <html
+      lang="fr"
+      className={`${inter.variable} ${display.variable} ${mono.variable}`}
+    >
       <head>
         <link rel="icon" href="/favicon.ico" />
+        <meta name="theme-color" content="#05080f" />
       </head>
-      <body className={inter.className}>
+      <body className="font-sans">
         <div className="min-h-screen flex flex-col">
           <Header />
-
-          <main className="flex-1">{children}</main>
-
-          <footer className="bg-white border-t border-gray-200 py-6 mt-auto">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-                <div className="text-center sm:text-left">
-                  <p className="text-sm text-gray-500">
-                    Phet-ford — Simulations interactives de physique
-                  </p>
-                  <p className="text-sm text-gray-600 font-medium mt-1">
-                    Conçu par <span className="text-gray-800">Xavier Arata, B.Ing, CPI</span>
-                  </p>
-                </div>
-                <div className="text-center sm:text-right">
-                  <p className="text-sm text-gray-400">Version 3.0.0</p>
-                  <p className="text-xs text-gray-400 mt-1">
-                    © {new Date().getFullYear()} Xavier Arata. Tous droits réservés.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </footer>
+          <main className="flex-1 flex flex-col">{children}</main>
+          <Footer />
         </div>
       </body>
     </html>

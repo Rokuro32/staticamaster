@@ -1,60 +1,117 @@
 import Link from 'next/link';
+import type { CSSProperties } from 'react';
 import { CatalogBrowser } from '@/components/catalog/CatalogBrowser';
-import { CATEGORIES, TOTAL_SIMULATIONS, getThemeByCategory } from '@/lib/catalog';
+import {
+  CATEGORIES,
+  SIMULATIONS,
+  TOTAL_SIMULATIONS,
+  getThemeByCategory,
+} from '@/lib/catalog';
 import { cn } from '@/lib/utils';
 
 export default function HomePage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      {/* Hero */}
-      <section className="text-center max-w-3xl mx-auto mb-10">
-        <p className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-gray-200 text-sm text-gray-600 mb-5">
-          🔬 {TOTAL_SIMULATIONS} simulations interactives
-        </p>
-        <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight mb-4">
-          Phet-ford
-        </h1>
-        <p className="text-lg text-gray-600">
-          Une collection de simulations de physique à manipuler directement dans le
-          navigateur. Déplacez les curseurs, changez les paramètres, et observez la
-          physique réagir en temps réel.
-        </p>
-      </section>
+    <div className="relative">
+      {/* Décor du hero */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[560px] overflow-hidden">
+        <div className="absolute inset-0 bg-grid bg-grid mask-fade" />
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[46rem] h-[46rem] rounded-full bg-gold-400/[0.13] blur-[110px] animate-drift" />
+        <div className="absolute -top-24 right-[12%] w-[26rem] h-[26rem] rounded-full bg-gold-600/[0.12] blur-[100px] animate-drift" />
+        <div className="absolute top-10 left-[8%] w-[22rem] h-[22rem] rounded-full bg-gold-300/[0.07] blur-[100px] animate-drift" />
+      </div>
 
-      {/* Sections en un coup d'œil */}
-      <section className="mb-12">
-        <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
-          {CATEGORIES.map((category) => {
-            const theme = getThemeByCategory(category.id);
-            return (
-              <Link
-                key={category.id}
-                href={`/categorie/${category.id}`}
-                className={cn(
-                  'group bg-white rounded-xl border border-gray-200 p-4 transition-all hover:shadow-md hover:-translate-y-0.5',
-                  theme.ring
-                )}
-              >
-                <div
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Hero */}
+        <section className="pt-20 pb-14 text-center max-w-3xl mx-auto animate-fade-up">
+          <p className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium text-stone-300 ring-1 ring-inset ring-gold-400/20 bg-gold-400/[0.05] mb-7">
+            <span className="w-1.5 h-1.5 rounded-full bg-gold-400 shadow-glow-sm shadow-gold-400" />
+            {TOTAL_SIMULATIONS} simulations · {CATEGORIES.length} sections
+          </p>
+
+          <h1 className="font-display text-5xl sm:text-6xl font-bold tracking-[-0.03em] text-gradient mb-6">
+            Phet-ford
+          </h1>
+
+          <p className="text-lg text-stone-400 leading-relaxed">
+            Une collection de simulations de physique à manipuler directement
+            dans le navigateur. Déplacez les curseurs, changez les paramètres,
+            et observez la physique réagir en temps réel.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-3 mt-9">
+            <a
+              href="#catalogue"
+              className="px-5 py-2.5 rounded-xl text-sm font-semibold text-ink-950 bg-gold-400
+                         hover:bg-gold-300 transition-colors"
+            >
+              Parcourir le catalogue
+            </a>
+            <Link
+              href={`/simulation/${SIMULATIONS[0].id}`}
+              className="px-5 py-2.5 rounded-xl text-sm font-medium text-stone-200
+                         ring-1 ring-inset ring-gold-400/25 hover:bg-gold-400/[0.07] transition-colors"
+            >
+              Commencer par {SIMULATIONS[0].title}
+            </Link>
+          </div>
+        </section>
+
+        {/* Sections en un coup d'œil */}
+        <section className="pb-20">
+          <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+            {CATEGORIES.map((category, i) => {
+              const theme = getThemeByCategory(category.id);
+              const count = SIMULATIONS.filter(
+                (s) => s.categoryId === category.id
+              ).length;
+
+              return (
+                <Link
+                  key={category.id}
+                  href={`/categorie/${category.id}`}
+                  style={
+                    {
+                      '--accent': theme.accent,
+                      animationDelay: `${60 + i * 35}ms`,
+                    } as CSSProperties
+                  }
                   className={cn(
-                    'w-10 h-10 rounded-lg flex items-center justify-center text-xl mb-3',
-                    theme.bgSoft
+                    'group relative overflow-hidden rounded-2xl p-4',
+                    'panel panel-hover accent-rule animate-fade-up',
+                    'hover:border-[color:var(--accent)]/40'
                   )}
                 >
-                  {category.icon}
-                </div>
-                <h2 className="font-semibold text-gray-900 text-sm leading-snug">
-                  {category.title}
-                </h2>
-                <p className="text-xs text-gray-500 mt-1">{category.tagline}</p>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
+                  <div className="flex items-start justify-between mb-3">
+                    <span
+                      className={cn(
+                        'w-10 h-10 rounded-xl flex items-center justify-center text-xl bg-gradient-to-br',
+                        'transition-transform duration-300 group-hover:scale-105',
+                        theme.gradient
+                      )}
+                    >
+                      {category.icon}
+                    </span>
+                    <span className="text-[11px] font-mono text-ink-500 mt-1">
+                      {count}
+                    </span>
+                  </div>
+                  <h2 className="font-display font-semibold text-white text-sm leading-snug">
+                    {category.title}
+                  </h2>
+                  <p className="text-xs text-stone-500 mt-1 leading-relaxed">
+                    {category.tagline}
+                  </p>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
 
-      {/* Catalogue complet */}
-      <CatalogBrowser />
+        {/* Catalogue complet */}
+        <section id="catalogue" className="pb-24 scroll-mt-16">
+          <CatalogBrowser />
+        </section>
+      </div>
     </div>
   );
 }

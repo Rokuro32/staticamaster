@@ -36,12 +36,26 @@ export interface Simulation {
   topics: string[];
 }
 
-/** Classes Tailwind par catégorie (écrites en toutes lettres pour le JIT) */
+/**
+ * Thème d'une catégorie.
+ * Le site a deux ambiances : le chrome sombre et la scène claire (page d'une
+ * simulation). Chaque catégorie fournit donc ses classes pour les deux.
+ * Toutes les classes sont écrites en toutes lettres pour que le JIT de
+ * Tailwind les voie.
+ */
 export interface CategoryTheme {
-  bg: string;
-  bgSoft: string;
+  /** Accent brut, pour les styles en ligne (halos, --accent) */
+  accent: string;
+  /** Texte d'accent sur fond sombre */
   text: string;
-  border: string;
-  ring: string;
+  /** Pastille / étiquette sur fond sombre */
+  chip: string;
+  /** Pastille pleine (filtre actif) */
+  solid: string;
+  /** Dégradé de la tuile d'icône */
   gradient: string;
+  /** Texte d'accent sur fond clair */
+  lightText: string;
+  /** Étiquette sur fond clair */
+  lightChip: string;
 }
