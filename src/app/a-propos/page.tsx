@@ -22,14 +22,8 @@ export default function AboutPage() {
         <p>
           Un catalogue de {TOTAL_SIMULATIONS} simulations de physique, réparties
           en {CATEGORIES.length} sections, qui tournent entièrement dans le
-          navigateur. On déplace un curseur, on change une masse ou un angle, et
-          le résultat se recalcule tout de suite.
-        </p>
-        <p>
-          Le site ne contient volontairement ni notes de cours, ni exercices, ni
-          quiz. L’idée est qu’une simulation serve à voir un comportement — ce
-          qui se passe quand on double la masse, quand on raidit une hélice,
-          quand un choc devient mou — pas à remplacer le cours ni l’évaluation.
+          navigateur. N’hésitez pas à expérimenter avec ces simulations pour
+          mieux comprendre certains concepts plus abstraits.
         </p>
       </InfoSection>
 
@@ -46,17 +40,15 @@ export default function AboutPage() {
         <p>
           Baccalauréat en génie physique à l’Université Laval, où il complète
           aujourd’hui une maîtrise en physique. Celle-ci porte sur la robustesse
-          des traitements en curiethérapie — à quel point un plan de traitement
-          tient encore la route quand la réalité s’écarte de ce qui a été
-          planifié.
-        </p>
-        <p>
-          Avant cela, trois ans de travail dans le domaine de la biophotonique,
-          à l’interface de l’optique et du vivant.
-        </p>
-        <p>
-          En dehors du laboratoire et de la salle de classe : biathlète de
-          niveau national.
+          des traitements en curiethérapie, donc à quel point un plan de
+          traitement tient encore la route quand la réalité s’écarte de ce qui a
+          été planifié. Durant ces études, il a travaillé dans le domaine de la
+          biophotonique, où il a aidé à la conception de différents types de
+          microscopes utilisés pour l’imagerie cérébrale. De plus, il a eu
+          l’occasion de travailler sur l’élaboration d’un prototype pour aider
+          au monitoring de la coagulation du lait. En dehors du laboratoire et
+          de la salle de classe, il passe sa vie à faire du biathlon un peu
+          partout au Canada.
         </p>
       </InfoSection>
 
@@ -73,7 +65,8 @@ export default function AboutPage() {
           </a>{' '}
           de l’Université du Colorado, qui ont ouvert la voie à ce genre d’outil,
           et à Thetford. Ce site n’est ni affilié à PhET ni dérivé de son code :
-          toutes les simulations qu’on y trouve ont été écrites pour lui.
+          toutes les simulations qu’on y trouve ont été écrites avec la
+          collaboration de Claude.ai.
         </p>
       </InfoSection>
 
