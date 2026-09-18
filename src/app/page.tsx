@@ -32,10 +32,10 @@ export default function HomePage() {
             Phet-ford
           </h1>
 
-          <p className="text-lg text-stone-400 leading-relaxed">
-            Une collection de simulations de physique à manipuler directement
-            dans le navigateur. Déplacez les curseurs, changez les paramètres,
-            et observez la physique réagir en temps réel.
+          <p className="text-lg text-stone-400 leading-relaxed text-balance">
+            Des simulations qui peuvent être utiles les veilles d’examen à 3h
+            quand tu sais pas c’est quoi la différence entre effet Doppler et
+            3e loi de Newton
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3 mt-9">
