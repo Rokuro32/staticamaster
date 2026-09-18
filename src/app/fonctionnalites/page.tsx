@@ -87,7 +87,7 @@ export default function FeaturesPage() {
       </div>
 
       <InfoSection title="En chiffres">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 not-prose">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             { value: TOTAL_SIMULATIONS, label: 'simulations' },
             { value: CATEGORIES.length, label: 'sections' },

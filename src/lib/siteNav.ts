@@ -26,4 +26,16 @@ export const INFO_LINKS: InfoLink[] = [
     description: 'Ouvrages et ressources de référence',
     icon: '📚',
   },
+  {
+    href: '/travaux',
+    label: 'Travaux',
+    description: 'Mémoire de maîtrise et publications',
+    icon: '📄',
+  },
+  {
+    href: '/contact',
+    label: 'Contact',
+    description: 'Courriel et médias sociaux',
+    icon: '✉️',
+  },
 ];
