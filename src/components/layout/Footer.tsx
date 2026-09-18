@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import { CATEGORIES, TOTAL_SIMULATIONS } from '@/lib/catalog';
+import { INFO_LINKS } from '@/lib/siteNav';
 
 export function Footer() {
   return (
     <footer className="relative bg-ink-950 border-t border-gold-400/[0.14] mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid gap-10 md:grid-cols-[1.2fr_2fr]">
+        <div className="grid gap-10 md:grid-cols-[1.2fr_2fr_auto]">
           <div>
             <Link href="/" className="inline-flex items-center gap-2 group">
               <span className="text-lg">🔬</span>
@@ -31,6 +32,24 @@ export function Footer() {
                     className="text-sm text-stone-400 hover:text-gold-300 transition-colors"
                   >
                     {category.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav>
+            <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-gold-600 mb-4">
+              Le site
+            </h2>
+            <ul className="space-y-2.5">
+              {INFO_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-stone-400 hover:text-gold-300 transition-colors"
+                  >
+                    {link.label}
                   </Link>
                 </li>
               ))}

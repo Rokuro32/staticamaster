@@ -13,6 +13,7 @@ simulations, classées par section.
 | 📐 Mathématiques | Cercle trigonométrique, Opérations vectorielles |
 | ⚖️ Statique | Addition de forces, Moments et rotation, Analyse de treillis, Résistance des matériaux |
 | 🚀 Cinématique | Cinématique 1D et graphiques, Mouvement de projectile, Mouvement relatif, Mouvement hélicoïdal |
+| 💥 Dynamique | Conservation de la quantité de mouvement |
 | ⚙️ Mécanismes et machines | Train planétaire, Coulisseaux croisés, Bielle-manivelle |
 | 〰️ Ondes et oscillations | Oscillations et ondes mécaniques, Ondes sonores, Corde de guitare, Ondes électromagnétiques |
 | ⚡ Électricité | Circuits à courant continu, Électrocardiogramme |
@@ -45,6 +46,7 @@ npm run build && npm run start   # production
 src/
 ├── app/
 │   ├── page.tsx                      # Catalogue complet (recherche + filtres)
+│   ├── a-propos/, fonctionnalites/, bibliographie/   # Pages d'information
 │   ├── categorie/[categoryId]/       # Une section
 │   ├── simulation/[simId]/           # Une simulation
 │   └── layout.tsx, not-found.tsx
@@ -77,6 +79,10 @@ codées en dur) :
 
 Aucune simulation n'a été modifiée par la refonte ; elles n'importent que
 `cn`, `physics-constants` et le type `Simulation`.
+
+L'écusson vit dans `public/logo-cegep.svg` — c'est une reconstitution en SVG.
+Pour utiliser le fichier officiel, il suffit d'écraser ce fichier (et
+`public/favicon.svg`) : rien d'autre à changer dans le code.
 
 Jetons (`tailwind.config.ts`) :
 

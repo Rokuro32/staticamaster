@@ -45,6 +45,7 @@ const config: Config = {
           math: { DEFAULT: '#c9b37c', deep: '#6e5c2f' },
           statique: { DEFAULT: '#b08968', deep: '#6b4b33' },
           cinema: { DEFAULT: '#8fae84', deep: '#45603c' },
+          dynamique: { DEFAULT: '#cf8a4e', deep: '#7a4a18' },
           meca: { DEFAULT: '#9aa5ae', deep: '#4a545c' },
           ondes: { DEFAULT: '#8098b8', deep: '#3f5372' },
           elec: { DEFAULT: '#dcc05a', deep: '#6e5d14' },

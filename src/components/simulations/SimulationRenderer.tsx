@@ -67,6 +67,12 @@ const REGISTRY: Record<SimulationId, ComponentType> = {
     { ssr: false, loading: Loading }
   ),
 
+  // Dynamique
+  'quantite-de-mouvement': dynamic(
+    () => import('./MomentumSimulator').then((m) => m.MomentumSimulator),
+    { ssr: false, loading: Loading }
+  ),
+
   // Mécanismes et machines
   'train-planetaire': dynamic(
     () => import('./PlanetaryGearSimulator').then((m) => m.PlanetaryGearSimulator),

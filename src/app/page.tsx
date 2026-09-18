@@ -28,6 +28,17 @@ export default function HomePage() {
             {TOTAL_SIMULATIONS} simulations · {CATEGORIES.length} sections
           </p>
 
+          {/* Écusson du Cégep de Thetford. Le fichier vit dans public/ :
+              pour le remplacer par l'officiel, écraser public/logo-cegep.svg. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo-cegep.svg"
+            alt="Écusson du Cégep de Thetford"
+            width={88}
+            height={100}
+            className="mx-auto mb-6 h-[100px] w-auto drop-shadow-[0_8px_24px_rgba(201,179,124,0.25)]"
+          />
+
           <h1 className="font-display text-5xl sm:text-6xl font-bold tracking-[-0.03em] text-gradient mb-6">
             Phet-ford
           </h1>

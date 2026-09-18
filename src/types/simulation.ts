@@ -4,6 +4,7 @@ export type CategoryId =
   | 'mathematiques'
   | 'statique'
   | 'cinematique'
+  | 'dynamique'
   | 'mecanismes'
   | 'ondes'
   | 'electricite'

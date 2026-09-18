@@ -36,6 +36,14 @@ export const CATEGORIES: Category[] = [
     icon: '🚀',
   },
   {
+    id: 'dynamique',
+    title: 'Dynamique',
+    tagline: 'Chocs et quantité de mouvement',
+    description:
+      "Ce qui se conserve quand des corps interagissent : quantité de mouvement, impulsion, énergie cinétique, et ce qui distingue un choc élastique d'un choc mou.",
+    icon: '💥',
+  },
+  {
     id: 'mecanismes',
     title: 'Mécanismes et machines',
     tagline: 'Engrenages et liaisons',
@@ -202,6 +210,25 @@ export const SIMULATIONS: Simulation[] = [
       'Vitesse tangentielle et axiale',
       'Développement de l\u2019hélice',
       'Vis et écrou',
+    ],
+  },
+
+  // ------------------------------------------------------------- Dynamique
+  {
+    id: 'quantite-de-mouvement',
+    categoryId: 'dynamique',
+    title: 'Conservation de la quantité de mouvement',
+    summary: "Deux chariots se percutent : p se conserve, l'énergie pas toujours.",
+    description:
+      "Réglez les masses et les vitesses de deux chariots, choisissez le type de choc, et comparez l'avant et l'après. La quantité de mouvement totale ne bouge jamais ; l'énergie cinétique, elle, ne se conserve que dans un choc parfaitement élastique. Le centre de masse, marqué sur la piste, avance à vitesse constante même pendant la collision — c'est la conservation rendue visible.",
+    icon: '🎱',
+    topics: [
+      'Quantité de mouvement',
+      'Impulsion',
+      'Choc élastique',
+      'Choc mou',
+      'Coefficient de restitution',
+      'Centre de masse',
     ],
   },
 
@@ -415,6 +442,15 @@ export const CATEGORY_THEMES: Record<CategoryId, CategoryTheme> = {
     gradient: 'from-[#a6c199] to-[#6d8f64]',
     lightText: 'text-sec-cinema-deep',
     lightChip: 'bg-sec-cinema/15 text-sec-cinema-deep ring-1 ring-inset ring-sec-cinema/35',
+  },
+  dynamique: {
+    accent: '#cf8a4e',
+    text: 'text-sec-dynamique',
+    chip: 'bg-sec-dynamique/10 text-sec-dynamique ring-1 ring-inset ring-sec-dynamique/25',
+    solid: 'bg-sec-dynamique/20 text-sec-dynamique ring-1 ring-inset ring-sec-dynamique/45',
+    gradient: 'from-[#e0a468] to-[#a9652e]',
+    lightText: 'text-sec-dynamique-deep',
+    lightChip: 'bg-sec-dynamique/15 text-sec-dynamique-deep ring-1 ring-inset ring-sec-dynamique/35',
   },
   mecanismes: {
     accent: '#9aa5ae',

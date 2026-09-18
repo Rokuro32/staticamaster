@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 228" role="img" aria-label="Écusson du Cégep de Thetford">
+  <title>Écusson du Cégep de Thetford</title>
+  <!-- Écu noir -->
+  <path fill="#0a0a09" d="M100 224C55 205 14 172 14 120V46c0-20 16-36 36-36h100c20 0 36 16 36 36v74c0 52-41 85-86 104z"/>
+  <!-- Liseré blanc -->
+  <path fill="#ffffff" d="M100 208c-38-17-72-45-72-90V48c0-12 10-22 22-22h100c12 0 22 10 22 22v70c0 45-34 73-72 90z"/>
+  <!-- Champ or -->
+  <path fill="#c9b37c" d="M100 200c-35-16-65-42-65-83V50c0-9 7-16 16-16h98c9 0 16 7 16 16v67c0 41-30 67-65 83z"/>
+  <!-- T : contour blanc puis remplissage noir -->
+  <path fill="none" stroke="#ffffff" stroke-width="9" stroke-linejoin="round"
+        d="M46 58h108l-6 38h-18v-8c0-7-6-12-13-12h-4v64c0 9 6 14 15 14v11H72v-11c9 0 15-5 15-14V76h-4c-7 0-13 5-13 12v8H52z"/>
+  <path fill="#0a0a09"
+        d="M46 58h108l-6 38h-18v-8c0-7-6-12-13-12h-4v64c0 9 6 14 15 14v11H72v-11c9 0 15-5 15-14V76h-4c-7 0-13 5-13 12v8H52z"/>
+</svg>

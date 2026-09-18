@@ -52,7 +52,7 @@ export default function RootLayout({
       className={`${inter.variable} ${display.variable} ${mono.variable}`}
     >
       <head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <meta name="theme-color" content="#05080f" />
       </head>
       <body className="font-sans">
