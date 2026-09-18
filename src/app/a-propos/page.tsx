@@ -42,14 +42,20 @@ export default function AboutPage() {
           au Cégep de Thetford. L’identité visuelle du site reprend les couleurs
           de l’écusson du cégep.
         </p>
-      </InfoSection>
-
-      <InfoSection title="Vie privée">
         <p>
-          Il n’y a pas de compte à créer, pas de connexion, pas de mouchard, et
-          aucune donnée d’usage n’est collectée. Tous les calculs se font sur
-          votre appareil : rien de ce que vous réglez dans une simulation ne
-          quitte votre navigateur.
+          Baccalauréat en génie physique à l’Université Laval, où il complète
+          aujourd’hui une maîtrise en physique. Celle-ci porte sur la robustesse
+          des traitements en curiethérapie — à quel point un plan de traitement
+          tient encore la route quand la réalité s’écarte de ce qui a été
+          planifié.
+        </p>
+        <p>
+          Avant cela, trois ans de travail dans le domaine de la biophotonique,
+          à l’interface de l’optique et du vivant.
+        </p>
+        <p>
+          En dehors du laboratoire et de la salle de classe : biathlète de
+          niveau national.
         </p>
       </InfoSection>
 
@@ -72,18 +78,15 @@ export default function AboutPage() {
 
       <InfoSection title="Signaler un problème">
         <p>
-          Une simulation qui donne un résultat douteux, une formule mal affichée,
-          une idée de sujet à ajouter : le plus utile est d’ouvrir une issue sur
-          le dépôt du projet.
+          Une simulation qui donne un résultat douteux, une formule mal
+          affichée, une idée de sujet à ajouter : écrivez-moi.
         </p>
         <p>
           <a
-            href="https://github.com/Rokuro32/staticamaster"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="mailto:araxav2@gmail.com"
             className="text-gold-300 hover:text-gold-200 underline underline-offset-2"
           >
-            github.com/Rokuro32/staticamaster
+            araxav2@gmail.com
           </a>
         </p>
       </InfoSection>
