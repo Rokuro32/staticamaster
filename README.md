@@ -12,7 +12,7 @@ simulations, classées par section.
 |---|---|
 | 📐 Mathématiques | Cercle trigonométrique, Opérations vectorielles |
 | ⚖️ Statique | Addition de forces, Moments et rotation, Analyse de treillis, Résistance des matériaux |
-| 🚀 Cinématique | Cinématique 1D et graphiques, Mouvement de projectile, Mouvement relatif |
+| 🚀 Cinématique | Cinématique 1D et graphiques, Mouvement de projectile, Mouvement relatif, Mouvement hélicoïdal |
 | ⚙️ Mécanismes et machines | Train planétaire, Coulisseaux croisés, Bielle-manivelle |
 | 〰️ Ondes et oscillations | Oscillations et ondes mécaniques, Ondes sonores, Corde de guitare, Ondes électromagnétiques |
 | ⚡ Électricité | Circuits à courant continu, Électrocardiogramme |

@@ -70,18 +70,30 @@ function SimpleAxes() {
   );
 }
 
-// Component to render vectors tip-to-tail (for addition)
-function TipToTailVectors({ vectors, showComponents }: { vectors: VectorData[]; showComponents: boolean }) {
+// Vecteurs mis bout a bout : methode du triangle (puis du polygone au-dela de
+// deux vecteurs). Avec `invertAfterFirst`, chaque vecteur apres le premier est
+// inverse : c'est ainsi qu'est construite la soustraction, A - B = A + (-B).
+function TipToTailVectors({
+  vectors,
+  showComponents,
+  invertAfterFirst = false,
+}: {
+  vectors: VectorData[];
+  showComponents: boolean;
+  invertAfterFirst?: boolean;
+}) {
   let currentPos: [number, number, number] = [0, 0, 0];
   const arrows: JSX.Element[] = [];
 
   vectors.forEach((vec, idx) => {
+    const invert = invertAfterFirst && idx > 0;
+    const sign = invert ? -1 : 1;
     const comp = vec.components;
     const startPos: [number, number, number] = [...currentPos];
     const endPos: [number, number, number] = [
-      currentPos[0] + comp.x,
-      currentPos[1] + comp.y,
-      currentPos[2] + (comp.z || 0)
+      currentPos[0] + sign * comp.x,
+      currentPos[1] + sign * comp.y,
+      currentPos[2] + sign * (comp.z || 0)
     ];
 
     arrows.push(
@@ -90,7 +102,7 @@ function TipToTailVectors({ vectors, showComponents }: { vectors: VectorData[]; 
         start={startPos}
         end={endPos}
         color={vec.color}
-        label={vec.label}
+        label={invert ? `\u2212${vec.label}` : vec.label}
         showComponents={showComponents && idx === vectors.length - 1}
       />
     );
@@ -176,9 +188,13 @@ export default function Canvas3DView({ vectors, result, operation, showComponent
         {/* Axes */}
         <SimpleAxes />
 
-        {/* Render vectors according to operation */}
-        {operation === 'add' && !formulaMode ? (
-          <TipToTailVectors vectors={vectors} showComponents={showComponents} />
+        {/* Addition et soustraction : bout a bout. Le reste part de l'origine. */}
+        {(operation === 'add' || operation === 'subtract') && !formulaMode ? (
+          <TipToTailVectors
+            vectors={vectors}
+            showComponents={showComponents}
+            invertAfterFirst={operation === 'subtract'}
+          />
         ) : (
           <FromOriginVectors vectors={vectors} showComponents={showComponents} />
         )}

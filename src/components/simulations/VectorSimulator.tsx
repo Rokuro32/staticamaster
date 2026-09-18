@@ -386,22 +386,40 @@ export function VectorSimulator() {
     ctx.arc(centerX, centerY, 4, 0, Math.PI * 2);
     ctx.fill();
 
-    // Fonction pour dessiner un vecteur
-    const drawVector = (startX: number, startY: number, comp: VectorComponents, color: string, label: string, showComp: boolean = true) => {
+    // Fonction pour dessiner un vecteur.
+    // `ghost` dessine le vecteur en pointillé translucide : sert à montrer un
+    // vecteur tel qu'il a été saisi, à côté de sa version utilisée dans la
+    // construction (typiquement B en pointillé face à -B en trait plein).
+    const drawVector = (
+      startX: number,
+      startY: number,
+      comp: VectorComponents,
+      color: string,
+      label: string,
+      showComp: boolean = true,
+      ghost: boolean = false
+    ) => {
       const endX = startX + comp.x * scale;
       const endY = startY - comp.y * scale;
 
+      ctx.save();
+      if (ghost) {
+        ctx.globalAlpha = 0.45;
+        ctx.setLineDash([6, 5]);
+      }
+
       ctx.strokeStyle = color;
-      ctx.lineWidth = 3;
+      ctx.lineWidth = ghost ? 2 : 3;
       ctx.beginPath();
       ctx.moveTo(startX, startY);
       ctx.lineTo(endX, endY);
       ctx.stroke();
+      ctx.setLineDash([]);
 
       const dx = endX - startX;
       const dy = endY - startY;
       const angle = Math.atan2(dy, dx);
-      const arrowSize = 12;
+      const arrowSize = ghost ? 9 : 12;
       ctx.fillStyle = color;
       ctx.beginPath();
       ctx.moveTo(endX, endY);
@@ -431,7 +449,7 @@ export function VectorSimulator() {
       ctx.lineTo(labelX + textWidth - 4, labelY - 9);
       ctx.stroke();
 
-      if (showComp && showComponents && (Math.abs(comp.x) > 0.1 || Math.abs(comp.y) > 0.1)) {
+      if (!ghost && showComp && showComponents && (Math.abs(comp.x) > 0.1 || Math.abs(comp.y) > 0.1)) {
         ctx.strokeStyle = color;
         ctx.lineWidth = 1;
         ctx.setLineDash([5, 5]);
@@ -445,18 +463,68 @@ export function VectorSimulator() {
         ctx.stroke();
         ctx.setLineDash([]);
       }
+
+      ctx.restore();
     };
 
-    // Dessiner tous les vecteurs
-    if (operation === 'add' && !formulaMode) {
+    // Addition et soustraction : méthode du triangle (vecteurs bout à bout).
+    // La soustraction est construite comme A + (−B) : chaque vecteur après le
+    // premier est inversé, puis la chaîne est mise bout à bout comme pour une
+    // addition. Le résultant R, tracé depuis l'origine, ferme le triangle.
+    const isChained = (operation === 'add' || operation === 'subtract') && !formulaMode;
+
+    if (isChained) {
+      const chain = displayVectors.map((vec, idx) => {
+        const comp = getComponents(vec);
+        const inverted = operation === 'subtract' && idx > 0;
+        return {
+          vec,
+          comp: inverted ? { x: -comp.x, y: -comp.y, z: -(comp.z || 0) } : comp,
+          original: comp,
+          inverted,
+          label: inverted ? `\u2212${vec.label}` : vec.label,
+        };
+      });
+
+      // En soustraction, on rappelle B tel qu'il a été saisi (pointillé) pour
+      // qu'on voie d'un coup d'œil que c'est bien son opposé qui est chaîné.
+      chain.forEach(({ vec, original, inverted }) => {
+        if (!inverted) return;
+        drawVector(centerX, centerY, original, vec.color, vec.label, false, true);
+      });
+
+      // La chaîne bout à bout
       let currentX = centerX;
       let currentY = centerY;
-      displayVectors.forEach((vec, idx) => {
-        const comp = getComponents(vec);
-        drawVector(currentX, currentY, comp, vec.color, vec.label, idx === displayVectors.length - 1);
+      chain.forEach(({ comp, vec, label }, idx) => {
+        drawVector(currentX, currentY, comp, vec.color, label, idx === chain.length - 1);
         currentX += comp.x * scale;
         currentY -= comp.y * scale;
+
+        // Point de jonction : la pointe d'un vecteur est la queue du suivant
+        if (idx < chain.length - 1) {
+          ctx.fillStyle = '#e2e8f0';
+          ctx.strokeStyle = '#0f172a';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(currentX, currentY, 4.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+        }
       });
+
+      // Rappel de la méthode employée
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '12px system-ui';
+      ctx.textAlign = 'left';
+      const method = displayVectors.length > 2 ? 'Méthode du polygone' : 'Méthode du triangle';
+      ctx.fillText(
+        operation === 'subtract'
+          ? `${method} : A \u2212 B = A + (\u2212B), bout à bout`
+          : `${method} : vecteurs bout à bout`,
+        16,
+        24
+      );
     } else {
       displayVectors.forEach(vec => {
         const comp = getComponents(vec);
@@ -519,7 +587,11 @@ export function VectorSimulator() {
     displayVectors.forEach((vec, idx) => {
       ctx.fillStyle = vec.color;
       ctx.fillRect(20, legendY + idx * 25, 20, 3);
-      ctx.fillText(`Vecteur ${vec.label}`, 50, legendY + idx * 25 + 5);
+      const chained =
+        operation === 'subtract' && !formulaMode && idx > 0
+          ? `Vecteur ${vec.label} (chaîné : \u2212${vec.label})`
+          : `Vecteur ${vec.label}`;
+      ctx.fillText(chained, 50, legendY + idx * 25 + 5);
     });
     const resultY = legendY + displayVectors.length * 25;
     ctx.fillStyle = '#f97316';
@@ -865,12 +937,12 @@ export function VectorSimulator() {
           <div className="bg-blue-50 rounded-lg p-4">
             <h4 className="font-medium text-blue-800 mb-2">Addition vectorielle</h4>
             <BlockMath math="\vec{R} = \vec{A} + \vec{B} = (A_x + B_x, A_y + B_y, A_z + B_z)" />
-            <p className="text-blue-700 mt-2">Méthode du parallélogramme ou tête-à-queue.</p>
+            <p className="text-blue-700 mt-2">Visualisée par la méthode du triangle : les vecteurs sont mis bout à bout, et R ferme le triangle depuis l’origine. Au-delà de deux vecteurs, c’est la méthode du polygone.</p>
           </div>
           <div className="bg-green-50 rounded-lg p-4">
             <h4 className="font-medium text-green-800 mb-2">Soustraction</h4>
             <BlockMath math="\vec{A} - \vec{B} = \vec{A} + (-\vec{B})" />
-            <p className="text-green-700 mt-2">Inverser B puis additionner.</p>
+            <p className="text-green-700 mt-2">On inverse B, puis on additionne bout à bout. B reste tracé en pointillé pour le comparer à −B.</p>
           </div>
           <div className="bg-purple-50 rounded-lg p-4">
             <h4 className="font-medium text-purple-800 mb-2">Produit scalaire</h4>

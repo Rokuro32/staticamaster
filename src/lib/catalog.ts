@@ -32,7 +32,7 @@ export const CATEGORIES: Category[] = [
     title: 'Cinématique',
     tagline: 'Mouvement des corps',
     description:
-      "Description du mouvement : position, vitesse et accélération en 1D et 2D, tir balistique, mouvement circulaire et mouvement relatif.",
+      "Description du mouvement : position, vitesse et accélération en 1D et 2D, tir balistique, mouvement circulaire, mouvement relatif et mouvement hélicoïdal.",
     icon: '🚀',
   },
   {
@@ -103,9 +103,16 @@ export const SIMULATIONS: Simulation[] = [
     title: 'Opérations vectorielles',
     summary: "Addition, soustraction, produit scalaire et produit vectoriel en 2D et 3D.",
     description:
-      "Créez des vecteurs, modifiez leur module et leur orientation, puis observez la résultante, les composantes, le produit scalaire et le produit vectoriel. Une vue 3D permet de visualiser l'orientation du produit vectoriel.",
+      "Créez des vecteurs, modifiez leur module et leur orientation, puis observez la résultante, les composantes, le produit scalaire et le produit vectoriel. L'addition et la soustraction sont construites par la méthode du triangle : les vecteurs sont mis bout à bout, et A − B est montré comme A + (−B). Une vue 3D permet de visualiser l'orientation du produit vectoriel.",
     icon: '📐',
-    topics: ['Composantes', 'Résultante', 'Produit scalaire', 'Produit vectoriel', 'Vue 3D'],
+    topics: [
+      'Méthode du triangle',
+      'Composantes',
+      'Résultante',
+      'Produit scalaire',
+      'Produit vectoriel',
+      'Vue 3D',
+    ],
   },
 
   // ------------------------------------------------------------- Statique
@@ -180,6 +187,22 @@ export const SIMULATIONS: Simulation[] = [
       "Comparez le mouvement d'un objet vu de deux référentiels différents et construisez la composition des vitesses. Utile pour les problèmes de bateau dans un courant ou d'avion dans le vent.",
     icon: '🚂',
     topics: ['Référentiels', 'Composition des vitesses', 'Vitesse relative'],
+  },
+  {
+    id: 'mouvement-helicoidal',
+    categoryId: 'cinematique',
+    title: 'Mouvement hélicoïdal',
+    summary: "Une rotation qui entraîne une translation le long du même axe.",
+    description:
+      "Réglez le rayon, le pas et la vitesse de rotation, et suivez le point qui décrit l'hélice. Une seconde vue déroule une spire à plat : le triangle rectangle qui apparaît donne d'un coup l'angle d'hélice, la longueur réelle parcourue et la composition des deux vitesses. Préréglages : vis-mère de tour, ressort, foret, vis d'Archimède.",
+    icon: '🌀',
+    topics: [
+      'Pas et avance',
+      "Angle d'hélice",
+      'Vitesse tangentielle et axiale',
+      'Développement de l\u2019hélice',
+      'Vis et écrou',
+    ],
   },
 
   // ----------------------------------------------------------- Mécanismes

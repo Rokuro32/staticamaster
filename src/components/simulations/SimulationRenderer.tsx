@@ -62,6 +62,10 @@ const REGISTRY: Record<SimulationId, ComponentType> = {
     () => import('./RelativeMotionSimulator').then((m) => m.RelativeMotionSimulator),
     { ssr: false, loading: Loading }
   ),
+  'mouvement-helicoidal': dynamic(
+    () => import('./HelicalMotionSimulator').then((m) => m.HelicalMotionSimulator),
+    { ssr: false, loading: Loading }
+  ),
 
   // Mécanismes et machines
   'train-planetaire': dynamic(
