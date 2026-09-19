@@ -118,7 +118,9 @@ export function ProjectileMotionSimulator() {
   // Get effective max time
   const getEffectiveMaxTime = useCallback(() => {
     if (mode === 'projectile') {
-      return Math.min(maxTime, getFlightTime() + 0.2);
+      // Pile au contact du sol : la marge de 0,2 s qu'on ajoutait avant
+      // laissait la balle passer sous le sol avant de s'arrêter.
+      return Math.min(maxTime, getFlightTime());
     }
     if (mode === 'custom2d') {
       // Check if it goes below ground
@@ -212,6 +214,19 @@ export function ProjectileMotionSimulator() {
       ctx.moveTo(0, groundY);
       ctx.lineTo(trajCanvasWidth, groundY);
       ctx.stroke();
+
+      // Quelques touffes d'herbe : le sol plat faisait un peu nu
+      ctx.strokeStyle = 'rgba(77, 87, 36, .55)';
+      ctx.lineWidth = 1.4;
+      for (let gx = 6; gx < trajCanvasWidth; gx += 13) {
+        const h = 4 + ((gx * 7919) % 5);
+        ctx.beginPath();
+        ctx.moveTo(gx, groundY);
+        ctx.lineTo(gx - 2, groundY - h);
+        ctx.moveTo(gx + 3, groundY);
+        ctx.lineTo(gx + 4.5, groundY - h * 0.8);
+        ctx.stroke();
+      }
     }
 
     // Grid
@@ -259,6 +274,7 @@ export function ProjectileMotionSimulator() {
 
       for (let t = 0; t <= effectiveMax; t += 0.02) {
         const { x, y } = getKinematics(t);
+        if (mode === 'projectile' && y < 0) break;
         const cx = toCanvasX(x);
         const cy = toCanvasY(y);
         if (t === 0) ctx.moveTo(cx, cy);
@@ -267,10 +283,16 @@ export function ProjectileMotionSimulator() {
       ctx.stroke();
     }
 
-    // Current position
-    const current = getKinematics(currentTime);
+    // Current position. En mode projectile, le sol est une butée : la balle
+    // s'y pose, elle ne le traverse pas.
+    const raw = getKinematics(currentTime);
+    const current = mode === 'projectile' && raw.y < 0 ? { ...raw, y: 0 } : raw;
     const objX = toCanvasX(current.x);
     const objY = toCanvasY(current.y);
+    const groundPx = toCanvasY(0);
+    // L'écrasement et la poussière ne valent qu'à l'impact : au départ la
+    // balle est aussi à y = 0, mais elle monte.
+    const onGround = mode === 'projectile' && raw.y <= 0.02 && raw.vy <= 0;
 
     // Velocity components (dashed lines)
     if (showComponents) {
@@ -357,29 +379,138 @@ export function ProjectileMotionSimulator() {
       ctx.fillText(labelText, aEndX + 5, aEndY + 5);
     }
 
-    // Object (ball)
+    // --- Repères du sommet et de la portée, en mode projectile
+    if (mode === 'projectile' && minY <= 0 && maxY >= 0) {
+      const rad = (angle * Math.PI) / 180;
+      const vy0 = v0 * Math.sin(rad);
+      const vx0 = v0 * Math.cos(rad);
+      const tApex = vy0 / g;
+      const apexY = y0 + (vy0 * vy0) / (2 * g);
+      const apexX = vx0 * tApex;
+      const tLand = getFlightTime();
+      const rangeX = vx0 * tLand;
+
+      if (tApex > 0 && tApex < tLand) {
+        ctx.strokeStyle = 'rgba(146, 132, 92, .6)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(toCanvasX(apexX), toCanvasY(apexY));
+        ctx.lineTo(toCanvasX(apexX), groundPx);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = '#7c673a';
+        ctx.font = '10px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText(`flèche ${apexY.toFixed(1)} m`, toCanvasX(apexX), toCanvasY(apexY) - 8);
+      }
+
+      // Drapeau au point de chute
+      const lx = toCanvasX(rangeX);
+      ctx.strokeStyle = '#7c673a';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(lx, groundPx);
+      ctx.lineTo(lx, groundPx - 22);
+      ctx.stroke();
+      ctx.fillStyle = '#c96445';
+      ctx.beginPath();
+      ctx.moveTo(lx, groundPx - 22);
+      ctx.lineTo(lx + 13, groundPx - 18);
+      ctx.lineTo(lx, groundPx - 14);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = '#7c673a';
+      ctx.font = '10px system-ui';
+      ctx.textAlign = 'center';
+      ctx.fillText(`portée ${rangeX.toFixed(1)} m`, lx, groundPx + 14);
+
+      // Le lanceur, incliné à l'angle de tir
+      const sx = toCanvasX(0);
+      const sy = toCanvasY(y0);
+      if (y0 > 0.01) {
+        ctx.fillStyle = '#a8a29e';
+        ctx.fillRect(sx - 5, sy, 10, groundPx - sy);
+      }
+      ctx.save();
+      ctx.translate(sx, sy);
+      ctx.rotate(-rad);
+      ctx.fillStyle = '#5b4c2d';
+      ctx.beginPath();
+      ctx.roundRect(-6, -5, 30, 10, 3);
+      ctx.fill();
+      ctx.restore();
+      ctx.fillStyle = '#484440';
+      ctx.beginPath();
+      ctx.arc(sx, sy, 7, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // --- Traînée : quelques positions précédentes, de plus en plus pâles
+    for (let k = 1; k <= 7; k++) {
+      const tg = currentTime - k * 0.055;
+      if (tg <= 0) break;
+      const g0 = getKinematics(tg);
+      if (mode === 'projectile' && g0.y < 0) continue;
+      ctx.fillStyle = `rgba(232, 197, 24, ${0.3 - k * 0.035})`;
+      ctx.beginPath();
+      ctx.arc(toCanvasX(g0.x), toCanvasY(g0.y), 11 - k * 0.9, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // --- Ombre portée au sol, qui suit la balle et s'élargit avec la hauteur
+    if (mode === 'projectile' && minY <= 0 && maxY >= 0) {
+      const h = Math.max(0, groundPx - objY);
+      const spread = 1 + h / 150;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0.06, 0.3 - h / 600);
+      ctx.fillStyle = '#4d5724';
+      ctx.beginPath();
+      ctx.ellipse(objX, groundPx + 1, 11 * spread, 3.5, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // --- La balle. Légèrement écrasée au moment du contact.
+    const squash = onGround ? 0.72 : 1;
+    ctx.save();
+    ctx.translate(objX, objY + (onGround ? 12 * (1 - squash) : 0));
+    ctx.scale(1 / squash, squash);
+
     ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
     ctx.shadowBlur = 8;
     ctx.shadowOffsetY = 3;
 
-    const ballGradient = ctx.createRadialGradient(objX - 3, objY - 3, 0, objX, objY, 12);
-    ballGradient.addColorStop(0, '#e8c61a');
-    ballGradient.addColorStop(0.7, '#e8c518');
+    const ballGradient = ctx.createRadialGradient(-3, -3, 0, 0, 0, 12);
+    ballGradient.addColorStop(0, '#f0e194');
+    ballGradient.addColorStop(0.6, '#e8c518');
     ballGradient.addColorStop(1, '#be7021');
 
     ctx.fillStyle = ballGradient;
     ctx.beginPath();
-    ctx.arc(objX, objY, 12, 0, Math.PI * 2);
+    ctx.arc(0, 0, 12, 0, Math.PI * 2);
     ctx.fill();
 
     ctx.shadowColor = 'transparent';
     ctx.shadowBlur = 0;
 
-    // Highlight
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+    // Reflet
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
     ctx.beginPath();
-    ctx.arc(objX - 4, objY - 4, 4, 0, Math.PI * 2);
+    ctx.ellipse(-4, -4.5, 4, 3, -0.5, 0, Math.PI * 2);
     ctx.fill();
+    ctx.restore();
+
+    // Petit nuage de poussière à l'impact
+    if (onGround) {
+      ctx.strokeStyle = 'rgba(146, 132, 92, .55)';
+      ctx.lineWidth = 1.6;
+      for (const d of [-1, 1]) {
+        ctx.beginPath();
+        ctx.arc(objX + d * 17, groundPx - 4, 6, Math.PI * 0.15, Math.PI * 0.95);
+        ctx.stroke();
+      }
+    }
 
     // Axis labels
     ctx.fillStyle = '#484440';
