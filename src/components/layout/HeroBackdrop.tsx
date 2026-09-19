@@ -33,19 +33,34 @@ interface Orb {
   alpha: number;
 }
 
-const LINK_DISTANCE = 140;
-const MAX_DOTS = 72;
 const GOLD = '201, 179, 124';
+
+// Surface en pixels par point, et plafond, selon le rôle de la couche.
+// « ambient » couvre toute la fenêtre : il lui faut une maille très lâche,
+// sinon la couche discrète devient le sujet principal de la page.
+const DENSITY = {
+  dense:   { area: 11000, max: 110, link: 150 },
+  normal:  { area: 16000, max: 80,  link: 140 },
+  sparse:  { area: 22000, max: 60,  link: 130 },
+  ambient: { area: 46000, max: 46,  link: 170 },
+} as const;
 
 export interface HeroBackdropProps {
   className?: string;
   /** Couleur des points, en « r, g, b ». Par défaut, l'or de la marque. */
   accent?: string;
-  /** Densité : les bandes de titre sont plus courtes, on y met moins de points */
-  density?: 'normal' | 'sparse';
+  /** Maille du réseau */
+  density?: keyof typeof DENSITY;
+  /** Multiplie les opacités. 1 = réglage de base. */
+  intensity?: number;
 }
 
-export function HeroBackdrop({ className, accent = GOLD, density = 'normal' }: HeroBackdropProps) {
+export function HeroBackdrop({
+  className,
+  accent = GOLD,
+  density = 'normal',
+  intensity = 1,
+}: HeroBackdropProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>();
   const dotsRef = useRef<Dot[]>([]);
@@ -59,12 +74,13 @@ export function HeroBackdrop({ className, accent = GOLD, density = 'normal' }: H
     if (!ctx) return;
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const linkDistance = DENSITY[density].link;
     let width = 0;
     let height = 0;
 
     const seed = (w: number, h: number) => {
-      const divisor = density === 'sparse' ? 26000 : 16000;
-      const target = Math.min(MAX_DOTS, Math.round((w * h) / divisor));
+      const cfg = DENSITY[density];
+      const target = Math.min(cfg.max, Math.round((w * h) / cfg.area));
       const dots: Dot[] = [];
       for (let i = 0; i < target; i++) {
         dots.push({
@@ -87,7 +103,7 @@ export function HeroBackdrop({ className, accent = GOLD, density = 'normal' }: H
         vx: (i % 2 === 0 ? 1 : -1) * (0.09 + i * 0.035),
         vy: (i === 1 ? 1 : -1) * 0.055,
         r: Math.max(130, Math.min(w, h) * (0.32 + i * 0.1)),
-        alpha: 0.075 - i * 0.017,
+        alpha: (0.075 - i * 0.017) * intensity,
       }));
     };
 
@@ -124,9 +140,9 @@ export function HeroBackdrop({ className, accent = GOLD, density = 'normal' }: H
           const dx = dots[i].x - dots[j].x;
           const dy = dots[i].y - dots[j].y;
           const d2 = dx * dx + dy * dy;
-          if (d2 > LINK_DISTANCE * LINK_DISTANCE) continue;
-          const t = 1 - Math.sqrt(d2) / LINK_DISTANCE;
-          ctx.strokeStyle = `rgba(${accent}, ${t * 0.16})`;
+          if (d2 > linkDistance * linkDistance) continue;
+          const t = 1 - Math.sqrt(d2) / linkDistance;
+          ctx.strokeStyle = `rgba(${accent}, ${t * 0.2 * intensity})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(dots[i].x, dots[i].y);
@@ -137,10 +153,10 @@ export function HeroBackdrop({ className, accent = GOLD, density = 'normal' }: H
 
       // Points
       for (const dot of dots) {
-        let alpha = 0.42;
+        let alpha = 0.48 * intensity;
         if (pointer) {
           const d = Math.hypot(dot.x - pointer.x, dot.y - pointer.y);
-          if (d < 180) alpha += (1 - d / 180) * 0.45;
+          if (d < 180) alpha += (1 - d / 180) * 0.45 * intensity;
         }
         ctx.fillStyle = `rgba(${accent}, ${alpha})`;
         ctx.beginPath();
@@ -229,7 +245,7 @@ export function HeroBackdrop({ className, accent = GOLD, density = 'normal' }: H
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerleave', onPointerLeave);
     };
-  }, [accent, density]);
+  }, [accent, density, intensity]);
 
   return <canvas ref={canvasRef} aria-hidden className={className} />;
 }

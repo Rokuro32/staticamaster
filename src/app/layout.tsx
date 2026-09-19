@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { AmbientBackdrop } from '@/components/layout/AmbientBackdrop';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -56,6 +57,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#05080f" />
       </head>
       <body className="font-sans">
+        <AmbientBackdrop />
         <div className="min-h-screen flex flex-col">
           <Header />
           <main className="flex-1 flex flex-col">{children}</main>

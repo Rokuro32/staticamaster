@@ -12,7 +12,8 @@ import { cn } from '@/lib/utils';
 export function ChromeDecor({
   height = 'h-80',
   accentRgb,
-  density = 'sparse',
+  density = 'dense',
+  intensity = 1.75,
   fade = 'bottom',
   className,
 }: {
@@ -20,7 +21,9 @@ export function ChromeDecor({
   height?: string;
   /** Accent de la section, en « r, g, b » ; l'or de la marque par défaut */
   accentRgb?: string;
-  density?: 'normal' | 'sparse';
+  density?: 'dense' | 'normal' | 'sparse' | 'ambient';
+  /** Multiplie les opacités du réseau */
+  intensity?: number;
   /** Sens de l'estompage : vers le bas, ou en éventail depuis le haut */
   fade?: 'bottom' | 'radial' | 'none';
   className?: string;
@@ -43,6 +46,7 @@ export function ChromeDecor({
       <HeroBackdrop
         accent={accentRgb}
         density={density}
+        intensity={intensity}
         className={cn('absolute inset-0 h-full w-full', mask)}
       />
     </div>
