@@ -79,6 +79,23 @@ const BOOKS: { section: string; entries: Entry[] }[] = [
     ],
   },
   {
+    section: 'Réseaux complexes',
+    entries: [
+      {
+        authors: 'Newman, M. E. J.',
+        title: 'Networks',
+        publisher: 'Oxford University Press',
+        note: 'Chapitre 6 « Mathematics of networks » et chapitre 7 « Measures and metrics » : la base de la simulation sur les réseaux.',
+      },
+      {
+        authors: 'Barabási, A.-L.',
+        title: 'Network Science',
+        publisher: 'Cambridge University Press',
+        note: 'Disponible librement en ligne.',
+      },
+    ],
+  },
+  {
     section: 'Mécanismes et machines',
     entries: [
       {

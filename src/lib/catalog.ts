@@ -388,6 +388,24 @@ export const SIMULATIONS: Simulation[] = [
     ],
   },
 
+  {
+    id: 'reseaux-complexes',
+    categoryId: 'moderne',
+    title: 'Réseaux complexes',
+    summary: "Matrice d'adjacence, chemins, centralités : ce qu'on mesure sur un réseau.",
+    description:
+      "Construisez un réseau — aléatoire, sans échelle, petit monde, en communautés — puis changez de mesure et regardez ce qui change de place. Degré, proximité, intermédiarité, vecteur propre et PageRank ne classent pas les sommets dans le même ordre, et c'est tout l'intérêt. Cliquez un sommet pour voir ses mesures côte à côte, affichez la matrice d'adjacence et la distribution des degrés. D'après les chapitres 6 et 7 de « Networks » de Newman.",
+    icon: 'reseaux-complexes',
+    topics: [
+      "Matrice d'adjacence",
+      'Degré et densité',
+      'Chemins et composantes',
+      'Centralités',
+      'Clustering',
+      'Assortativité',
+    ],
+  },
+
   // ------------------------------------------------------------ Nucléaire
   {
     id: 'radioactivite',

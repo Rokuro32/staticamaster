@@ -138,6 +138,11 @@ const REGISTRY: Record<SimulationId, ComponentType> = {
     { ssr: false, loading: Loading }
   ),
 
+  'reseaux-complexes': dynamic(
+    () => import('./ComplexNetworksSimulator').then((m) => m.ComplexNetworksSimulator),
+    { ssr: false, loading: Loading }
+  ),
+
   // Physique nucléaire
   'radioactivite': dynamic(
     () => import('./radioactivity/RadioactivitySimulator').then((m) => m.RadioactivitySimulator),
