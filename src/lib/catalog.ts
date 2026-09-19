@@ -213,6 +213,24 @@ export const SIMULATIONS: Simulation[] = [
     ],
   },
 
+  {
+    id: 'mrua-2d',
+    categoryId: 'cinematique',
+    title: 'MRUA 2D — bac à sable',
+    summary: "Réglez l'accélération en x et en y, ou faites-la tourner, et voyez la trajectoire suivre.",
+    description:
+      "Un bac à sable pour l'accélération en deux dimensions. Trois lois au choix : une accélération constante avec ses composantes aₓ et a_y, une accélération toujours perpendiculaire à la vitesse, ou une rotation à rayon fixe avec accélération angulaire. L'accélération est décomposée en permanence en une part parallèle à la vitesse, qui change sa valeur, et une part perpendiculaire, qui courbe la trajectoire — et le cercle osculateur montre le rayon de courbure à chaque instant. C'est ce qui relie la parabole du tir balistique au cercle du mouvement circulaire.",
+    icon: 'mrua-2d',
+    topics: [
+      'MRUA vectoriel',
+      'Composantes aₓ et a_y',
+      'Accélération tangentielle',
+      'Accélération centripète',
+      'Rayon de courbure',
+      'Accélération angulaire',
+    ],
+  },
+
   // ------------------------------------------------------------- Dynamique
   {
     id: 'quantite-de-mouvement',

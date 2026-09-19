@@ -67,6 +67,11 @@ const REGISTRY: Record<SimulationId, ComponentType> = {
     { ssr: false, loading: Loading }
   ),
 
+  'mrua-2d': dynamic(
+    () => import('./Motion2DSandbox').then((m) => m.Motion2DSandbox),
+    { ssr: false, loading: Loading }
+  ),
+
   // Dynamique
   'quantite-de-mouvement': dynamic(
     () => import('./MomentumSimulator').then((m) => m.MomentumSimulator),
