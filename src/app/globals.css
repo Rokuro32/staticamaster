@@ -140,6 +140,45 @@ body[data-surface='light'] ::-webkit-scrollbar-thumb:hover {
   }
 }
 
+@layer components {
+  /* Balayage de couleur : un dégradé large qu'on fait glisser de gauche à
+     droite. On anime background-position plutôt que les couleurs elles-mêmes,
+     ce qui reste très peu coûteux. */
+  .gradient-sweep {
+    background-image: linear-gradient(
+      100deg,
+      transparent 0%,
+      rgba(201, 179, 124, 0.05) 18%,
+      rgba(201, 179, 124, 0.14) 32%,
+      rgba(156, 131, 73, 0.10) 48%,
+      rgba(201, 179, 124, 0.14) 64%,
+      rgba(201, 179, 124, 0.05) 82%,
+      transparent 100%
+    );
+    background-size: 260% 100%;
+    animation: sweep 22s linear infinite;
+  }
+
+  /* Second passage, plus lent et décalé : les deux se croisent, ce qui évite
+     l'impression de boucle. */
+  .gradient-sweep-slow {
+    background-image: linear-gradient(
+      80deg,
+      transparent 0%,
+      rgba(214, 197, 147, 0.10) 40%,
+      rgba(124, 103, 58, 0.09) 60%,
+      transparent 100%
+    );
+    background-size: 320% 100%;
+    animation: sweep 38s linear infinite reverse;
+  }
+}
+
+@keyframes sweep {
+  from { background-position: 260% 0; }
+  to { background-position: -160% 0; }
+}
+
 @layer utilities {
   /* Dégradé de texte pour les titres */
   .text-gradient {

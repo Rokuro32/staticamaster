@@ -23,14 +23,33 @@ interface Dot {
   r: number;
 }
 
+/** Halo diffus qui dérive lentement, en arrière-plan des points */
+interface Orb {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  r: number;
+  alpha: number;
+}
+
 const LINK_DISTANCE = 140;
 const MAX_DOTS = 72;
 const GOLD = '201, 179, 124';
 
-export function HeroBackdrop({ className }: { className?: string }) {
+export interface HeroBackdropProps {
+  className?: string;
+  /** Couleur des points, en « r, g, b ». Par défaut, l'or de la marque. */
+  accent?: string;
+  /** Densité : les bandes de titre sont plus courtes, on y met moins de points */
+  density?: 'normal' | 'sparse';
+}
+
+export function HeroBackdrop({ className, accent = GOLD, density = 'normal' }: HeroBackdropProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>();
   const dotsRef = useRef<Dot[]>([]);
+  const orbsRef = useRef<Orb[]>([]);
   const pointerRef = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
@@ -44,7 +63,8 @@ export function HeroBackdrop({ className }: { className?: string }) {
     let height = 0;
 
     const seed = (w: number, h: number) => {
-      const target = Math.min(MAX_DOTS, Math.round((w * h) / 16000));
+      const divisor = density === 'sparse' ? 26000 : 16000;
+      const target = Math.min(MAX_DOTS, Math.round((w * h) / divisor));
       const dots: Dot[] = [];
       for (let i = 0; i < target; i++) {
         dots.push({
@@ -58,6 +78,17 @@ export function HeroBackdrop({ className }: { className?: string }) {
         });
       }
       dotsRef.current = dots;
+
+      // Trois halos, chacun avec sa propre dérive : c'est ce qui donne le
+      // mouvement de fond, à une échelle bien plus lente que les points.
+      orbsRef.current = [0, 1, 2].map((i) => ({
+        x: w * (0.2 + 0.3 * i),
+        y: h * (0.3 + 0.2 * (i % 2)),
+        vx: (i % 2 === 0 ? 1 : -1) * (0.09 + i * 0.035),
+        vy: (i === 1 ? 1 : -1) * 0.055,
+        r: Math.max(130, Math.min(w, h) * (0.32 + i * 0.1)),
+        alpha: 0.075 - i * 0.017,
+      }));
     };
 
     const resize = () => {
@@ -76,6 +107,17 @@ export function HeroBackdrop({ className }: { className?: string }) {
       const dots = dotsRef.current;
       const pointer = pointerRef.current;
 
+      // Halos, d'abord : ils passent derrière tout le reste
+      for (const orb of orbsRef.current) {
+        const grad = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.r);
+        grad.addColorStop(0, `rgba(${accent}, ${orb.alpha})`);
+        grad.addColorStop(1, `rgba(${accent}, 0)`);
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(orb.x, orb.y, orb.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
       // Liens : d'autant plus visibles que les points sont proches
       for (let i = 0; i < dots.length; i++) {
         for (let j = i + 1; j < dots.length; j++) {
@@ -84,7 +126,7 @@ export function HeroBackdrop({ className }: { className?: string }) {
           const d2 = dx * dx + dy * dy;
           if (d2 > LINK_DISTANCE * LINK_DISTANCE) continue;
           const t = 1 - Math.sqrt(d2) / LINK_DISTANCE;
-          ctx.strokeStyle = `rgba(${GOLD}, ${t * 0.16})`;
+          ctx.strokeStyle = `rgba(${accent}, ${t * 0.16})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(dots[i].x, dots[i].y);
@@ -100,7 +142,7 @@ export function HeroBackdrop({ className }: { className?: string }) {
           const d = Math.hypot(dot.x - pointer.x, dot.y - pointer.y);
           if (d < 180) alpha += (1 - d / 180) * 0.45;
         }
-        ctx.fillStyle = `rgba(${GOLD}, ${alpha})`;
+        ctx.fillStyle = `rgba(${accent}, ${alpha})`;
         ctx.beginPath();
         ctx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);
         ctx.fill();
@@ -110,6 +152,15 @@ export function HeroBackdrop({ className }: { className?: string }) {
     const step = () => {
       const dots = dotsRef.current;
       const pointer = pointerRef.current;
+
+      for (const orb of orbsRef.current) {
+        orb.x += orb.vx;
+        orb.y += orb.vy;
+        if (orb.x < -orb.r) orb.x = width + orb.r;
+        if (orb.x > width + orb.r) orb.x = -orb.r;
+        if (orb.y < -orb.r) orb.y = height + orb.r;
+        if (orb.y > height + orb.r) orb.y = -orb.r;
+      }
 
       for (const dot of dots) {
         dot.x += dot.vx;
@@ -178,7 +229,7 @@ export function HeroBackdrop({ className }: { className?: string }) {
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerleave', onPointerLeave);
     };
-  }, []);
+  }, [accent, density]);
 
   return <canvas ref={canvasRef} aria-hidden className={className} />;
 }

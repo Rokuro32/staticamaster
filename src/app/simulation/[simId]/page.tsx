@@ -10,6 +10,7 @@ import {
   getThemeByCategory,
 } from '@/lib/catalog';
 import { SimulationRenderer } from '@/components/simulations/SimulationRenderer';
+import { ChromeDecor, hexToRgb } from '@/components/layout/ChromeDecor';
 import { SurfaceMode } from '@/components/layout/SurfaceMode';
 import { cn } from '@/lib/utils';
 import { Icon } from '@/components/icons/Icon';
@@ -51,13 +52,7 @@ export default function SimulationPage({ params }: PageProps) {
 
       {/* Bande sombre : identité et contexte */}
       <div className="relative bg-ink-950 overflow-hidden">
-        <div aria-hidden className="pointer-events-none absolute inset-0">
-          <div className="absolute inset-0 bg-grid bg-grid mask-fade-b" />
-          <div
-            className="absolute -top-40 right-1/4 w-[32rem] h-[32rem] rounded-full blur-[110px] opacity-[0.14]"
-            style={{ background: theme.accent }}
-          />
-        </div>
+        <ChromeDecor height="h-full" accentRgb={hexToRgb(theme.accent)} />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-10">
           <nav className="flex items-center gap-2 text-sm text-stone-500 mb-6">

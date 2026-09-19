@@ -9,6 +9,7 @@ import {
   getThemeByCategory,
 } from '@/lib/catalog';
 import { SimulationCard } from '@/components/catalog/SimulationCard';
+import { ChromeDecor, hexToRgb } from '@/components/layout/ChromeDecor';
 import { cn } from '@/lib/utils';
 import { Icon } from '@/components/icons/Icon';
 
@@ -43,13 +44,7 @@ export default function CategoryPage({ params }: PageProps) {
       style={{ '--accent': theme.accent } as CSSProperties}
     >
       {/* Décor */}
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-80 overflow-hidden">
-        <div className="absolute inset-0 bg-grid bg-grid mask-fade-b" />
-        <div
-          className="absolute -top-32 left-1/3 w-[34rem] h-[34rem] rounded-full blur-[110px] opacity-[0.13]"
-          style={{ background: theme.accent }}
-        />
-      </div>
+      <ChromeDecor accentRgb={hexToRgb(theme.accent)} />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Link

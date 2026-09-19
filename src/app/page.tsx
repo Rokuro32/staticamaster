@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
 import { CatalogBrowser } from '@/components/catalog/CatalogBrowser';
-import { HeroBackdrop } from '@/components/layout/HeroBackdrop';
+import { ChromeDecor } from '@/components/layout/ChromeDecor';
 import {
   CATEGORIES,
   SIMULATIONS,
@@ -15,13 +15,7 @@ export default function HomePage() {
   return (
     <div className="relative">
       {/* Décor du hero */}
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[560px] overflow-hidden">
-        <div className="absolute inset-0 bg-grid bg-grid mask-fade" />
-        <HeroBackdrop className="absolute inset-0 h-full w-full mask-fade" />
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[46rem] h-[46rem] rounded-full bg-gold-400/[0.13] blur-[110px] animate-drift" />
-        <div className="absolute -top-24 right-[12%] w-[26rem] h-[26rem] rounded-full bg-gold-600/[0.12] blur-[100px] animate-drift" />
-        <div className="absolute top-10 left-[8%] w-[22rem] h-[22rem] rounded-full bg-gold-300/[0.07] blur-[100px] animate-drift" />
-      </div>
+      <ChromeDecor height="h-[560px]" density="normal" fade="radial" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero */}

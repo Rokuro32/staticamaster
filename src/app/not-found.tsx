@@ -1,13 +1,11 @@
 import Link from 'next/link';
 import { Icon } from '@/components/icons/Icon';
+import { ChromeDecor } from '@/components/layout/ChromeDecor';
 
 export default function NotFound() {
   return (
     <div className="relative flex-1 flex items-center justify-center overflow-hidden">
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-grid bg-grid mask-fade" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[34rem] h-[34rem] rounded-full bg-gold-400/[0.1] blur-[110px]" />
-      </div>
+      <ChromeDecor height="h-full" fade="radial" />
 
       <div className="relative max-w-xl mx-auto px-4 py-28 text-center animate-fade-up">
         <Icon name="recherche-vide" size={44} className="mx-auto mb-5 text-gold-500" />
