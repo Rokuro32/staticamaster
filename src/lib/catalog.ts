@@ -346,6 +346,24 @@ export const SIMULATIONS: Simulation[] = [
     topics: ['Onde P, QRS, T', 'Dépolarisation', 'Rythme cardiaque', 'Biopotentiels'],
   },
 
+  {
+    id: 'electrostatique',
+    categoryId: 'electricite',
+    title: 'Électrostatique — bac à sable',
+    summary: "Posez des charges, appuyez sur play, et laissez Coulomb travailler.",
+    description:
+      "Un bac à sable : on clique pour poser des charges positives ou négatives, on règle leur intensité et leur masse, on en fixe certaines, puis on lance la simulation. Les charges s'attirent et se repoussent en 1/r², les traces montrent leurs trajectoires, et les flèches donnent la force résultante sur chacune — ou, si on le demande, chaque contribution séparément. Le champ électrique s'affiche sur une grille, et le bilan d'énergie montre le va-et-vient entre potentielle et cinétique.",
+    icon: 'electrostatique',
+    topics: [
+      'Loi de Coulomb',
+      'Attraction et répulsion',
+      'Superposition des forces',
+      'Champ électrique',
+      'Énergie potentielle',
+      'Équilibre',
+    ],
+  },
+
   // ------------------------------------------------------ Physique moderne
   {
     id: 'relativite-restreinte',

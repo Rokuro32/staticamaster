@@ -120,6 +120,11 @@ const REGISTRY: Record<SimulationId, ComponentType> = {
     { ssr: false, loading: Loading }
   ),
 
+  'electrostatique': dynamic(
+    () => import('./ElectrostaticsSandbox').then((m) => m.ElectrostaticsSandbox),
+    { ssr: false, loading: Loading }
+  ),
+
   // Physique moderne
   'relativite-restreinte': dynamic(
     () => import('./RelativitySimulator').then((m) => m.RelativitySimulator),
