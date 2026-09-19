@@ -73,6 +73,11 @@ const REGISTRY: Record<SimulationId, ComponentType> = {
     { ssr: false, loading: Loading }
   ),
 
+  'travail-et-energie': dynamic(
+    () => import('./WorkEnergySimulator').then((m) => m.WorkEnergySimulator),
+    { ssr: false, loading: Loading }
+  ),
+
   // Mécanismes et machines
   'train-planetaire': dynamic(
     () => import('./PlanetaryGearSimulator').then((m) => m.PlanetaryGearSimulator),

@@ -60,6 +60,7 @@ const GLYPHS: Record<string, ReactNode> = {
   'code': <><path d="M8.5 7.5 3 12l5.5 4.5"/><path d="M15.5 7.5 21 12l-5.5 4.5"/><path d="M13.5 4.5 10.5 19.5"/></>,
   'modele-standard': <><rect x="2.5" y="5" width="6" height="6" rx="1"/><rect x="2.5" y="13" width="6" height="6" rx="1"/><rect x="9.5" y="5" width="6" height="6" rx="1"/><rect x="9.5" y="13" width="6" height="6" rx="1"/><rect x="16.5" y="5" width="5" height="14" rx="1"/></>,
   'reseaux-complexes': <><path d="M6.6 7.4 10.2 10.9"/><path d="M16.2 7 13.7 10.6"/><path d="M10.5 14.4 7.1 17.1"/><path d="M13.6 14.3 16.9 16.5"/><path d="M7 5.8h9"/><circle cx="5" cy="5.8" r="2"/><circle cx="18" cy="5.8" r="2"/><circle cx="12" cy="12.5" r="2.4"/><circle cx="5.5" cy="18.5" r="2"/><circle cx="18.5" cy="18" r="2"/></>,
+  'travail-et-energie': <><path d="M2.5 18.5h19"/><rect x="4.5" y="12" width="6" height="6" rx="1"/><path d="M10.5 15 18 9"/><path d="M14.2 9.4 18.4 8.6l-.8 4.2"/><path d="M6 21h11"/><path d="M15.4 19.6 17.4 21l-2 1.4"/></>,
   'recherche-vide': <><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.2 15.2 20.5 20.5"/><path d="M8 10.5h5"/></>,
 };
 

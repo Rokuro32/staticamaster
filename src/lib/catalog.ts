@@ -232,6 +232,24 @@ export const SIMULATIONS: Simulation[] = [
     ],
   },
 
+  {
+    id: 'travail-et-energie',
+    categoryId: 'dynamique',
+    title: 'Travail et énergie',
+    summary: "Ce qu'une force transfère, et où l'énergie passe quand elle semble disparaître.",
+    description:
+      "Deux volets. Dans le premier, on fait tourner l'angle d'une force sur un bloc : le travail devient moteur, puis nul à 90°, puis résistant — et la barre du travail net colle toujours exactement à la variation d'énergie cinétique. Dans le second, un bloc est lâché sur une piste à deux collines : l'énergie bascule entre cinétique et potentielle, et le frottement la verse dans un troisième bac sans que la somme des trois ne bouge jamais.",
+    icon: 'travail-et-energie',
+    topics: [
+      'Travail W = F·d·cos θ',
+      'Travail moteur et résistant',
+      "Théorème de l'énergie cinétique",
+      'Énergie potentielle',
+      'Conservation',
+      'Puissance',
+    ],
+  },
+
   // ----------------------------------------------------------- Mécanismes
   {
     id: 'train-planetaire',
