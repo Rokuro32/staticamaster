@@ -164,6 +164,19 @@ const REGISTRY: Record<SimulationId, ComponentType> = {
     { ssr: false, loading: Loading }
   ),
 
+  'curietherapie-tg43': dynamic(
+    () => import('./BrachyTG43Simulator').then((m) => m.BrachyTG43Simulator),
+    { ssr: false, loading: Loading }
+  ),
+  'radiotherapie-externe': dynamic(
+    () => import('./EBRTDoseSimulator').then((m) => m.EBRTDoseSimulator),
+    { ssr: false, loading: Loading }
+  ),
+  'dommages-adn': dynamic(
+    () => import('./DNADamageSimulator').then((m) => m.DNADamageSimulator),
+    { ssr: false, loading: Loading }
+  ),
+
   // Thermodynamique et fluides
   'rayonnement-thermique': dynamic(
     () => import('./ThermalRadiationSimulator').then((m) => m.ThermalRadiationSimulator),

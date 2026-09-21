@@ -472,6 +472,58 @@ export const SIMULATIONS: Simulation[] = [
     topics: ['Demi-vie', 'Rayonnements α β γ', 'Chaînes de désintégration', 'Fission', 'Fusion', 'Cyclotron'],
   },
 
+  {
+    id: 'curietherapie-tg43',
+    categoryId: 'nucleaire',
+    title: 'Curiethérapie — TG-43',
+    summary: "Le calcul de dose autour d'une source scellée, facteur par facteur.",
+    description:
+      "Le formalisme TG-43 de l'AAPM appliqué à des géométries simples : source unique, cathéter à positions alignées, implant plan. Chaque terme du produit est affiché séparément — intensité, constante de débit, fonction géométrique, fonction radiale, anisotropie — pour qu'on voie lequel domine et où. Comparez la source linéaire à l'approximation ponctuelle, et l'Ir-192 à l'I-125 pour mesurer ce que l'énergie change. Outil pédagogique : jeux de données de consensus arrondis, aucun usage clinique.",
+    icon: 'curietherapie-tg43',
+    topics: [
+      'Formalisme TG-43',
+      'Fonction géométrique',
+      'Fonction de dose radiale',
+      'Anisotropie',
+      'Superposition',
+      'Gradient de dose',
+    ],
+  },
+  {
+    id: 'radiotherapie-externe',
+    categoryId: 'nucleaire',
+    title: 'Radiothérapie externe',
+    summary: "Rendement en profondeur, pénombre et calcul d'unités moniteur.",
+    description:
+      "Un fantôme d'eau, un à quatre faisceaux de photons, et le calcul de dose qui va avec. Le rendement en profondeur combine build-up, atténuation et loi inverse du carré ; le profil latéral montre le plateau et la pénombre. Passez d'un faisceau unique à deux faisceaux opposés puis à une boîte à quatre champs pour voir la dose se concentrer au centre. Le tableau remonte jusqu'aux unités moniteur à délivrer. Outil pédagogique : modèle paramétrique calé sur des valeurs typiques, aucun usage clinique.",
+    icon: 'radiotherapie-externe',
+    topics: [
+      'Rendement en profondeur',
+      'Build-up',
+      'Pénombre',
+      'Facteur de diffusion',
+      'Faisceaux opposés',
+      'Unités moniteur',
+    ],
+  },
+  {
+    id: 'dommages-adn',
+    categoryId: 'nucleaire',
+    title: "Rayonnement et ADN",
+    summary: "Cassures simple et double brin, par effet direct ou indirect.",
+    description:
+      "Comment un rayonnement casse l'ADN. L'effet direct ionise la molécule elle-même ; l'effet indirect ionise l'eau et produit un radical •OH qui doit atteindre l'ADN en quelques nanomètres. La cassure double brin n'est pas un événement à part : c'est une coïncidence entre deux cassures simple brin sur des brins opposés, et le rapport CSB/CDB émerge donc de la structure de trace. Changez le TEL, ajoutez des capteurs de radicaux, retirez l'oxygène, et regardez le bilan changer.",
+    icon: 'dommages-adn',
+    topics: [
+      'Effet direct',
+      'Effet indirect',
+      'Radical hydroxyle',
+      'Cassure simple brin',
+      'Cassure double brin',
+      'Effet oxygène',
+    ],
+  },
+
   // -------------------------------------------------- Thermo et fluides
   {
     id: 'rayonnement-thermique',
