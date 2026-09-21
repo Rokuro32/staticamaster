@@ -13,6 +13,11 @@ const lowMemory = process.env.NEXT_BUILD_LOW_MEM === '1';
 
 const nextConfig = {
   reactStrictMode: true,
+  // Next abandonne la collecte des données de page au bout de 60 s par défaut.
+  // Sur une machine chargée, ce délai est atteint alors que la compilation
+  // s'est bien passée. On relève le plafond : c'est un garde-fou, pas un
+  // réglage de performance, donc l'augmenter ne coûte rien ailleurs.
+  staticPageGenerationTimeout: 300,
   ...(lowMemory ? { experimental: { cpus: 1, workerThreads: false } } : {}),
 }
 
