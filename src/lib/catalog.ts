@@ -357,11 +357,18 @@ export const SIMULATIONS: Simulation[] = [
     id: 'electrocardiogramme',
     categoryId: 'electricite',
     title: 'Électrocardiogramme (ECG)',
-    summary: "Le signal électrique du cœur, onde par onde.",
+    summary: "Un seul vecteur cardiaque, et toutes les dérivations en découlent.",
     description:
-      "Suivez la genèse du tracé ECG : onde P, complexe QRS et onde T mis en relation avec la dépolarisation et la repolarisation du muscle cardiaque, avec plusieurs rythmes à comparer.",
+      "Le cœur qui se dépolarise est un dipôle électrique, et chaque dérivation n'est que la projection de son vecteur sur un axe. Tout part donc d'un seul modèle : le tracé sur papier étalonné, la boucle vectorielle, les six dérivations frontales et l'axe électrique. La loi d'Einthoven n'y est pas codée à la main, elle tombe toute seule — le contrôle à l'écran le montre. Les troubles de conduction s'obtiennent en modifiant le trajet de l'influx, jamais le dessin du tracé.",
     icon: 'electrocardiogramme',
-    topics: ['Onde P, QRS, T', 'Dépolarisation', 'Rythme cardiaque', 'Biopotentiels'],
+    topics: [
+      'Dipôle et projection',
+      'Onde P, QRS, T',
+      'Boucle vectorielle',
+      'Loi d\u2019Einthoven',
+      'Axe électrique',
+      'Troubles de conduction',
+    ],
   },
 
   {

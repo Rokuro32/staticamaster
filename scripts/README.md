@@ -19,3 +19,25 @@ Ce qui n'est volontairement pas touché : les couleurs calculées depuis une
 grandeur physique (longueur d'onde → couleur visible, température → couleur du
 corps noir). Elles passent par `rgb()`/`hsl()` interpolés et encodent une
 information réelle ; les recolorer serait faux.
+
+## verify-ecg.mjs
+
+Contrôles du modèle ECG (`src/lib/ecg.ts`) :
+
+```
+node scripts/verify-ecg.mjs
+```
+
+Contrairement aux codemods ci-dessus, ce script est rejouable et sans effet de
+bord. Le modèle du vecteur cardiaque est séparé du composant React précisément
+pour ça : il se compile seul et se vérifie sans navigateur.
+
+Les contrôles portent sur des identités qui doivent tomber exactement — la loi
+d'Einthoven II = I + III, et les trois identités de Goldberger pour les
+dérivations augmentées — puis sur des ordres de grandeur physiologiques.
+
+C'est le contrôle de Goldberger qui a révélé que les dérivations augmentées
+avaient d'abord été traitées comme des projections unitaires, alors que leur
+vecteur de dérivation vaut √3/2 de celui des dérivations des membres. Une
+identité qui doit valoir zéro à l'arrondi machine près ne laisse rien passer ;
+une simple inspection visuelle du tracé n'aurait jamais montré ces 13 %.
