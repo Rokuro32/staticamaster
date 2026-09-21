@@ -6,12 +6,15 @@ import {
   CATEGORIES,
   SIMULATIONS,
   TOTAL_SIMULATIONS,
+  getFeaturedSimulation,
   getThemeByCategory,
 } from '@/lib/catalog';
 import { cn } from '@/lib/utils';
 import { Icon } from '@/components/icons/Icon';
 
 export default function HomePage() {
+  const featured = getFeaturedSimulation();
+
   return (
     <div className="relative">
       {/* Décor du hero */}
@@ -55,11 +58,11 @@ export default function HomePage() {
               Parcourir le catalogue
             </a>
             <Link
-              href={`/simulation/${SIMULATIONS[0].id}`}
+              href={`/simulation/${featured.id}`}
               className="px-5 py-2.5 rounded-xl text-sm font-medium text-stone-200
                          ring-1 ring-inset ring-gold-400/25 hover:bg-gold-400/[0.07] transition-colors"
             >
-              Commencer par {SIMULATIONS[0].title}
+              Commencer par {featured.title}
             </Link>
           </div>
         </section>

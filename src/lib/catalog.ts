@@ -678,4 +678,16 @@ export function getCatalog(): { category: Category; simulations: Simulation[] }[
 
 export const TOTAL_SIMULATIONS = SIMULATIONS.length;
 
+/**
+ * Simulation mise en avant sur la page d'accueil. Elle est nommée
+ * explicitement plutôt que prise en tête de SIMULATIONS : l'ordre du catalogue
+ * suit les sections, et ce n'est pas lui qui doit décider de la vitrine.
+ */
+export const FEATURED_SIMULATION_ID = 'modele-standard';
+
+export function getFeaturedSimulation(): Simulation {
+  const featured = getSimulationById(FEATURED_SIMULATION_ID);
+  return featured ?? SIMULATIONS[0];
+}
+
 export type { Category, CategoryId, CategoryTheme, Simulation, SimulationId };
