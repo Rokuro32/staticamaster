@@ -2,8 +2,12 @@ import { HeroBackdrop } from './HeroBackdrop';
 import { cn } from '@/lib/utils';
 
 /**
- * Le décor des bandes sombres : la grille, deux balayages de dégradé qui
- * glissent de gauche à droite, et le champ de points animé.
+ * Le décor des bandes sombres : deux balayages de dégradé qui glissent de
+ * gauche à droite, et le champ de points animé.
+ *
+ * La grille, elle, appartient à HeaderBleed : elle doit descendre aussi bas
+ * que la couleur du header et s'éteindre avec elle, ce qu'une couche bornée à
+ * la hauteur du décor ne pouvait pas faire.
  *
  * Il est partagé par l'accueil, les pages de section, les pages de simulation
  * et les pages d'information — ce qui garantit qu'elles bougent toutes de la
@@ -40,7 +44,6 @@ export function ChromeDecor({
         className
       )}
     >
-      <div className={cn('absolute inset-0 bg-grid bg-grid', mask)} />
       <div className={cn('absolute inset-0 gradient-sweep', mask)} />
       <div className={cn('absolute inset-0 gradient-sweep-slow', mask)} />
       <HeroBackdrop

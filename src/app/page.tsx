@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react';
 import { CatalogBrowser } from '@/components/catalog/CatalogBrowser';
 import { ChromeDecor } from '@/components/layout/ChromeDecor';
 import { HeaderBleed } from '@/components/layout/HeaderBleed';
-import { PhysicsMotifs } from '@/components/layout/PhysicsMotifs';
+import { PhysicsMotifs, buildBackdrop } from '@/components/layout/PhysicsMotifs';
 import {
   CATEGORIES,
   SIMULATIONS,
@@ -22,6 +22,8 @@ export default function HomePage() {
       {/* La teinte du hero descend bien plus bas que son décor : c'est elle
           qui supprime la coupure entre le haut de page et le contenu. */}
       <HeaderBleed height={1500} strength={0.11} />
+      {/* Le catalogue fait la page longue : les figures le suivent jusqu'en bas */}
+      <PhysicsMotifs placements={buildBackdrop(8200)} />
 
       {/* Décor du hero */}
       <ChromeDecor height="h-[760px]" density="normal" fade="radial" />
@@ -74,14 +76,8 @@ export default function HomePage() {
         </section>
 
         {/* Sections en un coup d'œil */}
-        <section className="relative pb-20">
-          <PhysicsMotifs
-            placements={[
-              { name: 'vertex', top: '-4%', right: '-7%', size: 330, opacity: 0.18, desktopOnly: true },
-              { name: 'gluon', top: '30%', left: '-8%', size: 300, opacity: 0.14, delay: '-13s', desktopOnly: true },
-            ]}
-          />
-          <div className="relative grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+        <section className="pb-20">
+          <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
             {CATEGORIES.map((category, i) => {
               const theme = getThemeByCategory(category.id);
               const count = SIMULATIONS.filter(

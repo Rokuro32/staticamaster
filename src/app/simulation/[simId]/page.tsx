@@ -12,6 +12,7 @@ import {
 import { SimulationRenderer } from '@/components/simulations/SimulationRenderer';
 import { ChromeDecor, hexToRgb } from '@/components/layout/ChromeDecor';
 import { HeaderBleed } from '@/components/layout/HeaderBleed';
+import { PhysicsMotifs, buildBackdrop } from '@/components/layout/PhysicsMotifs';
 import { cn } from '@/lib/utils';
 import { Icon } from '@/components/icons/Icon';
 
@@ -52,6 +53,10 @@ export default function SimulationPage({ params }: PageProps) {
           deux ambiances à raccorder — la couleur de section descend d'un seul
           tenant sur toute la page. */}
       <HeaderBleed accentRgb={hexToRgb(theme.accent)} height={1500} strength={0.13} />
+      <PhysicsMotifs
+        placements={buildBackdrop(4600)}
+        accentRgb={hexToRgb(theme.accent)}
+      />
 
       {/* Bande d'en-tête : identité et contexte. Sans fond propre, pour
           laisser passer le dégradé. */}

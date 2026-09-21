@@ -177,10 +177,12 @@
      une impulsion court le long du diagramme. La respiration passe par
      transform, donc par le compositeur ; l'impulsion repeint le seul tracé
      concerné. Aucune boucle JavaScript. */
+  /* Pas de will-change : le décor compte maintenant plusieurs dizaines de
+     figures, et en promouvoir autant en couches de composition coûterait plus
+     de mémoire que l'animation n'en fait gagner. */
   .motif-drift {
     animation: motif-drift 34s ease-in-out infinite;
     transform-origin: 50% 50%;
-    will-change: transform;
   }
 
   /* Invisible au repos : seule l'animation la révèle. Sous « réduire les

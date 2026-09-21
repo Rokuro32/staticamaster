@@ -1,10 +1,14 @@
 import Link from 'next/link';
 import { Icon } from '@/components/icons/Icon';
 import { ChromeDecor } from '@/components/layout/ChromeDecor';
+import { HeaderBleed } from '@/components/layout/HeaderBleed';
+import { PhysicsMotifs, buildBackdrop } from '@/components/layout/PhysicsMotifs';
 
 export default function NotFound() {
   return (
     <div className="relative flex-1 flex items-center justify-center overflow-hidden">
+      <HeaderBleed height={900} strength={0.1} />
+      <PhysicsMotifs placements={buildBackdrop(1000)} />
       <ChromeDecor height="h-full" fade="radial" />
 
       <div className="relative max-w-xl mx-auto px-4 py-28 text-center animate-fade-up">

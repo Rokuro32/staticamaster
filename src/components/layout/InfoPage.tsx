@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { INFO_LINKS } from '@/lib/siteNav';
 import { ChromeDecor } from '@/components/layout/ChromeDecor';
 import { HeaderBleed } from '@/components/layout/HeaderBleed';
+import { PhysicsMotifs, buildBackdrop } from '@/components/layout/PhysicsMotifs';
 import { cn } from '@/lib/utils';
 import { Icon } from '@/components/icons/Icon';
 
@@ -22,6 +23,7 @@ export function InfoPage({
   return (
     <div className="relative">
       <HeaderBleed height={1150} strength={0.1} />
+      <PhysicsMotifs placements={buildBackdrop(3200)} />
       <ChromeDecor height="h-[400px]" />
 
       <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

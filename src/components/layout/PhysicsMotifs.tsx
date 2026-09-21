@@ -68,6 +68,19 @@ function spiral(cx: number, cy: number, turns = 2.6, r1 = 40, steps = 140): stri
   return d.trim();
 }
 
+/** Paquet d'ondes : une oscillation sous son enveloppe gaussienne */
+function packet(x0: number, y: number, x1: number, amp = 26, k = 0.42): string {
+  let d = '';
+  for (let i = 0; i <= 120; i++) {
+    const x = x0 + ((x1 - x0) * i) / 120;
+    const u = (x - (x0 + x1) / 2) / ((x1 - x0) / 4.2);
+    const env = Math.exp(-u * u);
+    const yy = y - amp * env * Math.sin(k * (x - x0));
+    d += `${i === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${yy.toFixed(1)} `;
+  }
+  return d.trim();
+}
+
 /** Une figure : son tracé de fond, et le chemin que parcourt l'impulsion */
 interface Figure {
   box: [number, number];
@@ -166,6 +179,60 @@ const FIGURES: Record<string, Figure> = {
     trace: spiral(55, 55),
     traceLen: 340,
   },
+
+  // Matérialisation : un photon se convertit en une paire électron-positron
+  pair: {
+    box: [130, 110],
+    paths: [
+      wave(6, 55, 64),
+      'M 64 55 C 86 46, 106 30, 126 16',
+      'M 64 55 C 86 64, 106 80, 126 94',
+    ],
+    dots: [[64, 55]],
+    trace: 'M 64 55 C 86 46, 106 30, 126 16',
+    traceLen: 76,
+  },
+
+  // Désintégration bêta : un W emporte la charge et se défait en deux leptons
+  beta: {
+    box: [130, 106],
+    paths: [
+      'M 4 22 L 62 22',
+      'M 62 22 L 126 22',
+      waveV(62, 22, 68, 5, 13),
+      'M 62 68 L 126 52',
+      'M 62 68 L 126 88',
+    ],
+    dots: [
+      [62, 22],
+      [62, 68],
+    ],
+    trace: 'M 4 22 L 62 22 L 126 22',
+    traceLen: 122,
+  },
+
+  // Paquet d'ondes : une particule libre, localisée mais pas ponctuelle
+  packet: {
+    box: [140, 90],
+    paths: [packet(8, 48, 132), 'M 4 48 L 136 48'],
+    trace: packet(8, 48, 132),
+    traceLen: 300,
+  },
+
+  // Interférence : deux sources, et les lieux où les fronts se rencontrent
+  interference: {
+    box: [140, 110],
+    paths: [16, 28, 40, 52, 64].flatMap((r) => [
+      `M 42 ${55 - r} A ${r} ${r} 0 0 1 42 ${55 + r}`,
+      `M 98 ${55 - r} A ${r} ${r} 0 0 0 98 ${55 + r}`,
+    ]),
+    dots: [
+      [42, 55],
+      [98, 55],
+    ],
+    trace: 'M 42 3 A 52 52 0 0 1 42 107',
+    traceLen: 164,
+  },
 };
 
 export type MotifName = keyof typeof FIGURES;
@@ -181,8 +248,14 @@ export interface Placement {
   opacity: number;
   /** Décalage des animations, pour que rien ne batte à l'unisson */
   delay?: string;
-  /** Masqué sous 768 px : sur mobile le contenu occupe déjà toute la largeur */
-  desktopOnly?: boolean;
+  /**
+   * L'impulsion court-elle le long du diagramme ?
+   *
+   * Contrairement à la dérive, qui part au compositeur, elle repeint son tracé
+   * à chaque image. On la réserve donc aux figures du haut : plus bas, elles
+   * sont de toute façon trop pâles pour qu'on la distingue.
+   */
+  pulse?: boolean;
 }
 
 function Motif({ p, accentRgb }: { p: Placement; accentRgb: string }) {
@@ -191,10 +264,7 @@ function Motif({ p, accentRgb }: { p: Placement; accentRgb: string }) {
 
   return (
     <div
-      className={cn(
-        'absolute motif-drift',
-        p.desktopOnly && 'hidden md:block'
-      )}
+      className="absolute motif-drift"
       style={{
         top: p.top,
         left: p.left,
@@ -224,6 +294,7 @@ function Motif({ p, accentRgb }: { p: Placement; accentRgb: string }) {
           <circle key={i} cx={cx} cy={cy} r={2.1} fill="currentColor" stroke="none" />
         ))}
         {/* L'impulsion qui court le long du diagramme */}
+        {p.pulse !== false && (
         <path
           d={f.trace}
           className="motif-pulse"
@@ -236,23 +307,30 @@ function Motif({ p, accentRgb }: { p: Placement; accentRgb: string }) {
             } as React.CSSProperties
           }
         />
+        )}
       </svg>
     </div>
   );
 }
 
 /**
- * Pose un jeu de motifs en fond de la section qui l'englobe. Le parent doit
- * être en `relative` et le contenu au-dessus en `relative` lui aussi.
+ * Masque latéral : les motifs ne vivent que sur les bords de la page et
+ * s'éteignent avant d'atteindre la colonne de contenu.
  *
- * À n'employer que derrière une grille de cartes homogène, jamais derrière du
- * texte au fil de l'eau : aux largeurs courantes il n'y a pas de gouttière
- * libre, donc un motif posé sur une zone de texte finit par la traverser. Les
- * cartes, elles, sont opaques à 72 % — le motif s'y réduit à un fantôme et ne
- * se lit franchement que dans les intervalles.
- *
- * Le conteneur est en `overflow-hidden` : un motif débordant vers le haut est
- * coupé net au lieu de remonter sur le titre de la section.
+ * C'est ce qui permet de les poser sans se demander ce qu'il y a dessous. Aux
+ * largeurs courantes il n'existe pas de gouttière — à 1334 px de fenêtre le
+ * conteneur en fait 1280 — donc un motif placé sur le côté finirait forcément
+ * par traverser du texte. Le masque règle le problème à la source : au centre,
+ * il n'y a tout simplement rien à afficher. Sur un écran large les figures
+ * respirent dans la marge ; sur un écran étroit elles se réduisent d'elles-
+ * mêmes à une trace en lisière.
+ */
+const EDGE_MASK =
+  'linear-gradient(to right, #000 0%, transparent 19%, transparent 81%, #000 100%)';
+
+/**
+ * Pose le décor de motifs sur toute la descente du header. Le parent doit être
+ * en `relative`, et le contenu au-dessus en `relative` lui aussi.
  */
 export function PhysicsMotifs({
   placements,
@@ -267,9 +345,20 @@ export function PhysicsMotifs({
     <div
       aria-hidden
       className={cn(
+        // Le calque couvre toute la page. Ce qui dépasse en bas est coupé :
+        // c'est ce qui permet de poser un rythme en pixels sans connaître la
+        // longueur de la page à l'avance.
+        //
+        // Rien sous 768 px : le contenu y occupe toute la largeur, il n'y a
+        // aucune lisière où poser un décor.
         'pointer-events-none absolute inset-0 overflow-hidden',
+        'hidden md:block',
         className
       )}
+      style={{
+        WebkitMaskImage: EDGE_MASK,
+        maskImage: EDGE_MASK,
+      }}
     >
       {placements.map((p, i) => (
         <Motif key={`${p.name}-${i}`} p={p} accentRgb={accentRgb} />
@@ -278,31 +367,65 @@ export function PhysicsMotifs({
   );
 }
 
+/** L'ordre dans lequel les dix figures se succèdent en descendant */
+const ORDER: MotifName[] = [
+  'vertex',
+  'packet',
+  'gluon',
+  'pair',
+  'interference',
+  'loop',
+  'beta',
+  'track',
+  'field',
+  'exchange',
+];
+
+/** Rythme vertical : une figure tous les tant de pixels */
+const STEP = 330;
+
 /**
- * Le motif dominant d'une section. Il change avec le sujet — un ressort de
- * gluon en physique moderne, des lignes de champ en électricité — ce qui
- * donne à chaque page un fond qui lui appartient.
+ * Le décor commun à toutes les pages : les dix figures se succèdent de haut en
+ * bas, puis le jeu se rejoue tant qu'il reste de la page.
+ *
+ * Le même jeu partout — c'est une signature, pas une illustration du sujet de
+ * la page.
+ *
+ * Trois précautions pour que la répétition ne se voie pas. Le côté ne suit pas
+ * la simple parité du rang : il décale d'un cran à chaque cycle, sinon une
+ * figure donnée reviendrait toujours du même bord, le jeu comptant un nombre
+ * pair d'entrées. La taille et le décalage d'animation sont tirés du rang par
+ * des pas premiers avec la longueur du jeu, de sorte qu'aucun des deux ne se
+ * remet en phase avec lui.
+ *
+ * L'opacité décroît avec la profondeur : rien ne s'arrête, tout s'éteint,
+ * comme le dégradé du header.
+ *
+ * `depth` est la hauteur qu'on cherche à couvrir, en pixels. Elle n'a pas
+ * besoin d'être juste : ce qui dépasse la page est coupé par le calque.
  */
-export function motifsForCategory(categoryId: string): Placement[] {
-  const byCategory: Record<string, [MotifName, MotifName]> = {
-    moderne: ['vertex', 'gluon'],
-    nucleaire: ['track', 'loop'],
-    electricite: ['field', 'exchange'],
-    ondes: ['field', 'vertex'],
-    cinematique: ['track', 'exchange'],
-    dynamique: ['exchange', 'track'],
-    statique: ['exchange', 'field'],
-    mathematiques: ['track', 'vertex'],
-    mecanismes: ['gluon', 'track'],
-    'thermo-fluides': ['track', 'field'],
-  };
+export function buildBackdrop(depth: number): Placement[] {
+  const count = Math.max(1, Math.ceil(depth / STEP));
+  const out: Placement[] = [];
 
-  const [first, second] = byCategory[categoryId] ?? ['vertex', 'field'];
+  for (let i = 0; i < count; i++) {
+    const t = count > 1 ? i / (count - 1) : 0; // 0 en haut, 1 tout en bas
+    const cycle = Math.floor(i / ORDER.length);
+    const opacity = 0.05 + 0.17 * Math.pow(1 - t, 1.3);
 
-  return [
-    { name: first, top: '2%', right: '-9%', size: 320, opacity: 0.2, desktopOnly: true },
-    { name: second, top: '55%', left: '-9%', size: 290, opacity: 0.16, delay: '-9s', desktopOnly: true },
-  ];
+    out.push({
+      name: ORDER[i % ORDER.length],
+      top: `${i * STEP + 40}px`,
+      [(i + cycle) % 2 === 0 ? 'right' : 'left']: `${((i * 7) % 5) - 2}%`,
+      size: 260 + ((i * 3) % 5) * 22,
+      opacity: Number(opacity.toFixed(3)),
+      delay: `-${((i * 7.3) % 34).toFixed(1)}s`,
+      // en dessous, la figure est trop pâle pour qu'on distingue l'impulsion
+      pulse: opacity > 0.1,
+    });
+  }
+
+  return out;
 }
 
 export default PhysicsMotifs;
