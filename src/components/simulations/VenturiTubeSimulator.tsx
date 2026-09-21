@@ -345,7 +345,7 @@ export function VenturiTubeSimulator() {
   const cavitation = p2 < 0;
 
   return (
-    <section className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+    <section className="max-w-4xl mx-auto px-6 sm:px-8 py-8 space-y-8 bg-white rounded-xl shadow-lg">
       <div className="text-center space-y-2">
         <h2 className="text-3xl font-bold text-stone-900">
           Tube de Venturi

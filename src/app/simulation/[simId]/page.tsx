@@ -11,7 +11,7 @@ import {
 } from '@/lib/catalog';
 import { SimulationRenderer } from '@/components/simulations/SimulationRenderer';
 import { ChromeDecor, hexToRgb } from '@/components/layout/ChromeDecor';
-import { SurfaceMode } from '@/components/layout/SurfaceMode';
+import { HeaderBleed } from '@/components/layout/HeaderBleed';
 import { cn } from '@/lib/utils';
 import { Icon } from '@/components/icons/Icon';
 
@@ -44,17 +44,21 @@ export default function SimulationPage({ params }: PageProps) {
 
   return (
     <div
-      className="flex-1 flex flex-col"
+      className="relative flex-1 flex flex-col"
       style={{ '--accent': theme.accent } as CSSProperties}
     >
-      {/* La page d'une simulation passe en ambiance claire */}
-      <SurfaceMode mode="light" />
+      {/* Le fond de page reste sombre : les simulateurs posent eux-mêmes leurs
+          surfaces claires, et le contraste vient de là. Il n'y a donc plus
+          deux ambiances à raccorder — la couleur de section descend d'un seul
+          tenant sur toute la page. */}
+      <HeaderBleed accentRgb={hexToRgb(theme.accent)} height={1500} strength={0.13} />
 
-      {/* Bande sombre : identité et contexte */}
-      <div className="relative bg-ink-950 overflow-hidden">
+      {/* Bande d'en-tête : identité et contexte. Sans fond propre, pour
+          laisser passer le dégradé. */}
+      <div className="relative overflow-hidden">
         <ChromeDecor height="h-full" accentRgb={hexToRgb(theme.accent)} />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-10">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
           <nav className="flex items-center gap-2 text-sm text-stone-500 mb-6">
             <Link href="/" className="hover:text-gold-300 transition-colors">
               Simulations
@@ -104,14 +108,20 @@ export default function SimulationPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Scène claire : la simulation, inchangée */}
-      <div className="flex-1 bg-scene-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <SimulationRenderer simId={simulation.id} />
+      {/* La simulation. Elle pose ses propres surfaces claires ; le fond de
+          page, lui, reste celui du site. */}
+      <div className="relative flex-1">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-10">
+          {/* sim-surface donne au simulateur l'encre de ses surfaces claires :
+              tout ce qui hérite la couleur du texte — libellés, formules,
+              tableaux — reste lisible sur ses cartes blanches. */}
+          <div className="sim-surface">
+            <SimulationRenderer simId={simulation.id} />
+          </div>
 
           {siblings.length > 0 && (
-            <section className="mt-16 pt-8 border-t border-scene-200">
-              <h2 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-stone-500 mb-4">
+            <section className="mt-16 pt-8 border-t border-gold-400/[0.14]">
+              <h2 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gold-600 mb-4">
                 Autres simulations en {category.title.toLowerCase()}
               </h2>
               <div className="flex flex-wrap gap-2">
@@ -121,8 +131,8 @@ export default function SimulationPage({ params }: PageProps) {
                     href={`/simulation/${sibling.id}`}
                     className={cn(
                       'px-3 py-1.5 rounded-full text-xs font-medium transition-colors',
-                      theme.lightChip,
-                      'hover:brightness-95'
+                      theme.chip,
+                      'hover:brightness-110'
                     )}
                   >
                     <Icon name={sibling.icon} size={13} className="inline-block -mt-px mr-1.5 align-middle" />

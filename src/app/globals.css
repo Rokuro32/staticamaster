@@ -6,11 +6,13 @@
 @import 'katex/dist/katex.min.css';
 
 /*
- * Le site a deux ambiances :
- *  - le "chrome" sombre (en-tête, accueil, sections, pied de page)
- *  - la "scène" claire (page d'une simulation), car les simulations
- *    peignent elles-mêmes leurs surfaces en clair.
- * Le fond est posé sur <body> et surchargé par la page via data-surface.
+ * Le fond du site est sombre partout. Les simulations, elles, peignent leurs
+ * propres surfaces claires : cartes blanches, papier millimétré, graphiques.
+ *
+ * Leur texte ne peut donc pas hériter la couleur du <body>, qui est un blanc
+ * cassé prévu pour le fond sombre — il deviendrait invisible sur ces cartes.
+ * La couleur d'encre claire est posée par .sim-surface autour du simulateur,
+ * au plus près de ce qu'elle concerne.
  */
 
 :root {
@@ -34,10 +36,10 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Page d'une simulation : on repasse en clair */
-  body[data-surface='light'] {
-    --surface: #f3f1ec;
-    --surface-text: #1c1b18;
+  /* L'encre des surfaces claires d'une simulation. Portée par un conteneur
+     plutôt que par le <body> : le fond de page, lui, reste sombre. */
+  .sim-surface {
+    color: #1c1b18;
   }
 
   /* Curseurs et cases à cocher natifs : l'accent par défaut du navigateur est
@@ -80,16 +82,6 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #45433e;
-  background-clip: content-box;
-}
-
-body[data-surface='light'] ::-webkit-scrollbar-thumb {
-  background: #cfc9bb;
-  background-clip: content-box;
-}
-
-body[data-surface='light'] ::-webkit-scrollbar-thumb:hover {
-  background: #a8a091;
   background-clip: content-box;
 }
 
