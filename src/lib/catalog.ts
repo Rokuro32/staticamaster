@@ -514,6 +514,23 @@ export const SIMULATIONS: Simulation[] = [
     ],
   },
   {
+    id: 'blindage',
+    categoryId: 'nucleaire',
+    title: 'Blindage des rayonnements',
+    summary: "Quel écran pour quel faisceau, et pourquoi le plomb n'est pas toujours la réponse.",
+    description:
+      "Il n'y a pas de bon matériau dans l'absolu : il y en a un par type de rayonnement. Choisissez un faisceau — α, β, γ/X ou neutrons — un matériau et une épaisseur, et regardez ce qui passe. Les α s'arrêtent dans une feuille de papier ; les β s'arrêtent aussi, mais un écran lourd les convertit en rayonnement de freinage ; les photons ne font que se diviser, sans jamais s'annuler ; et contre les neutrons, c'est l'hydrogène qui travaille, pas la densité. Changez de rayonnement sans toucher à l'écran, et le verdict s'inverse.",
+    icon: 'blindage',
+    topics: [
+      'Atténuation exponentielle',
+      'Couche de demi-atténuation',
+      'Parcours des particules',
+      'Rayonnement de freinage',
+      'Facteur d\u2019accumulation',
+      'Modération des neutrons',
+    ],
+  },
+  {
     id: 'dommages-adn',
     categoryId: 'nucleaire',
     title: "Rayonnement et ADN",

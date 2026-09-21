@@ -65,6 +65,7 @@ const GLYPHS: Record<string, ReactNode> = {
   'mrua-2d': <><path d="M2.5 19.5C7 19.5 9 4.5 21 4.5"/><circle cx="10" cy="11.5" r="1.8" fill="currentColor" stroke="none"/><path d="M10 11.5 16.5 7.4"/><path d="M13.6 7.2 16.9 7.2 16.9 10.4"/><path d="M10 11.5 10 19"/><path d="M8.2 17.2 10 19l1.8-1.8"/></>,
   'curietherapie-tg43': <><rect x="10.5" y="8" width="3" height="8" rx="1.5"/><ellipse cx="12" cy="12" rx="5.5" ry="6.8"/><ellipse cx="12" cy="12" rx="9" ry="10.2"/><path d="M12 12h5.5"/></>,
   'radiotherapie-externe': <><path d="M9 2.5 5.5 12"/><path d="M15 2.5 18.5 12"/><rect x="3" y="12" width="18" height="9" rx="1.5"/><path d="M7 16h10"/><path d="M9 19h6"/></>,
+  'blindage': <><path d="M12 2.6 4.8 5.4v6.1c0 4.4 3 8.2 7.2 9.4 4.2-1.2 7.2-5 7.2-9.4V5.4Z"/><path d="M1.5 8.4h3.3"/><path d="M1.5 12h3.3"/><path d="M1.5 15.6h3.3"/><path d="M19.2 12h3.3"/></>,
   'dommages-adn': <><path d="M8 2.5c0 5 8 5 8 10s-8 5-8 9.5"/><path d="M16 2.5c0 5-8 5-8 10s8 5 8 9.5"/><path d="M9.4 6.5h5.2"/><path d="M9.4 17.5h5.2"/><path d="M4 10 8 14"/><path d="M8 10 4 14"/></>,
   'recherche-vide': <><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.2 15.2 20.5 20.5"/><path d="M8 10.5h5"/></>,
 };

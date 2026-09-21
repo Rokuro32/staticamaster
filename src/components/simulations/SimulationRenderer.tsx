@@ -172,6 +172,10 @@ const REGISTRY: Record<SimulationId, ComponentType> = {
     () => import('./EBRTDoseSimulator').then((m) => m.EBRTDoseSimulator),
     { ssr: false, loading: Loading }
   ),
+  'blindage': dynamic(
+    () => import('./ShieldingSimulator').then((m) => m.ShieldingSimulator),
+    { ssr: false, loading: Loading }
+  ),
   'dommages-adn': dynamic(
     () => import('./DNADamageSimulator').then((m) => m.DNADamageSimulator),
     { ssr: false, loading: Loading }
