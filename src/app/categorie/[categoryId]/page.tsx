@@ -10,6 +10,8 @@ import {
 } from '@/lib/catalog';
 import { SimulationCard } from '@/components/catalog/SimulationCard';
 import { ChromeDecor, hexToRgb } from '@/components/layout/ChromeDecor';
+import { HeaderBleed } from '@/components/layout/HeaderBleed';
+import { PhysicsMotifs, motifsForCategory } from '@/components/layout/PhysicsMotifs';
 import { cn } from '@/lib/utils';
 import { Icon } from '@/components/icons/Icon';
 
@@ -43,8 +45,12 @@ export default function CategoryPage({ params }: PageProps) {
       className="relative"
       style={{ '--accent': theme.accent } as CSSProperties}
     >
+      {/* La couleur de la section descend sur la page au lieu de s'arrêter
+          avec le décor. */}
+      <HeaderBleed accentRgb={hexToRgb(theme.accent)} height={1300} strength={0.11} />
+
       {/* Décor */}
-      <ChromeDecor accentRgb={hexToRgb(theme.accent)} />
+      <ChromeDecor height="h-[440px]" accentRgb={hexToRgb(theme.accent)} />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Link
@@ -82,10 +88,17 @@ export default function CategoryPage({ params }: PageProps) {
           </div>
         </header>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {simulations.map((simulation) => (
-            <SimulationCard key={simulation.id} simulation={simulation} />
-          ))}
+        <div className="relative">
+          {/* Le motif dépend du sujet de la section */}
+          <PhysicsMotifs
+            placements={motifsForCategory(category.id)}
+            accentRgb={hexToRgb(theme.accent)}
+          />
+          <div className="relative grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {simulations.map((simulation) => (
+              <SimulationCard key={simulation.id} simulation={simulation} />
+            ))}
+          </div>
         </div>
 
         <section className="mt-16 pt-8 border-t border-gold-400/[0.14]">

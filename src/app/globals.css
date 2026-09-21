@@ -179,6 +179,52 @@ body[data-surface='light'] ::-webkit-scrollbar-thumb:hover {
   to { background-position: -160% 0; }
 }
 
+@layer components {
+  /* Motifs de physique en fond de section.
+     Deux mouvements seulement : la figure entière respire très lentement, et
+     une impulsion court le long du diagramme. La respiration passe par
+     transform, donc par le compositeur ; l'impulsion repeint le seul tracé
+     concerné. Aucune boucle JavaScript. */
+  .motif-drift {
+    animation: motif-drift 34s ease-in-out infinite;
+    transform-origin: 50% 50%;
+    will-change: transform;
+  }
+
+  /* Invisible au repos : seule l'animation la révèle. Sous « réduire les
+     animations », la règle globale arrête l'animation et le tracé reste donc
+     masqué — la figure est alors parfaitement immobile, sans trait résiduel. */
+  .motif-pulse {
+    opacity: 0;
+    animation: motif-pulse 11s linear infinite;
+  }
+}
+
+@keyframes motif-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, -3%, 0) rotate(1.4deg) scale(1.05);
+  }
+}
+
+@keyframes motif-pulse {
+  from {
+    stroke-dashoffset: var(--trace-len, 200);
+    opacity: 0;
+  }
+  12%,
+  78% {
+    opacity: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
 @layer utilities {
   /* Dégradé de texte pour les titres */
   .text-gradient {

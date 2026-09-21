@@ -2,6 +2,8 @@ import Link from 'next/link';
 import type { CSSProperties } from 'react';
 import { CatalogBrowser } from '@/components/catalog/CatalogBrowser';
 import { ChromeDecor } from '@/components/layout/ChromeDecor';
+import { HeaderBleed } from '@/components/layout/HeaderBleed';
+import { PhysicsMotifs } from '@/components/layout/PhysicsMotifs';
 import {
   CATEGORIES,
   SIMULATIONS,
@@ -17,8 +19,12 @@ export default function HomePage() {
 
   return (
     <div className="relative">
+      {/* La teinte du hero descend bien plus bas que son décor : c'est elle
+          qui supprime la coupure entre le haut de page et le contenu. */}
+      <HeaderBleed height={1500} strength={0.11} />
+
       {/* Décor du hero */}
-      <ChromeDecor height="h-[560px]" density="normal" fade="radial" />
+      <ChromeDecor height="h-[760px]" density="normal" fade="radial" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero */}
@@ -68,8 +74,14 @@ export default function HomePage() {
         </section>
 
         {/* Sections en un coup d'œil */}
-        <section className="pb-20">
-          <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+        <section className="relative pb-20">
+          <PhysicsMotifs
+            placements={[
+              { name: 'vertex', top: '-4%', right: '-7%', size: 330, opacity: 0.18, desktopOnly: true },
+              { name: 'gluon', top: '30%', left: '-8%', size: 300, opacity: 0.14, delay: '-13s', desktopOnly: true },
+            ]}
+          />
+          <div className="relative grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
             {CATEGORIES.map((category, i) => {
               const theme = getThemeByCategory(category.id);
               const count = SIMULATIONS.filter(
@@ -118,7 +130,9 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Catalogue complet */}
+        {/* Catalogue complet.
+            Pas de motif ici : la liste alterne titres de section et rangées de
+            cartes, et un décor y passerait forcément derrière du texte. */}
         <section id="catalogue" className="pb-24 scroll-mt-16">
           <CatalogBrowser />
         </section>
